@@ -17,7 +17,9 @@ TEMPLATE = app
 
 SOURCES += main.c \
     system.c \
-    search.c
+    search.c \
+    identification.c \
+    sc_iterator5.c
     
 INCLUDEPATH += ../sc-memory/src 
 INCLUDEPATH += ../sc-memory/src/sc-store
@@ -30,4 +32,6 @@ win32 {
 
 HEADERS += \
     search.h \
-    system.h
+    system.h \
+    identification.h \
+    sc_iterator5.h

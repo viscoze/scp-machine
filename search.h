@@ -3,6 +3,7 @@
 #include "sc_memory.h"
 #include "sc_iterator.h"
 #include "sc_stream_memory.h"
+#include "system.h"
 
 /*! Search all constant positive permanent arcs, which outcome from given element
  * @param addr sc-addr of element

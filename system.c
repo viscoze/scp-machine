@@ -11,7 +11,6 @@ sc_bool print_element(sc_addr element){
     if (it==0){
         return SC_FALSE;
     }
-    //g_assert(it != 0);
     printf("Input arcs:\n");
     while (sc_iterator3_next(it))
     {
@@ -25,7 +24,6 @@ sc_bool print_element(sc_addr element){
     if (it==0){
         return SC_FALSE;
     }
-    //g_assert(it != 0);
     printf("Output arcs:\n");
     while (sc_iterator3_next(it))
     {

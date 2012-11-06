@@ -1,5 +1,6 @@
 #ifndef SYSTEM_H
 #define SYSTEM_H
+#define NULLPTR (void*)0
 #include "sc_memory.h"
 #include "sc_iterator.h"
 #include "sc_stream_memory.h"
