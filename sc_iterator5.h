@@ -11,7 +11,9 @@ typedef enum
     sc_iterator5_f_a_a_a_f = 0,
     sc_iterator5_a_a_f_a_f,
     sc_iterator5_f_a_f_a_f,
-    sc_iterator5_f_a_f_a_a
+    sc_iterator5_f_a_f_a_a,
+    sc_iterator5_f_a_a_a_a,
+    sc_iterator5_a_a_f_a_a
 } sc_iterator5_type;
 
 /*! Structure to store iterator information
@@ -31,10 +33,14 @@ sc_iterator5* sc_iterator5_a_a_f_a_f_new(sc_type p1, sc_type p2, sc_addr p3, sc_
 sc_iterator5* sc_iterator5_f_a_a_a_f_new(sc_addr p1, sc_type p2, sc_type p3, sc_type p4, sc_addr p5);
 sc_iterator5* sc_iterator5_f_a_f_a_f_new(sc_addr p1, sc_type p2, sc_addr p3, sc_type p4, sc_addr p5);
 sc_iterator5* sc_iterator5_f_a_f_a_a_new(sc_addr p1, sc_type p2, sc_addr p3, sc_type p4, sc_type p5);
+sc_iterator5* sc_iterator5_f_a_a_a_a_new(sc_addr p1, sc_type p2, sc_type p3, sc_type p4, sc_type p5);
+sc_iterator5* sc_iterator5_a_a_f_a_a_new(sc_type p1, sc_type p2, sc_addr p3, sc_type p4, sc_type p5);
 sc_bool sc_iterator5_a_a_f_a_f_next(sc_iterator5 *it);
 sc_bool sc_iterator5_f_a_a_a_f_next(sc_iterator5 *it);
 sc_bool sc_iterator5_f_a_f_a_f_next(sc_iterator5 *it);
 sc_bool sc_iterator5_f_a_f_a_a_next(sc_iterator5 *it);
+sc_bool sc_iterator5_f_a_a_a_a_next(sc_iterator5 *it);
+sc_bool sc_iterator5_a_a_f_a_a_next(sc_iterator5 *it);
 void sc_iterator5_free(sc_iterator5 *it);
 
 #endif // SC_ITERATOR5_H

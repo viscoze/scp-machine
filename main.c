@@ -223,8 +223,18 @@ void test_iterator5_arcs_only(){
         printf("\n1:%u|%u 3:%u|%u 4:%u|%u",addr1.seg,addr1.offset,addr2.seg,addr2.offset,addr3.seg,addr3.offset);
     }
     sc_iterator5_free(it);
-}
 
+    printf("\n\n");
+
+    it=sc_iterator5_a_a_f_a_a_new(0,0,end_node,0,0);
+    while(sc_iterator5_a_a_f_a_a_next(it)){
+        addr1=it->results[1];
+        addr2=it->results[3];
+        addr3=it->results[4];
+        printf("\n1:%u|%u 3:%u|%u 4:%u|%u",addr1.seg,addr1.offset,addr2.seg,addr2.offset,addr3.seg,addr3.offset);
+    }
+    sc_iterator5_free(it);
+}
 
 int main(int argc, char *argv[])
 {
