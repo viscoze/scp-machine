@@ -1,26 +1,38 @@
 #include "identification.h"
+#include "sc_iterator5.h"
+#include "sc_stream.h"
+#include <stdlib.h>
+#include <string.h>
 #include <stdio.h>
 
 sc_bool init_identification(){
-    sc_stream *stream = 0;
     sc_addr *results = 0;
     sc_uint32 results_count = 0;
-    char* sys_idtf="nrel_system_identifier";
+    sc_char* sys_idtf="nrel_system_identifier";
+    sc_stream *stream = sc_stream_memory_new(sys_idtf, sizeof(sc_char)*strlen(sys_idtf), SC_STREAM_READ, SC_FALSE);
 
-    stream = sc_stream_memory_new(sys_idtf, sizeof(sys_idtf), SC_STREAM_READ, SC_FALSE);
-
-    /*if (sc_storage_find_links_with_content(stream, &results, &results_count) == SC_OK)
+    if (sc_memory_find_links_with_content(stream, &results, &results_count) == SC_OK)
     {
-        for (j = 0; j < results_count; j++)
+        int i=0;
+        for (i = 0; i < results_count; i++)
         {
+            sc_iterator5 *it=sc_iterator5_a_a_f_a_a_new(sc_type_const|sc_type_node_norole,sc_type_var,results[i],sc_type_arc_pos_const_perm,sc_type_const|sc_type_node_norole);
+            while(sc_iterator5_a_a_f_a_a_next(it)){
 
+                if (SC_ADDR_IS_EQUAL(it->results[0],it->results[4])){
+                    NREL_SYSTEM_IDENTIFIER=it->results[0];
+                    free(results);
+                    sc_stream_free(stream);
+                    return SC_TRUE;
+                }
+            }
         }
         free(results);
         results = NULLPTR;
     }else
-        return SC_FALSE;*/
+        return SC_FALSE;
 
     sc_stream_free(stream);
 
-    return SC_TRUE;
+    return SC_FALSE;
 }

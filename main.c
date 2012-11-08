@@ -1,10 +1,12 @@
 #include <stdio.h>
 #include <conio.h>
+#include <string.h>
+
 #include "sc_memory.h"
 #include "sc_iterator.h"
 #include "sc_iterator5.h"
 #include "sc_stream_memory.h"
-
+#include "identification.h"
 #include "search.h"
 #include "system.h"
 
@@ -236,11 +238,25 @@ void test_iterator5_arcs_only(){
     sc_iterator5_free(it);
 }
 
+void gen_temp_identification(){
+    sc_char* sys_idtf="nrel_system_identifier";
+    sc_stream *stream = sc_stream_memory_new(sys_idtf, sizeof(sc_char)*strlen(sys_idtf), SC_STREAM_READ, SC_FALSE);
+    sc_addr node1=sc_memory_node_new(sc_type_var|sc_type_node_role);
+    sc_addr node2=sc_memory_link_new();
+    sc_memory_set_link_content(node2,stream);
+    sc_stream_free(stream);
+    sc_addr arc_addr=sc_memory_arc_new(sc_type_arc_pos_const_perm,node1,node2);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,node1,arc_addr);
+    printf("node: %u: %u\n",node1.seg,node1.offset);
+}
+
 int main(int argc, char *argv[])
 {
     sc_memory_initialize("repo");
 
-    test_iterator5_arcs_only();
+    gen_temp_identification();
+    init_identification();
+    printf("node2: %u: %u\n",NREL_SYSTEM_IDENTIFIER.seg,NREL_SYSTEM_IDENTIFIER.offset);
 
     //sc_memory_shutdown();
     getch();

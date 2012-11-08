@@ -2,7 +2,6 @@
 #define SC_ITERATOR5_H
 #include "sc_memory.h"
 #include "sc_iterator.h"
-#include "sc_stream_memory.h"
 #include "system.h"
 
 //! sc-iterator5 types
