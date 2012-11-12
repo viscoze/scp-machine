@@ -241,13 +241,25 @@ void test_iterator5_arcs_only(){
 void gen_temp_identification(){
     sc_char* sys_idtf="nrel_system_identifier";
     sc_stream *stream = sc_stream_memory_new(sys_idtf, sizeof(sc_char)*strlen(sys_idtf), SC_STREAM_READ, SC_FALSE);
-    sc_addr node1=sc_memory_node_new(sc_type_var|sc_type_node_role);
+    sc_addr node1=sc_memory_node_new(sc_type_const|sc_type_node_norole);
     sc_addr node2=sc_memory_link_new();
     sc_memory_set_link_content(node2,stream);
     sc_stream_free(stream);
     sc_addr arc_addr=sc_memory_arc_new(sc_type_arc_pos_const_perm,node1,node2);
     sc_memory_arc_new(sc_type_arc_pos_const_perm,node1,arc_addr);
-    printf("node: %u: %u\n",node1.seg,node1.offset);
+    //printf("node_0: %u: %u\n",node1.seg,node1.offset);
+}
+
+void gen_temp_identification_XXX(){
+    sc_char* sys_idtf="class_quasybinary_relation";
+    sc_stream *stream = sc_stream_memory_new(sys_idtf, sizeof(sc_char)*strlen(sys_idtf), SC_STREAM_READ, SC_FALSE);
+    sc_addr node1=sc_memory_node_new(0);
+    sc_addr node2=sc_memory_link_new();
+    sc_memory_set_link_content(node2,stream);
+    sc_stream_free(stream);
+    sc_addr arc_addr=sc_memory_arc_new(sc_type_arc_pos_const_perm,node1,node2);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,NREL_SYSTEM_IDENTIFIER,arc_addr);
+    printf("node0: %u: %u\n",node1.seg,node1.offset);
 }
 
 int main(int argc, char *argv[])
@@ -256,7 +268,13 @@ int main(int argc, char *argv[])
 
     gen_temp_identification();
     init_identification();
-    printf("node2: %u: %u\n",NREL_SYSTEM_IDENTIFIER.seg,NREL_SYSTEM_IDENTIFIER.offset);
+    //printf("node2: %u: %u\n",NREL_SYSTEM_IDENTIFIER.seg,NREL_SYSTEM_IDENTIFIER.offset);
+
+    gen_temp_identification_XXX();
+    sc_addr node=find_element_by_id("class_quasybinary_relation");
+    printf("node3: %u: %u\n",node.seg,node.offset);
+
+    test_attr_search();
 
     //sc_memory_shutdown();
     getch();

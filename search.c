@@ -111,6 +111,7 @@ sc_bool search_full_semantic_neighbourhood(sc_addr node,sc_addr answer){
     if (it==NULLPTR){
         return SC_FALSE;
     }
+    sc_addr quas=find_element_by_id("class_quasybinary_relation");
     while (sc_iterator3_next(it))
     {
         addr3 = sc_iterator3_value(it, 0);
@@ -118,7 +119,6 @@ sc_bool search_full_semantic_neighbourhood(sc_addr node,sc_addr answer){
         if (SC_ADDR_IS_EQUAL(answer, addr2)){
             continue;
         }
-        //printf("\n0:%u|%u 1:%u|%u",addr3.seg,addr3.offset,addr2.seg,addr2.offset);
         sc_memory_arc_new(sc_type_arc_pos_const_perm,answer,addr2);
 
         sc_iterator3 *it1=NULLPTR;
@@ -137,18 +137,16 @@ sc_bool search_full_semantic_neighbourhood(sc_addr node,sc_addr answer){
             if (SC_ADDR_IS_EQUAL(answer, _addr2)){
                 continue;
             }
-            //printf(" 3:%u|%u",_addr3.seg,_addr3.offset);
             sc_memory_arc_new(sc_type_arc_pos_const_perm,answer,_addr2);
             sc_memory_arc_new(sc_type_arc_pos_const_perm,answer,_addr3);
 
-            /*sc_iterator3 *it2=NULLPTR;
-                it2=sc_iterator3_f_a_f_new(***NODE***,sc_type_arc_pos_const_perm,_addr3);
-                if (it2==NULLPTR){
-                    continue;
-                }
-                if (sc_iterator3_next(it)){
-                    flag=1;
-                }*/
+            sc_iterator3 *it2=sc_iterator3_f_a_f_new(quas,sc_type_arc_pos_const_perm,_addr2);
+            if (it2==NULLPTR){
+                continue;
+            }
+            if (sc_iterator3_next(it2)){
+                flag=1;
+            }
         }
         sc_iterator3_free(it1);
 
@@ -172,8 +170,6 @@ sc_bool search_full_semantic_neighbourhood(sc_addr node,sc_addr answer){
     {
         addr2 = sc_iterator3_value(it, 1);
         addr3 = sc_iterator3_value(it, 2);
-
-        printf("\n1:%u|%u 2:%u|%u",addr2.seg,addr2.offset,addr3.seg,addr3.offset);
         sc_memory_arc_new(sc_type_arc_pos_const_perm,answer,addr2);
 
         sc_iterator3 *it1=NULLPTR;
@@ -192,18 +188,16 @@ sc_bool search_full_semantic_neighbourhood(sc_addr node,sc_addr answer){
             if (SC_ADDR_IS_EQUAL(answer, _addr2)){
                 continue;
             }
-            printf(" 3:%u|%u",_addr3.seg,_addr3.offset);
             sc_memory_arc_new(sc_type_arc_pos_const_perm,answer,_addr2);
             sc_memory_arc_new(sc_type_arc_pos_const_perm,answer,_addr3);
 
-            /*sc_iterator3 *it2=NULLPTR;
-            it2=sc_iterator3_f_a_f_new(***NODE***,sc_type_arc_pos_const_perm,_addr3);
+            sc_iterator3 *it2=sc_iterator3_f_a_f_new(quas,sc_type_arc_pos_const_perm,_addr2);
             if (it2==NULLPTR){
                 continue;
             }
-            if (sc_iterator3_next(it)){
+            if (sc_iterator3_next(it2)){
                 flag=1;
-            }*/
+            }
         }
         sc_iterator3_free(it1);
 
