@@ -66,3 +66,16 @@ sc_addr find_element_by_id(sc_char* id){
 
     return result;
 }
+
+sc_addr gen_element_with_id(sc_char* sys_idtf, sc_type type)
+{
+    sc_stream *stream = sc_stream_memory_new(sys_idtf, sizeof(sc_char)*strlen(sys_idtf), SC_STREAM_READ, SC_FALSE);
+    sc_addr node1=sc_memory_node_new(type);
+    sc_addr node2=sc_memory_link_new();
+    sc_memory_set_link_content(node2,stream);
+    sc_stream_free(stream);
+    sc_addr arc_addr=sc_memory_arc_new(sc_type_arc_pos_const_perm,node1,node2);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,NREL_SYSTEM_IDENTIFIER,arc_addr);
+    //printf("node0: %u: %u\n",node1.seg,node1.offset);
+    return node1;
+}

@@ -3,11 +3,14 @@
 #include <string.h>
 
 #include "sc_memory.h"
+#include "sc_event.h"
 #include "sc_iterator.h"
 #include "sc_iterator5.h"
 #include "sc_stream_memory.h"
 #include "identification.h"
+#include "question.h"
 #include "search.h"
+#include "search_operations.h"
 #include "system.h"
 
 sc_addr gen_input_output_arcs(){
@@ -247,19 +250,19 @@ void gen_temp_identification(){
     sc_stream_free(stream);
     sc_addr arc_addr=sc_memory_arc_new(sc_type_arc_pos_const_perm,node1,node2);
     sc_memory_arc_new(sc_type_arc_pos_const_perm,node1,arc_addr);
-    //printf("node_0: %u: %u\n",node1.seg,node1.offset);
 }
 
-void gen_temp_identification_XXX(){
-    sc_char* sys_idtf="class_quasybinary_relation";
-    sc_stream *stream = sc_stream_memory_new(sys_idtf, sizeof(sc_char)*strlen(sys_idtf), SC_STREAM_READ, SC_FALSE);
-    sc_addr node1=sc_memory_node_new(0);
-    sc_addr node2=sc_memory_link_new();
-    sc_memory_set_link_content(node2,stream);
-    sc_stream_free(stream);
-    sc_addr arc_addr=sc_memory_arc_new(sc_type_arc_pos_const_perm,node1,node2);
-    sc_memory_arc_new(sc_type_arc_pos_const_perm,NREL_SYSTEM_IDENTIFIER,arc_addr);
-    printf("node0: %u: %u\n",node1.seg,node1.offset);
+void gen_temp_identification_quasy(){
+    gen_element_with_id("class_quasybinary_relation",0);
+}
+
+void create_temp_question1()
+{
+    sc_addr quest=sc_memory_node_new(0);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,CLASS_QUESTION_FULL_SEMANTIC_NEIGHBOURHOOD,quest);
+    sc_addr node=gen_input_output_arcs();
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,quest,node);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,CLASS_QUESTION_INITIATED,quest);
 }
 
 int main(int argc, char *argv[])
@@ -268,13 +271,18 @@ int main(int argc, char *argv[])
 
     gen_temp_identification();
     init_identification();
-    //printf("node2: %u: %u\n",NREL_SYSTEM_IDENTIFIER.seg,NREL_SYSTEM_IDENTIFIER.offset);
+    gen_temp_identification_quasy();
+    init_questions();
 
-    gen_temp_identification_XXX();
-    sc_addr node=find_element_by_id("class_quasybinary_relation");
-    printf("node3: %u: %u\n",node.seg,node.offset);
+    sc_event *event1 = sc_event_new(CLASS_QUESTION_INITIATED, SC_EVENT_ADD_OUTPUT_ARC, 0, &operation_search_all_const_pos_output_arc, 0);
+    sc_event *event2 = sc_event_new(CLASS_QUESTION_INITIATED, SC_EVENT_ADD_OUTPUT_ARC, 0, &operation_search_all_const_pos_input_arc, 0);
+    sc_event *event3 = sc_event_new(CLASS_QUESTION_INITIATED, SC_EVENT_ADD_OUTPUT_ARC, 0, &operation_search_full_semantic_neighbourhood, 0);
 
-    test_attr_search();
+    create_temp_question1();
+
+    sc_event_destroy(event1);
+    sc_event_destroy(event2);
+    sc_event_destroy(event3);
 
     //sc_memory_shutdown();
     getch();

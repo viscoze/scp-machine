@@ -29,7 +29,7 @@ sc_bool search_all_const_pos_input_arc(sc_addr node,sc_addr answer){
 
     sc_iterator3 *it=NULLPTR;
 
-    it=sc_iterator3_a_a_f_new(sc_type_arc_pos_const_perm,0,node);
+    it=sc_iterator3_a_a_f_new(0,sc_type_arc_pos_const_perm,node);
 
     if (it==NULLPTR){
         return SC_FALSE;
