@@ -17,7 +17,7 @@ sc_bool init_identification(){
         for (i = 0; i < results_count; i++)
         {
             sc_iterator5 *it=sc_iterator5_a_a_f_a_a_new(sc_type_const|sc_type_node_norole,sc_type_arc_pos_const_perm,results[i],sc_type_arc_pos_const_perm,sc_type_const|sc_type_node_norole);
-            while(sc_iterator5_a_a_f_a_a_next(it)){
+            while(sc_iterator5_next(it)){
 
                 if (SC_ADDR_IS_EQUAL(it->results[0],it->results[4])){
                     NREL_SYSTEM_IDENTIFIER=it->results[0];
@@ -50,7 +50,7 @@ sc_addr find_element_by_id(sc_char* id){
         for (i = 0; i < results_count; i++)
         {
             sc_iterator5 *it=sc_iterator5_a_a_f_a_f_new(0,sc_type_arc_pos_const_perm,results[i],sc_type_arc_pos_const_perm,NREL_SYSTEM_IDENTIFIER);
-            if(sc_iterator5_a_a_f_a_f_next(it)){
+            if(sc_iterator5_next(it)){
                 free(results);
                 results = NULLPTR;
                 sc_stream_free(stream);

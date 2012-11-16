@@ -19,7 +19,6 @@ SOURCES += main.c \
     system.c \
     search.c \
     identification.c \
-    sc_iterator5.c \
     question.c \
     search_operations.c
     
@@ -36,6 +35,5 @@ HEADERS += \
     search.h \
     system.h \
     identification.h \
-    sc_iterator5.h \
     question.h \
     search_operations.h

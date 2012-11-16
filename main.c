@@ -130,7 +130,7 @@ void test_iterator5_inp(){
 
     sc_iterator5 *it=sc_iterator5_a_a_f_a_f_new(0,0,node,0,attr);
     sc_addr addr0,addr1,addr3;
-    while(sc_iterator5_a_a_f_a_f_next(it)){
+    while(sc_iterator5_next(it)){
         addr0=it->results[0];
         addr1=it->results[1];
         addr3=it->results[3];
@@ -150,7 +150,7 @@ void test_iterator5_outp(){
 
     sc_iterator5 *it=sc_iterator5_f_a_a_a_f_new(node,0,0,0,attr);
     sc_addr addr1,addr2,addr3;
-    while(sc_iterator5_f_a_a_a_f_next(it)){
+    while(sc_iterator5_next(it)){
         addr1=it->results[1];
         addr2=it->results[2];
         addr3=it->results[3];
@@ -189,7 +189,7 @@ void test_iterator5_arcs_only(){
 
     sc_iterator5 *it=sc_iterator5_f_a_a_a_f_new(node,0,0,0,attr1);
     sc_addr addr1,addr2,addr3;
-    while(sc_iterator5_f_a_a_a_f_next(it)){
+    while(sc_iterator5_next(it)){
         addr1=it->results[1];
         addr2=it->results[2];
         addr3=it->results[3];
@@ -200,7 +200,7 @@ void test_iterator5_arcs_only(){
     printf("\n\n");
 
     it=sc_iterator5_a_a_f_a_f_new(0,0,end_node,0,attr1);
-    while(sc_iterator5_a_a_f_a_f_next(it)){
+    while(sc_iterator5_next(it)){
         addr1=it->results[0];
         addr2=it->results[1];
         addr3=it->results[3];
@@ -211,7 +211,7 @@ void test_iterator5_arcs_only(){
     printf("\n\n");
 
     it=sc_iterator5_f_a_f_a_f_new(node,0,end_node,0,attr1);
-    while(sc_iterator5_f_a_f_a_f_next(it)){
+    while(sc_iterator5_next(it)){
         addr2=it->results[1];
         addr3=it->results[3];
         printf("\n1:%u|%u 3:%u|%u",addr2.seg,addr2.offset,addr3.seg,addr3.offset);
@@ -221,7 +221,7 @@ void test_iterator5_arcs_only(){
     printf("\n\n");
 
     it=sc_iterator5_f_a_f_a_a_new(node,0,end_node,0,0);
-    while(sc_iterator5_f_a_f_a_a_next(it)){
+    while(sc_iterator5_next(it)){
         addr1=it->results[1];
         addr2=it->results[3];
         addr3=it->results[4];
@@ -232,7 +232,7 @@ void test_iterator5_arcs_only(){
     printf("\n\n");
 
     it=sc_iterator5_a_a_f_a_a_new(0,0,end_node,0,0);
-    while(sc_iterator5_a_a_f_a_a_next(it)){
+    while(sc_iterator5_next(it)){
         addr1=it->results[1];
         addr2=it->results[3];
         addr3=it->results[4];
