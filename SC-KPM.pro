@@ -20,7 +20,8 @@ SOURCES += main.c \
     search.c \
     identification.c \
     question.c \
-    search_operations.c
+    search_operations.c \
+	system_pattern.cpp
     
 INCLUDEPATH += ../sc-memory/src 
 INCLUDEPATH += ../sc-memory/src/sc-store
@@ -29,6 +30,12 @@ DESTDIR = ../bin
 win32 {
     CONFIG += qt console
     LIBS += -L "../bin" -lsc_memoryd
+
+    INCLUDEPATH += "../glib/include/glib-2.0"
+    INCLUDEPATH += "../glib/lib/glib-2.0/include"
+
+    POST_TARGETDEPS += ../glib/lib/glib-2.0.lib
+    LIBS += ../glib/lib/glib-2.0.lib
 }
 
 HEADERS += \
@@ -36,4 +43,5 @@ HEADERS += \
     system.h \
     identification.h \
     question.h \
-    search_operations.h
+    search_operations.h \
+	system_pattern.h

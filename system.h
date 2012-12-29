@@ -11,5 +11,7 @@
  */
 sc_bool print_element(sc_addr element);
 
+
+
 sc_bool get_question_single_param(sc_addr question_class,sc_addr question_node, sc_addr *param);
 #endif // SYSTEM_H

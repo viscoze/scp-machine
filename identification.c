@@ -49,7 +49,7 @@ sc_addr find_element_by_id(sc_char* id){
         int i=0;
         for (i = 0; i < results_count; i++)
         {
-            sc_iterator5 *it=sc_iterator5_a_a_f_a_f_new(0,sc_type_arc_pos_const_perm,results[i],sc_type_arc_pos_const_perm,NREL_SYSTEM_IDENTIFIER);
+            sc_iterator5 *it=sc_iterator5_a_a_f_a_f_new(0,sc_type_arc_common|sc_type_arc_pos,results[i],sc_type_arc_pos_const_perm,NREL_SYSTEM_IDENTIFIER);
             if(sc_iterator5_next(it)){
                 free(results);
                 results = NULLPTR;
@@ -74,8 +74,17 @@ sc_addr gen_element_with_id(sc_char* sys_idtf, sc_type type)
     sc_addr node2=sc_memory_link_new();
     sc_memory_set_link_content(node2,stream);
     sc_stream_free(stream);
-    sc_addr arc_addr=sc_memory_arc_new(sc_type_arc_pos_const_perm,node1,node2);
+    sc_addr arc_addr=sc_memory_arc_new(sc_type_arc_common|sc_type_arc_pos,node1,node2);
     sc_memory_arc_new(sc_type_arc_pos_const_perm,NREL_SYSTEM_IDENTIFIER,arc_addr);
     //printf("node0: %u: %u\n",node1.seg,node1.offset);
     return node1;
+}
+
+void set_element_system_id(sc_addr elem, sc_char* sys_idtf){
+    sc_stream *stream = sc_stream_memory_new(sys_idtf, sizeof(sc_char)*strlen(sys_idtf), SC_STREAM_READ, SC_FALSE);
+    sc_addr node2=sc_memory_link_new();
+    sc_memory_set_link_content(node2,stream);
+    sc_stream_free(stream);
+    sc_addr arc_addr=sc_memory_arc_new(sc_type_arc_common|sc_type_arc_pos,elem,node2);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,NREL_SYSTEM_IDENTIFIER,arc_addr);
 }

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <conio.h>
 #include <string.h>
+#include <malloc.h>
 
 #include "sc_memory.h"
 #include "sc_event.h"
@@ -12,6 +13,7 @@
 #include "search.h"
 #include "search_operations.h"
 #include "system.h"
+#include "system_pattern.h"
 
 sc_addr gen_input_output_arcs(){
 
@@ -265,6 +267,51 @@ void create_temp_question1()
     sc_memory_arc_new(sc_type_arc_pos_const_perm,CLASS_QUESTION_INITIATED,quest);
 }
 
+sc_addr gen_temporary_sys_search_pattern(){
+    sc_addr pattern=sc_memory_node_new(sc_type_const|sc_type_node);
+    sc_addr start_node=sc_memory_node_new(sc_type_const|sc_type_node_class);
+    set_element_system_id(start_node,"triangle");
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,pattern,start_node);
+
+    sc_addr* var_nodes=calloc(6,sizeof(sc_addr));
+    int i=0;
+    for (i=0;i<6;i++){
+        var_nodes[i]=sc_memory_node_new(sc_type_node|sc_type_var);
+        sc_memory_arc_new(sc_type_arc_pos_const_perm,pattern,var_nodes[i]);
+    }
+    sc_addr arc=sc_memory_arc_new(sc_type_arc_access|sc_type_var,start_node,var_nodes[0]);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,pattern,arc);
+    arc=sc_memory_arc_new(sc_type_arc_access|sc_type_var,start_node,var_nodes[1]);
+    //print_element(var_nodes[1]);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,pattern,arc);
+    arc=sc_memory_arc_new(sc_type_arc_access|sc_type_var,var_nodes[0],var_nodes[2]);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,pattern,arc);
+    arc=sc_memory_arc_new(sc_type_arc_access|sc_type_var,var_nodes[0],var_nodes[3]);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,pattern,arc);
+    arc=sc_memory_arc_new(sc_type_arc_access|sc_type_var,var_nodes[1],var_nodes[4]);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,pattern,arc);
+    arc=sc_memory_arc_new(sc_type_arc_access|sc_type_var,var_nodes[1],var_nodes[5]);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,pattern,arc);
+
+    return pattern;
+}
+
+void gen_temporary_sys_search_const_data(){
+    sc_addr start_node=find_element_by_id("triangle");
+
+    sc_addr* const_nodes=calloc(6,sizeof(sc_addr));
+    int i=0;
+    for (i=0;i<6;i++){
+        const_nodes[i]=sc_memory_node_new(sc_type_node|sc_type_const);
+    }
+    sc_addr arc=sc_memory_arc_new(sc_type_arc_pos_const_perm,start_node,const_nodes[0]);
+    arc=sc_memory_arc_new(sc_type_arc_pos_const_perm,start_node,const_nodes[1]);
+    arc=sc_memory_arc_new(sc_type_arc_pos_const_perm,const_nodes[0],const_nodes[2]);
+    arc=sc_memory_arc_new(sc_type_arc_pos_const_perm,const_nodes[0],const_nodes[3]);
+    arc=sc_memory_arc_new(sc_type_arc_pos_const_perm,const_nodes[1],const_nodes[4]);
+    arc=sc_memory_arc_new(sc_type_arc_pos_const_perm,const_nodes[1],const_nodes[5]);
+}
+
 int main(int argc, char *argv[])
 {
     sc_memory_initialize("repo");
@@ -274,15 +321,20 @@ int main(int argc, char *argv[])
     gen_temp_identification_quasy();
     init_questions();
 
-    sc_event *event1 = sc_event_new(CLASS_QUESTION_INITIATED, SC_EVENT_ADD_OUTPUT_ARC, 0, &operation_search_all_const_pos_output_arc, 0);
+    /*sc_event *event1 = sc_event_new(CLASS_QUESTION_INITIATED, SC_EVENT_ADD_OUTPUT_ARC, 0, &operation_search_all_const_pos_output_arc, 0);
     sc_event *event2 = sc_event_new(CLASS_QUESTION_INITIATED, SC_EVENT_ADD_OUTPUT_ARC, 0, &operation_search_all_const_pos_input_arc, 0);
     sc_event *event3 = sc_event_new(CLASS_QUESTION_INITIATED, SC_EVENT_ADD_OUTPUT_ARC, 0, &operation_search_full_semantic_neighbourhood, 0);
-
     create_temp_question1();
-
     sc_event_destroy(event1);
     sc_event_destroy(event2);
-    sc_event_destroy(event3);
+    sc_event_destroy(event3);*/
+
+    sc_addr node=gen_temporary_sys_search_pattern();
+    print_element(node);
+
+    gen_temporary_sys_search_const_data();
+
+    system_sys_search(node);
 
     //sc_memory_shutdown();
     getch();
