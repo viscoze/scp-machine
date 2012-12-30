@@ -9,6 +9,8 @@ extern "C"
 #include <iostream>
 #include <map>
 
+//if ((sc_type_var & ~pattern_arc_type)|sc_type_const){continue;}
+
 using namespace std;
 
 struct sc_addr_comparator
@@ -77,7 +79,7 @@ sc_bool system_sys_search_recurse(sc_addr sc_pattern, sc_type_hash pattern, sc_a
     //Pattern arcs list
     vector<sc_addr> pattern_arc_set;
 
-    sc_iterator3* it_pattern_arc=sc_iterator3_f_a_a_new(curr_pattern_element,sc_type_var,0);
+    sc_iterator3* it_pattern_arc=sc_iterator3_f_a_a_new(curr_pattern_element,0,0);
     if (it_pattern_arc==NULLPTR){return SC_FALSE;}
     while(sc_iterator3_next(it_pattern_arc)){
         addr2=sc_iterator3_value(it_pattern_arc, 1);
@@ -88,7 +90,7 @@ sc_bool system_sys_search_recurse(sc_addr sc_pattern, sc_type_hash pattern, sc_a
     }
     sc_iterator3_free(it_pattern_arc);
 
-    it_pattern_arc=sc_iterator3_a_a_f_new(0,sc_type_var,curr_pattern_element);
+    it_pattern_arc=sc_iterator3_a_a_f_new(0,0,curr_pattern_element);
     if (it_pattern_arc==NULLPTR){return SC_FALSE;}
     while(sc_iterator3_next(it_pattern_arc)){
         addr1=sc_iterator3_value(it_pattern_arc, 0);
@@ -104,6 +106,7 @@ sc_bool system_sys_search_recurse(sc_addr sc_pattern, sc_type_hash pattern, sc_a
     for (sc_uint i=0;i<pattern_arc_set.size();i++){
         sc_addr pattern_arc=pattern_arc_set[i];
         sc_addr next_pattern_element;
+        sc_addr next_const_element;
 
         if (out_arc_count>0){
             if (SC_OK!=sc_memory_get_arc_end(pattern_arc,&next_pattern_element)){continue;}
@@ -113,6 +116,32 @@ sc_bool system_sys_search_recurse(sc_addr sc_pattern, sc_type_hash pattern, sc_a
             if (SC_OK!=sc_memory_get_arc_begin(pattern_arc,&next_pattern_element)){continue;}
             printf("ARC IS OUT\nELEMENT: %u|%u\n",next_pattern_element.seg,next_pattern_element.offset);
         }
+
+        if (pattern.find(SC_ADDR_LOCAL_TO_INT(next_pattern_element))==pattern.end()){continue;}
+
+        //!check pattern_arc type
+        sc_type pattern_arc_type;
+        if (sc_memory_get_element_type(pattern_arc,&pattern_arc_type)!=SC_OK){continue;}
+        if ((sc_type_const & pattern_arc_type) == sc_type_const){continue;}
+
+        if (inp_result_copy.find(pattern_arc)!=inp_result_copy.end()){continue;}
+
+        //!check next_pattern_element type
+        sc_type next_pattern_element_type;
+        sc_bool pattern_is_const_or_has_value=SC_FALSE;
+        if (sc_memory_get_element_type(next_pattern_element,&next_pattern_element_type)!=SC_OK){continue;}
+        if ((sc_type_const & next_pattern_element_type) == sc_type_const){
+            next_const_element=next_pattern_element;
+            pattern_is_const_or_has_value=SC_TRUE;
+        }else{
+            sc_type_result::iterator it=inp_result_copy.find(pattern_arc);
+            if (it!=inp_result_copy.end()){
+                next_const_element=(*it).first;
+            }
+        }
+
+        pattern.erase(SC_ADDR_LOCAL_TO_INT(next_pattern_element));
+
     }
 
     return SC_TRUE;
