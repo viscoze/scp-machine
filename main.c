@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <conio.h>
 #include <string.h>
-#include <malloc.h>
+#include <glib.h>
+//#include <malloc.h>
 
 #include "sc_memory.h"
 #include "sc_event.h"
@@ -273,7 +274,7 @@ sc_addr gen_temporary_sys_search_pattern(){
     set_element_system_id(start_node,"triangle");
     sc_memory_arc_new(sc_type_arc_pos_const_perm,pattern,start_node);
 
-    sc_addr* var_nodes=calloc(6,sizeof(sc_addr));
+    sc_addr var_nodes[6];
     int i=0;
     for (i=0;i<6;i++){
         var_nodes[i]=sc_memory_node_new(sc_type_node|sc_type_var);
@@ -299,7 +300,7 @@ sc_addr gen_temporary_sys_search_pattern(){
 void gen_temporary_sys_search_const_data(){
     sc_addr start_node=find_element_by_id("triangle");
 
-    sc_addr* const_nodes=calloc(6,sizeof(sc_addr));
+    sc_addr const_nodes[6];
     int i=0;
     for (i=0;i<6;i++){
         const_nodes[i]=sc_memory_node_new(sc_type_node|sc_type_const);
@@ -333,8 +334,21 @@ int main(int argc, char *argv[])
     print_element(node);
 
     gen_temporary_sys_search_const_data();
+    int i=0;
 
-    system_sys_search(node);
+    GTimer *timer = 0;
+
+    timer=g_timer_new();
+
+    g_timer_start(timer);
+
+    for (i=0;i<350;i++){
+        system_sys_search(node);
+    }
+
+    g_timer_stop(timer);
+
+    printf("Time: %f s\n", g_timer_elapsed(timer, 0));
 
     //sc_memory_shutdown();
     getch();
