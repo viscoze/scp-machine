@@ -18,20 +18,19 @@ sc_bool init_identification(){
         {
             sc_iterator5 *it=sc_iterator5_a_a_f_a_a_new(sc_type_const|sc_type_node_norole,sc_type_arc_pos_const_perm,results[i],sc_type_arc_pos_const_perm,sc_type_const|sc_type_node_norole);
             while(sc_iterator5_next(it)){
-
                 if (SC_ADDR_IS_EQUAL(it->results[0],it->results[4])){
                     NREL_SYSTEM_IDENTIFIER=it->results[0];
                     free(results);
                     sc_stream_free(stream);
+                    sc_iterator5_free(it);
                     return SC_TRUE;
                 }
             }
+            sc_iterator5_free(it);
         }
-        free(results);
-        results = NULLPTR;
-    }else
-        return SC_FALSE;
+    }
 
+    free(results);
     sc_stream_free(stream);
 
     return SC_FALSE;
@@ -54,16 +53,16 @@ sc_addr find_element_by_id(sc_char* id){
                 free(results);
                 results = NULLPTR;
                 sc_stream_free(stream);
-                return it->results[0];
+                result=it->results[0];
+                sc_iterator5_free(it);
+                return result;
             }
+            sc_iterator5_free(it);
         }
-        free(results);
-        results = NULLPTR;
-    }else
-        return result;
+    }
 
+    free(results);
     sc_stream_free(stream);
-
     return result;
 }
 
