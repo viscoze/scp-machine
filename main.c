@@ -283,7 +283,6 @@ sc_addr gen_temporary_sys_search_pattern(){
     sc_addr arc=sc_memory_arc_new(sc_type_arc_access|sc_type_var,start_node,var_nodes[0]);
     sc_memory_arc_new(sc_type_arc_pos_const_perm,pattern,arc);
     arc=sc_memory_arc_new(sc_type_arc_access|sc_type_var,start_node,var_nodes[1]);
-    //print_element(var_nodes[1]);
     sc_memory_arc_new(sc_type_arc_pos_const_perm,pattern,arc);
     arc=sc_memory_arc_new(sc_type_arc_access|sc_type_var,var_nodes[0],var_nodes[2]);
     sc_memory_arc_new(sc_type_arc_pos_const_perm,pattern,arc);
@@ -293,6 +292,24 @@ sc_addr gen_temporary_sys_search_pattern(){
     sc_memory_arc_new(sc_type_arc_pos_const_perm,pattern,arc);
     arc=sc_memory_arc_new(sc_type_arc_access|sc_type_var,var_nodes[1],var_nodes[5]);
     sc_memory_arc_new(sc_type_arc_pos_const_perm,pattern,arc);
+
+    return pattern;
+}
+
+sc_addr gen_temporary_sys_search_pattern_mulriple_arcs(int count){
+    sc_addr pattern=sc_memory_node_new(sc_type_const|sc_type_node);
+    sc_addr start_node=sc_memory_node_new(sc_type_const|sc_type_node_class);
+    sc_addr end_node=sc_memory_node_new(sc_type_var|sc_type_node);
+    set_element_system_id(start_node,"triangle");
+
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,pattern,start_node);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,pattern,end_node);
+
+    int i=0;
+    for (i=0;i<count;i++){
+        sc_addr arc=sc_memory_arc_new(sc_type_arc_access|sc_type_var,start_node,end_node);
+        sc_memory_arc_new(sc_type_arc_pos_const_perm,pattern,arc);
+    }
 
     return pattern;
 }
@@ -313,6 +330,17 @@ void gen_temporary_sys_search_const_data(){
     arc=sc_memory_arc_new(sc_type_arc_pos_const_perm,const_nodes[1],const_nodes[5]);
 }
 
+
+void gen_temporary_sys_search_const_data_multiple_arcs(int count){
+    sc_addr start_node=find_element_by_id("triangle");
+    sc_addr end_node=sc_memory_node_new(sc_type_node|sc_type_const);
+    int i;
+    for (i=0;i<count;i++){
+        sc_memory_arc_new(sc_type_arc_pos_const_perm,start_node,end_node);
+    }
+}
+
+
 int main(int argc, char *argv[])
 {
     sc_memory_initialize("repo");
@@ -322,6 +350,7 @@ int main(int argc, char *argv[])
     gen_temp_identification_quasy();
     init_questions();
 
+
     /*sc_event *event1 = sc_event_new(CLASS_QUESTION_INITIATED, SC_EVENT_ADD_OUTPUT_ARC, 0, &operation_search_all_const_pos_output_arc, 0);
     sc_event *event2 = sc_event_new(CLASS_QUESTION_INITIATED, SC_EVENT_ADD_OUTPUT_ARC, 0, &operation_search_all_const_pos_input_arc, 0);
     sc_event *event3 = sc_event_new(CLASS_QUESTION_INITIATED, SC_EVENT_ADD_OUTPUT_ARC, 0, &operation_search_full_semantic_neighbourhood, 0);
@@ -330,25 +359,31 @@ int main(int argc, char *argv[])
     sc_event_destroy(event2);
     sc_event_destroy(event3);*/
 
-    sc_addr node=gen_temporary_sys_search_pattern();
+
+
+    sc_addr node=gen_temporary_sys_search_pattern_mulriple_arcs(5);
     print_element(node);
 
-    gen_temporary_sys_search_const_data();
-    int i=0;
+    gen_temporary_sys_search_const_data_multiple_arcs(5);
+
+    getch();
 
     GTimer *timer = 0;
-
     timer=g_timer_new();
-
     g_timer_start(timer);
 
-    for (i=0;i<350;i++){
+
+    int i=0;
+    for (i=0;i<5000;i++){
         system_sys_search(node);
     }
 
-    g_timer_stop(timer);
+    //system_sys_search(node);
 
+    g_timer_stop(timer);
     printf("Time: %f s\n", g_timer_elapsed(timer, 0));
+    g_timer_destroy(timer);
+
 
     //sc_memory_shutdown();
     getch();
