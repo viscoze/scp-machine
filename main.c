@@ -314,6 +314,71 @@ sc_addr gen_temporary_sys_search_pattern_mulriple_arcs(int count){
     return pattern;
 }
 
+sc_addr gen_temporary_sys_search_pattern_circle(){
+    sc_addr pattern=sc_memory_node_new(sc_type_const|sc_type_node);
+    sc_addr start_node=sc_memory_node_new(sc_type_const|sc_type_node_class);
+    set_element_system_id(start_node,"triangle");
+
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,pattern,start_node);
+    sc_addr var_nodes[3];
+    int i=0;
+    for (i=0;i<3;i++){
+        var_nodes[i]=sc_memory_node_new(sc_type_node|sc_type_const);
+        sc_memory_arc_new(sc_type_arc_pos_const_perm,pattern,var_nodes[i]);
+    }
+    sc_addr arc=sc_memory_arc_new(sc_type_arc_access|sc_type_var,start_node,var_nodes[0]);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,pattern,arc);
+    arc=sc_memory_arc_new(sc_type_arc_access|sc_type_var,start_node,var_nodes[1]);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,pattern,arc);
+    arc=sc_memory_arc_new(sc_type_arc_access|sc_type_var,var_nodes[0],var_nodes[2]);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,pattern,arc);
+    arc=sc_memory_arc_new(sc_type_arc_access|sc_type_var,var_nodes[1],var_nodes[2]);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,pattern,arc);
+
+    return pattern;
+}
+
+sc_addr gen_temporary_sys_search_pattern_attr(){
+    sc_addr pattern=sc_memory_node_new(sc_type_const|sc_type_node);
+    sc_addr start_node=sc_memory_node_new(sc_type_const|sc_type_node);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,pattern,start_node);
+
+    set_element_system_id(start_node,"triangle1");
+
+    sc_addr first_node=sc_memory_node_new(sc_type_const|sc_type_node);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,pattern,first_node);
+
+    set_element_system_id(first_node,"triangle2");
+
+    sc_addr second_node=sc_memory_node_new(sc_type_const|sc_type_node);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,pattern,second_node);
+
+    set_element_system_id(second_node,"triangle3");
+
+    sc_addr arc=sc_memory_arc_new(sc_type_arc_access|sc_type_var,first_node,second_node);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,pattern,arc);
+
+    sc_addr arc1=sc_memory_arc_new(sc_type_arc_access|sc_type_var,start_node,arc);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,pattern,arc1);
+
+    /*sc_addr var_nodes[3];
+    int i=0;
+    for (i=0;i<3;i++){
+        var_nodes[i]=sc_memory_node_new(sc_type_node|sc_type_var);
+        sc_memory_arc_new(sc_type_arc_pos_const_perm,pattern,var_nodes[i]);
+    }
+    sc_addr arc=sc_memory_arc_new(sc_type_arc_access|sc_type_var,start_node,var_nodes[0]);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,pattern,arc);
+    arc=sc_memory_arc_new(sc_type_arc_access|sc_type_var,start_node,var_nodes[1]);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,pattern,arc);
+    arc=sc_memory_arc_new(sc_type_arc_access|sc_type_var,var_nodes[0],var_nodes[2]);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,pattern,arc);
+    arc=sc_memory_arc_new(sc_type_arc_access|sc_type_var,var_nodes[1],var_nodes[2]);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,pattern,arc);*/
+
+    return pattern;
+}
+
 void gen_temporary_sys_search_const_data(){
     sc_addr start_node=find_element_by_id("triangle");
 
@@ -340,6 +405,49 @@ void gen_temporary_sys_search_const_data_multiple_arcs(int count){
     }
 }
 
+void gen_temporary_sys_search_const_data_circle(){
+    sc_addr start_node=find_element_by_id("triangle");
+
+    sc_addr const_nodes[3];
+    int i=0;
+    for (i=0;i<3;i++){
+        const_nodes[i]=sc_memory_node_new(sc_type_node|sc_type_const);
+        //const_nodes[i].seg=0;
+        //const_nodes[i].offset=39+i*2;
+    }
+
+    sc_addr arc=sc_memory_arc_new(sc_type_arc_pos_const_perm,start_node,const_nodes[0]);
+    arc=sc_memory_arc_new(sc_type_arc_pos_const_perm,start_node,const_nodes[1]);
+    arc=sc_memory_arc_new(sc_type_arc_pos_const_perm,const_nodes[0],const_nodes[2]);
+    arc=sc_memory_arc_new(sc_type_arc_pos_const_perm,const_nodes[1],const_nodes[2]);
+}
+
+void gen_temporary_sys_search_const_data_attr(){
+    /*sc_addr start_node=find_element_by_id("triangle");
+
+    sc_addr const_nodes[3];
+    int i=0;
+    for (i=0;i<3;i++){
+        const_nodes[i]=sc_memory_node_new(sc_type_node|sc_type_const);
+    }
+
+    sc_addr arc=sc_memory_arc_new(sc_type_arc_pos_const_perm,start_node,const_nodes[0]);
+    arc=sc_memory_arc_new(sc_type_arc_pos_const_perm,start_node,const_nodes[1]);
+    arc=sc_memory_arc_new(sc_type_arc_pos_const_perm,const_nodes[0],const_nodes[2]);
+    arc=sc_memory_arc_new(sc_type_arc_pos_const_perm,const_nodes[1],const_nodes[2]);
+    arc=sc_memory_arc_new(sc_type_arc_pos_const_perm,start_node,const_nodes[2]);*/
+    sc_addr start_node=find_element_by_id("triangle1");
+    sc_addr first_node=find_element_by_id("triangle2");
+    sc_addr second_node=find_element_by_id("triangle3");
+
+    //sc_addr start_node=sc_memory_node_new(sc_type_const|sc_type_node);
+    //sc_addr first_node=sc_memory_node_new(sc_type_const|sc_type_node);
+    //sc_addr second_node=sc_memory_node_new(sc_type_const|sc_type_node);
+
+    sc_addr arc=sc_memory_arc_new(sc_type_arc_pos_const_perm,first_node,second_node);
+    sc_memory_arc_new(sc_type_arc_access|sc_type_const,start_node,arc);
+
+}
 
 int main(int argc, char *argv[])
 {
@@ -359,10 +467,10 @@ int main(int argc, char *argv[])
     sc_event_destroy(event2);
     sc_event_destroy(event3);*/
 
-    sc_addr node=gen_temporary_sys_search_pattern_mulriple_arcs(3);
+    sc_addr node=gen_temporary_sys_search_pattern_attr();
     print_element(node);
 
-    gen_temporary_sys_search_const_data_multiple_arcs(3);
+    gen_temporary_sys_search_const_data_attr();
 
     //getch();
 
