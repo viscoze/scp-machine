@@ -1,33 +1,12 @@
-extern "C"
-{
-#include "system.h"
 #include "system_pattern.h"
-#include "identification.h"
-}
 #include <stdio.h>
-#include <vector>
 #include <iostream>
-#include <map>
 #include <set>
 #include <algorithm>
 
-//if ((sc_type_var & ~pattern_arc_type)|sc_type_const){continue;}
-
 using namespace std;
 
-int class_count=0;
-
-struct sc_addr_comparator
-{
-    bool operator()(const sc_addr s1, const sc_addr s2) const
-    {
-        return (SC_ADDR_LOCAL_TO_INT(s1) < SC_ADDR_LOCAL_TO_INT(s2));
-    }
-};
-
-typedef map<sc_addr,sc_addr,sc_addr_comparator> sc_type_result;
-//typedef map<sc_addr,sc_addr> sc_type_result;
-typedef map<int,sc_addr> sc_type_hash;
+//int class_count=0;
 
 void print_hash(sc_type_hash table){
     sc_type_hash::iterator it;
@@ -121,7 +100,7 @@ void remove_all_elements(vector<sc_type_result*> *pattern,vector<sc_type_result*
 
 void free_single_result(sc_type_result* result){
     delete result;
-    class_count--;
+    //class_count--;
 }
 
 void free_result_vector(vector<sc_type_result*> *result){
@@ -328,7 +307,7 @@ sc_bool system_sys_search_recurse(sc_addr sc_pattern, sc_type_hash pattern, sc_a
                             continue;
                         }
                         sc_type_result *new_result=new sc_type_result();
-                        class_count++;
+                        //class_count++;
                         (*new_result)=(*result);
                         new_common_result.push_back(new_result);
                         result=new_result;
@@ -351,7 +330,7 @@ sc_bool system_sys_search_recurse(sc_addr sc_pattern, sc_type_hash pattern, sc_a
                 }
 
                 sc_type_result *recurse_result=new sc_type_result();
-                class_count++;
+                //class_count++;
                 (*recurse_result)=(*result);
                 del_result.push_back(result);
 
@@ -397,11 +376,12 @@ sc_bool system_sys_search_recurse(sc_addr sc_pattern, sc_type_hash pattern, sc_a
     return SC_TRUE;
 }
 
-void system_sys_search(sc_addr pattern){
-    sc_addr start_node=find_element_by_id((sc_char*)"triangle1");
+sc_result system_sys_search(sc_addr pattern, vector<sc_addr> params, vector<sc_type_result*> *search_result){
+    //sc_addr start_node=find_element_by_id((sc_char*)"triangle1");
+    sc_addr start_node;
     vector<sc_type_result*> result_set;
     sc_type_result *result=new sc_type_result();
-    class_count++;
+    //class_count++;
 
     /*sc_addr addr1,addr2;
     addr1.seg=0;
@@ -421,5 +401,6 @@ void system_sys_search(sc_addr pattern){
     //free_single_result(result);
     free_result_vector(&result_set);
 
-    printf("Memory balance: %d\n",class_count);
+    //printf("Memory balance: %d\n",class_count);
+    return SC_OK;
 }

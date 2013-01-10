@@ -15,7 +15,7 @@ CONFIG   -= app_bundle
 TEMPLATE = app
 
 
-SOURCES += main.c \
+SOURCES += main.cpp \
     system.c \
     search.c \
     identification.c \
