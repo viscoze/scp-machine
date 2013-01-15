@@ -2,7 +2,6 @@ extern "C"
 {
 #include "system.h"
 #include <stdio.h>
-#include <conio.h>
 #include <string.h>
 #include <glib.h>
 #include "sc_event.h"
@@ -15,6 +14,21 @@ extern "C"
 #include "search_operations.h"
 }
 #include "system_pattern.h"
+#include <termios.h>
+#include <unistd.h>
+
+int getch() {
+    struct termios oldt,
+            newt;
+    int ch;
+    tcgetattr( STDIN_FILENO, &oldt );
+    newt = oldt;
+    newt.c_lflag &= ~( ICANON | ECHO );
+    tcsetattr( STDIN_FILENO, TCSANOW, &newt );
+    ch = getchar();
+    tcsetattr( STDIN_FILENO, TCSANOW, &oldt );
+    return ch;
+}
 
 sc_addr gen_input_output_arcs(){
 
@@ -345,36 +359,21 @@ sc_addr gen_temporary_sys_search_pattern_attr(){
 
     set_element_system_id(start_node,(sc_char*)"triangle1");
 
-    sc_addr first_node=sc_memory_node_new(sc_type_const|sc_type_node);
+    sc_addr first_node=sc_memory_node_new(sc_type_var|sc_type_node);
     sc_memory_arc_new(sc_type_arc_pos_const_perm,pattern,first_node);
 
     set_element_system_id(first_node,(sc_char*)"triangle2");
 
-    sc_addr second_node=sc_memory_node_new(sc_type_const|sc_type_node);
+    sc_addr second_node=sc_memory_node_new(sc_type_var|sc_type_node);
     sc_memory_arc_new(sc_type_arc_pos_const_perm,pattern,second_node);
 
     set_element_system_id(second_node,(sc_char*)"triangle3");
 
-    sc_addr arc=sc_memory_arc_new(sc_type_arc_access|sc_type_var,first_node,second_node);
+    sc_addr arc=sc_memory_arc_new(sc_type_arc_common|sc_type_var,first_node,second_node);
     sc_memory_arc_new(sc_type_arc_pos_const_perm,pattern,arc);
 
     sc_addr arc1=sc_memory_arc_new(sc_type_arc_access|sc_type_var,start_node,arc);
     sc_memory_arc_new(sc_type_arc_pos_const_perm,pattern,arc1);
-
-    /*sc_addr var_nodes[3];
-    int i=0;
-    for (i=0;i<3;i++){
-        var_nodes[i]=sc_memory_node_new(sc_type_node|sc_type_var);
-        sc_memory_arc_new(sc_type_arc_pos_const_perm,pattern,var_nodes[i]);
-    }
-    sc_addr arc=sc_memory_arc_new(sc_type_arc_access|sc_type_var,start_node,var_nodes[0]);
-    sc_memory_arc_new(sc_type_arc_pos_const_perm,pattern,arc);
-    arc=sc_memory_arc_new(sc_type_arc_access|sc_type_var,start_node,var_nodes[1]);
-    sc_memory_arc_new(sc_type_arc_pos_const_perm,pattern,arc);
-    arc=sc_memory_arc_new(sc_type_arc_access|sc_type_var,var_nodes[0],var_nodes[2]);
-    sc_memory_arc_new(sc_type_arc_pos_const_perm,pattern,arc);
-    arc=sc_memory_arc_new(sc_type_arc_access|sc_type_var,var_nodes[1],var_nodes[2]);
-    sc_memory_arc_new(sc_type_arc_pos_const_perm,pattern,arc);*/
 
     return pattern;
 }
@@ -422,36 +421,23 @@ void gen_temporary_sys_search_const_data_circle(){
     arc=sc_memory_arc_new(sc_type_arc_pos_const_perm,const_nodes[1],const_nodes[2]);
 }
 
-void gen_temporary_sys_search_const_data_attr(){
-    /*sc_addr start_node=find_element_by_id((sc_char*)"triangle");
-
-    sc_addr const_nodes[3];
-    int i=0;
-    for (i=0;i<3;i++){
-        const_nodes[i]=sc_memory_node_new(sc_type_node|sc_type_const);
-    }
-
-    sc_addr arc=sc_memory_arc_new(sc_type_arc_pos_const_perm,start_node,const_nodes[0]);
-    arc=sc_memory_arc_new(sc_type_arc_pos_const_perm,start_node,const_nodes[1]);
-    arc=sc_memory_arc_new(sc_type_arc_pos_const_perm,const_nodes[0],const_nodes[2]);
-    arc=sc_memory_arc_new(sc_type_arc_pos_const_perm,const_nodes[1],const_nodes[2]);
-    arc=sc_memory_arc_new(sc_type_arc_pos_const_perm,start_node,const_nodes[2]);*/
+void gen_temporary_sys_search_const_data_attr(){  
     sc_addr start_node=find_element_by_id((sc_char*)"triangle1");
-    sc_addr first_node=find_element_by_id((sc_char*)"triangle2");
-    sc_addr second_node=find_element_by_id((sc_char*)"triangle3");
+    //sc_addr first_node=find_element_by_id((sc_char*)"triangle2");
+    //sc_addr second_node=find_element_by_id((sc_char*)"triangle3");
 
     //sc_addr start_node=sc_memory_node_new(sc_type_const|sc_type_node);
-    //sc_addr first_node=sc_memory_node_new(sc_type_const|sc_type_node);
-    //sc_addr second_node=sc_memory_node_new(sc_type_const|sc_type_node);
+    sc_addr first_node=sc_memory_node_new(sc_type_const|sc_type_node);
+    sc_addr second_node=sc_memory_node_new(sc_type_const|sc_type_node);
 
-    sc_addr arc=sc_memory_arc_new(sc_type_arc_pos_const_perm,first_node,second_node);
-    sc_memory_arc_new(sc_type_arc_access|sc_type_const,start_node,arc);
+    sc_addr arc=sc_memory_arc_new(sc_type_arc_common|sc_type_const,first_node,second_node);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,start_node,arc);
 
 }
 
-int main(int argc, char *argv[])
+int main()
 {
-    sc_memory_initialize((sc_char*)"repo");
+    sc_memory_initialize((sc_char*)"repo",(sc_char*)"test.ini");
 
     gen_temp_identification();
     init_identification();
@@ -480,9 +466,11 @@ int main(int argc, char *argv[])
 
 
     int i=0;
+    sc_type_result params;
+    sc_type_result_vector results;
     for (i=0;i<1;i++){
         //find_element_by_id((sc_char*)"triangle");
-        //system_sys_search(node);
+        system_sys_search(node,params,&results);
     }
 
     //system_sys_search(node);

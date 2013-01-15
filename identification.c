@@ -1,6 +1,7 @@
 #include "identification.h"
 #include "sc_iterator5.h"
 #include "sc_stream.h"
+#include "sc_types.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -11,7 +12,7 @@ sc_bool init_identification(){
     sc_char* sys_idtf="nrel_system_identifier";
     sc_stream *stream = sc_stream_memory_new(sys_idtf, sizeof(sc_char)*strlen(sys_idtf), SC_STREAM_READ, SC_FALSE);
 
-    if (sc_memory_find_links_with_content(stream, &results, &results_count) == SC_OK)
+    if (sc_memory_find_links_with_content(stream, &results, &results_count) == SC_RESULT_OK)
     {
         int i=0;
         for (i = 0; i < results_count; i++)
@@ -43,7 +44,7 @@ sc_addr find_element_by_id(sc_char* id){
     SC_ADDR_MAKE_EMPTY(result)
     sc_stream *stream = sc_stream_memory_new(id, sizeof(sc_char)*strlen(id), SC_STREAM_READ, SC_FALSE);
 
-    if (sc_memory_find_links_with_content(stream, &results, &results_count) == SC_OK)
+    if (sc_memory_find_links_with_content(stream, &results, &results_count) == SC_RESULT_OK)
     {
         int i=0;
         for (i = 0; i < results_count; i++)

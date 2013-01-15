@@ -23,9 +23,9 @@ SOURCES += main.cpp \
     search_operations.c \
 	system_pattern.cpp
     
-INCLUDEPATH += ../sc-memory/src 
-INCLUDEPATH += ../sc-memory/src/sc-store
-DESTDIR = ../bin
+INCLUDEPATH += ../sc-machine/sc-memory/src
+INCLUDEPATH += ../sc-machine/sc-memory/src/sc-store
+DESTDIR = ../sc-machine/bin
 
 win32 {
     CONFIG += qt console
@@ -36,6 +36,15 @@ win32 {
 
     POST_TARGETDEPS += ../glib/lib/glib-2.0.lib
     LIBS += ../glib/lib/glib-2.0.lib
+}
+
+
+unix {
+    CONFIG += link_pkgconfig
+    PKGCONFIG += glib-2.0
+    PKGCONFIG += gmodule-2.0
+
+    LIBS += -L "../sc-machine/bin" -lsc_memory
 }
 
 HEADERS += \
