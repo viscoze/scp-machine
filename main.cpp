@@ -337,7 +337,7 @@ sc_addr gen_temporary_sys_search_pattern_circle(){
     sc_addr var_nodes[3];
     int i=0;
     for (i=0;i<3;i++){
-        var_nodes[i]=sc_memory_node_new(sc_type_node|sc_type_const);
+        var_nodes[i]=sc_memory_node_new(sc_type_node|sc_type_var);
         sc_memory_arc_new(sc_type_arc_pos_const_perm,pattern,var_nodes[i]);
     }
     sc_addr arc=sc_memory_arc_new(sc_type_arc_access|sc_type_var,start_node,var_nodes[0]);
@@ -419,6 +419,8 @@ void gen_temporary_sys_search_const_data_circle(){
     arc=sc_memory_arc_new(sc_type_arc_pos_const_perm,start_node,const_nodes[1]);
     arc=sc_memory_arc_new(sc_type_arc_pos_const_perm,const_nodes[0],const_nodes[2]);
     arc=sc_memory_arc_new(sc_type_arc_pos_const_perm,const_nodes[1],const_nodes[2]);
+
+    arc=sc_memory_arc_new(sc_type_arc_pos_const_perm,start_node,const_nodes[2]);
 }
 
 void gen_temporary_sys_search_const_data_attr(){  
@@ -453,10 +455,10 @@ int main()
     sc_event_destroy(event2);
     sc_event_destroy(event3);*/
 
-    sc_addr node=gen_temporary_sys_search_pattern_attr();
+    sc_addr node=gen_temporary_sys_search_pattern_circle();
     print_element(node);
 
-    gen_temporary_sys_search_const_data_attr();
+    gen_temporary_sys_search_const_data_circle();
 
     //getch();
 
@@ -469,7 +471,6 @@ int main()
     sc_type_result params;
     sc_type_result_vector results;
     for (i=0;i<1;i++){
-        //find_element_by_id((sc_char*)"triangle");
         system_sys_search(node,params,&results);
     }
 
@@ -480,7 +481,7 @@ int main()
     g_timer_destroy(timer);
 
     //sc_memory_shutdown();
-    getch();
+    //getch();
 
     return 0;
 }

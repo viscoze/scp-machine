@@ -10,6 +10,10 @@
 
 //int class_count=0;
 
+bool sc_result_comparator (sc_type_result *s1, sc_type_result *s2) {
+    return (s1->size() > s2->size());
+}
+
 void print_hash(sc_type_hash table){
     sc_type_hash::iterator it;
     printf("HASHMAP:\n");
@@ -398,6 +402,24 @@ sc_bool get_const_element(sc_addr pattern, sc_addr *result){
     return SC_FALSE;
 }
 
+void sort_result_vector(sc_type_result_vector *data){
+    std::sort(data->begin(),data->end(),sc_result_comparator);
+}
+
+sc_bool remove_result_vector_short_results(sc_type_result_vector *data){
+    sc_type_result_vector::iterator it;
+    for ( it=data->begin()+1 ; it != data->end(); it++ ){
+        if ( sc_result_comparator(*(it-1),*it) ){
+            sc_type_result_vector clear_data(it,data->end());
+            data->erase(it,data->end());
+            free_result_vector(&clear_data);
+            return SC_TRUE;
+        }
+    }
+    return SC_FALSE;
+}
+
+
 sc_result system_sys_search(sc_addr pattern, sc_type_result params, sc_type_result_vector *search_result){
     //sc_addr start_node=find_element_by_id((sc_char*)"triangle1");
     sc_addr start_pattern_node, start_const_node;
@@ -425,9 +447,14 @@ sc_result system_sys_search(sc_addr pattern, sc_type_result params, sc_type_resu
 
     system_sys_search_recurse(pattern,pattern_hash,start_const_node,start_pattern_node,result,search_result,2);
 
+    sort_result_vector(search_result);
+
+    remove_result_vector_short_results(search_result);
+
     print_result_set(search_result);
     //free_single_result(result);
     free_result_vector(search_result);
+
 
     //printf("Memory balance: %d\n",class_count);
     return SC_RESULT_OK;
