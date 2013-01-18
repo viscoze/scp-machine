@@ -470,8 +470,14 @@ int main()
     int i=0;
     sc_type_result params;
     sc_type_result_vector results;
+    sc_addr_vector vars;
+    sc_addr addr1,addr2;
+    addr1.seg=0;addr2.seg=0;
+    addr1.offset=39;addr2.offset=41;
+    vars.push_back(addr1);
+    vars.push_back(addr2);
     for (i=0;i<1;i++){
-        system_sys_search(node,params,&results);
+        system_sys_search_for_variables(node,params,vars,&results);
     }
 
     //system_sys_search(node);

@@ -419,9 +419,43 @@ sc_bool remove_result_vector_short_results(sc_type_result_vector *data){
     return SC_FALSE;
 }
 
+sc_bool remove_result_vector_short_results(sc_type_result_vector *data, sc_uint size){
+    sc_type_result_vector::iterator it;
+    for ( it=data->begin() ; it != data->end(); it++ ){
+        if ( (*it)->size() < size ){
+            sc_type_result_vector clear_data(it,data->end());
+            data->erase(it,data->end());
+            free_result_vector(&clear_data);
+            return SC_TRUE;
+        }
+    }
+    return SC_FALSE;
+}
 
-sc_result system_sys_search(sc_addr pattern, sc_type_result params, sc_type_result_vector *search_result){
-    //sc_addr start_node=find_element_by_id((sc_char*)"triangle1");
+sc_bool sc_addr_vector_contains(sc_addr addr, sc_addr_vector *requested_values){
+    for (sc_uint i=0;i<requested_values->size();i++){
+        sc_addr addr1=(*requested_values)[i];
+        if (SC_ADDR_IS_EQUAL(addr,addr1))
+            return SC_TRUE;
+    }
+    return SC_FALSE;
+}
+
+void filter_result_vector(sc_type_result_vector *data, sc_addr_vector *requested_values){
+    sc_type_result_vector::iterator it;
+    sc_type_result::iterator it1;
+
+    for ( it=data->begin() ; it != data->end(); it++ ){
+        for ( it1=(*it)->begin() ; it1 != (*it)->end(); it1++ ){
+            sc_addr key=(*it1).first;
+            if (SC_FALSE==sc_addr_vector_contains(key,requested_values)){
+                (*it)->erase(key);
+            }
+        }
+    }
+}
+
+sc_result system_sys_search_only_full(sc_addr pattern, sc_type_result params, sc_type_result_vector *search_result){
     sc_addr start_pattern_node, start_const_node;
 
     if (SC_FALSE==get_const_element(pattern,&start_pattern_node)){
@@ -437,24 +471,93 @@ sc_result system_sys_search(sc_addr pattern, sc_type_result params, sc_type_resu
         start_const_node=start_pattern_node;
     }
 
-    //sc_type_result_vector result_set;
     sc_type_result *result=new sc_type_result();
     *result=params;
     //class_count++;
-    sc_uint var_count;
+    sc_uint var_count=0;
     sc_type_hash pattern_hash;
     copy_set_into_hash(pattern,sc_type_arc_pos_const_perm,0,&pattern_hash,&var_count);
 
     system_sys_search_recurse(pattern,pattern_hash,start_const_node,start_pattern_node,result,search_result,2);
 
     sort_result_vector(search_result);
-
-    remove_result_vector_short_results(search_result);
-
+    remove_result_vector_short_results(search_result,var_count);
     print_result_set(search_result);
     //free_single_result(result);
     free_result_vector(search_result);
 
+    //printf("Memory balance: %d\n",class_count);
+    return SC_RESULT_OK;
+}
+
+sc_result system_sys_search_for_variables(sc_addr pattern, sc_type_result params, sc_addr_vector requested_values, sc_type_result_vector *search_result){
+    sc_addr start_pattern_node, start_const_node;
+
+    if (SC_FALSE==get_const_element(pattern,&start_pattern_node)){
+        if (params.empty()){
+            cout<<"ERROR: need const element to start search!"<<endl;
+            return SC_RESULT_ERROR_INVALID_PARAMS;
+        }else{
+            sc_type_result::iterator it=params.begin();
+            start_pattern_node=(*it).first;
+            start_const_node=(*it).second;
+        }
+    } else{
+        start_const_node=start_pattern_node;
+    }
+
+    sc_type_result *result=new sc_type_result();
+    *result=params;
+    //class_count++;
+    sc_uint var_count=0;
+    sc_type_hash pattern_hash;
+    copy_set_into_hash(pattern,sc_type_arc_pos_const_perm,0,&pattern_hash,&var_count);
+
+    system_sys_search_recurse(pattern,pattern_hash,start_const_node,start_pattern_node,result,search_result,2);
+
+    sort_result_vector(search_result);
+    remove_result_vector_short_results(search_result,var_count);
+    if (!requested_values.empty()){
+        filter_result_vector(search_result,&requested_values);
+    }
+    print_result_set(search_result);
+    //free_single_result(result);
+    free_result_vector(search_result);
+
+    //printf("Memory balance: %d\n",class_count);
+    return SC_RESULT_OK;
+}
+
+sc_result system_sys_search(sc_addr pattern, sc_type_result params, sc_type_result_vector *search_result){
+    sc_addr start_pattern_node, start_const_node;
+
+    if (SC_FALSE==get_const_element(pattern,&start_pattern_node)){
+        if (params.empty()){
+            cout<<"ERROR: need const element to start search!"<<endl;
+            return SC_RESULT_ERROR_INVALID_PARAMS;
+        }else{
+            sc_type_result::iterator it=params.begin();
+            start_pattern_node=(*it).first;
+            start_const_node=(*it).second;
+        }
+    } else{
+        start_const_node=start_pattern_node;
+    }
+
+    sc_type_result *result=new sc_type_result();
+    *result=params;
+    //class_count++;
+    sc_uint var_count=0;
+    sc_type_hash pattern_hash;
+    copy_set_into_hash(pattern,sc_type_arc_pos_const_perm,0,&pattern_hash,&var_count);
+
+    system_sys_search_recurse(pattern,pattern_hash,start_const_node,start_pattern_node,result,search_result,2);
+
+    sort_result_vector(search_result);
+    remove_result_vector_short_results(search_result);
+    print_result_set(search_result);
+    //free_single_result(result);
+    free_result_vector(search_result);
 
     //printf("Memory balance: %d\n",class_count);
     return SC_RESULT_OK;
