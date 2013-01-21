@@ -35,21 +35,3 @@ sc_bool print_element(sc_addr element){
 
     return SC_TRUE;
 }
-
-
-sc_bool get_question_single_param(sc_addr question_class,sc_addr question_node, sc_addr *param)
-{
-    sc_iterator3 *it=sc_iterator3_f_a_f_new(question_class,sc_type_arc_pos_const_perm,question_node);
-    if (!sc_iterator3_next(it)){
-        return SC_FALSE;
-    }
-    sc_iterator3_free(it);
-
-    it=sc_iterator3_f_a_a_new(question_node,sc_type_arc_pos_const_perm,0);
-    if (!sc_iterator3_next(it)){
-        return SC_FALSE;
-    }else{
-        *param=it->results[2];
-        return SC_TRUE;
-    }
-}

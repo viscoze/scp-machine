@@ -1,7 +1,29 @@
-#ifndef SEARCH_H
-#define SEARCH_H
-#include "system.h"
-#include "identification.h"
+/*
+-----------------------------------------------------------------------------
+This source file is part of OSTIS (Open Semantic Technology for Intelligent Systems)
+For the latest info, see http://www.ostis.net
+
+Copyright (c) 2012 OSTIS
+
+OSTIS is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+OSTIS is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with OSTIS. If not, see <http://www.gnu.org/licenses/>.
+-----------------------------------------------------------------------------
+*/
+
+#include "sc_memory.h"
+
+#ifndef SC_SEARCH_FUNCTIONS_H
+#define SC_SEARCH_FUNCTIONS_H
 
 /*! Search all constant positive permanent arcs, which outcome from given element
  * @param addr sc-addr of element
@@ -30,6 +52,13 @@ sc_bool search_all_const_pos_input_arc_with_attr(sc_addr node,sc_addr answer);
  */
 sc_bool search_all_const_pos_output_arc_with_attr(sc_addr node,sc_addr answer);
 
+/*! Search full semantic neighbourhood of given element
+ * @param addr sc-addr of element
+ * @param addr sc-addr of set, which will contain all the elements of answer.
+ * @return Returns SC_FALSE, if system error appeared. Otherwise returns SC_TRUE.
+ */
 sc_bool search_full_semantic_neighbourhood(sc_addr node,sc_addr answer);
 
-#endif // SEARCH_H
+sc_bool get_question_single_param(sc_addr question_class,sc_addr question_node, sc_addr *param);
+
+#endif // SC_SEARCH_FUNCTIONS_H

@@ -17,8 +17,6 @@ TEMPLATE = app
 
 SOURCES += main.cpp \
     system.c \
-    search.c \
-    identification.c \
     question.c \
     search_operations.c \
 	system_pattern.cpp
@@ -48,9 +46,7 @@ unix {
 }
 
 HEADERS += \
-    search.h \
     system.h \
-    identification.h \
     question.h \
     search_operations.h \
 	system_pattern.h
