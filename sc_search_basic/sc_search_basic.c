@@ -18,7 +18,7 @@ GNU Lesser General Public License for more details.
 You should have received a copy of the GNU Lesser General Public License
 along with OSTIS. If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
-*/
+ */
 
 #include "sc_search_basic.h"
 #include "sc_helper.h"
@@ -49,8 +49,8 @@ sc_event* event_question_search_all_input_arcs_with_rel;
 sc_event* event_question_full_semantic_neighbourhood;
 
 // --------------------- Module ------------------------
-sc_result initialize()
-{
+
+sc_result initialize() {
     //printf("sc-search init done...\n");
 
     if (sc_helper_resolve_system_identifier(class_question_all_output_const_pos_arc_str, &class_question_all_output_const_pos_arc) == SC_FALSE)
@@ -97,8 +97,7 @@ sc_result initialize()
     return SC_RESULT_OK;
 }
 
-sc_result shutdown()
-{
+sc_result shutdown() {
     sc_event_destroy(event_question_search_all_output_arcs);
     sc_event_destroy(event_question_search_all_input_arcs);
     sc_event_destroy(event_question_search_all_output_arcs_with_rel);
