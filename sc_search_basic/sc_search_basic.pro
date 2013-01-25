@@ -3,13 +3,12 @@ TEMPLATE = lib
 
 SOURCES += \
            sc_search_basic_operations.c \
-           sc_search_basic.c \
     sc_search_functions.c \
     sc_search_basic.c
 
 INCLUDEPATH += ../../sc-machine/sc-memory/src
 INCLUDEPATH += ../../sc-machine/sc-memory/src/sc-store
-DESTDIR = ../../sc-machine/bin
+DESTDIR = ../../sc-machine/bin/search
 
 win32 {
     CONFIG += qt console

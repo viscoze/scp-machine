@@ -1,0 +1,38 @@
+class_question => nrel_main_ru_idtf:
+	[вопрос];;
+
+class_question_initiated => nrel_main_ru_idtf:
+	[инициированный вопрос];;
+
+class_question => nrel_inclusion:
+	class_question_all_output_const_pos_arc;;
+class_question => nrel_inclusion:
+	class_question_all_input_const_pos_arc;;
+class_question => nrel_inclusion:
+	class_question_full_semantic_neighbourhood;;
+class_question => nrel_inclusion:
+	class_question_all_output_const_pos_arc_with_rel;;
+class_question => nrel_inclusion:
+	class_question_all_input_const_pos_arc_with_rel;;
+
+class_question_all_output_const_pos_arc => nrel_main_ru_idtf:
+	[запрос поиска выходящих дуг];;
+
+class_question_all_input_const_pos_arc => nrel_main_ru_idtf:
+	[запрос поиска входящих дуг];;
+
+class_question_all_output_const_pos_arc_with_rel => nrel_main_ru_idtf:
+	[запрос поиска выходящих дуг с отношениями];;
+
+class_question_all_input_const_pos_arc_with_rel => nrel_main_ru_idtf:
+	[запрос поиска входящих дуг с отношениями];;
+
+class_question_full_semantic_neighbourhood => nrel_main_ru_idtf:
+	[запрос полной семантической окрестности];;
+
+question_nrel_answer => nrel_main_ru_idtf:
+	[ответ*];;
+
+class_quasybinary_relation => nrel_main_ru_idtf:
+	[квазибинарное отношение];;
+

@@ -25,12 +25,12 @@ along with OSTIS. If not, see <http://www.gnu.org/licenses/>.
 
 #include "sc_memory.h"
 
-sc_addr class_question_all_output_const_pos_arc;
-sc_addr class_question_all_input_const_pos_arc;
-sc_addr class_question_all_output_const_pos_arc_with_attr;
-sc_addr class_question_all_input_const_pos_arc_with_attr;
-sc_addr class_question_full_semantic_neighbourhood;
-sc_addr nrel_answer;
+extern sc_addr class_question_all_output_const_pos_arc;
+extern sc_addr class_question_all_input_const_pos_arc;
+extern sc_addr class_question_all_output_const_pos_arc_with_rel;
+extern sc_addr class_question_all_input_const_pos_arc_with_rel;
+extern sc_addr class_question_full_semantic_neighbourhood;
+extern sc_addr nrel_answer;
 
 //! Module initialization function
 sc_result initialize();

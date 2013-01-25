@@ -26,8 +26,31 @@ along with OSTIS. If not, see <http://www.gnu.org/licenses/>.
 #include "sc_memory.h"
 #include "sc_event.h"
 
+/*! SC-operation to search all constant positive output arcs for given element
+ * @return Returns SC_RESULT_ERROR, if system error appeared. Otherwise returns SC_RESULT_OK.
+ */
 sc_result operation_search_all_const_pos_output_arc(sc_event *event, sc_addr arg);
+
+/*! SC-operation to search all constant positive input arcs for given element
+ * @return Returns SC_RESULT_ERROR, if system error appeared. Otherwise returns SC_RESULT_OK.
+ */
 sc_result operation_search_all_const_pos_input_arc(sc_event *event, sc_addr arg);
+
+/*! SC-operation to search all constant positive output arcs for given element with
+ * relations, in which these arcs are members
+ * @return Returns SC_RESULT_ERROR, if system error appeared. Otherwise returns SC_RESULT_OK.
+ */
+sc_result operation_search_all_const_pos_output_arc_with_rel(sc_event *event, sc_addr arg);
+
+/*! SC-operation to search all constant positive input arcs for given element with
+ * relations, in which these arcs are members
+ * @return Returns SC_RESULT_ERROR, if system error appeared. Otherwise returns SC_RESULT_OK.
+ */
+sc_result operation_search_all_const_pos_input_arc_with_rel(sc_event *event, sc_addr arg);
+
+/*! SC-operation to search full semantic neighbourhood of given element
+ * @return Returns SC_RESULT_ERROR, if system error appeared. Otherwise returns SC_RESULT_OK.
+ */
 sc_result operation_search_full_semantic_neighbourhood(sc_event *event, sc_addr arg);
 
 #endif // SEARCH_OPERATIONS_H

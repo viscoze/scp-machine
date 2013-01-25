@@ -2,15 +2,7 @@ extern "C"
 {
 #include "system.h"
 #include <stdio.h>
-#include <string.h>
 #include <glib.h>
-#include "sc_event.h"
-#include "sc_iterator.h"
-#include "sc_iterator5.h"
-#include "sc_stream_memory.h"
-#include "question.h"
-#include "search.h"
-#include "search_operations.h"
 #include "sc_helper.h"
 }
 #include "system_pattern.h"
@@ -30,7 +22,7 @@ int getch() {
     return ch;
 }
 
-sc_addr gen_input_output_arcs(){
+/*sc_addr gen_input_output_arcs(){
 
     sc_addr node;
     sc_addr end_node;
@@ -190,12 +182,12 @@ void test_iterator5_arcs_only(){
         sc_memory_arc_new(sc_type_arc_pos_const_perm,attr2,arc_addr);
         i++;
     }
-    /*i=0;
+    i=0;
     while(i<10){
         arc_addr=sc_memory_arc_new(sc_type_arc_pos_const_perm,end_node,node);
         sc_memory_arc_new(sc_type_arc_pos_const_perm,attr1,arc_addr);
         i++;
-    }*/
+    }
 
     //sc_addr answer=sc_memory_node_new(sc_type_node);
     //search_full_semantic_neighbourhood(node,answer);
@@ -256,7 +248,7 @@ void test_iterator5_arcs_only(){
         printf((sc_char*)"\n1:%u|%u 3:%u|%u 4:%u|%u",addr1.seg,addr1.offset,addr2.seg,addr2.offset,addr3.seg,addr3.offset);
     }
     sc_iterator5_free(it);
-}
+}*/
 
 /*void gen_temp_identification(){
     sc_char* sys_idtf=(sc_char*)"nrel_system_identifier";
@@ -273,7 +265,7 @@ void test_iterator5_arcs_only(){
     gen_element_with_id((sc_char*)"class_quasybinary_relation",0);
 }*/
 
-void create_temp_question1()
+/*void create_temp_question1()
 {
     sc_addr quest=sc_memory_node_new(0);
     sc_memory_arc_new(sc_type_arc_pos_const_perm,CLASS_QUESTION_FULL_SEMANTIC_NEIGHBOURHOOD,quest);
@@ -439,40 +431,164 @@ void gen_temporary_sys_search_const_data_attr(){
     sc_addr arc=sc_memory_arc_new(sc_type_arc_common|sc_type_const,first_node,second_node);
     sc_memory_arc_new(sc_type_arc_pos_const_perm,start_node,arc);
 
+}*/
+
+sc_result create_temp_question1()
+{
+    sc_addr node;
+    sc_addr class_question_initiated,class_question_private;
+
+    if (sc_helper_resolve_system_identifier("class_question_initiated", &class_question_initiated) == SC_FALSE)
+        return SC_RESULT_ERROR;
+    if (sc_helper_resolve_system_identifier("class_question_all_output_const_pos_arc", &class_question_private) == SC_FALSE)
+        return SC_RESULT_ERROR;
+    if (sc_helper_resolve_system_identifier("node01", &node) == SC_FALSE)
+        return SC_RESULT_ERROR;
+
+    sc_addr quest=sc_memory_node_new(0);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,class_question_private,quest);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,quest,node);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,class_question_initiated,quest);
+
+    sleep(2);
+
+    sc_addr answer;
+
+    search_question_answer(quest,&answer);
+
+    print_element(answer);
+
+    return SC_RESULT_OK;
+}
+
+sc_result create_temp_question2()
+{
+    sc_addr node;
+    sc_addr class_question_initiated,class_question_private;
+
+    if (sc_helper_resolve_system_identifier("class_question_initiated", &class_question_initiated) == SC_FALSE)
+        return SC_RESULT_ERROR;
+    if (sc_helper_resolve_system_identifier("class_question_all_input_const_pos_arc", &class_question_private) == SC_FALSE)
+        return SC_RESULT_ERROR;
+    if (sc_helper_resolve_system_identifier("node01", &node) == SC_FALSE)
+        return SC_RESULT_ERROR;
+
+    sc_addr quest=sc_memory_node_new(0);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,class_question_private,quest);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,quest,node);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,class_question_initiated,quest);
+
+    sleep(2);
+
+    sc_addr answer;
+
+    search_question_answer(quest,&answer);
+
+    print_element(answer);
+
+    return SC_RESULT_OK;
+}
+
+sc_result create_temp_question3()
+{
+    sc_addr node;
+    sc_addr class_question_initiated,class_question_private;
+
+    if (sc_helper_resolve_system_identifier("class_question_initiated", &class_question_initiated) == SC_FALSE)
+        return SC_RESULT_ERROR;
+    if (sc_helper_resolve_system_identifier("class_question_full_semantic_neighbourhood", &class_question_private) == SC_FALSE)
+        return SC_RESULT_ERROR;
+    if (sc_helper_resolve_system_identifier("node01", &node) == SC_FALSE)
+        return SC_RESULT_ERROR;
+
+    sc_addr quest=sc_memory_node_new(0);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,class_question_private,quest);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,quest,node);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,class_question_initiated,quest);
+
+    sleep(2);
+
+    sc_addr answer;
+
+    search_question_answer(quest,&answer);
+
+    print_element(answer);
+
+    return SC_RESULT_OK;
+}
+
+sc_result create_temp_question4()
+{
+    sc_addr node;
+    sc_addr class_question_initiated,class_question_private;
+
+    if (sc_helper_resolve_system_identifier("class_question_initiated", &class_question_initiated) == SC_FALSE)
+        return SC_RESULT_ERROR;
+    if (sc_helper_resolve_system_identifier("class_question_all_output_const_pos_arc_with_rel", &class_question_private) == SC_FALSE)
+        return SC_RESULT_ERROR;
+    if (sc_helper_resolve_system_identifier("node21", &node) == SC_FALSE)
+        return SC_RESULT_ERROR;
+
+    sc_addr quest=sc_memory_node_new(0);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,class_question_private,quest);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,quest,node);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,class_question_initiated,quest);
+
+    sleep(2);
+
+    sc_addr answer;
+
+    search_question_answer(quest,&answer);
+
+    print_element(answer);
+
+    return SC_RESULT_OK;
+}
+
+sc_result create_temp_question5()
+{
+    sc_addr node;
+    sc_addr class_question_initiated,class_question_private;
+
+    if (sc_helper_resolve_system_identifier("class_question_initiated", &class_question_initiated) == SC_FALSE)
+        return SC_RESULT_ERROR;
+    if (sc_helper_resolve_system_identifier("class_question_all_input_const_pos_arc_with_rel", &class_question_private) == SC_FALSE)
+        return SC_RESULT_ERROR;
+    if (sc_helper_resolve_system_identifier("node21", &node) == SC_FALSE)
+        return SC_RESULT_ERROR;
+
+    sc_addr quest=sc_memory_node_new(0);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,class_question_private,quest);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,quest,node);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,class_question_initiated,quest);
+
+    sleep(2);
+
+    sc_addr answer;
+
+    search_question_answer(quest,&answer);
+
+    print_element(answer);
+
+    return SC_RESULT_OK;
 }
 
 int main()
 {
     sc_memory_initialize((sc_char*)"repo",(sc_char*)"test.ini");
-
-    //gen_temp_identification();
     sc_helper_init();
-
-    //gen_temp_identification_quasy();
-    //init_questions();
-
-
-    /*sc_event *event1 = sc_event_new(CLASS_QUESTION_INITIATED, SC_EVENT_ADD_OUTPUT_ARC, 0, &operation_search_all_const_pos_output_arc, 0);
-    sc_event *event2 = sc_event_new(CLASS_QUESTION_INITIATED, SC_EVENT_ADD_OUTPUT_ARC, 0, &operation_search_all_const_pos_input_arc, 0);
-    sc_event *event3 = sc_event_new(CLASS_QUESTION_INITIATED, SC_EVENT_ADD_OUTPUT_ARC, 0, &operation_search_full_semantic_neighbourhood, 0);
-    create_temp_question1();
-    sc_event_destroy(event1);
-    sc_event_destroy(event2);
-    sc_event_destroy(event3);*/
-
-    sc_addr node=gen_temporary_sys_search_pattern_circle();
-    print_element(node);
-
-    gen_temporary_sys_search_const_data_circle();
-
-    //getch();
+    sc_memory_initialize_ext("../bin/search");
 
     GTimer *timer = 0;
     timer=g_timer_new();
     g_timer_start(timer);
 
+    //create_temp_question1();
+    //create_temp_question2();
+    //create_temp_question3();
+    create_temp_question4();
 
-    int i=0;
+    /*int i=0;
     sc_type_result params;
     sc_type_result_vector results;
     sc_addr_vector vars;
@@ -482,17 +598,17 @@ int main()
     vars.push_back(addr1);
     vars.push_back(addr2);
     for (i=0;i<1;i++){
-        system_sys_search_only_full(node,params,&results);
-    }
-
-    //system_sys_search(node);
-
+        //system_sys_search_only_full(node,params,&results);
+    }  
+*/
     g_timer_stop(timer);
-    printf((sc_char*)"Time: %f s\n", g_timer_elapsed(timer, 0));
+    //printf((sc_char*)"Time: %f s\n", g_timer_elapsed(timer, 0));
     g_timer_destroy(timer);
 
     //sc_memory_shutdown();
-    //getch();
 
+    sc_helper_shutdown();
+
+    //getch();
     return 0;
 }

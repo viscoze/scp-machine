@@ -17,8 +17,6 @@ TEMPLATE = app
 
 SOURCES += main.cpp \
     system.c \
-    question.c \
-    search_operations.c \
 	system_pattern.cpp
     
 INCLUDEPATH += ../sc-machine/sc-memory/src
@@ -47,6 +45,4 @@ unix {
 
 HEADERS += \
     system.h \
-    question.h \
-    search_operations.h \
-	system_pattern.h
+    system_pattern.h

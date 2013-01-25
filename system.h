@@ -11,4 +11,6 @@
  */
 sc_bool print_element(sc_addr element);
 
+sc_result search_question_answer(sc_addr question, sc_addr* answer);
+
 #endif // SYSTEM_H
