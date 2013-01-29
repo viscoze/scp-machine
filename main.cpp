@@ -522,7 +522,7 @@ sc_result create_temp_question4()
     sc_addr node;
     sc_addr class_question_initiated,class_question_private;
 
-    if (sc_helper_resolve_system_identifier("class_question_initiated", &class_question_initiated) == SC_FALSE)
+    if (sc_helper_resolve_system_identifier("question_initiated", &class_question_initiated) == SC_FALSE)
         return SC_RESULT_ERROR;
     if (sc_helper_resolve_system_identifier("class_question_all_output_const_pos_arc_with_rel", &class_question_private) == SC_FALSE)
         return SC_RESULT_ERROR;
@@ -550,7 +550,7 @@ sc_result create_temp_question5()
     sc_addr node;
     sc_addr class_question_initiated,class_question_private;
 
-    if (sc_helper_resolve_system_identifier("class_question_initiated", &class_question_initiated) == SC_FALSE)
+    if (sc_helper_resolve_system_identifier("question_initiated", &class_question_initiated) == SC_FALSE)
         return SC_RESULT_ERROR;
     if (sc_helper_resolve_system_identifier("class_question_all_input_const_pos_arc_with_rel", &class_question_private) == SC_FALSE)
         return SC_RESULT_ERROR;

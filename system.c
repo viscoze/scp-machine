@@ -109,7 +109,7 @@ sc_bool print_element(sc_addr element){
 
 sc_result search_question_answer(sc_addr question, sc_addr* answer){
     sc_addr nrel_answer;
-    if (sc_helper_resolve_system_identifier("nrel_answer", &nrel_answer) == SC_FALSE)
+    if (sc_helper_resolve_system_identifier("question_nrel_answer", &nrel_answer) == SC_FALSE)
         return SC_RESULT_ERROR;
 
     sc_iterator5 *it=sc_iterator5_f_a_a_a_f_new(question,0,0,0,nrel_answer);

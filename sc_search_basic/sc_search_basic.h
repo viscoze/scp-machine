@@ -31,6 +31,8 @@ extern sc_addr class_question_all_output_const_pos_arc_with_rel;
 extern sc_addr class_question_all_input_const_pos_arc_with_rel;
 extern sc_addr class_question_full_semantic_neighbourhood;
 extern sc_addr nrel_answer;
+extern sc_addr question_finished;
+extern sc_addr question_initiated;
 
 //! Module initialization function
 sc_result initialize();

@@ -21,9 +21,22 @@ along with OSTIS. If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "sc_helper.h"
+#include "sc_iterator3.h"
 #include "sc_search_basic.h"
 #include "sc_search_functions.h"
 #include <stdio.h>
+
+void finish_question(sc_addr quest){
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,question_finished,quest);
+    sc_iterator3 *it=sc_iterator3_f_a_f_new(question_initiated,sc_type_arc_pos_const_perm,quest);
+
+    while(sc_iterator3_next(it)){
+        sc_addr arc=sc_iterator3_value(it,1);
+        sc_memory_element_free(arc);
+    }
+
+    sc_iterator3_free(it);
+}
 
 sc_result operation_search_all_const_pos_output_arc(sc_event *event, sc_addr arg)
 {
@@ -37,6 +50,8 @@ sc_result operation_search_all_const_pos_output_arc(sc_event *event, sc_addr arg
 
     sc_addr arc=sc_memory_arc_new(sc_type_arc_common|sc_type_const,quest,answer);
     sc_memory_arc_new(sc_type_arc_pos_const_perm,nrel_answer,arc);
+
+    finish_question(quest);
 
     printf("KPM: operation_search_all_const_pos_output_arc worked succesfully\n");
 
@@ -54,6 +69,8 @@ sc_result operation_search_all_const_pos_input_arc(sc_event *event, sc_addr arg)
     sc_addr arc=sc_memory_arc_new(sc_type_arc_common|sc_type_const,quest,answer);
     sc_memory_arc_new(sc_type_arc_pos_const_perm,nrel_answer,arc);
 
+    finish_question(quest);
+
     printf("KPM: operation_search_all_const_pos_input_arc worked succesfully\n");
 
     return SC_RESULT_OK;
@@ -69,6 +86,8 @@ sc_result operation_search_all_const_pos_output_arc_with_rel(sc_event *event, sc
 
     sc_addr arc=sc_memory_arc_new(sc_type_arc_common|sc_type_const,quest,answer);
     sc_memory_arc_new(sc_type_arc_pos_const_perm,nrel_answer,arc);
+
+    finish_question(quest);
 
     printf("KPM: operation_search_all_const_pos_output_arc_with_rel worked succesfully\n");
 
@@ -86,6 +105,8 @@ sc_result operation_search_all_const_pos_input_arc_with_rel(sc_event *event, sc_
     sc_addr arc=sc_memory_arc_new(sc_type_arc_common|sc_type_const,quest,answer);
     sc_memory_arc_new(sc_type_arc_pos_const_perm,nrel_answer,arc);
 
+    finish_question(quest);
+
     printf("KPM: operation_search_all_const_pos_input_arc_with_rel worked succesfully\n");
 
     return SC_RESULT_OK;
@@ -102,6 +123,8 @@ sc_result operation_search_full_semantic_neighbourhood(sc_event *event, sc_addr 
 
     sc_addr arc=sc_memory_arc_new(sc_type_arc_common|sc_type_const,quest,answer);
     sc_memory_arc_new(sc_type_arc_pos_const_perm,nrel_answer,arc);
+
+    finish_question(quest);
 
     printf("KPM: operation_search_full_semantic_neighbourhood worked succesfully\n");
 
