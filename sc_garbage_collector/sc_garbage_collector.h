@@ -22,11 +22,8 @@ along with OSTIS. If not, see <http://www.gnu.org/licenses/>.
 #ifndef SC_GARBAGE_COLLECTOR_H
 #define SC_GARBAGE_COLLECTOR_H
 
-
 #include "sc_memory.h"
 
-extern sc_addr question_finished;
-extern sc_addr question_initiated;
 extern sc_addr question_unuseful;
 
 //! Module initialization function

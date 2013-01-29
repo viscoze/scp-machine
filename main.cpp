@@ -573,6 +573,19 @@ sc_result create_temp_question5()
     return SC_RESULT_OK;
 }
 
+sc_result create_temp_question_garbage1()
+{
+    sc_addr question_unuseful;
+
+    if (sc_helper_resolve_system_identifier("question_unuseful", &question_unuseful) == SC_FALSE)
+        return SC_RESULT_ERROR;
+
+    sc_addr quest=sc_memory_node_new(0);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,question_unuseful,quest);
+
+    return SC_RESULT_OK;
+}
+
 int main()
 {
     sc_memory_initialize((sc_char*)"repo",(sc_char*)"test.ini");
@@ -586,7 +599,7 @@ int main()
     //create_temp_question1();
     //create_temp_question2();
     //create_temp_question3();
-    create_temp_question4();
+    create_temp_question_garbage1();
 
     /*int i=0;
     sc_type_result params;

@@ -23,4 +23,10 @@ along with OSTIS. If not, see <http://www.gnu.org/licenses/>.
 #ifndef SC_GARBAGE_COLLECTOR_FUNCTIONS_H
 #define SC_GARBAGE_COLLECTOR_FUNCTIONS_H
 
+/*! Removes all necessary elements from neigbourhood of question which become unuseful
+ * @param quest sc-addr of element
+ * @return Returns SC_RESULT_ERROR, if system error appeared. Otherwise returns SC_RESULT_OK.
+ */
+sc_result garbage_collector_unuseful_question(sc_addr quest);
+
 #endif // SC_GARBAGE_COLLECTOR_FUNCTIONS_H

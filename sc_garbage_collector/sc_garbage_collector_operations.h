@@ -19,7 +19,15 @@ You should have received a copy of the GNU Lesser General Public License
 along with OSTIS. If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
  */
-#ifndef SC_GARBAGE_COLLECTOR_OPERATION_H
-#define SC_GARBAGE_COLLECTOR_OPERATION_H
+#ifndef SC_GARBAGE_COLLECTOR_OPERATIONS_H
+#define SC_GARBAGE_COLLECTOR_OPERATIONS_H
 
-#endif // SC_GARBAGE_COLLECTOR_OPERATION_H
+#include "sc_memory.h"
+#include "sc_event.h"
+
+/*! SC-operation to delete garbage in neigbourhood of question which is already unuseful
+ * @return Returns SC_RESULT_ERROR, if system error appeared. Otherwise returns SC_RESULT_OK.
+ */
+sc_result operation_garbage_collector_unuseful_question(sc_event *event, sc_addr arg);
+
+#endif // SC_GARBAGE_COLLECTOR_OPERATIONS_H
