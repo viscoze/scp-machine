@@ -26,14 +26,10 @@ along with OSTIS. If not, see <http://www.gnu.org/licenses/>.
 #include "sc_search_basic_operations.h"
 #include <stdio.h>
 
-sc_addr class_question_all_output_const_pos_arc;
-sc_addr class_question_all_input_const_pos_arc;
-sc_addr class_question_all_output_const_pos_arc_with_rel;
-sc_addr class_question_all_input_const_pos_arc_with_rel;
-sc_addr class_question_full_semantic_neighbourhood;
-sc_addr question_initiated;
 sc_addr nrel_answer;
 sc_addr question_finished;
+sc_addr question_initiated;
+sc_addr question_unuseful;
 
 const char class_question_all_output_const_pos_arc_str[] = "class_question_all_output_const_pos_arc";
 const char class_question_all_input_const_pos_arc_str[] = "class_question_all_input_const_pos_arc";
@@ -41,8 +37,8 @@ const char class_question_all_output_const_pos_arc_with_rel_str[] = "class_quest
 const char class_question_all_input_const_pos_arc_with_rel_str[] = "class_question_all_input_const_pos_arc_with_rel";
 const char class_question_full_semantic_neighbourhood_str[] = "class_question_full_semantic_neighbourhood";
 const char question_initiated_str[] = "question_initiated";
-const char nrel_answer_str[] = "question_nrel_answer";
 const char question_finished_str[] = "question_finished";
+const char question_unuseful_str[] = "question_unuseful";
 
 sc_event* event_question_search_all_output_arcs;
 sc_event* event_question_search_all_input_arcs;
@@ -111,3 +107,4 @@ sc_result shutdown() {
 
     return SC_RESULT_OK;
 }
+
