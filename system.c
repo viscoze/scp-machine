@@ -33,7 +33,7 @@ sc_bool print_element(sc_addr element){
         addr2 = sc_iterator3_value(it, 0);
         addr3 = sc_iterator3_value(it, 1);
 
-        if (SC_RESULT_OK==sc_helper_get_system_identifier(addr2,&idtf)){
+        if (SC_RESULT_OK==sc_helper_get_system_identifier(addr3,&idtf)){
             sc_stream *stream;
             sc_memory_get_link_content(idtf,&stream);
             sc_uint length=0,read_length=0;
@@ -44,7 +44,7 @@ sc_bool print_element(sc_addr element){
             sc_stream_free(stream);
             free(data);
         }else{
-            printf("\t%u|%u <- ", addr2.seg, addr2.offset);
+            printf("\t%u|%u <- ", addr3.seg, addr3.offset);
         }
         if (SC_RESULT_OK==sc_helper_get_system_identifier(addr2,&idtf)){
             sc_stream *stream;
@@ -57,7 +57,7 @@ sc_bool print_element(sc_addr element){
             sc_stream_free(stream);
             free(data);
         }else{
-            printf("%u|%u;\n", addr3.seg, addr3.offset);
+            printf("%u|%u;\n", addr2.seg, addr2.offset);
         }
 
         //printf("\t%u|%u <- %u|%u;\n", addr3.seg, addr3.offset, addr2.seg, addr2.offset);

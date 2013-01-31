@@ -42,6 +42,9 @@ sc_result garbage_collector_unuseful_question(sc_addr quest){
     sc_addr rrel_arg;
     if (sc_helper_resolve_system_identifier("ui_rrel_command_arguments", &rrel_arg) == SC_FALSE)
         return SC_RESULT_ERROR;
+    sc_addr nrel_user_formats;
+    if (sc_helper_resolve_system_identifier("ui_nrel_user_answer_formats", &nrel_user_formats) == SC_FALSE)
+        return SC_RESULT_ERROR;
 
     sc_iterator5 *it_answer=sc_iterator5_f_a_a_a_f_new(quest,0,0,sc_type_arc_pos_const_perm,nrel_answer);
     while(sc_iterator5_next(it_answer)){
@@ -54,6 +57,14 @@ sc_result garbage_collector_unuseful_question(sc_addr quest){
             sc_memory_element_free(transl);
         }
         sc_iterator5_free(it_transl);
+
+        //Removing user formats node
+        sc_iterator5 *it_format=sc_iterator5_f_a_a_a_f_new(answer,0,0,sc_type_arc_pos_const_perm,nrel_user_formats);
+        while(sc_iterator5_next(it_format)){
+            sc_addr format=sc_iterator5_value(it_format,2);
+            sc_memory_element_free(format);
+        }
+        sc_iterator5_free(it_format);
 
         //Removing source sc-construction
         sc_iterator5 *it_source=sc_iterator5_a_a_f_a_f_new(0,sc_type_arc_pos_const_perm,answer,sc_type_arc_pos_const_perm,rrel_source_constr);

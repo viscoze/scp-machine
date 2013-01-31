@@ -580,8 +580,33 @@ sc_result create_temp_question_garbage1()
     if (sc_helper_resolve_system_identifier("question_unuseful", &question_unuseful) == SC_FALSE)
         return SC_RESULT_ERROR;
 
-    sc_addr quest=sc_memory_node_new(0);
-    sc_memory_arc_new(sc_type_arc_pos_const_perm,question_unuseful,quest);
+    sc_addr node69;
+    node69.seg=0;
+    node69.offset=69;
+    print_element(node69);
+    //sc_addr quest=sc_memory_node_new(0);
+    //sc_memory_arc_new(sc_type_arc_pos_const_perm,question_unuseful,quest);
+
+    sc_addr pattern;
+    if (sc_helper_resolve_system_identifier("garbage_pattern", &pattern) == SC_FALSE)
+        return SC_RESULT_ERROR;
+
+    sc_addr temp;
+    if (sc_helper_resolve_system_identifier("temp_question", &temp) == SC_FALSE)
+        return SC_RESULT_ERROR;
+
+    print_element(pattern);
+
+    /*sc_iterator3 *it=sc_iterator3_f_a_a_new(pattern,0,0);
+    while (sc_iterator3_next(it)){
+        print_element(sc_iterator3_value(it,2));
+    }
+    sc_iterator3_free(it);*/
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,question_unuseful,temp);
+
+    sleep(2);
+
+    print_element(pattern);
 
     return SC_RESULT_OK;
 }
