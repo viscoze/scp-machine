@@ -11,6 +11,11 @@
  */
 sc_bool print_element(sc_addr element);
 
+/*! function to find answer to given question by relation question_nrel_answer
+ * @param question sc-addr of question
+ * @param answer sc-addr of found answer
+ * @return Returns SC_RESULT_ERROR, if system error appeared. Otherwise returns SC_RESULT_OK.
+ */
 sc_result search_question_answer(sc_addr question, sc_addr* answer);
 
 #endif // SYSTEM_H

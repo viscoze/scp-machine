@@ -1,1 +1,0 @@
-﻿D:/BSUIR/OSTIS/SC-MACHINE/SC-KPM/system_pattern.c:127: error: ошибка: несовместимый тип аргумента 1 функции «sc_memory_get_element_type»

@@ -14,12 +14,11 @@ CONFIG   -= app_bundle
 
 TEMPLATE = app
 
-
-SOURCES += main.cpp \
-    system.c \
-	system_pattern.cpp
+SOURCES += main.cpp
     
 INCLUDEPATH += ../sc-machine/sc-memory/src
+INCLUDEPATH += ../SC-KPM/sc_kpm_additional
+INCLUDEPATH += ../SC-KPM/sc_search_system
 INCLUDEPATH += ../sc-machine/sc-memory/src/sc-store
 DESTDIR = ../sc-machine/bin
 
@@ -34,15 +33,14 @@ win32 {
     LIBS += ../glib/lib/glib-2.0.lib
 }
 
-
 unix {
     CONFIG += link_pkgconfig
     PKGCONFIG += glib-2.0
     PKGCONFIG += gmodule-2.0
 
     LIBS += -L "../sc-machine/bin" -lsc_memory
+    LIBS += -L "../sc-machine/bin" -lsc_kpm_additional
+    LIBS += -L "../sc-machine/bin" -lsc_search_system
 }
 
-HEADERS += \
-    system.h \
-    system_pattern.h
+HEADERS +=

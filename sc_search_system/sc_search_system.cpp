@@ -1,4 +1,9 @@
-#include "system_pattern.h"
+extern "C"
+{
+#include "sc_iterator3.h"
+#include "sc_kpm_additional.h"
+}
+#include "sc_search_system.h"
 #include <stdio.h>
 #include <iostream>
 #include <set>
@@ -6,7 +11,6 @@
 
 #define cout std::cout
 #define endl std::endl
-//using namespace std;
 
 //int class_count=0;
 
@@ -36,7 +40,7 @@ void print_result(sc_type_result table){
 void print_result_set(sc_type_result_vector* table){
     printf("RESULT COUNT:%d\n",table->size());
     for (sc_uint i=0; i<table->size();i++){
-        print_result(*((*table)[i]));
+        //print_result(*((*table)[i]));
     }
 }
 
@@ -258,11 +262,13 @@ sc_bool system_sys_search_recurse(sc_addr sc_pattern, sc_type_hash pattern, sc_a
             //!TODO CHECK ARC TYPE
             sc_iterator3* it_const_arc;
             sc_type const_arc_type=((~sc_type_var & pattern_arc_type)|sc_type_const);
+            //sc_type const_arc_type=0;
             if (out_arc_flag==SC_TRUE){
                 if (pattern_is_const_or_has_value==SC_TRUE){
                     it_const_arc=sc_iterator3_f_a_f_new(curr_const_element,const_arc_type,next_const_element);
                 }else{
                     sc_type next_const_element_type=((~sc_type_var & next_pattern_element_type)|sc_type_const);
+                    //sc_type next_const_element_type=0;
                     it_const_arc=sc_iterator3_f_a_a_new(curr_const_element,const_arc_type,next_const_element_type);
                 }
             }else{
@@ -270,6 +276,7 @@ sc_bool system_sys_search_recurse(sc_addr sc_pattern, sc_type_hash pattern, sc_a
                     it_const_arc=sc_iterator3_f_a_f_new(next_const_element,const_arc_type,curr_const_element);
                 }else{
                     sc_type next_const_element_type=((~sc_type_var & next_pattern_element_type)|sc_type_const);
+                    //sc_type next_const_element_type=0;
                     it_const_arc=sc_iterator3_a_a_f_new(next_const_element_type,const_arc_type,curr_const_element);
                 }
             }
@@ -562,3 +569,4 @@ sc_result system_sys_search(sc_addr pattern, sc_type_result params, sc_type_resu
     //printf("Memory balance: %d\n",class_count);
     return SC_RESULT_OK;
 }
+

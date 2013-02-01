@@ -1,14 +1,12 @@
 TEMPLATE = lib
 
-
 SOURCES += \
-           sc_search_basic_operations.c \
-    sc_search_functions.c \
-    sc_search_basic.c
+    sc_search_system.cpp
 
 INCLUDEPATH += ../../sc-machine/sc-memory/src
 INCLUDEPATH += ../../sc-machine/sc-memory/src/sc-store
-DESTDIR = ../../sc-machine/bin/modules
+INCLUDEPATH += ../../SC-KPM/sc_kpm_additional
+DESTDIR = ../../sc-machine/bin
 
 win32 {
     CONFIG += qt console
@@ -31,6 +29,4 @@ unix {
 }
 
 HEADERS += \
-    sc_search_basic.h \
-    sc_search_basic_operations.h \
-    sc_search_functions.h
+    sc_search_system.h

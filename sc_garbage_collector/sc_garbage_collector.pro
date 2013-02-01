@@ -7,7 +7,7 @@ SOURCES += \
 
 INCLUDEPATH += ../../sc-machine/sc-memory/src
 INCLUDEPATH += ../../sc-machine/sc-memory/src/sc-store
-DESTDIR = ../../sc-machine/bin/search
+DESTDIR = ../../sc-machine/bin/modules
 
 win32 {
     CONFIG += qt console

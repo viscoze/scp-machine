@@ -1,4 +1,4 @@
-#include "system.h"
+#include "sc_kpm_additional.h"
 #include "sc_helper.h"
 #include "sc_stream.h"
 #include <malloc.h>

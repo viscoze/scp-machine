@@ -1,8 +1,9 @@
-#ifndef SYSTEM_PATTERN_H
-#define SYSTEM_PATTERN_H
+#ifndef SC_SEARCH_SYSTEM_H
+#define SC_SEARCH_SYSTEM_H
+
 extern "C"
 {
-#include "system.h"
+#include "sc_memory.h"
 }
 #include <map>
 #include <vector>
@@ -63,4 +64,5 @@ sc_result system_sys_search_only_full(sc_addr pattern, sc_type_result params, sc
  */
 sc_result system_sys_search_for_variables(sc_addr pattern, sc_type_result params, sc_addr_vector requested_values, sc_type_result_vector *result);
 
-#endif // SYSTEM_PATTERN_H
+
+#endif // SC_SEARCH_SYSTEM_H
