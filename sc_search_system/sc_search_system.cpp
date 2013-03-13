@@ -128,7 +128,6 @@ void free_result_vector(sc_type_result_vector *result){
 
 sc_bool system_sys_search_recurse(sc_addr sc_pattern, sc_type_hash pattern, sc_addr curr_const_element, sc_addr curr_pattern_element, sc_type_result *inp_result, sc_type_result_vector *out_common_result, int element_number)
 {
-
     sc_type input_element_type;
     if (sc_memory_get_element_type(curr_pattern_element,&input_element_type)!=SC_RESULT_OK){return SC_FALSE;}
     if (element_number==2 && (sc_type_node & input_element_type) != sc_type_node){
@@ -142,7 +141,6 @@ sc_bool system_sys_search_recurse(sc_addr sc_pattern, sc_type_hash pattern, sc_a
         pattern.insert(sc_hash_pair(SC_ADDR_LOCAL_TO_INT(curr_pattern_element),curr_pattern_element));
         return system_sys_search_recurse(sc_pattern,pattern,const_element,pattern_element,inp_result,out_common_result,2);
     }
-
 
     sc_addr addr1,addr2,temp,temp1;
     int out_arc_count=0;
@@ -178,26 +176,31 @@ sc_bool system_sys_search_recurse(sc_addr sc_pattern, sc_type_hash pattern, sc_a
     }
     sc_iterator3_free(it_pattern_arc);
 
+    sc_addr pattern_arc;
+    sc_addr const_arc;
+    sc_addr next_pattern_element;
+    sc_addr next_const_element;
+    sc_bool out_arc_flag=SC_TRUE;
+    sc_type_result_vector new_common_result;
+    sc_type_result_vector next_common_result;
+    sc_type_result_vector next_common_result_arc;
+    sc_type_result_vector next_common_result1;
+
+    sc_bool pattern_arc_is_const_or_has_value=SC_FALSE;
+    sc_bool pattern_is_const_or_has_value=SC_FALSE;
+
     //Pattern arcs loop
     for (sc_uint i=0;i<pattern_arc_set.size();i++){
-        sc_addr pattern_arc=pattern_arc_set[i];
-        sc_addr const_arc;
-        sc_addr next_pattern_element;
-        sc_addr next_const_element;
-        sc_bool out_arc_flag=SC_TRUE;
-        sc_type_result_vector new_common_result;
-
-        sc_type_result_vector next_common_result;
-        sc_type_result_vector next_common_result_arc;
-        sc_type_result_vector next_common_result1;
+        pattern_arc=pattern_arc_set[i];
+        out_arc_flag=SC_TRUE;
 
         //!check pattern_arc type
         sc_type pattern_arc_type;
         if (sc_memory_get_element_type(pattern_arc,&pattern_arc_type)!=SC_RESULT_OK){continue;}
         if ((sc_type_const & pattern_arc_type) == sc_type_const){continue;}
 
-        sc_bool pattern_arc_is_const_or_has_value=SC_FALSE;
-        sc_bool pattern_is_const_or_has_value=SC_FALSE;
+        pattern_arc_is_const_or_has_value=SC_FALSE;
+        pattern_is_const_or_has_value=SC_FALSE;
 
         if (out_arc_count>0){
             if (SC_RESULT_OK!=sc_memory_get_arc_end(pattern_arc,&next_pattern_element)){continue;}
@@ -336,7 +339,7 @@ sc_bool system_sys_search_recurse(sc_addr sc_pattern, sc_type_hash pattern, sc_a
                         }
                     }
 
-                    //!Genering pair for 2rd element
+                    //!Genering pair for 2nd element
                     result->insert(sc_addr_pair(pattern_arc,const_arc));
                     pattern.erase(SC_ADDR_LOCAL_TO_INT(pattern_arc));
                 }
@@ -484,7 +487,7 @@ sc_result system_sys_search_only_full(sc_addr pattern, sc_type_result params, sc
     sc_uint var_count=0;
     sc_type_hash pattern_hash;
     copy_set_into_hash(pattern,sc_type_arc_pos_const_perm,0,&pattern_hash,&var_count);
-
+    pattern_hash.erase(SC_ADDR_LOCAL_TO_INT(start_pattern_node));
     system_sys_search_recurse(pattern,pattern_hash,start_const_node,start_pattern_node,result,search_result,2);
 
     sort_result_vector(search_result);
@@ -519,7 +522,7 @@ sc_result system_sys_search_for_variables(sc_addr pattern, sc_type_result params
     sc_uint var_count=0;
     sc_type_hash pattern_hash;
     copy_set_into_hash(pattern,sc_type_arc_pos_const_perm,0,&pattern_hash,&var_count);
-
+    pattern_hash.erase(SC_ADDR_LOCAL_TO_INT(start_pattern_node));
     system_sys_search_recurse(pattern,pattern_hash,start_const_node,start_pattern_node,result,search_result,2);
 
     sort_result_vector(search_result);
@@ -557,7 +560,7 @@ sc_result system_sys_search(sc_addr pattern, sc_type_result params, sc_type_resu
     sc_uint var_count=0;
     sc_type_hash pattern_hash;
     copy_set_into_hash(pattern,sc_type_arc_pos_const_perm,0,&pattern_hash,&var_count);
-
+    pattern_hash.erase(SC_ADDR_LOCAL_TO_INT(start_pattern_node));
     system_sys_search_recurse(pattern,pattern_hash,start_const_node,start_pattern_node,result,search_result,2);
 
     sort_result_vector(search_result);

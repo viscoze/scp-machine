@@ -8,6 +8,7 @@ extern "C"
 #include "sc_search_system.h"
 #include <termios.h>
 #include <unistd.h>
+#include <stdio.h>
 
 int getch() {
     struct termios oldt,
@@ -196,10 +197,33 @@ sc_result create_temp_question_garbage1()
 }
 
 sc_result test_sys_search(){
-    sc_addr pattern;
-    if (sc_helper_resolve_system_identifier("pattern2", &pattern) == SC_FALSE)
+
+    sc_addr start2;
+    /*if (sc_helper_resolve_system_identifier("start2", &start2) == SC_FALSE)
         return SC_RESULT_ERROR;
-    print_element(pattern);
+    print_element(start2);*/
+
+    sc_addr end2;
+    /*if (sc_helper_resolve_system_identifier("end2", &end2) == SC_FALSE)
+        return SC_RESULT_ERROR;
+    print_element(end2);*/
+
+    sc_addr pattern;
+    pattern=sc_memory_node_new(sc_type_node_struct|sc_type_const);
+    start2=sc_memory_node_new(sc_type_node_struct|sc_type_const);
+    end2=sc_memory_node_new(sc_type_node_struct|sc_type_const);
+    /*if (sc_helper_resolve_system_identifier("pattern2", &pattern) == SC_FALSE)
+        return SC_RESULT_ERROR;
+    print_element(pattern);*/
+
+    for (int i=0;i<7;i++){
+        sc_addr arc=sc_memory_arc_new(sc_type_arc_access|sc_type_var,start2,end2);
+        sc_memory_arc_new(sc_type_arc_pos_const_perm,pattern,arc);
+        sc_memory_arc_new(sc_type_arc_pos_const_perm,start2,end2);
+    }
+
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,pattern,start2);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,pattern,end2);
 
     sc_type_result params;
     sc_type_result_vector results;
@@ -212,8 +236,8 @@ sc_result test_sys_search(){
 int main()
 {
     sc_memory_initialize((sc_char*)"repo",(sc_char*)"test.ini");
-    sc_helper_init();
-    sc_memory_initialize_ext("../bin/modules");
+    //sc_helper_init();
+    //sc_memory_initialize_ext("../bin/extensions");
 
     GTimer *timer = 0;
     timer=g_timer_new();
@@ -240,7 +264,7 @@ int main()
 
     //sc_memory_shutdown();
 
-    sc_helper_shutdown();
+//    sc_helper_shutdown();
 
     //getch();
     return 0;
