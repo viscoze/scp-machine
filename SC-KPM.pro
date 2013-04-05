@@ -40,7 +40,7 @@ unix {
 
     LIBS += -L "../sc-machine/bin" -lsc_memory
     LIBS += -L "../sc-machine/bin" -lsc_kpm_additional
-    LIBS += -L "../sc-machine/bin" -lsc_search_system
+    LIBS += -L "../sc-machine/bin" -lsc_system_operators
 }
 
 HEADERS +=

@@ -1,7 +1,9 @@
 TEMPLATE = lib
 
 SOURCES += \
-    sc_search_system.cpp
+    sc_system_search.cpp \
+    sc_system_gen.cpp \
+    sc_system_operators.cpp
 
 INCLUDEPATH += ../../sc-machine/sc-memory/src
 INCLUDEPATH += ../../sc-machine/sc-memory/src/sc-store
@@ -29,4 +31,6 @@ unix {
 }
 
 HEADERS += \
-    sc_search_system.h
+    sc_system_search.h \
+    sc_system_operators.h \
+    sc_system_gen.h

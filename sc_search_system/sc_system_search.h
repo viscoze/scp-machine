@@ -5,23 +5,7 @@ extern "C"
 {
 #include "sc_memory.h"
 }
-#include <map>
-#include <vector>
-
-struct sc_addr_comparator
-{
-    bool operator()(const sc_addr s1, const sc_addr s2) const
-    {
-        return (SC_ADDR_LOCAL_TO_INT(s1) < SC_ADDR_LOCAL_TO_INT(s2));
-    }
-};
-
-typedef std::map<sc_addr,sc_addr,sc_addr_comparator> sc_type_result;
-typedef std::map<int,sc_addr> sc_type_hash;
-typedef std::vector<sc_type_result*> sc_type_result_vector;
-typedef std::vector<sc_addr> sc_addr_vector;
-typedef std::pair<sc_addr,sc_addr> sc_addr_pair;
-typedef std::pair<int,sc_addr> sc_hash_pair;
+#include "sc_system_operators.h"
 
 /*! Search fully isomorfic construction, if impossible -
  *  the closest to fully isomorfic construction
