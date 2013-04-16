@@ -18,13 +18,16 @@ SOURCES += main.cpp
     
 INCLUDEPATH += ../sc-machine/sc-memory/src
 INCLUDEPATH += ../SC-KPM/sc_kpm_additional
-INCLUDEPATH += ../SC-KPM/sc_search_system
+INCLUDEPATH += ../SC-KPM/sc_system_operators
 INCLUDEPATH += ../sc-machine/sc-memory/src/sc-store
 DESTDIR = ../sc-machine/bin
+OBJECTS_DIR = ./obj
 
 win32 {
     CONFIG += qt console
-    LIBS += -L "../bin" -lsc_memoryd
+    LIBS += -L "../sc-machine/bin" -lsc_memoryd
+    LIBS += -L "../sc-machine/bin" -lsc_kpm_additionald
+    LIBS += -L "../sc-machine/bin" -lsc_system_operatorsd
 
     INCLUDEPATH += "../glib/include/glib-2.0"
     INCLUDEPATH += "../glib/lib/glib-2.0/include"
