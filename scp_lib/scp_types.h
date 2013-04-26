@@ -44,14 +44,14 @@ enum _scp_result
 typedef enum _scp_result scp_result;
 
 //! Structure to store scp-element
-struct _scp_element
+struct _scp_operand
 {
     sc_addr addr;
     scp_param_type param_type;
     sc_type element_type;
 };
 
-typedef struct _scp_element scp_element;
+typedef struct _scp_operand scp_operand;
 
 typedef sc_uint16 scp_type;
 

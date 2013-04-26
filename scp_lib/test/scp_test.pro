@@ -17,6 +17,7 @@ TEMPLATE = app
 SOURCES += main.c
     
 INCLUDEPATH += ../../../sc-machine/sc-memory/src/sc-store
+INCLUDEPATH += ../../../sc-machine/sc-memory/src
 INCLUDEPATH += ../
 DESTDIR = ../../../sc-machine/bin
 OBJECTS_DIR = ./obj

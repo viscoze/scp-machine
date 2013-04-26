@@ -24,37 +24,41 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "scp_types.h"
 
-scp_result genEl(scp_element *param);
-scp_result genElStr3(scp_element *param1, scp_element *param2, scp_element *param3);
-scp_result genElStr5(scp_element *param1, scp_element *param2, scp_element *param3, scp_element *param4, scp_element *param5);
+scp_result genEl(scp_operand *param);
+scp_result genElStr3(scp_operand *param1, scp_operand *param2, scp_operand *param3);
+scp_result genElStr5(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5);
 
-scp_result searchElStr3(scp_element *param1, scp_element *param2, scp_element *param3);
-scp_result searchElStr5(scp_element *param1, scp_element *param2, scp_element *param3, scp_element *param4, scp_element *param5);
+scp_result searchElStr3(scp_operand *param1, scp_operand *param2, scp_operand *param3);
+scp_result searchElStr5(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5);
 
-scp_result eraseEl(scp_element *param);
-scp_result eraseElStr3(scp_element *param1, scp_element *param2, scp_element *param3);
-scp_result eraseElStr5(scp_element *param1, scp_element *param2, scp_element *param3, scp_element *param4, scp_element *param5);
+scp_result eraseEl(scp_operand *param);
+scp_result eraseElStr3(scp_operand *param1, scp_operand *param2, scp_operand *param3);
+scp_result eraseElStr5(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5);
 
-scp_result ifVarAssign(scp_element *param);
-scp_result ifFormCont(scp_element *param);
-scp_result ifCoin(scp_element *param1, scp_element *param2);
-scp_result ifEq(scp_element *param1, scp_element *param2);
-scp_result ifGr(scp_element *param1, scp_element *param2);
-scp_result ifType(scp_element *param, scp_type type);
+scp_result ifVarAssign(scp_operand *param);
+scp_result ifFormCont(scp_operand *param);
+scp_result ifCoin(scp_operand *param1, scp_operand *param2);
+scp_result ifEq(scp_operand *param1, scp_operand *param2);
+scp_result ifGr(scp_operand *param1, scp_operand *param2);
+scp_result ifType(scp_operand *param, scp_type type);
 
-scp_result varAssign(scp_element *param1, scp_element *param2);
+scp_result varAssign(scp_operand *param1, scp_operand *param2);
 
-scp_result contAdd(scp_element *param1, scp_element *param2);
-scp_result contDiv(scp_element *param1, scp_element *param2);
-scp_result contMult(scp_element *param1, scp_element *param2);
-scp_result contSub(scp_element *param1, scp_element *param2);
-scp_result contPow(scp_element *param1, scp_element *param2);
-scp_result contLn(scp_element *param1, scp_element *param2);
+scp_result contAdd(scp_operand *param1, scp_operand *param2);
+scp_result contDiv(scp_operand *param1, scp_operand *param2);
+scp_result contMult(scp_operand *param1, scp_operand *param2);
+scp_result contSub(scp_operand *param1, scp_operand *param2);
+scp_result contPow(scp_operand *param1, scp_operand *param2);
+scp_result contLn(scp_operand *param1, scp_operand *param2);
 
-scp_result contAssign(scp_element *param1, scp_element *param2);
-scp_result contErase(scp_element *param);
+scp_result contAssign(scp_operand *param1, scp_operand *param2);
+scp_result contErase(scp_operand *param);
 
-scp_result idtfSearch(scp_element *param, const char* idtf);
-scp_result idtfAssign(scp_element *param, const char* idtf);
+scp_result idtfSearch(scp_operand *param, const char* idtf);
+scp_result idtfAssign(scp_operand *param, const char* idtf);
+
+scp_result print(scp_operand *param);
+scp_result printNl(scp_operand *param);
+scp_result printEl(scp_operand *param);
 
 #endif // SCP_FUNCTIONS_H
