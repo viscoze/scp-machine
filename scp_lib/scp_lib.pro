@@ -17,7 +17,8 @@ unix {
 
 HEADERS += \
     scp_types.h \
-    scp_functions.h
+    scp_functions.h \
+    scp_factory.h
 
 SOURCES += \
     scp_functions.c \

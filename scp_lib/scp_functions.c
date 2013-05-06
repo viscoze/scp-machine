@@ -33,6 +33,23 @@ scp_result printError(const char* operator_name, const char* text){
     return SCP_ERROR;
 }
 
+scp_result scp_lib_init(const sc_char *repo_path, const sc_char *config_file)
+{
+    if (sc_memory_initialize(repo_path,config_file)==SC_FALSE)
+    {
+        return SCP_FALSE;
+    }
+    sc_helper_init();
+    return SCP_TRUE;
+}
+
+scp_result scp_lib_shutdown()
+{
+    sc_memory_shutdown();
+    sc_helper_shutdown();
+    return SCP_TRUE;
+}
+
 scp_result genEl(scp_operand *param){
     if (param->param_type != SCP_ASSIGN){
         return printError("genEl", "Parameter must have ASSIGN modifier");
@@ -45,6 +62,62 @@ scp_result genEl(scp_operand *param){
         return printError("genEl", "Element cannot be generated");
     }
     return SCP_TRUE;
+}
+
+scp_result genElStr3(scp_operand *param1, scp_operand *param2, scp_operand *param3){
+    /*if (param->param_type != SCP_ASSIGN){
+        return printError("genEl", "Parameter must have ASSIGN modifier");
+    }
+    if ((param->element_type & scp_type_node) != scp_type_node){
+        return printError("genEl", "Only node element can be generated. Use genElStr3 for arcs");
+    }
+    param->addr = sc_memory_node_new(param->element_type);
+    if (SC_ADDR_IS_EMPTY(param->addr)){
+        return printError("genEl", "Element cannot be generated");
+    }*/
+    /*if (param1->param_type == SCP_ASSIGN && param2->param_type == SCP_ASSIGN && param3->param_type == SCP_ASSIGN)
+    {
+        return printError("genElStr3", "All elements");
+    }*/
+    return SCP_TRUE;
+}
+
+scp_result ifVarAssign(scp_operand *param)
+{
+    if (SC_ADDR_IS_EMPTY(param->addr))
+        return SCP_FALSE;
+    else
+        return SCP_TRUE;
+}
+
+scp_result ifCoin(scp_operand *param1, scp_operand *param2)
+{
+    if (SC_ADDR_IS_EMPTY(param1->addr)){
+        return printError("ifCoin", "Parameter 1 has no value");
+    }
+    if (SC_ADDR_IS_EMPTY(param2->addr)){
+        return printError("ifCoin", "Parameter 2 has no value");
+    }
+    if (SC_ADDR_IS_EQUAL(param1->addr,param2->addr))
+        return SCP_TRUE;
+    else
+        return SCP_FALSE;
+}
+
+scp_result ifType(scp_operand *param)
+{
+    if (SC_ADDR_IS_EMPTY(param->addr)){
+        return printError("ifType", "Parameter has no value");
+    }
+    sc_type elType;
+    if (sc_memory_get_element_type(param->addr,&elType)!=SC_RESULT_OK)
+    {
+        return printError("ifType", "Type checking error");
+    }
+    if ((param->element_type & elType) == elType)
+        return SCP_TRUE;
+    else
+        return SCP_FALSE;
 }
 
 scp_result printEl(scp_operand *param){

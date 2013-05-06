@@ -28,7 +28,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 enum _scp_param_type
 {
     SCP_ASSIGN = 0,
-    SCP_FIXED = 1
+    SCP_FIXED = 1,
+    SCP_ERASE
 };
 
 typedef enum _scp_param_type scp_param_type;
