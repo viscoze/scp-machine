@@ -20,25 +20,13 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
+#ifndef SCP_GENELSTR3_H
+#define SCP_GENELSTR3_H
 #include "scp_types.h"
-#include "sc_memory.h"
-#include "stdio.h"
 
-scp_result checkType(sc_addr element, sc_type input_type)
-{
-    sc_type type;
-    if (SC_RESULT_OK != sc_memory_get_element_type(element, &type))
-    {
-        return SCP_ERROR;
-    }
-    if ((input_type & type) == input_type)
-    {
-        return SCP_TRUE;
-    }
-    else
-    {
-        return SCP_FALSE;
-    }
-    return SCP_ERROR;
-}
+scp_result genElStr3_a_a_a(scp_operand *param1, scp_operand *param2, scp_operand *param3);
+scp_result genElStr3_f_a_a(scp_operand *param1, scp_operand *param2, scp_operand *param3);
+scp_result genElStr3_a_a_f(scp_operand *param1, scp_operand *param2, scp_operand *param3);
+scp_result genElStr3_f_a_f(scp_operand *param1, scp_operand *param2, scp_operand *param3);
 
+#endif // SCP_GENELSTR3_H

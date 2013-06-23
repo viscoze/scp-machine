@@ -25,7 +25,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "sc_memory.h"
 #include "sc_iterator3.h"
 
-scp_result searchElStr3_a_a_f(scp_operand *param1, scp_operand *param2, scp_operand *param3) {
+scp_result searchElStr3_a_a_f(scp_operand *param1, scp_operand *param2, scp_operand *param3)
+{
     sc_iterator3 *it = sc_iterator3_a_a_f_new(param1->element_type, param2->element_type, param3->addr);
     if (sc_iterator3_next(it))
     {
@@ -37,7 +38,8 @@ scp_result searchElStr3_a_a_f(scp_operand *param1, scp_operand *param2, scp_oper
     sc_iterator3_free(it);
     return SCP_FALSE;
 }
-scp_result searchElStr3_f_a_a(scp_operand *param1, scp_operand *param2, scp_operand *param3) {
+scp_result searchElStr3_f_a_a(scp_operand *param1, scp_operand *param2, scp_operand *param3)
+{
     sc_iterator3 *it = sc_iterator3_f_a_a_new(param1->addr, param2->element_type, param3->element_type);
     if (sc_iterator3_next(it))
     {

@@ -22,6 +22,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "scp_functions.h"
 #include "scp_searchElStr3.h"
+#include "scp_genElStr3.h"
+#include "scp_genElStr5.h"
 #include "scp_utils.h"
 #include "sc_stream.h"
 #include "sc_helper.h"
@@ -73,21 +75,117 @@ scp_result genEl(scp_operand *param)
 
 scp_result genElStr3(scp_operand *param1, scp_operand *param2, scp_operand *param3)
 {
-    /*if (param->param_type != SCP_ASSIGN){
-        return printError("genEl", "Parameter must have ASSIGN modifier");
-    }
-    if ((param->element_type & scp_type_node) != scp_type_node){
-        return printError("genEl", "Only node element can be generated. Use genElStr3 for arcs");
-    }
-    param->addr = sc_memory_node_new(param->element_type);
-    if (SC_ADDR_IS_EMPTY(param->addr)){
-        return printError("genEl", "Element cannot be generated");
-    }*/
-    /*if (param1->param_type == SCP_ASSIGN && param2->param_type == SCP_ASSIGN && param3->param_type == SCP_ASSIGN)
+    sc_bool fixed1 = SC_FALSE;
+    sc_bool fixed3 = SC_FALSE;
+    if (param2->param_type == SCP_FIXED)
     {
-        return printError("genElStr3", "All elements");
-    }*/
-    return SCP_TRUE;
+        return printError("genElStr3", "Parameter 2 must have ASSIGN modifier");
+    }
+    if (param1->param_type == SCP_FIXED)
+    {
+        if (SC_ADDR_IS_EMPTY(param1->addr))
+        {
+            return printError("genElStr3", "Parameter 1 has modifier FIXED, but has not value");
+        }
+        fixed1 = SC_TRUE;
+    }
+    if (param3->param_type == SCP_FIXED)
+    {
+        if (SC_ADDR_IS_EMPTY(param3->addr))
+        {
+            return printError("genElStr3", "Parameter 3 has modifier FIXED, but has not value");
+        }
+        fixed3 = SC_TRUE;
+    }
+    if (fixed1 == SC_TRUE && fixed3 == SC_TRUE)
+    {
+        return genElStr3_f_a_f(param1, param2, param3);
+    }
+    if (fixed1 != SC_TRUE && fixed3 == SC_TRUE)
+    {
+        return genElStr3_a_a_f(param1, param2, param3);
+    }
+    if (fixed1 == SC_TRUE && fixed3 != SC_TRUE)
+    {
+        return genElStr3_f_a_a(param1, param2, param3);
+    }
+    if (fixed1 != SC_TRUE && fixed3 != SC_TRUE)
+    {
+        return genElStr3_a_a_a(param1, param2, param3);
+    }
+    return SCP_ERROR;
+}
+
+scp_result genElStr5(scp_operand *param1, scp_operand *param2, scp_operand *param3,scp_operand *param4,scp_operand *param5)
+{
+    sc_bool fixed1 = SC_FALSE;
+    sc_bool fixed3 = SC_FALSE;
+    sc_bool fixed5 = SC_FALSE;
+    if (param2->param_type == SCP_FIXED)
+    {
+        return printError("genElStr5", "Parameter 2 must have ASSIGN modifier");
+    }
+    if (param4->param_type == SCP_FIXED)
+    {
+        return printError("genElStr5", "Parameter 4 must have ASSIGN modifier");
+    }
+    if (param1->param_type == SCP_FIXED)
+    {
+        if (SC_ADDR_IS_EMPTY(param1->addr))
+        {
+            return printError("genElStr5", "Parameter 1 has modifier FIXED, but has not value");
+        }
+        fixed1 = SC_TRUE;
+    }
+    if (param3->param_type == SCP_FIXED)
+    {
+        if (SC_ADDR_IS_EMPTY(param3->addr))
+        {
+            return printError("genElStr5", "Parameter 3 has modifier FIXED, but has not value");
+        }
+        fixed3 = SC_TRUE;
+    }
+    if (param5->param_type == SCP_FIXED)
+    {
+        if (SC_ADDR_IS_EMPTY(param5->addr))
+        {
+            return printError("genElStr5", "Parameter 5 has modifier FIXED, but has not value");
+        }
+        fixed5 = SC_TRUE;
+    }
+    if (fixed1 == SC_TRUE && fixed3 == SC_TRUE && fixed5 == SC_TRUE)
+    {
+        return genElStr5_f_a_f_a_f(param1, param2, param3,param4,param5);
+    }
+    if (fixed1 != SC_TRUE && fixed3 == SC_TRUE && fixed5 == SC_TRUE)
+    {
+        return genElStr5_a_a_f_a_f(param1, param2, param3,param4,param5);
+    }
+    if (fixed1 == SC_TRUE && fixed3 != SC_TRUE && fixed5 == SC_TRUE)
+    {
+        return genElStr5_f_a_a_a_f(param1, param2, param3,param4,param5);
+    }
+    if (fixed1 == SC_TRUE && fixed3 == SC_TRUE && fixed5 != SC_TRUE)
+    {
+        return genElStr5_f_a_f_a_a(param1, param2, param3,param4,param5);
+    }
+    if (fixed1 != SC_TRUE && fixed3 != SC_TRUE && fixed5 == SC_TRUE)
+    {
+        return genElStr5_a_a_a_a_f(param1, param2, param3,param4,param5);
+    }
+    if (fixed1 != SC_TRUE && fixed3 == SC_TRUE && fixed5 != SC_TRUE)
+    {
+        return genElStr5_a_a_f_a_a(param1, param2, param3,param4,param5);
+    }
+    if (fixed1 == SC_TRUE && fixed3 != SC_TRUE && fixed5 != SC_TRUE)
+    {
+        return genElStr5_f_a_a_a_a(param1, param2, param3,param4,param5);
+    }
+    if (fixed1 != SC_TRUE && fixed3 != SC_TRUE && fixed5 != SC_TRUE)
+    {
+        return genElStr5_a_a_a_a_a(param1, param2, param3,param4,param5);
+    }
+    return SCP_ERROR;
 }
 
 scp_result searchElStr3(scp_operand *param1, scp_operand *param2, scp_operand *param3)
@@ -113,7 +211,7 @@ scp_result searchElStr3(scp_operand *param1, scp_operand *param2, scp_operand *p
         {
             return printError("searchElStr3", "Parameter 2 has modifier FIXED, but has not value");
         }
-        if (SCP_TRUE == checkType(param2->addr, sc_type_node))
+        if (SCP_TRUE == checkType(param2->addr, scp_type_node))
         {
             return printError("searchElStr3", "Parameter 2 is not an arc");
         }
@@ -184,19 +282,10 @@ scp_result ifCoin(scp_operand *param1, scp_operand *param2)
 
 scp_result ifType(scp_operand *param)
 {
-    //sc_type elType;
     if (SC_ADDR_IS_EMPTY(param->addr))
     {
         return printError("ifType", "Parameter has no value");
     }
-    /*if (sc_memory_get_element_type(param->addr,&elType)!=SC_RESULT_OK)
-    {
-        return printError("ifType", "Type checking error");
-    }
-    if ((param->element_type & elType) == elType)
-        return SCP_TRUE;
-    else
-        return SCP_FALSE;*/
     return checkType(param->addr, param->element_type);
 }
 

@@ -20,10 +20,16 @@ HEADERS += \
     scp_functions.h \
     scp_factory.h \
     scp_searchElStr3.h \
-    scp_utils.h
+    scp_utils.h \
+    scp_genElStr3.h \
+    scp_genElStr5.h \
+    scp_searchElStr5.h
 
 SOURCES += \
     scp_functions.c \
     scp_types.c \
     scp_searchElStr3.c \
-    scp_utils.c
+    scp_utils.c \
+    scp_genElStr3.c \
+    scp_genElStr5.c \
+    scp_searchElStr5.c
