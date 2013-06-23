@@ -20,7 +20,16 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-#ifndef SCP_FACTORY_H
-#define SCP_FACTORY_H
+#ifndef SEARCH3_H
+#define SEARCH3_H
+#include "scp_types.h"
 
-#endif // SCP_FACTORY_H
+scp_result searchElStr3_a_a_f(scp_operand *param1, scp_operand *param2, scp_operand *param3);
+scp_result searchElStr3_a_f_a(scp_operand *param1, scp_operand *param2, scp_operand *param3);
+scp_result searchElStr3_f_a_a(scp_operand *param1, scp_operand *param2, scp_operand *param3);
+scp_result searchElStr3_a_f_f(scp_operand *param1, scp_operand *param2, scp_operand *param3);
+scp_result searchElStr3_f_a_f(scp_operand *param1, scp_operand *param2, scp_operand *param3);
+scp_result searchElStr3_f_f_a(scp_operand *param1, scp_operand *param2, scp_operand *param3);
+scp_result searchElStr3_f_f_f(scp_operand *param1, scp_operand *param2, scp_operand *param3);
+
+#endif // SEARCH3_H

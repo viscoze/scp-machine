@@ -24,10 +24,10 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "scp_types.h"
 
-scp_result scp_lib_init(const sc_char *repo_path, const sc_char *config_file);
-scp_result scp_lib_shutdown();
+scp_result scp_lib_init(const sc_char *repo_path, const sc_char *config_file); //DONE
+scp_result scp_lib_shutdown(); //DONE
 
-scp_result genEl(scp_operand *param);
+scp_result genEl(scp_operand *param); //DONE
 scp_result genElStr3(scp_operand *param1, scp_operand *param2, scp_operand *param3);
 scp_result genElStr5(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5);
 
@@ -43,12 +43,12 @@ scp_result eraseElStr5(scp_operand *param1, scp_operand *param2, scp_operand *pa
 scp_result eraseSetStr3(scp_operand *param1, scp_operand *param2, scp_operand *param3);
 scp_result eraseSetStr5(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5);
 
-scp_result ifVarAssign(scp_operand *param);
+scp_result ifVarAssign(scp_operand *param); //DONE
 scp_result ifFormCont(scp_operand *param);
-scp_result ifCoin(scp_operand *param1, scp_operand *param2);
+scp_result ifCoin(scp_operand *param1, scp_operand *param2); //DONE
 scp_result ifEq(scp_operand *param1, scp_operand *param2);
 scp_result ifGr(scp_operand *param1, scp_operand *param2);
-scp_result ifType(scp_operand *param);
+scp_result ifType(scp_operand *param); //DONE
 
 scp_result varAssign(scp_operand *param1, scp_operand *param2);
 
@@ -62,11 +62,11 @@ scp_result contLn(scp_operand *param1, scp_operand *param2);
 scp_result contAssign(scp_operand *param1, scp_operand *param2);
 scp_result contErase(scp_operand *param);
 
-scp_result idtfSearch(scp_operand *param, const char* idtf);
-scp_result idtfAssign(scp_operand *param, const char* idtf);
+scp_result idtfSearch(scp_operand *param, const char *idtf);
+scp_result idtfAssign(scp_operand *param, const char *idtf);
 
 scp_result print(scp_operand *param);
 scp_result printNl(scp_operand *param);
-scp_result printEl(scp_operand *param);
+scp_result printEl(scp_operand *param); //DONE
 
 #endif // SCP_FUNCTIONS_H

@@ -18,8 +18,12 @@ unix {
 HEADERS += \
     scp_types.h \
     scp_functions.h \
-    scp_factory.h
+    scp_factory.h \
+    scp_searchElStr3.h \
+    scp_utils.h
 
 SOURCES += \
     scp_functions.c \
-    scp_types.c
+    scp_types.c \
+    scp_searchElStr3.c \
+    scp_utils.c

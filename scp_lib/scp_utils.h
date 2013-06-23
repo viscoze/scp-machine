@@ -20,7 +20,10 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-#ifndef SCP_FACTORY_H
-#define SCP_FACTORY_H
+#ifndef SCP_UTILS_H
+#define SCP_UTILS_H
+#include "scp_types.h"
 
-#endif // SCP_FACTORY_H
+scp_result checkType(sc_addr element, sc_type input_type);
+
+#endif // SCP_UTILS_H
