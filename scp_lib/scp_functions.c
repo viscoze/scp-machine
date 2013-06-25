@@ -22,6 +22,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "scp_functions.h"
 #include "scp_searchElStr3.h"
+#include "scp_searchElStr5.h"
 #include "scp_genElStr3.h"
 #include "scp_genElStr5.h"
 #include "scp_utils.h"
@@ -116,7 +117,7 @@ scp_result genElStr3(scp_operand *param1, scp_operand *param2, scp_operand *para
     return SCP_ERROR;
 }
 
-scp_result genElStr5(scp_operand *param1, scp_operand *param2, scp_operand *param3,scp_operand *param4,scp_operand *param5)
+scp_result genElStr5(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5)
 {
     sc_bool fixed1 = SC_FALSE;
     sc_bool fixed3 = SC_FALSE;
@@ -155,35 +156,35 @@ scp_result genElStr5(scp_operand *param1, scp_operand *param2, scp_operand *para
     }
     if (fixed1 == SC_TRUE && fixed3 == SC_TRUE && fixed5 == SC_TRUE)
     {
-        return genElStr5_f_a_f_a_f(param1, param2, param3,param4,param5);
+        return genElStr5_f_a_f_a_f(param1, param2, param3, param4, param5);
     }
     if (fixed1 != SC_TRUE && fixed3 == SC_TRUE && fixed5 == SC_TRUE)
     {
-        return genElStr5_a_a_f_a_f(param1, param2, param3,param4,param5);
+        return genElStr5_a_a_f_a_f(param1, param2, param3, param4, param5);
     }
     if (fixed1 == SC_TRUE && fixed3 != SC_TRUE && fixed5 == SC_TRUE)
     {
-        return genElStr5_f_a_a_a_f(param1, param2, param3,param4,param5);
+        return genElStr5_f_a_a_a_f(param1, param2, param3, param4, param5);
     }
     if (fixed1 == SC_TRUE && fixed3 == SC_TRUE && fixed5 != SC_TRUE)
     {
-        return genElStr5_f_a_f_a_a(param1, param2, param3,param4,param5);
+        return genElStr5_f_a_f_a_a(param1, param2, param3, param4, param5);
     }
     if (fixed1 != SC_TRUE && fixed3 != SC_TRUE && fixed5 == SC_TRUE)
     {
-        return genElStr5_a_a_a_a_f(param1, param2, param3,param4,param5);
+        return genElStr5_a_a_a_a_f(param1, param2, param3, param4, param5);
     }
     if (fixed1 != SC_TRUE && fixed3 == SC_TRUE && fixed5 != SC_TRUE)
     {
-        return genElStr5_a_a_f_a_a(param1, param2, param3,param4,param5);
+        return genElStr5_a_a_f_a_a(param1, param2, param3, param4, param5);
     }
     if (fixed1 == SC_TRUE && fixed3 != SC_TRUE && fixed5 != SC_TRUE)
     {
-        return genElStr5_f_a_a_a_a(param1, param2, param3,param4,param5);
+        return genElStr5_f_a_a_a_a(param1, param2, param3, param4, param5);
     }
     if (fixed1 != SC_TRUE && fixed3 != SC_TRUE && fixed5 != SC_TRUE)
     {
-        return genElStr5_a_a_a_a_a(param1, param2, param3,param4,param5);
+        return genElStr5_a_a_a_a_a(param1, param2, param3, param4, param5);
     }
     return SCP_ERROR;
 }
@@ -253,6 +254,98 @@ scp_result searchElStr3(scp_operand *param1, scp_operand *param2, scp_operand *p
     {
         return searchElStr3_f_a_f(param1, param2, param3);
     }
+    return SCP_ERROR;
+}
+
+scp_result searchElStr5(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5)
+{
+    int fixed1 = 0;
+    int fixed2 = 0;
+    int fixed3 = 0;
+    int fixed4 = 0;
+    int fixed5 = 0;
+    long fixed = 0;
+    if (param1->param_type == SCP_ASSIGN && param2->param_type == SCP_ASSIGN && param3->param_type == SCP_ASSIGN && param4->param_type == SCP_ASSIGN && param5->param_type == SCP_ASSIGN)
+    {
+        return printError("searchElStr5", "At least one operand must have FIXED modifier");
+    }
+    if (param1->param_type == SCP_FIXED)
+    {
+        if (SC_ADDR_IS_EMPTY(param1->addr))
+        {
+            return printError("searchElStr5", "Parameter 1 has modifier FIXED, but has not value");
+        }
+        fixed1 = 0x1;
+    }
+    if (param2->param_type == SCP_FIXED)
+    {
+        if (SC_ADDR_IS_EMPTY(param2->addr))
+        {
+            return printError("searchElStr5", "Parameter 2 has modifier FIXED, but has not value");
+        }
+        if (SCP_TRUE == checkType(param2->addr, scp_type_node))
+        {
+            return printError("searchElStr5", "Parameter 2 is not an arc");
+        }
+        fixed2 = 0x10;
+    }
+    if (param3->param_type == SCP_FIXED)
+    {
+        if (SC_ADDR_IS_EMPTY(param3->addr))
+        {
+            return printError("searchElStr5", "Parameter 3 has modifier FIXED, but has not value");
+        }
+        fixed3 = 0x100;
+    }
+    if (param4->param_type == SCP_FIXED)
+    {
+        if (SC_ADDR_IS_EMPTY(param4->addr))
+        {
+            return printError("searchElStr5", "Parameter 4 has modifier FIXED, but has not value");
+        }
+        if (SCP_TRUE == checkType(param4->addr, scp_type_node))
+        {
+            return printError("searchElStr5", "Parameter 4 is not an arc");
+        }
+        fixed4 = 0x1000;
+    }
+    if (param5->param_type == SCP_FIXED)
+    {
+        if (SC_ADDR_IS_EMPTY(param5->addr))
+        {
+            return printError("searchElStr5", "Parameter 5 has modifier FIXED, but has not value");
+        }
+        fixed5 = 0x10000;
+    }
+    fixed = (fixed1 | fixed2 | fixed3 | fixed4 | fixed5);
+    switch (fixed)
+    {
+        case 0x11111:
+            return searchElStr5_f_f_f_f_f(param1, param2, param3, param4, param5);
+            break;
+        case 0x10101:
+            return searchElStr5_f_a_f_a_f(param1, param2, param3, param4, param5);
+            break;
+        case 0x10001:
+            return searchElStr5_f_a_a_a_f(param1, param2, param3, param4, param5);
+            break;
+        case 0x00101:
+            return searchElStr5_f_a_f_a_a(param1, param2, param3, param4, param5);
+            break;
+        case 0x10100:
+            return searchElStr5_a_a_f_a_f(param1, param2, param3, param4, param5);
+            break;
+        case 0x00100:
+            return searchElStr5_a_a_f_a_a(param1, param2, param3, param4, param5);
+            break;
+        case 0x00001:
+            return searchElStr5_f_a_a_a_a(param1, param2, param3, param4, param5);
+            break;
+        default:
+            return printError("searchElStr5", "Unsupported parameter type combination");
+    }
+
+
     return SCP_ERROR;
 }
 

@@ -36,10 +36,12 @@ int main(void)
 
     printEl(&param1);
 
-    param1.param_type = SCP_ASSIGN;
+    param1.param_type = SCP_FIXED;
     param2.param_type = SCP_ASSIGN;
-    param3.param_type = SCP_FIXED;
-    scp_result res = searchElStr3(&param1, &param2, &param3);
+    param3.param_type = SCP_ASSIGN;
+    param4.param_type = SCP_ASSIGN;
+    param5.param_type = SCP_FIXED;
+    scp_result res = searchElStr5(&param1, &param2, &param3, &param4, &param5);
 
     if (res == SCP_TRUE)
     {
@@ -65,6 +67,14 @@ int main(void)
     if (param3.param_type == SCP_ASSIGN)
     {
         printEl(&param3);
+    }
+    if (param4.param_type == SCP_ASSIGN)
+    {
+        printEl(&param4);
+    }
+    if (param5.param_type == SCP_ASSIGN)
+    {
+        printEl(&param5);
     }
 
 
