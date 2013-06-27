@@ -349,6 +349,24 @@ scp_result searchElStr5(scp_operand *param1, scp_operand *param2, scp_operand *p
     return SCP_ERROR;
 }
 
+scp_result eraseEl(scp_operand *param)
+{
+    if (param->param_type != SCP_FIXED)
+    {
+        return printError("eraseEl", "Parameter must have FIXED modifier");
+    }
+    if (param->erase != SCP_ERASE_TRUE)
+    {
+        return printError("eraseEl", "Parameter must have ERASE_TRUE modifier");
+    }
+    if (SC_ADDR_IS_EMPTY(param->addr))
+    {
+        return printError("eraseEl", "Element has not value");
+    }
+    sc_memory_element_free(param->addr);
+    return SCP_TRUE;
+}
+
 scp_result ifVarAssign(scp_operand *param)
 {
     if (SC_ADDR_IS_EMPTY(param->addr))

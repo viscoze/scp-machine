@@ -28,8 +28,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 enum _scp_param_type
 {
     SCP_ASSIGN = 0,
-    SCP_FIXED = 1,
-    SCP_ERASE
+    SCP_FIXED = 1
 };
 
 typedef enum _scp_param_type scp_param_type;
@@ -44,15 +43,15 @@ enum _scp_result
 
 typedef enum _scp_result scp_result;
 
-//! Structure to store scp-element
-struct _scp_operand
+// element erase modifier
+enum _scp_erase
 {
-    sc_addr addr;
-    scp_param_type param_type;
-    sc_type element_type;
+    SCP_ERASE_FALSE = 0,
+    SCP_ERASE_TRUE = 1
 };
 
-typedef struct _scp_operand scp_operand;
+typedef enum _scp_erase scp_erase;
+
 
 typedef sc_uint16 scp_type;
 
@@ -75,5 +74,17 @@ extern scp_type scp_type_arc_fuz;
 // scp-element premanently
 extern scp_type scp_type_arc_temp;
 extern scp_type scp_type_arc_perm;
+
+
+//! Structure to store scp-element
+struct _scp_operand
+{
+    sc_addr addr;
+    scp_param_type param_type;
+    sc_type element_type;
+    scp_erase erase;
+};
+
+typedef struct _scp_operand scp_operand;
 
 #endif // SCP_TYPES_H

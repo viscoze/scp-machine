@@ -77,6 +77,9 @@ int main(void)
         printEl(&param5);
     }
 
+    param1.erase=SCP_ERASE_TRUE;
+    param1.param_type=SCP_FIXED;
+    eraseEl(&param1);
 
     //scp_lib_shutdown();
     return 0;
