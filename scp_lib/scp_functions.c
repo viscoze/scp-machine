@@ -26,6 +26,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scp_genElStr3.h"
 #include "scp_genElStr5.h"
 #include "scp_eraseElStr3.h"
+#include "scp_eraseElStr5.h"
 #include "scp_utils.h"
 #include "sc_stream.h"
 #include "sc_helper.h"
@@ -68,7 +69,7 @@ scp_result genEl(scp_operand *param)
         return printError("genEl", "Only node element can be generated. Use genElStr3 for arcs");
     }
     param->addr = sc_memory_node_new(param->element_type);
-    if (SC_ADDR_IS_EMPTY(param->addr))
+    if (SC_FALSE == sc_memory_is_element(param->addr))
     {
         return printError("genEl", "Element cannot be generated");
     }
@@ -85,7 +86,7 @@ scp_result genElStr3(scp_operand *param1, scp_operand *param2, scp_operand *para
     }
     if (param1->param_type == SCP_FIXED)
     {
-        if (SC_ADDR_IS_EMPTY(param1->addr))
+        if (SC_FALSE == sc_memory_is_element(param1->addr))
         {
             return printError("genElStr3", "Parameter 1 has modifier FIXED, but has not value");
         }
@@ -93,7 +94,7 @@ scp_result genElStr3(scp_operand *param1, scp_operand *param2, scp_operand *para
     }
     if (param3->param_type == SCP_FIXED)
     {
-        if (SC_ADDR_IS_EMPTY(param3->addr))
+        if (SC_FALSE == sc_memory_is_element(param3->addr))
         {
             return printError("genElStr3", "Parameter 3 has modifier FIXED, but has not value");
         }
@@ -133,7 +134,7 @@ scp_result genElStr5(scp_operand *param1, scp_operand *param2, scp_operand *para
     }
     if (param1->param_type == SCP_FIXED)
     {
-        if (SC_ADDR_IS_EMPTY(param1->addr))
+        if (SC_FALSE == sc_memory_is_element(param1->addr))
         {
             return printError("genElStr5", "Parameter 1 has modifier FIXED, but has not value");
         }
@@ -141,7 +142,7 @@ scp_result genElStr5(scp_operand *param1, scp_operand *param2, scp_operand *para
     }
     if (param3->param_type == SCP_FIXED)
     {
-        if (SC_ADDR_IS_EMPTY(param3->addr))
+        if (SC_FALSE == sc_memory_is_element(param3->addr))
         {
             return printError("genElStr5", "Parameter 3 has modifier FIXED, but has not value");
         }
@@ -149,7 +150,7 @@ scp_result genElStr5(scp_operand *param1, scp_operand *param2, scp_operand *para
     }
     if (param5->param_type == SCP_FIXED)
     {
-        if (SC_ADDR_IS_EMPTY(param5->addr))
+        if (SC_FALSE == sc_memory_is_element(param5->addr))
         {
             return printError("genElStr5", "Parameter 5 has modifier FIXED, but has not value");
         }
@@ -201,7 +202,7 @@ scp_result searchElStr3(scp_operand *param1, scp_operand *param2, scp_operand *p
     }
     if (param1->param_type == SCP_FIXED)
     {
-        if (SC_ADDR_IS_EMPTY(param1->addr))
+        if (SC_FALSE == sc_memory_is_element(param1->addr))
         {
             return printError("searchElStr3", "Parameter 1 has modifier FIXED, but has not value");
         }
@@ -209,7 +210,7 @@ scp_result searchElStr3(scp_operand *param1, scp_operand *param2, scp_operand *p
     }
     if (param2->param_type == SCP_FIXED)
     {
-        if (SC_ADDR_IS_EMPTY(param2->addr))
+        if (SC_FALSE == sc_memory_is_element(param2->addr))
         {
             return printError("searchElStr3", "Parameter 2 has modifier FIXED, but has not value");
         }
@@ -221,7 +222,7 @@ scp_result searchElStr3(scp_operand *param1, scp_operand *param2, scp_operand *p
     }
     if (param3->param_type == SCP_FIXED)
     {
-        if (SC_ADDR_IS_EMPTY(param3->addr))
+        if (SC_FALSE == sc_memory_is_element(param3->addr))
         {
             return printError("searchElStr3", "Parameter 3 has modifier FIXED, but has not value");
         }
@@ -272,7 +273,7 @@ scp_result searchElStr5(scp_operand *param1, scp_operand *param2, scp_operand *p
     }
     if (param1->param_type == SCP_FIXED)
     {
-        if (SC_ADDR_IS_EMPTY(param1->addr))
+        if (SC_FALSE == sc_memory_is_element(param1->addr))
         {
             return printError("searchElStr5", "Parameter 1 has modifier FIXED, but has not value");
         }
@@ -280,7 +281,7 @@ scp_result searchElStr5(scp_operand *param1, scp_operand *param2, scp_operand *p
     }
     if (param2->param_type == SCP_FIXED)
     {
-        if (SC_ADDR_IS_EMPTY(param2->addr))
+        if (SC_FALSE == sc_memory_is_element(param2->addr))
         {
             return printError("searchElStr5", "Parameter 2 has modifier FIXED, but has not value");
         }
@@ -292,7 +293,7 @@ scp_result searchElStr5(scp_operand *param1, scp_operand *param2, scp_operand *p
     }
     if (param3->param_type == SCP_FIXED)
     {
-        if (SC_ADDR_IS_EMPTY(param3->addr))
+        if (SC_FALSE == sc_memory_is_element(param3->addr))
         {
             return printError("searchElStr5", "Parameter 3 has modifier FIXED, but has not value");
         }
@@ -300,7 +301,7 @@ scp_result searchElStr5(scp_operand *param1, scp_operand *param2, scp_operand *p
     }
     if (param4->param_type == SCP_FIXED)
     {
-        if (SC_ADDR_IS_EMPTY(param4->addr))
+        if (SC_FALSE == sc_memory_is_element(param4->addr))
         {
             return printError("searchElStr5", "Parameter 4 has modifier FIXED, but has not value");
         }
@@ -312,7 +313,7 @@ scp_result searchElStr5(scp_operand *param1, scp_operand *param2, scp_operand *p
     }
     if (param5->param_type == SCP_FIXED)
     {
-        if (SC_ADDR_IS_EMPTY(param5->addr))
+        if (SC_FALSE == sc_memory_is_element(param5->addr))
         {
             return printError("searchElStr5", "Parameter 5 has modifier FIXED, but has not value");
         }
@@ -342,6 +343,9 @@ scp_result searchElStr5(scp_operand *param1, scp_operand *param2, scp_operand *p
         case 0x00001:
             return searchElStr5_f_a_a_a_a(param1, param2, param3, param4, param5);
             break;
+        case 0x10000:
+            return searchElStr5_a_a_a_a_f(param1, param2, param3, param4, param5);
+            break;
         default:
             return printError("searchElStr5", "Unsupported parameter type combination");
     }
@@ -358,7 +362,7 @@ scp_result eraseEl(scp_operand *param)
     {
         return printError("eraseEl", "Parameter must have ERASE_TRUE modifier");
     }
-    if (SC_ADDR_IS_EMPTY(param->addr))
+    if (SC_FALSE == sc_memory_is_element(param->addr))
     {
         return printError("eraseEl", "Element has not value");
     }
@@ -375,7 +379,7 @@ scp_result eraseElStr3(scp_operand *param1, scp_operand *param2, scp_operand *pa
     int fixed = 0;
     if (param1->param_type == SCP_FIXED)
     {
-        if (SC_ADDR_IS_EMPTY(param1->addr))
+        if (SC_FALSE == sc_memory_is_element(param1->addr))
         {
             return printError("eraseElStr3", "Parameter 1 has modifier FIXED, but has not value");
         }
@@ -383,7 +387,7 @@ scp_result eraseElStr3(scp_operand *param1, scp_operand *param2, scp_operand *pa
     }
     if (param2->param_type == SCP_FIXED)
     {
-        if (SC_ADDR_IS_EMPTY(param2->addr))
+        if (SC_FALSE == sc_memory_is_element(param2->addr))
         {
             return printError("eraseElStr3", "Parameter 2 has modifier FIXED, but has not value");
         }
@@ -395,7 +399,7 @@ scp_result eraseElStr3(scp_operand *param1, scp_operand *param2, scp_operand *pa
     }
     if (param3->param_type == SCP_FIXED)
     {
-        if (SC_ADDR_IS_EMPTY(param3->addr))
+        if (SC_FALSE == sc_memory_is_element(param3->addr))
         {
             return printError("eraseElStr3", "Parameter 3 has modifier FIXED, but has not value");
         }
@@ -419,9 +423,95 @@ scp_result eraseElStr3(scp_operand *param1, scp_operand *param2, scp_operand *pa
     return SCP_ERROR;
 }
 
+scp_result eraseElStr5(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5)
+{
+    int fixed1 = 0;
+    int fixed2 = 0;
+    int fixed3 = 0;
+    int fixed4 = 0;
+    int fixed5 = 0;
+    int fixed = 0;
+    if (param1->param_type == SCP_FIXED)
+    {
+        if (SC_FALSE == sc_memory_is_element(param1->addr))
+        {
+            return printError("eraseElStr5", "Parameter 1 has modifier FIXED, but has not value");
+        }
+        fixed1 = 0x1;
+    }
+    if (param2->param_type == SCP_FIXED)
+    {
+        if (SC_FALSE == sc_memory_is_element(param2->addr))
+        {
+            return printError("eraseElStr5", "Parameter 2 has modifier FIXED, but has not value");
+        }
+        if (SCP_TRUE == checkType(param2->addr, scp_type_node))
+        {
+            return printError("eraseElStr5", "Parameter 2 is not an arc");
+        }
+        fixed2 = 0x10;
+    }
+    if (param3->param_type == SCP_FIXED)
+    {
+        if (SC_FALSE == sc_memory_is_element(param3->addr))
+        {
+            return printError("eraseElStr5", "Parameter 3 has modifier FIXED, but has not value");
+        }
+        fixed3 = 0x100;
+    }
+    if (param4->param_type == SCP_FIXED)
+    {
+        if (SC_FALSE == sc_memory_is_element(param4->addr))
+        {
+            return printError("eraseElStr5", "Parameter 4 has modifier FIXED, but has not value");
+        }
+        if (SCP_TRUE == checkType(param4->addr, scp_type_node))
+        {
+            return printError("eraseElStr5", "Parameter 4 is not an arc");
+        }
+        fixed2 = 0x1000;
+    }
+    if (param5->param_type == SCP_FIXED)
+    {
+        if (SC_FALSE == sc_memory_is_element(param5->addr))
+        {
+            return printError("eraseElStr5", "Parameter 5 has modifier FIXED, but has not value");
+        }
+        fixed3 = 0x10000;
+    }
+    fixed = (fixed1 | fixed2 | fixed3 | fixed4 | fixed5);
+    switch (fixed)
+    {
+        case 0x10101:
+            return eraseElStr5_f_a_f_a_f(param1, param2, param3, param4, param5);
+            break;
+        case 0x10001:
+            return eraseElStr5_f_a_a_a_f(param1, param2, param3, param4, param5);
+            break;
+        case 0x00101:
+            return eraseElStr5_f_a_f_a_a(param1, param2, param3, param4, param5);
+            break;
+        case 0x10100:
+            return eraseElStr5_a_a_f_a_f(param1, param2, param3, param4, param5);
+            break;
+        case 0x00100:
+            return eraseElStr5_a_a_f_a_a(param1, param2, param3, param4, param5);
+            break;
+        case 0x00001:
+            return eraseElStr5_f_a_a_a_a(param1, param2, param3, param4, param5);
+            break;
+        case 0x10000:
+            return eraseElStr5_a_a_a_a_f(param1, param2, param3, param4, param5);
+            break;
+        default:
+            return printError("eraseElStr5", "Unsupported parameter type combination");
+    }
+    return SCP_ERROR;
+}
+
 scp_result ifVarAssign(scp_operand *param)
 {
-    if (SC_ADDR_IS_EMPTY(param->addr))
+    if (SC_FALSE == sc_memory_is_element(param->addr))
         return SCP_FALSE;
     else
         return SCP_TRUE;
@@ -429,11 +519,11 @@ scp_result ifVarAssign(scp_operand *param)
 
 scp_result ifCoin(scp_operand *param1, scp_operand *param2)
 {
-    if (SC_ADDR_IS_EMPTY(param1->addr))
+    if (SC_FALSE == sc_memory_is_element(param1->addr))
     {
         return printError("ifCoin", "Parameter 1 has no value");
     }
-    if (SC_ADDR_IS_EMPTY(param2->addr))
+    if (SC_FALSE == sc_memory_is_element(param2->addr))
     {
         return printError("ifCoin", "Parameter 2 has no value");
     }
@@ -445,7 +535,7 @@ scp_result ifCoin(scp_operand *param1, scp_operand *param2)
 
 scp_result ifType(scp_operand *param)
 {
-    if (SC_ADDR_IS_EMPTY(param->addr))
+    if (SC_FALSE == sc_memory_is_element(param->addr))
     {
         return printError("ifType", "Parameter has no value");
     }
@@ -458,9 +548,9 @@ scp_result printEl(scp_operand *param)
     sc_addr addr2, addr3;
     sc_addr idtf;
     sc_iterator3 *it = nullptr;
-    if (SC_ADDR_IS_EMPTY(param->addr))
+    if (SC_FALSE == sc_memory_is_element(param->addr))
     {
-        return printError("printEl", "Parameter is empty");
+        return printError("printEl", "Parameter has not value");
     }
     if (SC_RESULT_OK == sc_helper_get_system_identifier(element, &idtf))
     {

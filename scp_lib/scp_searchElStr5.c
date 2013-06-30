@@ -23,6 +23,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scp_searchElStr5.h"
 #include "sc_memory.h"
 #include "sc_iterator5.h"
+#include "sc_iterator3.h"
 
 scp_result searchElStr5_f_a_a_a_a(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5)
 {
@@ -56,7 +57,21 @@ scp_result searchElStr5_a_a_f_a_a(scp_operand *param1, scp_operand *param2, scp_
     return SCP_FALSE;
 }
 //scp_result searchElStr5_a_a_a_f_a(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5){}
-//scp_result searchElStr5_a_a_a_a_f(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5) {}
+scp_result searchElStr5_a_a_a_a_f(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5)
+{
+    sc_iterator3 *it = sc_iterator3_f_a_a_new(param5->addr, param4->element_type, param2->element_type);
+    if (sc_iterator3_next(it))
+    {
+        param4->addr = sc_iterator3_value(it, 1);
+        param2->addr = sc_iterator3_value(it, 2);
+        sc_memory_get_arc_begin(param2->addr, &(param1->addr));
+        sc_memory_get_arc_end(param2->addr, &(param3->addr));
+        sc_iterator3_free(it);
+        return SCP_TRUE;
+    }
+    sc_iterator3_free(it);
+    return SCP_FALSE;
+}
 
 //scp_result searchElStr5_f_f_a_a_a(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5){}
 scp_result searchElStr5_f_a_f_a_a(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5)

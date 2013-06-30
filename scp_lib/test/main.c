@@ -4,7 +4,7 @@
 #include "sc_memory.h"
 #include "sc_iterator3.h"
 
-void foo()
+/*void foo()
 {
     sc_addr addr1 = sc_memory_node_new(0);
     sc_addr addr2 = sc_memory_node_new(0);
@@ -19,13 +19,13 @@ void foo()
         printf("ELEM FOUND\n");
     }
     sc_iterator3_free(it);
-}
+}*/
 
 int main(void)
 {
     scp_lib_init((sc_char *)"repo", (sc_char *)"test.ini");
-    foo();
-    /*scp_operand param1;
+    //foo();
+    scp_operand param1;
     param1.element_type = scp_type_node | scp_type_const;
     param1.param_type = SCP_ASSIGN;
 
@@ -98,17 +98,16 @@ int main(void)
 
     param1.erase = SCP_ERASE_FALSE;
     param1.param_type = SCP_FIXED;
-    param2.erase = SCP_ERASE_TRUE;
+    param2.erase = SCP_ERASE_FALSE;
     param2.param_type = SCP_ASSIGN;
     param3.erase = SCP_ERASE_TRUE;
-    param3.param_type = SCP_ASSIGN;
+    param3.param_type = SCP_FIXED;
+    param4.erase = SCP_ERASE_FALSE;
+    param4.param_type = SCP_ASSIGN;
+    param5.erase = SCP_ERASE_TRUE;
+    param5.param_type = SCP_FIXED;
+
     eraseElStr3(&param1, &param2, &param3);
-
-    sc_addr addr1;
-    addr1.seg=0;
-    addr1.offset=65530;
-
-    sc_memory_element_free(addr1);
 
     printf("PRINT:\n");
 
@@ -116,7 +115,7 @@ int main(void)
     printEl(&param2);
     printEl(&param3);
     printEl(&param4);
-    printEl(&param5);*/
+    printEl(&param5);
 
     //scp_lib_shutdown();
     return 0;
