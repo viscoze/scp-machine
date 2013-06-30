@@ -27,6 +27,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scp_genElStr5.h"
 #include "scp_eraseElStr3.h"
 #include "scp_eraseElStr5.h"
+#include "scp_eraseSetStr3.h"
 #include "scp_utils.h"
 #include "sc_stream.h"
 #include "sc_helper.h"
@@ -505,6 +506,58 @@ scp_result eraseElStr5(scp_operand *param1, scp_operand *param2, scp_operand *pa
             break;
         default:
             return printError("eraseElStr5", "Unsupported parameter type combination");
+    }
+    return SCP_ERROR;
+}
+
+scp_result eraseSetStr3(scp_operand *param1, scp_operand *param2, scp_operand *param3)
+{
+    int fixed1 = 0;
+    int fixed2 = 0;
+    int fixed3 = 0;
+    int fixed = 0;
+    if (param1->param_type == SCP_FIXED)
+    {
+        if (SC_FALSE == sc_memory_is_element(param1->addr))
+        {
+            return printError("eraseSetStr3", "Parameter 1 has modifier FIXED, but has not value");
+        }
+        fixed1 = 0x1;
+    }
+    if (param2->param_type == SCP_FIXED)
+    {
+        if (SC_FALSE == sc_memory_is_element(param2->addr))
+        {
+            return printError("eraseSetStr3", "Parameter 2 has modifier FIXED, but has not value");
+        }
+        if (SCP_TRUE == checkType(param2->addr, scp_type_node))
+        {
+            return printError("eraseSetStr3", "Parameter 2 is not an arc");
+        }
+        fixed2 = 0x10;
+    }
+    if (param3->param_type == SCP_FIXED)
+    {
+        if (SC_FALSE == sc_memory_is_element(param3->addr))
+        {
+            return printError("eraseSetStr3", "Parameter 3 has modifier FIXED, but has not value");
+        }
+        fixed3 = 0x100;
+    }
+    fixed = (fixed1 | fixed2 | fixed3);
+    switch (fixed)
+    {
+        case 0x001:
+            return eraseSetStr3_f_a_a(param1, param2, param3);
+            break;
+        case 0x100:
+            return eraseSetStr3_a_a_f(param1, param2, param3);
+            break;
+        case 0x101:
+            return eraseSetStr3_f_a_f(param1, param2, param3);
+            break;
+        default:
+            return printError("eraseSetStr3", "Unsupported parameter type combination");
     }
     return SCP_ERROR;
 }

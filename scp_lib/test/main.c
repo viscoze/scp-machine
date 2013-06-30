@@ -96,18 +96,18 @@ int main(void)
         printEl(&param5);
     }
 
-    param1.erase = SCP_ERASE_FALSE;
+    param1.erase = SCP_ERASE_TRUE;
     param1.param_type = SCP_FIXED;
     param2.erase = SCP_ERASE_FALSE;
     param2.param_type = SCP_ASSIGN;
-    param3.erase = SCP_ERASE_TRUE;
-    param3.param_type = SCP_FIXED;
+    param3.erase = SCP_ERASE_FALSE;
+    param3.param_type = SCP_ASSIGN;
     param4.erase = SCP_ERASE_FALSE;
     param4.param_type = SCP_ASSIGN;
     param5.erase = SCP_ERASE_TRUE;
     param5.param_type = SCP_FIXED;
 
-    eraseElStr3(&param1, &param2, &param3);
+    eraseSetStr3(&param1, &param2, &param3);
 
     printf("PRINT:\n");
 

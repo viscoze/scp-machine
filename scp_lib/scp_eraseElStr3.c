@@ -27,13 +27,13 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 scp_result eraseElStr3F(scp_operand *param1, scp_operand *param2, scp_operand *param3)
 {
-    if (param3->erase == SCP_ERASE_TRUE)
-    {
-        sc_memory_element_free(param3->addr);
-    }
     if (param1->erase == SCP_ERASE_TRUE)
     {
         sc_memory_element_free(param1->addr);
+    }
+    if (param3->erase == SCP_ERASE_TRUE)
+    {
+        sc_memory_element_free(param3->addr);
     }
     if (SC_FALSE == sc_memory_is_element(param2->addr) && param2->erase == SCP_ERASE_TRUE)
     {
