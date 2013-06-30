@@ -26,7 +26,8 @@ HEADERS += \
     scp_searchElStr5.h \
     scp_eraseElStr3.h \
     scp_eraseElStr5.h \
-    scp_eraseSetStr3.h
+    scp_eraseSetStr3.h \
+    scp_eraseSetStr5.h
 
 SOURCES += \
     scp_functions.c \
@@ -38,4 +39,5 @@ SOURCES += \
     scp_searchElStr5.c \
     scp_eraseElStr3.c \
     scp_eraseElStr5.c \
-    scp_eraseSetStr3.c
+    scp_eraseSetStr3.c \
+    scp_eraseSetStr5.c

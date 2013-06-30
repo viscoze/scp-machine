@@ -28,6 +28,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scp_eraseElStr3.h"
 #include "scp_eraseElStr5.h"
 #include "scp_eraseSetStr3.h"
+#include "scp_eraseSetStr5.h"
 #include "scp_utils.h"
 #include "sc_stream.h"
 #include "sc_helper.h"
@@ -558,6 +559,92 @@ scp_result eraseSetStr3(scp_operand *param1, scp_operand *param2, scp_operand *p
             break;
         default:
             return printError("eraseSetStr3", "Unsupported parameter type combination");
+    }
+    return SCP_ERROR;
+}
+
+scp_result eraseSetStr5(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5)
+{
+    int fixed1 = 0;
+    int fixed2 = 0;
+    int fixed3 = 0;
+    int fixed4 = 0;
+    int fixed5 = 0;
+    int fixed = 0;
+    if (param1->param_type == SCP_FIXED)
+    {
+        if (SC_FALSE == sc_memory_is_element(param1->addr))
+        {
+            return printError("eraseSetStr5", "Parameter 1 has modifier FIXED, but has not value");
+        }
+        fixed1 = 0x1;
+    }
+    if (param2->param_type == SCP_FIXED)
+    {
+        if (SC_FALSE == sc_memory_is_element(param2->addr))
+        {
+            return printError("eraseSetStr5", "Parameter 2 has modifier FIXED, but has not value");
+        }
+        if (SCP_TRUE == checkType(param2->addr, scp_type_node))
+        {
+            return printError("eraseSetStr5", "Parameter 2 is not an arc");
+        }
+        fixed2 = 0x10;
+    }
+    if (param3->param_type == SCP_FIXED)
+    {
+        if (SC_FALSE == sc_memory_is_element(param3->addr))
+        {
+            return printError("eraseSetStr5", "Parameter 3 has modifier FIXED, but has not value");
+        }
+        fixed3 = 0x100;
+    }
+    if (param4->param_type == SCP_FIXED)
+    {
+        if (SC_FALSE == sc_memory_is_element(param4->addr))
+        {
+            return printError("eraseSetStr5", "Parameter 4 has modifier FIXED, but has not value");
+        }
+        if (SCP_TRUE == checkType(param4->addr, scp_type_node))
+        {
+            return printError("eraseSetStr5", "Parameter 4 is not an arc");
+        }
+        fixed2 = 0x1000;
+    }
+    if (param5->param_type == SCP_FIXED)
+    {
+        if (SC_FALSE == sc_memory_is_element(param5->addr))
+        {
+            return printError("eraseSetStr5", "Parameter 5 has modifier FIXED, but has not value");
+        }
+        fixed3 = 0x10000;
+    }
+    fixed = (fixed1 | fixed2 | fixed3 | fixed4 | fixed5);
+    switch (fixed)
+    {
+        case 0x10101:
+            return eraseSetStr5_f_a_f_a_f(param1, param2, param3, param4, param5);
+            break;
+        case 0x10001:
+            return eraseSetStr5_f_a_a_a_f(param1, param2, param3, param4, param5);
+            break;
+        case 0x00101:
+            return eraseSetStr5_f_a_f_a_a(param1, param2, param3, param4, param5);
+            break;
+        case 0x10100:
+            return eraseSetStr5_a_a_f_a_f(param1, param2, param3, param4, param5);
+            break;
+        case 0x00100:
+            return eraseSetStr5_a_a_f_a_a(param1, param2, param3, param4, param5);
+            break;
+        case 0x00001:
+            return eraseSetStr5_f_a_a_a_a(param1, param2, param3, param4, param5);
+            break;
+        case 0x10000:
+            return eraseSetStr5_a_a_a_a_f(param1, param2, param3, param4, param5);
+            break;
+        default:
+            return printError("eraseSetStr5", "Unsupported parameter type combination");
     }
     return SCP_ERROR;
 }
