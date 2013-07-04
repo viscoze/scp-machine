@@ -216,7 +216,7 @@ scp_result searchElStr3(scp_operand *param1, scp_operand *param2, scp_operand *p
         {
             return printError("searchElStr3", "Parameter 2 has modifier FIXED, but has not value");
         }
-        if (SCP_TRUE == checkType(param2->addr, scp_type_node))
+        if (SCP_TRUE == check_type(param2->addr, scp_type_node))
         {
             return printError("searchElStr3", "Parameter 2 is not an arc");
         }
@@ -287,7 +287,7 @@ scp_result searchElStr5(scp_operand *param1, scp_operand *param2, scp_operand *p
         {
             return printError("searchElStr5", "Parameter 2 has modifier FIXED, but has not value");
         }
-        if (SCP_TRUE == checkType(param2->addr, scp_type_node))
+        if (SCP_TRUE == check_type(param2->addr, scp_type_node))
         {
             return printError("searchElStr5", "Parameter 2 is not an arc");
         }
@@ -307,7 +307,7 @@ scp_result searchElStr5(scp_operand *param1, scp_operand *param2, scp_operand *p
         {
             return printError("searchElStr5", "Parameter 4 has modifier FIXED, but has not value");
         }
-        if (SCP_TRUE == checkType(param4->addr, scp_type_node))
+        if (SCP_TRUE == check_type(param4->addr, scp_type_node))
         {
             return printError("searchElStr5", "Parameter 4 is not an arc");
         }
@@ -393,7 +393,7 @@ scp_result eraseElStr3(scp_operand *param1, scp_operand *param2, scp_operand *pa
         {
             return printError("eraseElStr3", "Parameter 2 has modifier FIXED, but has not value");
         }
-        if (SCP_TRUE == checkType(param2->addr, scp_type_node))
+        if (SCP_TRUE == check_type(param2->addr, scp_type_node))
         {
             return printError("eraseElStr3", "Parameter 2 is not an arc");
         }
@@ -447,7 +447,7 @@ scp_result eraseElStr5(scp_operand *param1, scp_operand *param2, scp_operand *pa
         {
             return printError("eraseElStr5", "Parameter 2 has modifier FIXED, but has not value");
         }
-        if (SCP_TRUE == checkType(param2->addr, scp_type_node))
+        if (SCP_TRUE == check_type(param2->addr, scp_type_node))
         {
             return printError("eraseElStr5", "Parameter 2 is not an arc");
         }
@@ -467,7 +467,7 @@ scp_result eraseElStr5(scp_operand *param1, scp_operand *param2, scp_operand *pa
         {
             return printError("eraseElStr5", "Parameter 4 has modifier FIXED, but has not value");
         }
-        if (SCP_TRUE == checkType(param4->addr, scp_type_node))
+        if (SCP_TRUE == check_type(param4->addr, scp_type_node))
         {
             return printError("eraseElStr5", "Parameter 4 is not an arc");
         }
@@ -531,7 +531,7 @@ scp_result eraseSetStr3(scp_operand *param1, scp_operand *param2, scp_operand *p
         {
             return printError("eraseSetStr3", "Parameter 2 has modifier FIXED, but has not value");
         }
-        if (SCP_TRUE == checkType(param2->addr, scp_type_node))
+        if (SCP_TRUE == check_type(param2->addr, scp_type_node))
         {
             return printError("eraseSetStr3", "Parameter 2 is not an arc");
         }
@@ -585,7 +585,7 @@ scp_result eraseSetStr5(scp_operand *param1, scp_operand *param2, scp_operand *p
         {
             return printError("eraseSetStr5", "Parameter 2 has modifier FIXED, but has not value");
         }
-        if (SCP_TRUE == checkType(param2->addr, scp_type_node))
+        if (SCP_TRUE == check_type(param2->addr, scp_type_node))
         {
             return printError("eraseSetStr5", "Parameter 2 is not an arc");
         }
@@ -605,7 +605,7 @@ scp_result eraseSetStr5(scp_operand *param1, scp_operand *param2, scp_operand *p
         {
             return printError("eraseSetStr5", "Parameter 4 has modifier FIXED, but has not value");
         }
-        if (SCP_TRUE == checkType(param4->addr, scp_type_node))
+        if (SCP_TRUE == check_type(param4->addr, scp_type_node))
         {
             return printError("eraseSetStr5", "Parameter 4 is not an arc");
         }
@@ -679,7 +679,7 @@ scp_result ifType(scp_operand *param)
     {
         return printError("ifType", "Parameter has no value");
     }
-    return checkType(param->addr, param->element_type);
+    return check_type(param->addr, param->element_type);
 }
 
 scp_result printEl(scp_operand *param)
@@ -802,4 +802,41 @@ scp_result printEl(scp_operand *param)
     }
     sc_iterator3_free(it);
     return SCP_TRUE;
+}
+
+scp_result printL(scp_operand *param, sc_bool new_line)
+{
+    sc_stream *stream;
+    sc_uint length = 0, read_length = 0;
+    sc_char *data;
+    if (SC_FALSE == sc_memory_is_element(param->addr))
+    {
+        return printError("print", "Parameter has not value");
+    }
+    if (SCP_FALSE == check_type(param->addr, sc_type_link))
+    {
+        return printError("print", "Parameter is not an sc-link");
+    }
+    sc_memory_get_link_content(param->addr, &stream);
+    sc_stream_get_length(stream, &length);
+    data = calloc(length, sizeof(sc_char));
+    sc_stream_read_data(stream, data, length, &read_length);
+    printf("%s", data);
+    if (SC_TRUE == new_line)
+    {
+        printf("\n");
+    }
+    sc_stream_free(stream);
+    free(data);
+    return SCP_TRUE;
+}
+
+scp_result print(scp_operand *param)
+{
+    return printL(param, SC_FALSE);
+}
+
+scp_result printNl(scp_operand *param)
+{
+    return printL(param, SC_TRUE);
 }

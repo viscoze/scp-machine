@@ -2,6 +2,7 @@
 #include "scp_types.h"
 #include <stdio.h>
 #include "sc_memory.h"
+#include "sc_helper.h"
 #include "sc_iterator3.h"
 
 /*void foo()
@@ -118,5 +119,10 @@ int main(void)
     printEl(&param5);
 
     //scp_lib_shutdown();
+
+    sc_addr link;
+    sc_helper_resolve_system_identifier("link1", &link);
+    param1.addr = link;
+    printNl(&param1);
     return 0;
 }

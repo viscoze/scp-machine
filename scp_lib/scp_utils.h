@@ -24,6 +24,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #define SCP_UTILS_H
 #include "scp_types.h"
 
-scp_result checkType(sc_addr element, sc_type input_type);
+scp_result check_type(sc_addr element, sc_type input_type);
 
 #endif // SCP_UTILS_H

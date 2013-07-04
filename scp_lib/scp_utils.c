@@ -24,7 +24,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "sc_memory.h"
 #include "stdio.h"
 
-scp_result checkType(sc_addr element, sc_type input_type)
+scp_result check_type(sc_addr element, sc_type input_type)
 {
     sc_type type;
     if (SC_RESULT_OK != sc_memory_get_element_type(element, &type))

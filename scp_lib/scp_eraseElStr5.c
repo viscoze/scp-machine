@@ -71,7 +71,8 @@ scp_result eraseElStr5_f_a_a_a_a(scp_operand *param1, scp_operand *param2, scp_o
     sc_iterator5_free(it);
     return SCP_FALSE;
 }
-scp_result eraseElStr5_a_a_f_a_a(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5) {
+scp_result eraseElStr5_a_a_f_a_a(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5)
+{
     sc_iterator5 *it = sc_iterator5_a_a_f_a_a_new(param1->element_type, param2->element_type, param3->addr, param4->element_type, param5->element_type);
     if (sc_iterator5_next(it))
     {
@@ -90,7 +91,8 @@ scp_result eraseElStr5_a_a_f_a_a(scp_operand *param1, scp_operand *param2, scp_o
     sc_iterator5_free(it);
     return SCP_FALSE;
 }
-scp_result eraseElStr5_a_a_a_a_f(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5) {
+scp_result eraseElStr5_a_a_a_a_f(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5)
+{
     sc_iterator3 *it = sc_iterator3_f_a_a_new(param5->addr, param4->element_type, param2->element_type);
     if (sc_iterator3_next(it))
     {
@@ -109,7 +111,8 @@ scp_result eraseElStr5_a_a_a_a_f(scp_operand *param1, scp_operand *param2, scp_o
     sc_iterator3_free(it);
     return SCP_FALSE;
 }
-scp_result eraseElStr5_f_a_f_a_a(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5) {
+scp_result eraseElStr5_f_a_f_a_a(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5)
+{
     sc_iterator5 *it = sc_iterator5_f_a_f_a_a_new(param1->addr, param2->element_type, param3->addr, param4->element_type, param5->element_type);
     if (sc_iterator5_next(it))
     {
@@ -131,7 +134,8 @@ scp_result eraseElStr5_f_a_f_a_a(scp_operand *param1, scp_operand *param2, scp_o
     sc_iterator5_free(it);
     return SCP_FALSE;
 }
-scp_result eraseElStr5_f_a_a_a_f(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5) {
+scp_result eraseElStr5_f_a_a_a_f(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5)
+{
     sc_iterator5 *it = sc_iterator5_f_a_a_a_f_new(param1->addr, param2->element_type, param3->element_type, param4->element_type, param5->addr);
     if (sc_iterator5_next(it))
     {
@@ -153,7 +157,8 @@ scp_result eraseElStr5_f_a_a_a_f(scp_operand *param1, scp_operand *param2, scp_o
     sc_iterator5_free(it);
     return SCP_FALSE;
 }
-scp_result eraseElStr5_a_a_f_a_f(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5) {
+scp_result eraseElStr5_a_a_f_a_f(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5)
+{
     sc_iterator5 *it = sc_iterator5_a_a_f_a_f_new(param1->element_type, param2->element_type, param3->addr, param4->element_type, param5->addr);
     if (sc_iterator5_next(it))
     {
@@ -175,7 +180,8 @@ scp_result eraseElStr5_a_a_f_a_f(scp_operand *param1, scp_operand *param2, scp_o
     sc_iterator5_free(it);
     return SCP_FALSE;
 }
-scp_result eraseElStr5_f_a_f_a_f(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5) {
+scp_result eraseElStr5_f_a_f_a_f(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5)
+{
     sc_iterator5 *it = sc_iterator5_f_a_f_a_f_new(param1->addr, param2->element_type, param3->addr, param4->element_type, param5->addr);
     if (sc_iterator5_next(it))
     {
