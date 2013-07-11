@@ -8,11 +8,20 @@ OBJECTS_DIR = ./obj
 win32 {
     CONFIG += qt console
     LIBS += -L "../../sc-machine/bin" -lsc_memoryd
+
+    INCLUDEPATH += "../glib/include/glib-2.0"
+    INCLUDEPATH += "../glib/lib/glib-2.0/include"
+
+    POST_TARGETDEPS += ../glib/lib/glib-2.0.lib
+    LIBS += ../glib/lib/glib-2.0.lib
 }
 
 
 unix {
     LIBS += -L "../../sc-machine/bin" -lsc_memory
+    CONFIG += link_pkgconfig
+    PKGCONFIG += glib-2.0
+    PKGCONFIG += gmodule-2.0
 }
 
 HEADERS += \
@@ -27,7 +36,8 @@ HEADERS += \
     scp_eraseElStr3.h \
     scp_eraseElStr5.h \
     scp_eraseSetStr3.h \
-    scp_eraseSetStr5.h
+    scp_eraseSetStr5.h \
+    scp_searchIterStr3.h
 
 SOURCES += \
     scp_functions.c \
@@ -40,4 +50,5 @@ SOURCES += \
     scp_eraseElStr3.c \
     scp_eraseElStr5.c \
     scp_eraseSetStr3.c \
-    scp_eraseSetStr5.c
+    scp_eraseSetStr5.c \
+    scp_searchIterStr3.c

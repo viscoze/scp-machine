@@ -80,8 +80,9 @@ scp_result genEl(scp_operand *param)
 
 scp_result genElStr3(scp_operand *param1, scp_operand *param2, scp_operand *param3)
 {
-    sc_bool fixed1 = SC_FALSE;
-    sc_bool fixed3 = SC_FALSE;
+    sc_uint32 fixed1 = 0;
+    sc_uint32 fixed3 = 0;
+    sc_uint32 fixed = 0;
     if (param2->param_type == SCP_FIXED)
     {
         return printError("genElStr3", "Parameter 2 must have ASSIGN modifier");
@@ -92,7 +93,7 @@ scp_result genElStr3(scp_operand *param1, scp_operand *param2, scp_operand *para
         {
             return printError("genElStr3", "Parameter 1 has modifier FIXED, but has not value");
         }
-        fixed1 = SC_TRUE;
+        fixed1 = 0x1;
     }
     if (param3->param_type == SCP_FIXED)
     {
@@ -100,32 +101,31 @@ scp_result genElStr3(scp_operand *param1, scp_operand *param2, scp_operand *para
         {
             return printError("genElStr3", "Parameter 3 has modifier FIXED, but has not value");
         }
-        fixed3 = SC_TRUE;
+        fixed3 = 0x100;
     }
-    if (fixed1 == SC_TRUE && fixed3 == SC_TRUE)
+    fixed = (fixed1 | fixed3);
+    switch (fixed)
     {
-        return genElStr3_f_a_f(param1, param2, param3);
-    }
-    if (fixed1 != SC_TRUE && fixed3 == SC_TRUE)
-    {
-        return genElStr3_a_a_f(param1, param2, param3);
-    }
-    if (fixed1 == SC_TRUE && fixed3 != SC_TRUE)
-    {
-        return genElStr3_f_a_a(param1, param2, param3);
-    }
-    if (fixed1 != SC_TRUE && fixed3 != SC_TRUE)
-    {
-        return genElStr3_a_a_a(param1, param2, param3);
+        case 0x101:
+            return genElStr3_f_a_f(param1, param2, param3);
+        case 0x100:
+            return genElStr3_a_a_f(param1, param2, param3);
+        case 0x001:
+            return genElStr3_f_a_a(param1, param2, param3);
+        case 0x000:
+            return genElStr3_a_a_a(param1, param2, param3);
+        default:
+            return printError("genElStr3", "Unsupported parameter type combination");
     }
     return SCP_ERROR;
 }
 
 scp_result genElStr5(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5)
 {
-    sc_bool fixed1 = SC_FALSE;
-    sc_bool fixed3 = SC_FALSE;
-    sc_bool fixed5 = SC_FALSE;
+    sc_uint32 fixed1 = 0;
+    sc_uint32 fixed3 = 0;
+    sc_uint32 fixed5 = 0;
+    sc_uint32 fixed = 0;
     if (param2->param_type == SCP_FIXED)
     {
         return printError("genElStr5", "Parameter 2 must have ASSIGN modifier");
@@ -140,7 +140,7 @@ scp_result genElStr5(scp_operand *param1, scp_operand *param2, scp_operand *para
         {
             return printError("genElStr5", "Parameter 1 has modifier FIXED, but has not value");
         }
-        fixed1 = SC_TRUE;
+        fixed1 = 0x1;
     }
     if (param3->param_type == SCP_FIXED)
     {
@@ -148,7 +148,7 @@ scp_result genElStr5(scp_operand *param1, scp_operand *param2, scp_operand *para
         {
             return printError("genElStr5", "Parameter 3 has modifier FIXED, but has not value");
         }
-        fixed3 = SC_TRUE;
+        fixed3 = 0x100;
     }
     if (param5->param_type == SCP_FIXED)
     {
@@ -156,48 +156,39 @@ scp_result genElStr5(scp_operand *param1, scp_operand *param2, scp_operand *para
         {
             return printError("genElStr5", "Parameter 5 has modifier FIXED, but has not value");
         }
-        fixed5 = SC_TRUE;
+        fixed5 = 0x10000;
     }
-    if (fixed1 == SC_TRUE && fixed3 == SC_TRUE && fixed5 == SC_TRUE)
+    fixed = (fixed1 | fixed3 | fixed5);
+    switch (fixed)
     {
-        return genElStr5_f_a_f_a_f(param1, param2, param3, param4, param5);
-    }
-    if (fixed1 != SC_TRUE && fixed3 == SC_TRUE && fixed5 == SC_TRUE)
-    {
-        return genElStr5_a_a_f_a_f(param1, param2, param3, param4, param5);
-    }
-    if (fixed1 == SC_TRUE && fixed3 != SC_TRUE && fixed5 == SC_TRUE)
-    {
-        return genElStr5_f_a_a_a_f(param1, param2, param3, param4, param5);
-    }
-    if (fixed1 == SC_TRUE && fixed3 == SC_TRUE && fixed5 != SC_TRUE)
-    {
-        return genElStr5_f_a_f_a_a(param1, param2, param3, param4, param5);
-    }
-    if (fixed1 != SC_TRUE && fixed3 != SC_TRUE && fixed5 == SC_TRUE)
-    {
-        return genElStr5_a_a_a_a_f(param1, param2, param3, param4, param5);
-    }
-    if (fixed1 != SC_TRUE && fixed3 == SC_TRUE && fixed5 != SC_TRUE)
-    {
-        return genElStr5_a_a_f_a_a(param1, param2, param3, param4, param5);
-    }
-    if (fixed1 == SC_TRUE && fixed3 != SC_TRUE && fixed5 != SC_TRUE)
-    {
-        return genElStr5_f_a_a_a_a(param1, param2, param3, param4, param5);
-    }
-    if (fixed1 != SC_TRUE && fixed3 != SC_TRUE && fixed5 != SC_TRUE)
-    {
-        return genElStr5_a_a_a_a_a(param1, param2, param3, param4, param5);
+        case 0x10101:
+            return genElStr5_f_a_f_a_f(param1, param2, param3, param4, param5);
+        case 0x00101:
+            return genElStr5_f_a_f_a_a(param1, param2, param3, param4, param5);
+        case 0x10001:
+            return genElStr5_f_a_a_a_f(param1, param2, param3, param4, param5);
+        case 0x10100:
+            return genElStr5_a_a_f_a_f(param1, param2, param3, param4, param5);
+        case 0x10000:
+            return genElStr5_a_a_a_a_f(param1, param2, param3, param4, param5);
+        case 0x00100:
+            return genElStr5_a_a_f_a_a(param1, param2, param3, param4, param5);
+        case 0x00001:
+            return genElStr5_f_a_a_a_a(param1, param2, param3, param4, param5);
+        case 0x00000:
+            return genElStr5_a_a_a_a_a(param1, param2, param3, param4, param5);
+        default:
+            return printError("genElStr5", "Unsupported parameter type combination");
     }
     return SCP_ERROR;
 }
 
 scp_result searchElStr3(scp_operand *param1, scp_operand *param2, scp_operand *param3)
 {
-    sc_bool fixed1 = SC_FALSE;
-    sc_bool fixed2 = SC_FALSE;
-    sc_bool fixed3 = SC_FALSE;
+    sc_uint32 fixed1 = 0;
+    sc_uint32 fixed2 = 0;
+    sc_uint32 fixed3 = 0;
+    sc_uint32 fixed = 0;
     if (param1->param_type == SCP_ASSIGN && param2->param_type == SCP_ASSIGN && param3->param_type == SCP_ASSIGN)
     {
         return printError("searchElStr3", "At least one operand must have FIXED modifier");
@@ -208,7 +199,7 @@ scp_result searchElStr3(scp_operand *param1, scp_operand *param2, scp_operand *p
         {
             return printError("searchElStr3", "Parameter 1 has modifier FIXED, but has not value");
         }
-        fixed1 = SC_TRUE;
+        fixed1 = 0x1;
     }
     if (param2->param_type == SCP_FIXED)
     {
@@ -220,7 +211,7 @@ scp_result searchElStr3(scp_operand *param1, scp_operand *param2, scp_operand *p
         {
             return printError("searchElStr3", "Parameter 2 is not an arc");
         }
-        fixed2 = SC_TRUE;
+        fixed2 = 0x10;
     }
     if (param3->param_type == SCP_FIXED)
     {
@@ -228,46 +219,39 @@ scp_result searchElStr3(scp_operand *param1, scp_operand *param2, scp_operand *p
         {
             return printError("searchElStr3", "Parameter 3 has modifier FIXED, but has not value");
         }
-        fixed3 = SC_TRUE;
+        fixed3 = 0x100;
     }
-    if (fixed1 == SC_TRUE && fixed2 == SC_TRUE && fixed3 == SC_TRUE)
+    fixed = (fixed1 | fixed2 | fixed3);
+    switch (fixed)
     {
-        return searchElStr3_f_f_f(param1, param2, param3);
+        case 0x001:
+            return searchElStr3_f_a_a(param1, param2, param3);
+        case 0x010:
+            return searchElStr3_a_f_a(param1, param2, param3);
+        case 0x100:
+            return searchElStr3_a_a_f(param1, param2, param3);
+        case 0x011:
+            return searchElStr3_f_f_a(param1, param2, param3);
+        case 0x101:
+            return searchElStr3_f_a_f(param1, param2, param3);
+        case 0x110:
+            return searchElStr3_a_f_f(param1, param2, param3);
+        case 0x111:
+            return searchElStr3_f_f_f(param1, param2, param3);
+        default:
+            return printError("searchElStr3", "Unsupported parameter type combination");
     }
-    if (fixed1 != SC_TRUE && fixed2 == SC_TRUE && fixed3 == SC_TRUE)
-    {
-        return searchElStr3_a_f_f(param1, param2, param3);
-    }
-    if (fixed1 != SC_TRUE && fixed2 != SC_TRUE && fixed3 == SC_TRUE)
-    {
-        return searchElStr3_a_a_f(param1, param2, param3);
-    }
-    if (fixed1 != SC_TRUE && fixed2 == SC_TRUE && fixed3 != SC_TRUE)
-    {
-        return searchElStr3_a_f_a(param1, param2, param3);
-    }
-    if (fixed1 == SC_TRUE && fixed2 != SC_TRUE && fixed3 != SC_TRUE)
-    {
-        return searchElStr3_f_a_a(param1, param2, param3);
-    }
-    if (fixed1 == SC_TRUE && fixed2 == SC_TRUE && fixed3 != SC_TRUE)
-    {
-        return searchElStr3_f_f_a(param1, param2, param3);
-    }
-    if (fixed1 == SC_TRUE && fixed2 != SC_TRUE && fixed3 == SC_TRUE)
-    {
-        return searchElStr3_f_a_f(param1, param2, param3);
-    }
+
     return SCP_ERROR;
 }
 
 scp_result searchElStr5(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5)
 {
-    int fixed1 = 0;
-    int fixed2 = 0;
-    int fixed3 = 0;
-    int fixed4 = 0;
-    int fixed5 = 0;
+    sc_uint32 fixed1 = 0;
+    sc_uint32 fixed2 = 0;
+    sc_uint32 fixed3 = 0;
+    sc_uint32 fixed4 = 0;
+    sc_uint32 fixed5 = 0;
     long fixed = 0;
     if (param1->param_type == SCP_ASSIGN && param2->param_type == SCP_ASSIGN && param3->param_type == SCP_ASSIGN && param4->param_type == SCP_ASSIGN && param5->param_type == SCP_ASSIGN)
     {
@@ -326,28 +310,20 @@ scp_result searchElStr5(scp_operand *param1, scp_operand *param2, scp_operand *p
     {
         case 0x11111:
             return searchElStr5_f_f_f_f_f(param1, param2, param3, param4, param5);
-            break;
         case 0x10101:
             return searchElStr5_f_a_f_a_f(param1, param2, param3, param4, param5);
-            break;
         case 0x10001:
             return searchElStr5_f_a_a_a_f(param1, param2, param3, param4, param5);
-            break;
         case 0x00101:
             return searchElStr5_f_a_f_a_a(param1, param2, param3, param4, param5);
-            break;
         case 0x10100:
             return searchElStr5_a_a_f_a_f(param1, param2, param3, param4, param5);
-            break;
         case 0x00100:
             return searchElStr5_a_a_f_a_a(param1, param2, param3, param4, param5);
-            break;
         case 0x00001:
             return searchElStr5_f_a_a_a_a(param1, param2, param3, param4, param5);
-            break;
         case 0x10000:
             return searchElStr5_a_a_a_a_f(param1, param2, param3, param4, param5);
-            break;
         default:
             return printError("searchElStr5", "Unsupported parameter type combination");
     }
@@ -375,10 +351,10 @@ scp_result eraseEl(scp_operand *param)
 
 scp_result eraseElStr3(scp_operand *param1, scp_operand *param2, scp_operand *param3)
 {
-    int fixed1 = 0;
-    int fixed2 = 0;
-    int fixed3 = 0;
-    int fixed = 0;
+    sc_uint32 fixed1 = 0;
+    sc_uint32 fixed2 = 0;
+    sc_uint32 fixed3 = 0;
+    sc_uint32 fixed = 0;
     if (param1->param_type == SCP_FIXED)
     {
         if (SC_FALSE == sc_memory_is_element(param1->addr))
@@ -412,13 +388,10 @@ scp_result eraseElStr3(scp_operand *param1, scp_operand *param2, scp_operand *pa
     {
         case 0x001:
             return eraseElStr3_f_a_a(param1, param2, param3);
-            break;
         case 0x100:
             return eraseElStr3_a_a_f(param1, param2, param3);
-            break;
         case 0x101:
             return eraseElStr3_f_a_f(param1, param2, param3);
-            break;
         default:
             return printError("eraseElStr3", "Unsupported parameter type combination");
     }
@@ -427,12 +400,12 @@ scp_result eraseElStr3(scp_operand *param1, scp_operand *param2, scp_operand *pa
 
 scp_result eraseElStr5(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5)
 {
-    int fixed1 = 0;
-    int fixed2 = 0;
-    int fixed3 = 0;
-    int fixed4 = 0;
-    int fixed5 = 0;
-    int fixed = 0;
+    sc_uint32 fixed1 = 0;
+    sc_uint32 fixed2 = 0;
+    sc_uint32 fixed3 = 0;
+    sc_uint32 fixed4 = 0;
+    sc_uint32 fixed5 = 0;
+    sc_uint32 fixed = 0;
     if (param1->param_type == SCP_FIXED)
     {
         if (SC_FALSE == sc_memory_is_element(param1->addr))
@@ -486,25 +459,18 @@ scp_result eraseElStr5(scp_operand *param1, scp_operand *param2, scp_operand *pa
     {
         case 0x10101:
             return eraseElStr5_f_a_f_a_f(param1, param2, param3, param4, param5);
-            break;
         case 0x10001:
             return eraseElStr5_f_a_a_a_f(param1, param2, param3, param4, param5);
-            break;
         case 0x00101:
             return eraseElStr5_f_a_f_a_a(param1, param2, param3, param4, param5);
-            break;
         case 0x10100:
             return eraseElStr5_a_a_f_a_f(param1, param2, param3, param4, param5);
-            break;
         case 0x00100:
             return eraseElStr5_a_a_f_a_a(param1, param2, param3, param4, param5);
-            break;
         case 0x00001:
             return eraseElStr5_f_a_a_a_a(param1, param2, param3, param4, param5);
-            break;
         case 0x10000:
             return eraseElStr5_a_a_a_a_f(param1, param2, param3, param4, param5);
-            break;
         default:
             return printError("eraseElStr5", "Unsupported parameter type combination");
     }
@@ -513,10 +479,10 @@ scp_result eraseElStr5(scp_operand *param1, scp_operand *param2, scp_operand *pa
 
 scp_result eraseSetStr3(scp_operand *param1, scp_operand *param2, scp_operand *param3)
 {
-    int fixed1 = 0;
-    int fixed2 = 0;
-    int fixed3 = 0;
-    int fixed = 0;
+    sc_uint32 fixed1 = 0;
+    sc_uint32 fixed2 = 0;
+    sc_uint32 fixed3 = 0;
+    sc_uint32 fixed = 0;
     if (param1->param_type == SCP_FIXED)
     {
         if (SC_FALSE == sc_memory_is_element(param1->addr))
@@ -550,13 +516,10 @@ scp_result eraseSetStr3(scp_operand *param1, scp_operand *param2, scp_operand *p
     {
         case 0x001:
             return eraseSetStr3_f_a_a(param1, param2, param3);
-            break;
         case 0x100:
             return eraseSetStr3_a_a_f(param1, param2, param3);
-            break;
         case 0x101:
             return eraseSetStr3_f_a_f(param1, param2, param3);
-            break;
         default:
             return printError("eraseSetStr3", "Unsupported parameter type combination");
     }
@@ -565,12 +528,12 @@ scp_result eraseSetStr3(scp_operand *param1, scp_operand *param2, scp_operand *p
 
 scp_result eraseSetStr5(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5)
 {
-    int fixed1 = 0;
-    int fixed2 = 0;
-    int fixed3 = 0;
-    int fixed4 = 0;
-    int fixed5 = 0;
-    int fixed = 0;
+    sc_uint32 fixed1 = 0;
+    sc_uint32 fixed2 = 0;
+    sc_uint32 fixed3 = 0;
+    sc_uint32 fixed4 = 0;
+    sc_uint32 fixed5 = 0;
+    sc_uint32 fixed = 0;
     if (param1->param_type == SCP_FIXED)
     {
         if (SC_FALSE == sc_memory_is_element(param1->addr))
@@ -624,25 +587,18 @@ scp_result eraseSetStr5(scp_operand *param1, scp_operand *param2, scp_operand *p
     {
         case 0x10101:
             return eraseSetStr5_f_a_f_a_f(param1, param2, param3, param4, param5);
-            break;
         case 0x10001:
             return eraseSetStr5_f_a_a_a_f(param1, param2, param3, param4, param5);
-            break;
         case 0x00101:
             return eraseSetStr5_f_a_f_a_a(param1, param2, param3, param4, param5);
-            break;
         case 0x10100:
             return eraseSetStr5_a_a_f_a_f(param1, param2, param3, param4, param5);
-            break;
         case 0x00100:
             return eraseSetStr5_a_a_f_a_a(param1, param2, param3, param4, param5);
-            break;
         case 0x00001:
             return eraseSetStr5_f_a_a_a_a(param1, param2, param3, param4, param5);
-            break;
         case 0x10000:
             return eraseSetStr5_a_a_a_a_f(param1, param2, param3, param4, param5);
-            break;
         default:
             return printError("eraseSetStr5", "Unsupported parameter type combination");
     }
@@ -695,7 +651,7 @@ scp_result printEl(scp_operand *param)
     if (SC_RESULT_OK == sc_helper_get_system_identifier(element, &idtf))
     {
         sc_stream *stream;
-        sc_uint length = 0, read_length = 0;
+        sc_uint32 length = 0, read_length = 0;
         sc_char *data = calloc(length, sizeof(sc_char));
         sc_memory_get_link_content(idtf, &stream);
         sc_stream_get_length(stream, &length);
@@ -723,7 +679,7 @@ scp_result printEl(scp_operand *param)
         if (SC_RESULT_OK == sc_helper_get_system_identifier(addr3, &idtf))
         {
             sc_stream *stream;
-            sc_uint length = 0, read_length = 0;
+            sc_uint32 length = 0, read_length = 0;
             sc_char *data = calloc(length, sizeof(sc_char));
             sc_memory_get_link_content(idtf, &stream);
             sc_stream_get_length(stream, &length);
@@ -739,7 +695,7 @@ scp_result printEl(scp_operand *param)
         if (SC_RESULT_OK == sc_helper_get_system_identifier(addr2, &idtf))
         {
             sc_stream *stream;
-            sc_uint length = 0, read_length = 0;
+            sc_uint32 length = 0, read_length = 0;
             sc_char *data = calloc(length, sizeof(sc_char));
             sc_memory_get_link_content(idtf, &stream);
             sc_stream_get_length(stream, &length);
@@ -769,7 +725,7 @@ scp_result printEl(scp_operand *param)
         if (SC_RESULT_OK == sc_helper_get_system_identifier(addr2, &idtf))
         {
             sc_stream *stream;
-            sc_uint length = 0, read_length = 0;
+            sc_uint32 length = 0, read_length = 0;
             sc_char *data = calloc(length, sizeof(sc_char));
             sc_memory_get_link_content(idtf, &stream);
             sc_stream_get_length(stream, &length);
@@ -785,7 +741,7 @@ scp_result printEl(scp_operand *param)
         if (SC_RESULT_OK == sc_helper_get_system_identifier(addr3, &idtf))
         {
             sc_stream *stream;
-            sc_uint length = 0, read_length = 0;
+            sc_uint32 length = 0, read_length = 0;
             sc_char *data;
             sc_memory_get_link_content(idtf, &stream);
             sc_stream_get_length(stream, &length);
@@ -807,7 +763,7 @@ scp_result printEl(scp_operand *param)
 scp_result printL(scp_operand *param, sc_bool new_line)
 {
     sc_stream *stream;
-    sc_uint length = 0, read_length = 0;
+    sc_uint32 length = 0, read_length = 0;
     sc_char *data;
     if (SC_FALSE == sc_memory_is_element(param->addr))
     {
@@ -839,4 +795,20 @@ scp_result print(scp_operand *param)
 scp_result printNl(scp_operand *param)
 {
     return printL(param, SC_TRUE);
+}
+
+scp_result varAssign(scp_operand *param1, scp_operand *param2)
+{
+    if (SCP_FIXED==param1->param_type){
+        return printError("varAssign", "Parameter 1 must have ASSIGN modifier");
+    }
+    if (SCP_ASSIGN==param2->param_type){
+        return printError("varAssign", "Parameter 2 must have FIXED modifier");
+    }
+    if (SC_FALSE == sc_memory_is_element(param2->addr))
+    {
+        return printError("varAssign", "Parameter 2 has not value");
+    }
+    param1->addr=param2->addr;
+    return SCP_TRUE;
 }

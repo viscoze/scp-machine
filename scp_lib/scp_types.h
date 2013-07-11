@@ -52,8 +52,8 @@ enum _scp_erase
 
 typedef enum _scp_erase scp_erase;
 
-
 typedef sc_uint16 scp_type;
+typedef sc_uint32 scp_uint32;
 
 // scp-element types
 extern scp_type scp_type_node;
