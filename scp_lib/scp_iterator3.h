@@ -20,11 +20,14 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-#ifndef SCP_UTILS_H
-#define SCP_UTILS_H
+#ifndef SCP_ITERATOR3_H
+#define SCP_ITERATOR3_H
 #include "scp_types.h"
 
-scp_result check_type(sc_addr element, sc_type input_type);
-scp_result printError(const char *operator_name, const char *text);
+typedef sc_iterator3 scp_iterator3;
 
-#endif // SCP_UTILS_H
+scp_iterator3* scp_iterator3_new(scp_operand *param1, scp_operand *param2, scp_operand *param3);
+scp_result scp_iterator3_next(scp_iterator3 *iter, scp_operand *param1, scp_operand *param2, scp_operand *param3);
+void scp_iterator3_free(scp_iterator3 *iter);
+
+#endif // SCP_ITERATOR3_H

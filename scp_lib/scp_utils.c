@@ -42,3 +42,10 @@ scp_result check_type(sc_addr element, sc_type input_type)
     return SCP_ERROR;
 }
 
+scp_result printError(const char *operator_name, const char *text)
+{
+    printf("\nSCP LIBRARY ERROR: %s : %s\n", operator_name, text);
+    return SCP_ERROR;
+}
+
+

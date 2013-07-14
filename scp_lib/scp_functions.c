@@ -37,12 +37,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <stdio.h>
 #include <malloc.h>
 
-scp_result printError(const char *operator_name, const char *text)
-{
-    printf("\nSCP LIBRARY ERROR: %s : %s\n", operator_name, text);
-    return SCP_ERROR;
-}
-
 scp_result scp_lib_init(const sc_char *repo_path, const sc_char *config_file)
 {
     if (sc_memory_initialize(repo_path, config_file) == SC_FALSE)
@@ -252,7 +246,7 @@ scp_result searchElStr5(scp_operand *param1, scp_operand *param2, scp_operand *p
     sc_uint32 fixed3 = 0;
     sc_uint32 fixed4 = 0;
     sc_uint32 fixed5 = 0;
-    long fixed = 0;
+    sc_uint32 fixed = 0;
     if (param1->param_type == SCP_ASSIGN && param2->param_type == SCP_ASSIGN && param3->param_type == SCP_ASSIGN && param4->param_type == SCP_ASSIGN && param5->param_type == SCP_ASSIGN)
     {
         return printError("searchElStr5", "At least one operand must have FIXED modifier");
@@ -799,16 +793,35 @@ scp_result printNl(scp_operand *param)
 
 scp_result varAssign(scp_operand *param1, scp_operand *param2)
 {
-    if (SCP_FIXED==param1->param_type){
+    if (SCP_FIXED == param1->param_type)
+    {
         return printError("varAssign", "Parameter 1 must have ASSIGN modifier");
     }
-    if (SCP_ASSIGN==param2->param_type){
+    if (SCP_ASSIGN == param2->param_type)
+    {
         return printError("varAssign", "Parameter 2 must have FIXED modifier");
     }
     if (SC_FALSE == sc_memory_is_element(param2->addr))
     {
         return printError("varAssign", "Parameter 2 has not value");
     }
-    param1->addr=param2->addr;
+    param1->addr = param2->addr;
     return SCP_TRUE;
+}
+
+scp_result ifFormCont(scp_operand *param)
+{
+    if (SCP_ASSIGN == param->param_type)
+    {
+        return printError("ifFormCont", "Parameter must have FIXED modifier");
+    }
+    if (SC_FALSE == sc_memory_is_element(param->addr))
+    {
+        return printError("ifFormCont", "Parameter has not value");
+    }
+    if (check_type(param->addr, scp_type_link) == SCP_FALSE)
+    {
+        return printError("ifFormCont", "Parameter must have link type");
+    }
+    return SCP_ERROR;
 }

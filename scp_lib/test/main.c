@@ -2,8 +2,11 @@
 #include "scp_types.h"
 #include <stdio.h>
 #include "sc_memory.h"
+#include "malloc.h"
+#include "sc_stream.h"
 #include "sc_helper.h"
-#include "sc_iterator3.h"
+#include "scp_iterator3.h"
+#include "scp_iterator5.h"
 
 /*void foo()
 {
@@ -22,10 +25,77 @@
     sc_iterator3_free(it);
 }*/
 
+
+void foo1()
+{
+    sc_stream *stream;
+    sc_addr link = sc_memory_node_new(sc_type_link);
+    sc_result res = sc_memory_get_link_content(link, &stream);
+    printf("RES=%d\n", res);
+    sc_stream_free(stream);
+}
+
+void iterator3_test()
+{
+    scp_operand param1;
+    sc_helper_resolve_system_identifier("iter_test", &(param1.addr));
+    param1.element_type = scp_type_node | scp_type_const;
+    param1.param_type = SCP_FIXED;
+
+    scp_operand param2;
+    param2.element_type = scp_type_const;
+    param2.param_type = SCP_ASSIGN;
+
+    scp_operand param3;
+    param3.element_type = scp_type_const;
+    sc_helper_resolve_system_identifier("node1", &(param3.addr));
+    param3.param_type = SCP_FIXED;
+
+    scp_iterator3 *it = scp_iterator3_new(&param1, &param2, &param3);
+    param3.param_type = SCP_ASSIGN;
+    while (scp_iterator3_next(it, &param1, &param2, &param3) == SCP_TRUE)
+    {
+        printEl(&param2);
+    }
+    scp_iterator3_free(it);
+}
+
+void iterator5_test()
+{
+    scp_operand param1;
+    sc_helper_resolve_system_identifier("iter_test", &(param1.addr));
+    param1.element_type = scp_type_node | scp_type_const;
+    param1.param_type = SCP_FIXED;
+
+    scp_operand param2;
+    param2.element_type = scp_type_const;
+    param2.param_type = SCP_ASSIGN;
+
+    scp_operand param3;
+    param3.element_type = scp_type_const;
+    param3.param_type = SCP_ASSIGN;
+
+    scp_operand param4;
+    param4.element_type = scp_type_const;
+    param4.param_type = SCP_ASSIGN;
+
+    scp_operand param5;
+    param5.element_type = scp_type_const;
+    param5.param_type = SCP_ASSIGN;
+
+    scp_iterator5 *it = scp_iterator5_new(&param1, &param2, &param3, &param4, &param5);
+    while (scp_iterator5_next(it, &param1, &param2, &param3, &param4, &param5) == SCP_TRUE)
+    {
+        printEl(&param5);
+    }
+    scp_iterator5_free(it);
+}
+
 int main(void)
 {
     scp_lib_init((sc_char *)"repo", (sc_char *)"test.ini");
-    //foo();
+    iterator5_test();
+    return 0;
     scp_operand param1;
     param1.element_type = scp_type_node | scp_type_const;
     param1.param_type = SCP_ASSIGN;
