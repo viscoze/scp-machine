@@ -32,14 +32,14 @@ scp_iterator3 *scp_iterator3_new(scp_operand *param1, scp_operand *param2, scp_o
     sc_uint32 fixed = 0;
     if (param2->param_type == SCP_FIXED)
     {
-        printError("SCP ITERATOR 3 NEW", "Parameter 2 must have ASSIGN modifier");
+        print_error("SCP ITERATOR 3 NEW", "Parameter 2 must have ASSIGN modifier");
         return nullptr;                ;
     }
     if (param1->param_type == SCP_FIXED)
     {
         if (SC_FALSE == sc_memory_is_element(param1->addr))
         {
-            printError("SCP ITERATOR 3 NEW", "Parameter 1 has modifier FIXED, but has not value");
+            print_error("SCP ITERATOR 3 NEW", "Parameter 1 has modifier FIXED, but has not value");
             return nullptr;
         }
         fixed1 = 0x1;
@@ -48,7 +48,7 @@ scp_iterator3 *scp_iterator3_new(scp_operand *param1, scp_operand *param2, scp_o
     {
         if (SC_FALSE == sc_memory_is_element(param3->addr))
         {
-            printError("SCP ITERATOR 3 NEW", "Parameter 3 has modifier FIXED, but has not value");
+            print_error("SCP ITERATOR 3 NEW", "Parameter 3 has modifier FIXED, but has not value");
             return nullptr;
         }
         fixed3 = 0x100;
@@ -63,7 +63,7 @@ scp_iterator3 *scp_iterator3_new(scp_operand *param1, scp_operand *param2, scp_o
         case 0x101:
             return (scp_iterator3 *)sc_iterator3_f_a_f_new(param1->addr, param2->element_type, param3->addr);
         default:
-            printError("SCP ITERATOR 3 NEW", "Unsupported parameter type combination");
+            print_error("SCP ITERATOR 3 NEW", "Unsupported parameter type combination");
             return nullptr;
     }
     return nullptr;
@@ -77,13 +77,13 @@ scp_result scp_iterator3_next(scp_iterator3 *iter, scp_operand *param1, scp_oper
     sc_uint32 fixed = 0;
     if (param2->param_type == SCP_FIXED)
     {
-        return printError("SCP ITERATOR 3 NEXT", "Parameter 2 must have ASSIGN modifier");
+        return print_error("SCP ITERATOR 3 NEXT", "Parameter 2 must have ASSIGN modifier");
     }
     if (param1->param_type == SCP_FIXED)
     {
         if (SC_FALSE == sc_memory_is_element(param1->addr))
         {
-            return printError("SCP ITERATOR 3 NEXT", "Parameter 1 has modifier FIXED, but has not value");
+            return print_error("SCP ITERATOR 3 NEXT", "Parameter 1 has modifier FIXED, but has not value");
         }
         fixed1 = 0x1;
     }
@@ -91,7 +91,7 @@ scp_result scp_iterator3_next(scp_iterator3 *iter, scp_operand *param1, scp_oper
     {
         if (SC_FALSE == sc_memory_is_element(param3->addr))
         {
-            return printError("SCP ITERATOR 3 NEXT", "Parameter 3 has modifier FIXED, but has not value");
+            return print_error("SCP ITERATOR 3 NEXT", "Parameter 3 has modifier FIXED, but has not value");
         }
         fixed3 = 0x100;
     }
@@ -101,7 +101,7 @@ scp_result scp_iterator3_next(scp_iterator3 *iter, scp_operand *param1, scp_oper
         case 0x001:
             if (iter->type != sc_iterator3_f_a_a)
             {
-                return printError("SCP ITERATOR 3 NEXT", "Iterator type and parameter type combination doesn't match");
+                return print_error("SCP ITERATOR 3 NEXT", "Iterator type and parameter type combination doesn't match");
             }
             else
             {
@@ -119,7 +119,7 @@ scp_result scp_iterator3_next(scp_iterator3 *iter, scp_operand *param1, scp_oper
         case 0x100:
             if (iter->type != sc_iterator3_a_a_f)
             {
-                return printError("SCP ITERATOR 3 NEXT", "Iterator type and parameter type combination doesn't match");
+                return print_error("SCP ITERATOR 3 NEXT", "Iterator type and parameter type combination doesn't match");
             }
             else
             {
@@ -137,7 +137,7 @@ scp_result scp_iterator3_next(scp_iterator3 *iter, scp_operand *param1, scp_oper
         case 0x101:
             if (iter->type != sc_iterator3_f_a_f)
             {
-                return printError("SCP ITERATOR 3 NEXT", "Iterator type and parameter type combination doesn't match");
+                return print_error("SCP ITERATOR 3 NEXT", "Iterator type and parameter type combination doesn't match");
             }
             else
             {
@@ -152,7 +152,7 @@ scp_result scp_iterator3_next(scp_iterator3 *iter, scp_operand *param1, scp_oper
                 }
             }
         default:
-            return printError("SCP ITERATOR 3 NEXT", "Unsupported parameter type combination");
+            return print_error("SCP ITERATOR 3 NEXT", "Unsupported parameter type combination");
     }
     return SCP_ERROR;
 }

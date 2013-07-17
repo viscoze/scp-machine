@@ -10,24 +10,26 @@ extern "C"
 #include <termios.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <malloc.h>
 
-int getch() {
+int getch()
+{
     struct termios oldt,
             newt;
     int ch;
-    tcgetattr( STDIN_FILENO, &oldt );
+    tcgetattr(STDIN_FILENO, &oldt);
     newt = oldt;
-    newt.c_lflag &= ~( ICANON | ECHO );
-    tcsetattr( STDIN_FILENO, TCSANOW, &newt );
+    newt.c_lflag &= ~(ICANON | ECHO);
+    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
     ch = getchar();
-    tcsetattr( STDIN_FILENO, TCSANOW, &oldt );
+    tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
     return ch;
 }
 
 sc_result create_temp_question1()
 {
     sc_addr node;
-    sc_addr class_question_initiated,class_question_private;
+    sc_addr class_question_initiated, class_question_private;
 
     if (sc_helper_resolve_system_identifier("class_question_initiated", &class_question_initiated) == SC_FALSE)
         return SC_RESULT_ERROR;
@@ -36,16 +38,16 @@ sc_result create_temp_question1()
     if (sc_helper_resolve_system_identifier("node01", &node) == SC_FALSE)
         return SC_RESULT_ERROR;
 
-    sc_addr quest=sc_memory_node_new(0);
-    sc_memory_arc_new(sc_type_arc_pos_const_perm,class_question_private,quest);
-    sc_memory_arc_new(sc_type_arc_pos_const_perm,quest,node);
-    sc_memory_arc_new(sc_type_arc_pos_const_perm,class_question_initiated,quest);
+    sc_addr quest = sc_memory_node_new(0);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm, class_question_private, quest);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm, quest, node);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm, class_question_initiated, quest);
 
     sleep(2);
 
     sc_addr answer;
 
-    search_question_answer(quest,&answer);
+    search_question_answer(quest, &answer);
 
     print_element(answer);
 
@@ -55,7 +57,7 @@ sc_result create_temp_question1()
 sc_result create_temp_question2()
 {
     sc_addr node;
-    sc_addr class_question_initiated,class_question_private;
+    sc_addr class_question_initiated, class_question_private;
 
     if (sc_helper_resolve_system_identifier("class_question_initiated", &class_question_initiated) == SC_FALSE)
         return SC_RESULT_ERROR;
@@ -64,16 +66,16 @@ sc_result create_temp_question2()
     if (sc_helper_resolve_system_identifier("node01", &node) == SC_FALSE)
         return SC_RESULT_ERROR;
 
-    sc_addr quest=sc_memory_node_new(0);
-    sc_memory_arc_new(sc_type_arc_pos_const_perm,class_question_private,quest);
-    sc_memory_arc_new(sc_type_arc_pos_const_perm,quest,node);
-    sc_memory_arc_new(sc_type_arc_pos_const_perm,class_question_initiated,quest);
+    sc_addr quest = sc_memory_node_new(0);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm, class_question_private, quest);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm, quest, node);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm, class_question_initiated, quest);
 
     sleep(2);
 
     sc_addr answer;
 
-    search_question_answer(quest,&answer);
+    search_question_answer(quest, &answer);
 
     print_element(answer);
 
@@ -83,7 +85,7 @@ sc_result create_temp_question2()
 sc_result create_temp_question3()
 {
     sc_addr node;
-    sc_addr class_question_initiated,class_question_private;
+    sc_addr class_question_initiated, class_question_private;
 
     if (sc_helper_resolve_system_identifier("class_question_initiated", &class_question_initiated) == SC_FALSE)
         return SC_RESULT_ERROR;
@@ -92,16 +94,16 @@ sc_result create_temp_question3()
     if (sc_helper_resolve_system_identifier("node01", &node) == SC_FALSE)
         return SC_RESULT_ERROR;
 
-    sc_addr quest=sc_memory_node_new(0);
-    sc_memory_arc_new(sc_type_arc_pos_const_perm,class_question_private,quest);
-    sc_memory_arc_new(sc_type_arc_pos_const_perm,quest,node);
-    sc_memory_arc_new(sc_type_arc_pos_const_perm,class_question_initiated,quest);
+    sc_addr quest = sc_memory_node_new(0);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm, class_question_private, quest);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm, quest, node);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm, class_question_initiated, quest);
 
     sleep(2);
 
     sc_addr answer;
 
-    search_question_answer(quest,&answer);
+    search_question_answer(quest, &answer);
 
     print_element(answer);
 
@@ -111,7 +113,7 @@ sc_result create_temp_question3()
 sc_result create_temp_question4()
 {
     sc_addr node;
-    sc_addr class_question_initiated,class_question_private;
+    sc_addr class_question_initiated, class_question_private;
 
     if (sc_helper_resolve_system_identifier("question_initiated", &class_question_initiated) == SC_FALSE)
         return SC_RESULT_ERROR;
@@ -120,16 +122,16 @@ sc_result create_temp_question4()
     if (sc_helper_resolve_system_identifier("node21", &node) == SC_FALSE)
         return SC_RESULT_ERROR;
 
-    sc_addr quest=sc_memory_node_new(0);
-    sc_memory_arc_new(sc_type_arc_pos_const_perm,class_question_private,quest);
-    sc_memory_arc_new(sc_type_arc_pos_const_perm,quest,node);
-    sc_memory_arc_new(sc_type_arc_pos_const_perm,class_question_initiated,quest);
+    sc_addr quest = sc_memory_node_new(0);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm, class_question_private, quest);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm, quest, node);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm, class_question_initiated, quest);
 
     sleep(2);
 
     sc_addr answer;
 
-    search_question_answer(quest,&answer);
+    search_question_answer(quest, &answer);
 
     print_element(answer);
 
@@ -139,7 +141,7 @@ sc_result create_temp_question4()
 sc_result create_temp_question5()
 {
     sc_addr node;
-    sc_addr class_question_initiated,class_question_private;
+    sc_addr class_question_initiated, class_question_private;
 
     if (sc_helper_resolve_system_identifier("question_initiated", &class_question_initiated) == SC_FALSE)
         return SC_RESULT_ERROR;
@@ -148,16 +150,16 @@ sc_result create_temp_question5()
     if (sc_helper_resolve_system_identifier("node21", &node) == SC_FALSE)
         return SC_RESULT_ERROR;
 
-    sc_addr quest=sc_memory_node_new(0);
-    sc_memory_arc_new(sc_type_arc_pos_const_perm,class_question_private,quest);
-    sc_memory_arc_new(sc_type_arc_pos_const_perm,quest,node);
-    sc_memory_arc_new(sc_type_arc_pos_const_perm,class_question_initiated,quest);
+    sc_addr quest = sc_memory_node_new(0);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm, class_question_private, quest);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm, quest, node);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm, class_question_initiated, quest);
 
     sleep(2);
 
     sc_addr answer;
 
-    search_question_answer(quest,&answer);
+    search_question_answer(quest, &answer);
 
     print_element(answer);
 
@@ -172,8 +174,8 @@ sc_result create_temp_question_garbage1()
         return SC_RESULT_ERROR;
 
     sc_addr node69;
-    node69.seg=0;
-    node69.offset=69;
+    node69.seg = 0;
+    node69.offset = 69;
     print_element(node69);
     //sc_addr quest=sc_memory_node_new(0);
     //sc_memory_arc_new(sc_type_arc_pos_const_perm,question_unuseful,quest);
@@ -188,7 +190,7 @@ sc_result create_temp_question_garbage1()
 
     print_element(pattern);
 
-    sc_memory_arc_new(sc_type_arc_pos_const_perm,question_unuseful,temp);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm, question_unuseful, temp);
 
     sleep(2);
 
@@ -197,7 +199,8 @@ sc_result create_temp_question_garbage1()
     return SC_RESULT_OK;
 }
 
-sc_result test_sys_search(){
+sc_result test_sys_search()
+{
 
     //sc_addr start2;
     /*if (sc_helper_resolve_system_identifier("start2", &start2) == SC_FALSE)
@@ -229,12 +232,13 @@ sc_result test_sys_search(){
     sc_type_result params;
     sc_type_result_vector results;
 
-    system_sys_search(pattern,params,&results);
+    system_sys_search(pattern, params, &results);
 
     return SC_RESULT_OK;
 }
 
-sc_result test_sys_gen(){
+sc_result test_sys_gen()
+{
 
     sc_addr pattern;
     /*if (sc_helper_resolve_system_identifier("start2", &pattern) == SC_FALSE)
@@ -249,31 +253,57 @@ sc_result test_sys_gen(){
     sc_type_result_vector results;
     sc_type_result result;
 
-    sc_addr addr1,addr2;
-    addr1.seg=addr2.seg=0;
-    addr1.offset=153;
-    addr2.offset=222;
+    sc_addr addr1, addr2;
+    addr1.seg = addr2.seg = 0;
+    addr1.offset = 153;
+    addr2.offset = 222;
     //params.insert(sc_addr_pair(addr1,addr2));
 
     sc_addr_vector vars;
     vars.push_back(addr1);
 
-    system_sys_gen_for_variables(pattern,params,vars,&result);
+    system_sys_gen_for_variables(pattern, params, vars, &result);
 
     return SC_RESULT_OK;
 }
 
+void temp()
+{
+    sc_addr link;
+    sc_char* data0="Minsk";
+    sc_char* data;
+    sc_uint32 buf_len,read_len;
+    sc_stream *stream;
+
+    link=sc_memory_node_new(sc_type_link);
+
+    stream=sc_stream_memory_new(data0,6,SC_STREAM_READ,SC_FALSE);
+    sc_memory_set_link_content(link,stream);
+    sc_stream_free(stream);
+
+    sc_memory_get_link_content(link,&stream);
+
+    sc_stream_get_length(stream,&buf_len);
+    data=(sc_char*)calloc(buf_len,sizeof(sc_char));
+
+    sc_stream_read_data(stream,data,buf_len,&read_len);
+    sc_stream_free(stream);
+
+    printf("%s\n",data);
+    free(data);
+}
+
 int main()
 {
-    sc_memory_initialize((sc_char*)"repo",(sc_char*)"test.ini");
+    sc_memory_initialize((sc_char *)"repo", (sc_char *)"test.ini");
     sc_helper_init();
     //sc_memory_initialize_ext("../bin/extensions");
 
     GTimer *timer = 0;
-    timer=g_timer_new();
+    timer = g_timer_new();
     g_timer_start(timer);
 
-    test_sys_gen();
+    temp();
 
     /*int i=0;
     sc_type_result params;
@@ -286,10 +316,10 @@ int main()
     vars.push_back(addr2);
     for (i=0;i<1;i++){
         //system_sys_search_only_full(node,params,&results);
-    }  
-*/
+    }
+    */
     g_timer_stop(timer);
-    printf((sc_char*)"Time: %f s\n", g_timer_elapsed(timer, 0));
+    printf((sc_char *)"Time: %f s\n", g_timer_elapsed(timer, 0));
     g_timer_destroy(timer);
 
     //sc_memory_shutdown();

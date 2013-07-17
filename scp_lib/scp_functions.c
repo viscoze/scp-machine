@@ -20,6 +20,9 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
+#include "sc_memory_headers.h"
+#include "sc_helper.h"
+
 #include "scp_functions.h"
 #include "scp_searchElStr3.h"
 #include "scp_searchElStr5.h"
@@ -30,12 +33,11 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scp_eraseSetStr3.h"
 #include "scp_eraseSetStr5.h"
 #include "scp_utils.h"
-#include "sc_stream.h"
-#include "sc_helper.h"
-#include "sc_memory.h"
-#include "sc_iterator3.h"
+
 #include <stdio.h>
 #include <malloc.h>
+#include <stdlib.h>
+#include <math.h>
 
 scp_result scp_lib_init(const sc_char *repo_path, const sc_char *config_file)
 {
@@ -44,6 +46,10 @@ scp_result scp_lib_init(const sc_char *repo_path, const sc_char *config_file)
         return SCP_FALSE;
     }
     sc_helper_init();
+    if (SC_TRUE != sc_helper_resolve_system_identifier("FORMAT_NUMERIC", &format_numeric))
+    {
+        return print_error("Init", "FORMAT_NUMERIC element not found");
+    }
     return SCP_TRUE;
 }
 
@@ -58,16 +64,16 @@ scp_result genEl(scp_operand *param)
 {
     if (param->param_type != SCP_ASSIGN)
     {
-        return printError("genEl", "Parameter must have ASSIGN modifier");
+        return print_error("genEl", "Parameter must have ASSIGN modifier");
     }
     if ((param->element_type & scp_type_node) != scp_type_node)
     {
-        return printError("genEl", "Only node element can be generated. Use genElStr3 for arcs");
+        return print_error("genEl", "Only node element can be generated. Use genElStr3 for arcs");
     }
     param->addr = sc_memory_node_new(param->element_type);
     if (SC_FALSE == sc_memory_is_element(param->addr))
     {
-        return printError("genEl", "Element cannot be generated");
+        return print_error("genEl", "Element cannot be generated");
     }
     return SCP_TRUE;
 }
@@ -79,13 +85,13 @@ scp_result genElStr3(scp_operand *param1, scp_operand *param2, scp_operand *para
     sc_uint32 fixed = 0;
     if (param2->param_type == SCP_FIXED)
     {
-        return printError("genElStr3", "Parameter 2 must have ASSIGN modifier");
+        return print_error("genElStr3", "Parameter 2 must have ASSIGN modifier");
     }
     if (param1->param_type == SCP_FIXED)
     {
         if (SC_FALSE == sc_memory_is_element(param1->addr))
         {
-            return printError("genElStr3", "Parameter 1 has modifier FIXED, but has not value");
+            return print_error("genElStr3", "Parameter 1 has modifier FIXED, but has not value");
         }
         fixed1 = 0x1;
     }
@@ -93,7 +99,7 @@ scp_result genElStr3(scp_operand *param1, scp_operand *param2, scp_operand *para
     {
         if (SC_FALSE == sc_memory_is_element(param3->addr))
         {
-            return printError("genElStr3", "Parameter 3 has modifier FIXED, but has not value");
+            return print_error("genElStr3", "Parameter 3 has modifier FIXED, but has not value");
         }
         fixed3 = 0x100;
     }
@@ -109,7 +115,7 @@ scp_result genElStr3(scp_operand *param1, scp_operand *param2, scp_operand *para
         case 0x000:
             return genElStr3_a_a_a(param1, param2, param3);
         default:
-            return printError("genElStr3", "Unsupported parameter type combination");
+            return print_error("genElStr3", "Unsupported parameter type combination");
     }
     return SCP_ERROR;
 }
@@ -122,17 +128,17 @@ scp_result genElStr5(scp_operand *param1, scp_operand *param2, scp_operand *para
     sc_uint32 fixed = 0;
     if (param2->param_type == SCP_FIXED)
     {
-        return printError("genElStr5", "Parameter 2 must have ASSIGN modifier");
+        return print_error("genElStr5", "Parameter 2 must have ASSIGN modifier");
     }
     if (param4->param_type == SCP_FIXED)
     {
-        return printError("genElStr5", "Parameter 4 must have ASSIGN modifier");
+        return print_error("genElStr5", "Parameter 4 must have ASSIGN modifier");
     }
     if (param1->param_type == SCP_FIXED)
     {
         if (SC_FALSE == sc_memory_is_element(param1->addr))
         {
-            return printError("genElStr5", "Parameter 1 has modifier FIXED, but has not value");
+            return print_error("genElStr5", "Parameter 1 has modifier FIXED, but has not value");
         }
         fixed1 = 0x1;
     }
@@ -140,7 +146,7 @@ scp_result genElStr5(scp_operand *param1, scp_operand *param2, scp_operand *para
     {
         if (SC_FALSE == sc_memory_is_element(param3->addr))
         {
-            return printError("genElStr5", "Parameter 3 has modifier FIXED, but has not value");
+            return print_error("genElStr5", "Parameter 3 has modifier FIXED, but has not value");
         }
         fixed3 = 0x100;
     }
@@ -148,7 +154,7 @@ scp_result genElStr5(scp_operand *param1, scp_operand *param2, scp_operand *para
     {
         if (SC_FALSE == sc_memory_is_element(param5->addr))
         {
-            return printError("genElStr5", "Parameter 5 has modifier FIXED, but has not value");
+            return print_error("genElStr5", "Parameter 5 has modifier FIXED, but has not value");
         }
         fixed5 = 0x10000;
     }
@@ -172,7 +178,7 @@ scp_result genElStr5(scp_operand *param1, scp_operand *param2, scp_operand *para
         case 0x00000:
             return genElStr5_a_a_a_a_a(param1, param2, param3, param4, param5);
         default:
-            return printError("genElStr5", "Unsupported parameter type combination");
+            return print_error("genElStr5", "Unsupported parameter type combination");
     }
     return SCP_ERROR;
 }
@@ -185,13 +191,13 @@ scp_result searchElStr3(scp_operand *param1, scp_operand *param2, scp_operand *p
     sc_uint32 fixed = 0;
     if (param1->param_type == SCP_ASSIGN && param2->param_type == SCP_ASSIGN && param3->param_type == SCP_ASSIGN)
     {
-        return printError("searchElStr3", "At least one operand must have FIXED modifier");
+        return print_error("searchElStr3", "At least one operand must have FIXED modifier");
     }
     if (param1->param_type == SCP_FIXED)
     {
         if (SC_FALSE == sc_memory_is_element(param1->addr))
         {
-            return printError("searchElStr3", "Parameter 1 has modifier FIXED, but has not value");
+            return print_error("searchElStr3", "Parameter 1 has modifier FIXED, but has not value");
         }
         fixed1 = 0x1;
     }
@@ -199,11 +205,11 @@ scp_result searchElStr3(scp_operand *param1, scp_operand *param2, scp_operand *p
     {
         if (SC_FALSE == sc_memory_is_element(param2->addr))
         {
-            return printError("searchElStr3", "Parameter 2 has modifier FIXED, but has not value");
+            return print_error("searchElStr3", "Parameter 2 has modifier FIXED, but has not value");
         }
         if (SCP_TRUE == check_type(param2->addr, scp_type_node))
         {
-            return printError("searchElStr3", "Parameter 2 is not an arc");
+            return print_error("searchElStr3", "Parameter 2 is not an arc");
         }
         fixed2 = 0x10;
     }
@@ -211,7 +217,7 @@ scp_result searchElStr3(scp_operand *param1, scp_operand *param2, scp_operand *p
     {
         if (SC_FALSE == sc_memory_is_element(param3->addr))
         {
-            return printError("searchElStr3", "Parameter 3 has modifier FIXED, but has not value");
+            return print_error("searchElStr3", "Parameter 3 has modifier FIXED, but has not value");
         }
         fixed3 = 0x100;
     }
@@ -233,7 +239,7 @@ scp_result searchElStr3(scp_operand *param1, scp_operand *param2, scp_operand *p
         case 0x111:
             return searchElStr3_f_f_f(param1, param2, param3);
         default:
-            return printError("searchElStr3", "Unsupported parameter type combination");
+            return print_error("searchElStr3", "Unsupported parameter type combination");
     }
 
     return SCP_ERROR;
@@ -249,13 +255,13 @@ scp_result searchElStr5(scp_operand *param1, scp_operand *param2, scp_operand *p
     sc_uint32 fixed = 0;
     if (param1->param_type == SCP_ASSIGN && param2->param_type == SCP_ASSIGN && param3->param_type == SCP_ASSIGN && param4->param_type == SCP_ASSIGN && param5->param_type == SCP_ASSIGN)
     {
-        return printError("searchElStr5", "At least one operand must have FIXED modifier");
+        return print_error("searchElStr5", "At least one operand must have FIXED modifier");
     }
     if (param1->param_type == SCP_FIXED)
     {
         if (SC_FALSE == sc_memory_is_element(param1->addr))
         {
-            return printError("searchElStr5", "Parameter 1 has modifier FIXED, but has not value");
+            return print_error("searchElStr5", "Parameter 1 has modifier FIXED, but has not value");
         }
         fixed1 = 0x1;
     }
@@ -263,11 +269,11 @@ scp_result searchElStr5(scp_operand *param1, scp_operand *param2, scp_operand *p
     {
         if (SC_FALSE == sc_memory_is_element(param2->addr))
         {
-            return printError("searchElStr5", "Parameter 2 has modifier FIXED, but has not value");
+            return print_error("searchElStr5", "Parameter 2 has modifier FIXED, but has not value");
         }
         if (SCP_TRUE == check_type(param2->addr, scp_type_node))
         {
-            return printError("searchElStr5", "Parameter 2 is not an arc");
+            return print_error("searchElStr5", "Parameter 2 is not an arc");
         }
         fixed2 = 0x10;
     }
@@ -275,7 +281,7 @@ scp_result searchElStr5(scp_operand *param1, scp_operand *param2, scp_operand *p
     {
         if (SC_FALSE == sc_memory_is_element(param3->addr))
         {
-            return printError("searchElStr5", "Parameter 3 has modifier FIXED, but has not value");
+            return print_error("searchElStr5", "Parameter 3 has modifier FIXED, but has not value");
         }
         fixed3 = 0x100;
     }
@@ -283,11 +289,11 @@ scp_result searchElStr5(scp_operand *param1, scp_operand *param2, scp_operand *p
     {
         if (SC_FALSE == sc_memory_is_element(param4->addr))
         {
-            return printError("searchElStr5", "Parameter 4 has modifier FIXED, but has not value");
+            return print_error("searchElStr5", "Parameter 4 has modifier FIXED, but has not value");
         }
         if (SCP_TRUE == check_type(param4->addr, scp_type_node))
         {
-            return printError("searchElStr5", "Parameter 4 is not an arc");
+            return print_error("searchElStr5", "Parameter 4 is not an arc");
         }
         fixed4 = 0x1000;
     }
@@ -295,7 +301,7 @@ scp_result searchElStr5(scp_operand *param1, scp_operand *param2, scp_operand *p
     {
         if (SC_FALSE == sc_memory_is_element(param5->addr))
         {
-            return printError("searchElStr5", "Parameter 5 has modifier FIXED, but has not value");
+            return print_error("searchElStr5", "Parameter 5 has modifier FIXED, but has not value");
         }
         fixed5 = 0x10000;
     }
@@ -319,7 +325,7 @@ scp_result searchElStr5(scp_operand *param1, scp_operand *param2, scp_operand *p
         case 0x10000:
             return searchElStr5_a_a_a_a_f(param1, param2, param3, param4, param5);
         default:
-            return printError("searchElStr5", "Unsupported parameter type combination");
+            return print_error("searchElStr5", "Unsupported parameter type combination");
     }
     return SCP_ERROR;
 }
@@ -328,15 +334,15 @@ scp_result eraseEl(scp_operand *param)
 {
     if (param->param_type != SCP_FIXED)
     {
-        return printError("eraseEl", "Parameter must have FIXED modifier");
+        return print_error("eraseEl", "Parameter must have FIXED modifier");
     }
     if (param->erase != SCP_ERASE_TRUE)
     {
-        return printError("eraseEl", "Parameter must have ERASE_TRUE modifier");
+        return print_error("eraseEl", "Parameter must have ERASE_TRUE modifier");
     }
     if (SC_FALSE == sc_memory_is_element(param->addr))
     {
-        return printError("eraseEl", "Element has not value");
+        return print_error("eraseEl", "Element has not value");
     }
     sc_memory_element_free(param->addr);
     SC_ADDR_MAKE_EMPTY(param->addr);
@@ -353,7 +359,7 @@ scp_result eraseElStr3(scp_operand *param1, scp_operand *param2, scp_operand *pa
     {
         if (SC_FALSE == sc_memory_is_element(param1->addr))
         {
-            return printError("eraseElStr3", "Parameter 1 has modifier FIXED, but has not value");
+            return print_error("eraseElStr3", "Parameter 1 has modifier FIXED, but has not value");
         }
         fixed1 = 0x1;
     }
@@ -361,11 +367,11 @@ scp_result eraseElStr3(scp_operand *param1, scp_operand *param2, scp_operand *pa
     {
         if (SC_FALSE == sc_memory_is_element(param2->addr))
         {
-            return printError("eraseElStr3", "Parameter 2 has modifier FIXED, but has not value");
+            return print_error("eraseElStr3", "Parameter 2 has modifier FIXED, but has not value");
         }
         if (SCP_TRUE == check_type(param2->addr, scp_type_node))
         {
-            return printError("eraseElStr3", "Parameter 2 is not an arc");
+            return print_error("eraseElStr3", "Parameter 2 is not an arc");
         }
         fixed2 = 0x10;
     }
@@ -373,7 +379,7 @@ scp_result eraseElStr3(scp_operand *param1, scp_operand *param2, scp_operand *pa
     {
         if (SC_FALSE == sc_memory_is_element(param3->addr))
         {
-            return printError("eraseElStr3", "Parameter 3 has modifier FIXED, but has not value");
+            return print_error("eraseElStr3", "Parameter 3 has modifier FIXED, but has not value");
         }
         fixed3 = 0x100;
     }
@@ -387,7 +393,7 @@ scp_result eraseElStr3(scp_operand *param1, scp_operand *param2, scp_operand *pa
         case 0x101:
             return eraseElStr3_f_a_f(param1, param2, param3);
         default:
-            return printError("eraseElStr3", "Unsupported parameter type combination");
+            return print_error("eraseElStr3", "Unsupported parameter type combination");
     }
     return SCP_ERROR;
 }
@@ -404,7 +410,7 @@ scp_result eraseElStr5(scp_operand *param1, scp_operand *param2, scp_operand *pa
     {
         if (SC_FALSE == sc_memory_is_element(param1->addr))
         {
-            return printError("eraseElStr5", "Parameter 1 has modifier FIXED, but has not value");
+            return print_error("eraseElStr5", "Parameter 1 has modifier FIXED, but has not value");
         }
         fixed1 = 0x1;
     }
@@ -412,11 +418,11 @@ scp_result eraseElStr5(scp_operand *param1, scp_operand *param2, scp_operand *pa
     {
         if (SC_FALSE == sc_memory_is_element(param2->addr))
         {
-            return printError("eraseElStr5", "Parameter 2 has modifier FIXED, but has not value");
+            return print_error("eraseElStr5", "Parameter 2 has modifier FIXED, but has not value");
         }
         if (SCP_TRUE == check_type(param2->addr, scp_type_node))
         {
-            return printError("eraseElStr5", "Parameter 2 is not an arc");
+            return print_error("eraseElStr5", "Parameter 2 is not an arc");
         }
         fixed2 = 0x10;
     }
@@ -424,7 +430,7 @@ scp_result eraseElStr5(scp_operand *param1, scp_operand *param2, scp_operand *pa
     {
         if (SC_FALSE == sc_memory_is_element(param3->addr))
         {
-            return printError("eraseElStr5", "Parameter 3 has modifier FIXED, but has not value");
+            return print_error("eraseElStr5", "Parameter 3 has modifier FIXED, but has not value");
         }
         fixed3 = 0x100;
     }
@@ -432,11 +438,11 @@ scp_result eraseElStr5(scp_operand *param1, scp_operand *param2, scp_operand *pa
     {
         if (SC_FALSE == sc_memory_is_element(param4->addr))
         {
-            return printError("eraseElStr5", "Parameter 4 has modifier FIXED, but has not value");
+            return print_error("eraseElStr5", "Parameter 4 has modifier FIXED, but has not value");
         }
         if (SCP_TRUE == check_type(param4->addr, scp_type_node))
         {
-            return printError("eraseElStr5", "Parameter 4 is not an arc");
+            return print_error("eraseElStr5", "Parameter 4 is not an arc");
         }
         fixed2 = 0x1000;
     }
@@ -444,7 +450,7 @@ scp_result eraseElStr5(scp_operand *param1, scp_operand *param2, scp_operand *pa
     {
         if (SC_FALSE == sc_memory_is_element(param5->addr))
         {
-            return printError("eraseElStr5", "Parameter 5 has modifier FIXED, but has not value");
+            return print_error("eraseElStr5", "Parameter 5 has modifier FIXED, but has not value");
         }
         fixed3 = 0x10000;
     }
@@ -466,7 +472,7 @@ scp_result eraseElStr5(scp_operand *param1, scp_operand *param2, scp_operand *pa
         case 0x10000:
             return eraseElStr5_a_a_a_a_f(param1, param2, param3, param4, param5);
         default:
-            return printError("eraseElStr5", "Unsupported parameter type combination");
+            return print_error("eraseElStr5", "Unsupported parameter type combination");
     }
     return SCP_ERROR;
 }
@@ -481,7 +487,7 @@ scp_result eraseSetStr3(scp_operand *param1, scp_operand *param2, scp_operand *p
     {
         if (SC_FALSE == sc_memory_is_element(param1->addr))
         {
-            return printError("eraseSetStr3", "Parameter 1 has modifier FIXED, but has not value");
+            return print_error("eraseSetStr3", "Parameter 1 has modifier FIXED, but has not value");
         }
         fixed1 = 0x1;
     }
@@ -489,11 +495,11 @@ scp_result eraseSetStr3(scp_operand *param1, scp_operand *param2, scp_operand *p
     {
         if (SC_FALSE == sc_memory_is_element(param2->addr))
         {
-            return printError("eraseSetStr3", "Parameter 2 has modifier FIXED, but has not value");
+            return print_error("eraseSetStr3", "Parameter 2 has modifier FIXED, but has not value");
         }
         if (SCP_TRUE == check_type(param2->addr, scp_type_node))
         {
-            return printError("eraseSetStr3", "Parameter 2 is not an arc");
+            return print_error("eraseSetStr3", "Parameter 2 is not an arc");
         }
         fixed2 = 0x10;
     }
@@ -501,7 +507,7 @@ scp_result eraseSetStr3(scp_operand *param1, scp_operand *param2, scp_operand *p
     {
         if (SC_FALSE == sc_memory_is_element(param3->addr))
         {
-            return printError("eraseSetStr3", "Parameter 3 has modifier FIXED, but has not value");
+            return print_error("eraseSetStr3", "Parameter 3 has modifier FIXED, but has not value");
         }
         fixed3 = 0x100;
     }
@@ -515,7 +521,7 @@ scp_result eraseSetStr3(scp_operand *param1, scp_operand *param2, scp_operand *p
         case 0x101:
             return eraseSetStr3_f_a_f(param1, param2, param3);
         default:
-            return printError("eraseSetStr3", "Unsupported parameter type combination");
+            return print_error("eraseSetStr3", "Unsupported parameter type combination");
     }
     return SCP_ERROR;
 }
@@ -532,7 +538,7 @@ scp_result eraseSetStr5(scp_operand *param1, scp_operand *param2, scp_operand *p
     {
         if (SC_FALSE == sc_memory_is_element(param1->addr))
         {
-            return printError("eraseSetStr5", "Parameter 1 has modifier FIXED, but has not value");
+            return print_error("eraseSetStr5", "Parameter 1 has modifier FIXED, but has not value");
         }
         fixed1 = 0x1;
     }
@@ -540,11 +546,11 @@ scp_result eraseSetStr5(scp_operand *param1, scp_operand *param2, scp_operand *p
     {
         if (SC_FALSE == sc_memory_is_element(param2->addr))
         {
-            return printError("eraseSetStr5", "Parameter 2 has modifier FIXED, but has not value");
+            return print_error("eraseSetStr5", "Parameter 2 has modifier FIXED, but has not value");
         }
         if (SCP_TRUE == check_type(param2->addr, scp_type_node))
         {
-            return printError("eraseSetStr5", "Parameter 2 is not an arc");
+            return print_error("eraseSetStr5", "Parameter 2 is not an arc");
         }
         fixed2 = 0x10;
     }
@@ -552,7 +558,7 @@ scp_result eraseSetStr5(scp_operand *param1, scp_operand *param2, scp_operand *p
     {
         if (SC_FALSE == sc_memory_is_element(param3->addr))
         {
-            return printError("eraseSetStr5", "Parameter 3 has modifier FIXED, but has not value");
+            return print_error("eraseSetStr5", "Parameter 3 has modifier FIXED, but has not value");
         }
         fixed3 = 0x100;
     }
@@ -560,11 +566,11 @@ scp_result eraseSetStr5(scp_operand *param1, scp_operand *param2, scp_operand *p
     {
         if (SC_FALSE == sc_memory_is_element(param4->addr))
         {
-            return printError("eraseSetStr5", "Parameter 4 has modifier FIXED, but has not value");
+            return print_error("eraseSetStr5", "Parameter 4 has modifier FIXED, but has not value");
         }
         if (SCP_TRUE == check_type(param4->addr, scp_type_node))
         {
-            return printError("eraseSetStr5", "Parameter 4 is not an arc");
+            return print_error("eraseSetStr5", "Parameter 4 is not an arc");
         }
         fixed2 = 0x1000;
     }
@@ -572,7 +578,7 @@ scp_result eraseSetStr5(scp_operand *param1, scp_operand *param2, scp_operand *p
     {
         if (SC_FALSE == sc_memory_is_element(param5->addr))
         {
-            return printError("eraseSetStr5", "Parameter 5 has modifier FIXED, but has not value");
+            return print_error("eraseSetStr5", "Parameter 5 has modifier FIXED, but has not value");
         }
         fixed3 = 0x10000;
     }
@@ -594,7 +600,7 @@ scp_result eraseSetStr5(scp_operand *param1, scp_operand *param2, scp_operand *p
         case 0x10000:
             return eraseSetStr5_a_a_a_a_f(param1, param2, param3, param4, param5);
         default:
-            return printError("eraseSetStr5", "Unsupported parameter type combination");
+            return print_error("eraseSetStr5", "Unsupported parameter type combination");
     }
     return SCP_ERROR;
 }
@@ -611,11 +617,11 @@ scp_result ifCoin(scp_operand *param1, scp_operand *param2)
 {
     if (SC_FALSE == sc_memory_is_element(param1->addr))
     {
-        return printError("ifCoin", "Parameter 1 has no value");
+        return print_error("ifCoin", "Parameter 1 has no value");
     }
     if (SC_FALSE == sc_memory_is_element(param2->addr))
     {
-        return printError("ifCoin", "Parameter 2 has no value");
+        return print_error("ifCoin", "Parameter 2 has no value");
     }
     if (SC_ADDR_IS_EQUAL(param1->addr, param2->addr))
         return SCP_TRUE;
@@ -627,7 +633,7 @@ scp_result ifType(scp_operand *param)
 {
     if (SC_FALSE == sc_memory_is_element(param->addr))
     {
-        return printError("ifType", "Parameter has no value");
+        return print_error("ifType", "Parameter has no value");
     }
     return check_type(param->addr, param->element_type);
 }
@@ -640,7 +646,7 @@ scp_result printEl(scp_operand *param)
     sc_iterator3 *it = nullptr;
     if (SC_FALSE == sc_memory_is_element(param->addr))
     {
-        return printError("printEl", "Parameter has not value");
+        return print_error("printEl", "Parameter has not value");
     }
     if (SC_RESULT_OK == sc_helper_get_system_identifier(element, &idtf))
     {
@@ -761,13 +767,16 @@ scp_result printL(scp_operand *param, sc_bool new_line)
     sc_char *data;
     if (SC_FALSE == sc_memory_is_element(param->addr))
     {
-        return printError("print", "Parameter has not value");
+        return print_error("print", "Parameter has not value");
     }
     if (SCP_FALSE == check_type(param->addr, sc_type_link))
     {
-        return printError("print", "Parameter is not an sc-link");
+        return print_error("print", "Parameter is not an sc-link");
     }
-    sc_memory_get_link_content(param->addr, &stream);
+    if (sc_memory_get_link_content(param->addr, &stream) != SC_RESULT_OK)
+    {
+        return print_error("print", "Content reading error");
+    }
     sc_stream_get_length(stream, &length);
     data = calloc(length, sizeof(sc_char));
     sc_stream_read_data(stream, data, length, &read_length);
@@ -795,15 +804,15 @@ scp_result varAssign(scp_operand *param1, scp_operand *param2)
 {
     if (SCP_FIXED == param1->param_type)
     {
-        return printError("varAssign", "Parameter 1 must have ASSIGN modifier");
+        return print_error("varAssign", "Parameter 1 must have ASSIGN modifier");
     }
     if (SCP_ASSIGN == param2->param_type)
     {
-        return printError("varAssign", "Parameter 2 must have FIXED modifier");
+        return print_error("varAssign", "Parameter 2 must have FIXED modifier");
     }
     if (SC_FALSE == sc_memory_is_element(param2->addr))
     {
-        return printError("varAssign", "Parameter 2 has not value");
+        return print_error("varAssign", "Parameter 2 has not value");
     }
     param1->addr = param2->addr;
     return SCP_TRUE;
@@ -811,17 +820,278 @@ scp_result varAssign(scp_operand *param1, scp_operand *param2)
 
 scp_result ifFormCont(scp_operand *param)
 {
+    sc_stream *stream;
     if (SCP_ASSIGN == param->param_type)
     {
-        return printError("ifFormCont", "Parameter must have FIXED modifier");
+        return print_error("ifFormCont", "Parameter must have FIXED modifier");
     }
     if (SC_FALSE == sc_memory_is_element(param->addr))
     {
-        return printError("ifFormCont", "Parameter has not value");
+        return print_error("ifFormCont", "Parameter has not value");
     }
     if (check_type(param->addr, scp_type_link) == SCP_FALSE)
     {
-        return printError("ifFormCont", "Parameter must have link type");
+        return print_error("ifFormCont", "Parameter must have link type");
+    }
+    sc_result res = sc_memory_get_link_content(param->addr, &stream);
+    if (res == SC_RESULT_OK)
+    {
+        return SCP_TRUE;
+    }
+    else
+    {
+        return SCP_FALSE;
     }
     return SCP_ERROR;
+}
+
+scp_result contAssign(scp_operand *param1, scp_operand *param2)
+{
+    sc_stream *stream;
+    if (SCP_ASSIGN == param2->param_type)
+    {
+        return print_error("contAssign", "Parameter 2 must have FIXED modifier");
+    }
+    if (SC_FALSE == sc_memory_is_element(param2->addr))
+    {
+        return print_error("contAssign", "Parameter 2 has not value");
+    }
+    if (check_type(param2->addr, scp_type_link) == SCP_FALSE)
+    {
+        return print_error("contAssign", "Parameter 2 must have link type");
+    }
+    if (sc_memory_get_link_content(param2->addr, &stream) != SC_RESULT_OK)
+    {
+        return print_error("contAssign", "Parameter 2 content reading error");
+    }
+    if (SCP_ERROR == check_link_parameter_1("contAssign", param1))
+    {
+        return SCP_ERROR;
+    }
+    sc_memory_set_link_content(param1->addr, stream);
+    sc_stream_free(stream);
+    return SCP_TRUE;
+}
+
+scp_result ifEq(scp_operand *param1, scp_operand *param2)
+{
+    double num1, num2;
+    if (SCP_ERROR == resolve_numbers_1_2("ifEq", param1, param2, &num1, &num2))
+    {
+        return SCP_ERROR;
+    }
+    if (num1 == num2)
+    {
+        return SCP_TRUE;
+    }
+    else
+    {
+        return SCP_FALSE;
+    }
+    return SCP_ERROR;
+}
+
+scp_result ifGr(scp_operand *param1, scp_operand *param2)
+{
+    double num1, num2;
+    if (SCP_ERROR == resolve_numbers_1_2("ifGr", param1, param2, &num1, &num2))
+    {
+        return SCP_ERROR;
+    }
+    if (num1 > num2)
+    {
+        return SCP_TRUE;
+    }
+    else
+    {
+        return SCP_FALSE;
+    }
+    return SCP_ERROR;
+}
+
+scp_result contLn(scp_operand *param1, scp_operand *param2)
+{
+    double num;
+    if (SCP_ERROR == resolve_number_2("contLn", param2, &num))
+    {
+        return SCP_ERROR;
+    }
+    if (SCP_ERROR == check_link_parameter_1("contLn", param1))
+    {
+        return SCP_ERROR;
+    }
+    write_link_content_number(log(num), param1->addr);
+    return SCP_TRUE;
+}
+
+scp_result contCos(scp_operand *param1, scp_operand *param2)
+{
+    double num;
+    if (SCP_ERROR == resolve_number_2("contCos", param2, &num))
+    {
+        return SCP_ERROR;
+    }
+    if (SCP_ERROR == check_link_parameter_1("contCos", param1))
+    {
+        return SCP_ERROR;
+    }
+    write_link_content_number(cos(num), param1->addr);
+    return SCP_TRUE;
+}
+
+scp_result contSin(scp_operand *param1, scp_operand *param2)
+{
+    double num;
+    if (SCP_ERROR == resolve_number_2("contSin", param2, &num))
+    {
+        return SCP_ERROR;
+    }
+    if (SCP_ERROR == check_link_parameter_1("contSin", param1))
+    {
+        return SCP_ERROR;
+    }
+    write_link_content_number(sin(num), param1->addr);
+    return SCP_TRUE;
+}
+
+scp_result contTg(scp_operand *param1, scp_operand *param2)
+{
+    double num;
+
+    if (SCP_ERROR == resolve_number_2("contTg", param2, &num))
+    {
+        return SCP_ERROR;
+    }
+    if (SCP_ERROR == check_link_parameter_1("contTg", param1))
+    {
+        return SCP_ERROR;
+    }
+    write_link_content_number(tan(num), param1->addr);
+    return SCP_TRUE;
+}
+
+scp_result contACos(scp_operand *param1, scp_operand *param2)
+{
+    double num;
+
+    if (SCP_ERROR == resolve_number_2("contACos", param2, &num))
+    {
+        return SCP_ERROR;
+    }
+    if (SCP_ERROR == check_link_parameter_1("contACos", param1))
+    {
+        return SCP_ERROR;
+    }
+    write_link_content_number(acos(num), param1->addr);
+    return SCP_TRUE;
+}
+
+scp_result contASin(scp_operand *param1, scp_operand *param2)
+{
+    double num;
+    if (SCP_ERROR == check_link_parameter_1("contASin", param1))
+    {
+        return SCP_ERROR;
+    }
+    if (SCP_ERROR == resolve_number_2("contASin", param2, &num))
+    {
+        return SCP_ERROR;
+    }
+    write_link_content_number(asin(num), param1->addr);
+    return SCP_TRUE;
+}
+
+scp_result contATg(scp_operand *param1, scp_operand *param2)
+{
+    double num;
+
+    if (SCP_ERROR == check_link_parameter_1("contATg", param1))
+    {
+        return SCP_ERROR;
+    }
+    if (SCP_ERROR == resolve_number_2("contATg", param2, &num))
+    {
+        return SCP_ERROR;
+    }
+    write_link_content_number(atan(num), param1->addr);
+    return SCP_TRUE;
+}
+
+scp_result contAdd(scp_operand *param1, scp_operand *param2, scp_operand *param3)
+{
+    double num1, num2;
+    if (SCP_ERROR == resolve_numbers_2_3("contAdd", param2, param3, &num1, &num2))
+    {
+        return SCP_ERROR;
+    }
+    if (SCP_ERROR == check_link_parameter_1("contAdd", param1))
+    {
+        return SCP_ERROR;
+    }
+    write_link_content_number(num1 + num2, param1->addr);
+    return SCP_TRUE;
+}
+
+scp_result contSub(scp_operand *param1, scp_operand *param2, scp_operand *param3)
+{
+    double num1, num2;
+
+    if (SCP_ERROR == resolve_numbers_2_3("contSub", param2, param3, &num1, &num2))
+    {
+        return SCP_ERROR;
+    }
+    if (SCP_ERROR == check_link_parameter_1("contSub", param1))
+    {
+        return SCP_ERROR;
+    }
+    write_link_content_number(num1 - num2, param1->addr);
+    return SCP_TRUE;
+}
+
+scp_result contMult(scp_operand *param1, scp_operand *param2, scp_operand *param3)
+{
+    double num1, num2;
+
+    if (SCP_ERROR == resolve_numbers_2_3("contMult", param2, param3, &num1, &num2))
+    {
+        return SCP_ERROR;
+    }
+    if (SCP_ERROR == check_link_parameter_1("contMult", param1))
+    {
+        return SCP_ERROR;
+    }
+    write_link_content_number(num1 * num2, param1->addr);
+    return SCP_TRUE;
+}
+
+scp_result contDiv(scp_operand *param1, scp_operand *param2, scp_operand *param3)
+{
+    double num1, num2;
+
+    if (SCP_ERROR == resolve_numbers_2_3("contDiv", param2, param3, &num1, &num2))
+    {
+        return SCP_ERROR;
+    }
+    if (SCP_ERROR == check_link_parameter_1("contDiv", param1))
+    {
+        return SCP_ERROR;
+    }
+    write_link_content_number(num1 / num2, param1->addr);
+    return SCP_TRUE;
+}
+
+scp_result contPow(scp_operand *param1, scp_operand *param2, scp_operand *param3)
+{
+    double num1, num2;
+
+    if (SCP_ERROR == resolve_numbers_2_3("contPow", param2, param3, &num1, &num2))
+    {
+        return SCP_ERROR;
+    }
+    if (SCP_ERROR == check_link_parameter_1("contPow", param1))
+    {
+        return SCP_ERROR;
+    }
+    write_link_content_number(pow(num1, num2), param1->addr);
+    return SCP_TRUE;
 }

@@ -44,28 +44,29 @@ scp_result eraseSetStr3(scp_operand *param1, scp_operand *param2, scp_operand *p
 scp_result eraseSetStr5(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5); //DONE
 
 scp_result ifVarAssign(scp_operand *param); //DONE
-scp_result ifFormCont(scp_operand *param);
+scp_result ifFormCont(scp_operand *param); //DONE
 scp_result ifCoin(scp_operand *param1, scp_operand *param2); //DONE
-scp_result ifEq(scp_operand *param1, scp_operand *param2);
-scp_result ifGr(scp_operand *param1, scp_operand *param2);
+scp_result ifEq(scp_operand *param1, scp_operand *param2); //DONE
+scp_result ifGr(scp_operand *param1, scp_operand *param2); //DONE
 scp_result ifType(scp_operand *param); //DONE
 
 scp_result varAssign(scp_operand *param1, scp_operand *param2); //DONE
 
-scp_result contAdd(scp_operand *param1, scp_operand *param2);
-scp_result contDiv(scp_operand *param1, scp_operand *param2);
-scp_result contMult(scp_operand *param1, scp_operand *param2);
-scp_result contSub(scp_operand *param1, scp_operand *param2);
-scp_result contPow(scp_operand *param1, scp_operand *param2);
-scp_result contLn(scp_operand *param1, scp_operand *param2);
-scp_result contSin(scp_operand *param1, scp_operand *param2);
-scp_result contCos(scp_operand *param1, scp_operand *param2);
-scp_result contTg(scp_operand *param1, scp_operand *param2);
-scp_result contAsin(scp_operand *param1, scp_operand *param2);
-scp_result contACos(scp_operand *param1, scp_operand *param2);
-scp_result contATg(scp_operand *param1, scp_operand *param2);
+scp_result contAdd(scp_operand *param1, scp_operand *param2, scp_operand *param3);
+scp_result contDiv(scp_operand *param1, scp_operand *param2, scp_operand *param3);
+scp_result contMult(scp_operand *param1, scp_operand *param2, scp_operand *param3);
+scp_result contSub(scp_operand *param1, scp_operand *param2, scp_operand *param3);
+scp_result contPow(scp_operand *param1, scp_operand *param2, scp_operand *param3);
 
-scp_result contAssign(scp_operand *param1, scp_operand *param2);
+scp_result contLn(scp_operand *param1, scp_operand *param2); //DONE
+scp_result contSin(scp_operand *param1, scp_operand *param2); //DONE
+scp_result contCos(scp_operand *param1, scp_operand *param2); //DONE
+scp_result contTg(scp_operand *param1, scp_operand *param2); //DONE
+scp_result contAsin(scp_operand *param1, scp_operand *param2); //DONE
+scp_result contACos(scp_operand *param1, scp_operand *param2); //DONE
+scp_result contATg(scp_operand *param1, scp_operand *param2); //DONE
+
+scp_result contAssign(scp_operand *param1, scp_operand *param2); //DONE
 scp_result contErase(scp_operand *param);
 
 //scp_result idtfSearch(scp_operand *param, const char *idtf);

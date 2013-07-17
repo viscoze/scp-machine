@@ -28,11 +28,18 @@
 
 void foo1()
 {
-    sc_stream *stream;
-    sc_addr link = sc_memory_node_new(sc_type_link);
-    sc_result res = sc_memory_get_link_content(link, &stream);
-    printf("RES=%d\n", res);
-    sc_stream_free(stream);
+    scp_operand param2;
+    param2.param_type = SCP_FIXED;
+    sc_helper_resolve_system_identifier("link1", &(param2.addr));
+    //param2.addr = sc_memory_node_new(sc_type_link);
+    if (SCP_TRUE == ifFormCont(&param2))
+    {
+        printf("OK\n");
+    }
+    else
+    {
+        printf("NO\n");
+    }
 }
 
 void iterator3_test()
@@ -58,6 +65,38 @@ void iterator3_test()
         printEl(&param2);
     }
     scp_iterator3_free(it);
+}
+
+void test1()
+{
+    scp_operand param1;
+    param1.param_type = SCP_ASSIGN;
+
+    scp_operand param2;
+    sc_helper_resolve_system_identifier("link1", &(param2.addr));
+    param2.param_type = SCP_FIXED;
+
+    scp_operand param3;
+    sc_helper_resolve_system_identifier("link2", &(param3.addr));
+    param3.param_type = SCP_FIXED;
+
+    //printNl(&param1);
+    //printNl(&param2);
+
+    contDiv(&param1, &param2, &param3);
+
+    printNl(&param1);
+    printNl(&param2);
+    printNl(&param3);
+
+    //param1.param_type = SCP_FIXED;
+
+    contAdd(&param1, &param1, &param2);
+
+    printNl(&param1);
+    printNl(&param2);
+    printNl(&param3);
+
 }
 
 void iterator5_test()
@@ -94,7 +133,7 @@ void iterator5_test()
 int main(void)
 {
     scp_lib_init((sc_char *)"repo", (sc_char *)"test.ini");
-    iterator5_test();
+    test1();
     return 0;
     scp_operand param1;
     param1.element_type = scp_type_node | scp_type_const;
