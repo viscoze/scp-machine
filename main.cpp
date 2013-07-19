@@ -270,7 +270,7 @@ sc_result test_sys_gen()
 void temp()
 {
     sc_addr link;
-    sc_char* data0="Minsk";
+    sc_char* data0=(sc_char*)"Minsk";
     sc_char* data;
     sc_uint32 buf_len,read_len;
     sc_stream *stream;
@@ -303,21 +303,23 @@ int main()
     timer = g_timer_new();
     g_timer_start(timer);
 
-    temp();
+    //temp();
 
-    /*int i=0;
+    //int i=0;
     sc_type_result params;
     sc_type_result_vector results;
-    sc_addr_vector vars;
+    /*sc_addr_vector vars;
     sc_addr addr1,addr2;
     addr1.seg=0;addr2.seg=0;
     addr1.offset=39;addr2.offset=41;
     vars.push_back(addr1);
-    vars.push_back(addr2);
-    for (i=0;i<1;i++){
-        //system_sys_search_only_full(node,params,&results);
-    }
-    */
+    vars.push_back(addr2);*/
+    sc_addr node;
+    sc_helper_resolve_system_identifier("pattern4",&node);
+    //for (i=0;i<1;i++){
+        system_sys_search_only_full(node,params,&results);
+    //}
+
     g_timer_stop(timer);
     printf((sc_char *)"Time: %f s\n", g_timer_elapsed(timer, 0));
     g_timer_destroy(timer);
