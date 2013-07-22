@@ -157,7 +157,7 @@ void test_system_operator()
     param2.operand1 = &param2_1;
     param2.operand2 = &param2_2;
 
-    scp_operand_pair* param3=calloc(3,sizeof(scp_operand_pair));
+    scp_operand_pair *param3 = calloc(3, sizeof(scp_operand_pair));
     scp_operand param3_1;
     param3_1.param_type = SCP_FIXED;
     sc_helper_resolve_system_identifier("_b", &(param3_1.addr));
@@ -205,10 +205,20 @@ void test_system_operator()
     g_timer_destroy(timer);
 }
 
+void print_test()
+{
+    scp_operand param1;
+    sc_helper_resolve_system_identifier("hypermedia_nrel_system_identifier", &(param1.addr));
+    param1.element_type = scp_type_node | scp_type_const;
+    param1.param_type = SCP_FIXED;
+
+    printEl(&param1);
+}
+
 int main(void)
 {
     scp_lib_init((sc_char *)"repo", (sc_char *)"test.ini");
-    test_system_operator();
+    print_test();
     return 0;
     scp_operand param1;
     param1.element_type = scp_type_node | scp_type_const;

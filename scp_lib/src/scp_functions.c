@@ -652,9 +652,9 @@ scp_result printEl(scp_operand *param)
     {
         sc_stream *stream;
         sc_uint32 length = 0, read_length = 0;
-        sc_char *data = calloc(length, sizeof(sc_char));
         sc_memory_get_link_content(idtf, &stream);
         sc_stream_get_length(stream, &length);
+        sc_char *data = calloc(length, sizeof(sc_char));
         sc_stream_read_data(stream, data, length, &read_length);
         printf("\nPrint element: %s =\n", data);
         sc_stream_free(stream);
