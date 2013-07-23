@@ -27,8 +27,6 @@ extern "C"
 #include "scp_sys_search.h"
 #include "sc_memory_headers.h"
 #include "../scp_types.h"
-
-#include <stdio.h>
 }
 
 extern "C" scp_result sys_search_for_variables(scp_operand *param1, scp_operand_pair *variables, sc_uint32 var_count, scp_operand_pair *parameters, sc_uint32 param_count, scp_operand *param4)

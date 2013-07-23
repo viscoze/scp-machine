@@ -205,6 +205,67 @@ void test_system_operator()
     g_timer_destroy(timer);
 }
 
+void test_system_operator_gen()
+{
+    GTimer *timer = 0;
+    timer = g_timer_new();
+    g_timer_start(timer);
+
+    scp_operand param1;
+    sc_helper_resolve_system_identifier("pattern4", &(param1.addr));
+    param1.param_type = SCP_FIXED;
+
+    //scp_operand param2;
+    //param2.param_type = SCP_ASSIGN;
+
+    scp_operand_pair param2;
+    scp_operand param2_1;
+    param2_1.param_type = SCP_FIXED;
+    sc_helper_resolve_system_identifier("_e", &(param2_1.addr));
+    scp_operand param2_2;
+    param2_2.param_type = SCP_ASSIGN;
+
+    param2.operand1 = &param2_1;
+    param2.operand2 = &param2_2;
+
+    scp_operand_pair *param3 = calloc(3, sizeof(scp_operand_pair));
+    scp_operand param3_1;
+    param3_1.param_type = SCP_FIXED;
+    sc_helper_resolve_system_identifier("_b", &(param3_1.addr));
+    scp_operand param3_2;
+    param3_2.param_type = SCP_FIXED;
+    sc_helper_resolve_system_identifier("node1", &(param3_2.addr));
+
+    param3[0].operand1 = &param3_1;
+    param3[0].operand2 = &param3_2;
+
+    scp_operand param3_1_1;
+    param3_1_1.param_type = SCP_FIXED;
+    sc_helper_resolve_system_identifier("_a", &(param3_1_1.addr));
+    scp_operand param3_2_1;
+    param3_2_1.param_type = SCP_FIXED;
+    sc_helper_resolve_system_identifier("iter_test1", &(param3_2_1.addr));
+
+    param3[1].operand1 = &param3_1_1;
+    param3[1].operand2 = &param3_2_1;
+
+    scp_operand param4;
+    param4.element_type = scp_type_const;
+    param4.param_type = SCP_ASSIGN;
+
+    //scp_sys_search(&param1, &param2, &param3, 1, &param4, SCP_TRUE);
+    scp_sys_gen_for_variables(&param1, &param2, 1, param3, 2, &param4);
+
+    printEl(&param2_2);
+
+    //printf("VAR=%d|%d\n", param3_1.addr.seg, param3_1.addr.offset);
+
+    free(param3);
+    g_timer_stop(timer);
+    printf((sc_char *)"Time: %f s\n", g_timer_elapsed(timer, 0));
+    g_timer_destroy(timer);
+}
+
 void print_test()
 {
     scp_operand param1;
@@ -218,7 +279,7 @@ void print_test()
 int main(void)
 {
     scp_lib_init((sc_char *)"repo", (sc_char *)"test.ini");
-    print_test();
+    test_system_operator_gen();
     return 0;
     scp_operand param1;
     param1.element_type = scp_type_node | scp_type_const;

@@ -20,16 +20,12 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-#ifndef SCP_SYS_H
-#define SCP_SYS_H
+#ifndef SCP_SYS_GEN_H
+#define SCP_SYS_GEN_H
 
 #include "../scp_types.h"
 
-scp_result scp_sys_search(scp_operand *param1, scp_operand *param2, scp_operand_pair *parameters, sc_uint32 param_count, scp_operand *param4, scp_bool full_only);
-scp_result scp_sys_search_for_variables(scp_operand *param1, scp_operand_pair *variables, sc_uint32 var_count, scp_operand_pair *parameters, sc_uint32 param_count, scp_operand *param4);
-//scp_result sys_search_single(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4);
+scp_result sys_gen(scp_operand *param1, scp_operand *param2, scp_operand_pair *parameters, sc_uint32 param_count, scp_operand *param4);
+scp_result sys_gen_for_variables(scp_operand *param1, scp_operand_pair *variables, sc_uint32 var_count, scp_operand_pair *parameters, sc_uint32 param_count, scp_operand *param4);
 
-scp_result scp_sys_gen(scp_operand *param1, scp_operand *param2, scp_operand_pair *parameters, sc_uint32 param_count, scp_operand *param4);
-scp_result scp_sys_gen_for_variables(scp_operand *param1, scp_operand_pair *variables, sc_uint32 var_count, scp_operand_pair *parameters, sc_uint32 param_count, scp_operand *param4);
-
-#endif // SCP_SYS_H
+#endif // SCP_SYS_GEN_H
