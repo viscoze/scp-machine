@@ -76,6 +76,18 @@ extern "C" scp_result sys_search_for_variables(scp_operand *param1, scp_operand_
             find_result_pair_for_var(result[i], op1->addr, &(op2->addr));
         }
     }
+    if (param4 != nullptr)
+    {
+        sc_type_result::iterator it;
+        for (i = 0; i < result.size(); i++)
+        {
+            for (it = result[i]->begin() ; it != result[i]->end(); it++)
+            {
+                addr1 = (*it).second;
+                sc_memory_arc_new(sc_type_arc_common | sc_type_const, param4->addr, addr1);
+            }
+        }
+    }
     free_result_vector(&result);
     return res;
 }
@@ -125,6 +137,10 @@ extern "C" scp_result sys_search(scp_operand *param1, scp_operand *param2, scp_o
             addr2 = (*it).second;
             arc = sc_memory_arc_new(sc_type_arc_common | sc_type_const, addr1, addr2);
             sc_memory_arc_new(sc_type_arc_pos_const_perm, curr_result_node, arc);
+            if (param4 != nullptr)
+            {
+                sc_memory_arc_new(sc_type_arc_common | sc_type_const, param4->addr, addr2);
+            }
         }
         sc_memory_arc_new(sc_type_arc_pos_const_perm, param2->addr, curr_result_node);
     }

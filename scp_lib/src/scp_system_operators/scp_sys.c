@@ -62,6 +62,21 @@ scp_result scp_sys_search(scp_operand *param1, scp_operand *param2, scp_operand_
         }
     }
 
+    if (param4 != nullptr)
+    {
+        if (param4->param_type == SCP_FIXED)
+        {
+            if (SC_FALSE == sc_memory_is_element(param1->addr))
+            {
+                return print_error("scp_sys_search", "Parameter 4 has modifier FIXED, but has not value");
+            }
+        }
+        else
+        {
+            param4->addr = sc_memory_node_new(scp_type_const);
+        }
+    }
+
     if (flag2 == SCP_TRUE)
     {
         param2->addr = sc_memory_node_new(scp_type_const);
@@ -116,6 +131,20 @@ scp_result scp_sys_search_for_variables(scp_operand *param1, scp_operand_pair *v
             }
         }
     }
+    if (param4 != nullptr)
+    {
+        if (param4->param_type == SCP_FIXED)
+        {
+            if (SC_FALSE == sc_memory_is_element(param1->addr))
+            {
+                return print_error("scp_sys_search_for_variables", "Parameter 4 has modifier FIXED, but has not value");
+            }
+        }
+        else
+        {
+            param4->addr = sc_memory_node_new(scp_type_const);
+        }
+    }
     for (i = 0; i < var_count; i++)
     {
         if (variables[i].operand2->param_type == SCP_ASSIGN && variables[i].operand2->set == SCP_TRUE)
@@ -161,7 +190,20 @@ scp_result scp_sys_gen(scp_operand *param1, scp_operand *param2, scp_operand_pai
             return print_error("sys_gen", "All elements of parameter set must have value");
         }
     }
-
+    if (param4 != nullptr)
+    {
+        if (param4->param_type == SCP_FIXED)
+        {
+            if (SC_FALSE == sc_memory_is_element(param1->addr))
+            {
+                return print_error("scp_sys_gen", "Parameter 4 has modifier FIXED, but has not value");
+            }
+        }
+        else
+        {
+            param4->addr = sc_memory_node_new(scp_type_const);
+        }
+    }
     if (flag2 == SCP_TRUE)
     {
         param2->addr = sc_memory_node_new(scp_type_const);
@@ -204,6 +246,20 @@ scp_result scp_sys_gen_for_variables(scp_operand *param1, scp_operand_pair *vari
         if (variables[i].operand2->param_type == SCP_FIXED)
         {
             return print_error("sys_gen_for_variables", "All variables values must have ASSIGN modifier");
+        }
+    }
+    if (param4 != nullptr)
+    {
+        if (param4->param_type == SCP_FIXED)
+        {
+            if (SC_FALSE == sc_memory_is_element(param1->addr))
+            {
+                return print_error("scp_sys_gen_for_variables", "Parameter 4 has modifier FIXED, but has not value");
+            }
+        }
+        else
+        {
+            param4->addr = sc_memory_node_new(scp_type_const);
         }
     }
     for (i = 0; i < var_count; i++)

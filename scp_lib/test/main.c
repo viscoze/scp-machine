@@ -143,10 +143,10 @@ void test_system_operator()
     sc_helper_resolve_system_identifier("pattern4", &(param1.addr));
     param1.param_type = SCP_FIXED;
 
-    //scp_operand param2;
-    //param2.param_type = SCP_ASSIGN;
+    scp_operand param2;
+    param2.param_type = SCP_ASSIGN;
 
-    scp_operand_pair param2;
+    /*scp_operand_pair param2;
     scp_operand param2_1;
     param2_1.param_type = SCP_FIXED;
     sc_helper_resolve_system_identifier("_a", &(param2_1.addr));
@@ -155,7 +155,7 @@ void test_system_operator()
     param2_2.param_type = SCP_ASSIGN;
 
     param2.operand1 = &param2_1;
-    param2.operand2 = &param2_2;
+    param2.operand2 = &param2_2;*/
 
     scp_operand_pair *param3 = calloc(3, sizeof(scp_operand_pair));
     scp_operand param3_1;
@@ -192,10 +192,10 @@ void test_system_operator()
     param4.element_type = scp_type_const;
     param4.param_type = SCP_ASSIGN;
 
-    //scp_sys_search(&param1, &param2, &param3, 1, &param4, SCP_TRUE);
-    scp_sys_search_for_variables(&param1, &param2, 1, param3, 1, &param4);
+    scp_sys_search(&param1, &param2, param3, 1, &param4, SCP_TRUE);
+    //scp_sys_search_for_variables(&param1, &param2, 1, param3, 1, &param4);
 
-    printEl(&param2_2);
+    printEl(&param4);
 
     //printf("VAR=%d|%d\n", param3_1.addr.seg, param3_1.addr.offset);
 
@@ -254,9 +254,9 @@ void test_system_operator_gen()
     param4.param_type = SCP_ASSIGN;
 
     //scp_sys_search(&param1, &param2, &param3, 1, &param4, SCP_TRUE);
-    scp_sys_gen_for_variables(&param1, &param2, 1, param3, 2, &param4);
+    scp_sys_gen_for_variables(&param1, &param2, 1, param3, 0, &param4);
 
-    printEl(&param2_2);
+    printEl(&param4);
 
     //printf("VAR=%d|%d\n", param3_1.addr.seg, param3_1.addr.offset);
 
