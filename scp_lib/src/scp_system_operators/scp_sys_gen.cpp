@@ -24,11 +24,10 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 extern "C"
 {
-#include "scp_sys_gen.h"
 #include "sc_memory_headers.h"
-#include "../scp_types.h"
 
-#include <stdio.h>
+#include "scp_sys_gen.h"
+#include "../scp_types.h"
 }
 
 extern "C" scp_result sys_gen(scp_operand *param1, scp_operand *param2, scp_operand_pair *parameters, sc_uint32 param_count, scp_operand *param4)

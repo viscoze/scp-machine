@@ -20,10 +20,9 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
+#include "sc_memory_headers.h"
+
 #include "scp_searchElStr5.h"
-#include "sc_memory.h"
-#include "sc_iterator5.h"
-#include "sc_iterator3.h"
 
 scp_result searchElStr5_f_a_a_a_a(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5)
 {

@@ -20,11 +20,12 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
+#include "sc_memory_headers.h"
+
 #include "../scp_types.h"
 #include "../scp_utils.h"
 #include "scp_sys_search.h"
 #include "scp_sys_gen.h"
-#include "sc_memory_headers.h"
 
 scp_result scp_sys_search(scp_operand *param1, scp_operand *param2, scp_operand_pair *parameters, sc_uint32 param_count, scp_operand *param4, scp_bool full_only)
 {

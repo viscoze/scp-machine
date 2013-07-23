@@ -1,15 +1,11 @@
-#include "scp_functions.h"
-#include "scp_types.h"
-#include <stdio.h>
-#include "sc_memory.h"
-#include <glib.h>
-#include "malloc.h"
-#include "sc_stream.h"
-#include "sc_helper.h"
-#include "scp_iterator3.h"
-#include "scp_iterator5.h"
 
-#include "scp_system_operators/scp_sys.h"
+#include "scp_lib.h"
+#include "sc_helper.h"
+#include "sc_memory_headers.h"
+
+#include <stdio.h>
+#include <glib.h>
+#include <malloc.h>
 
 /*void foo()
 {

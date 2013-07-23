@@ -20,10 +20,10 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
+#include "sc_memory_headers.h"
+
 #include "scp_eraseSetStr3.h"
 #include "scp_utils.h"
-#include "sc_memory.h"
-#include "sc_iterator3.h"
 
 scp_result eraseSetStr3F(scp_operand *param1, scp_operand *param2, scp_operand *param3)
 {

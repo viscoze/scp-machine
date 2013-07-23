@@ -24,8 +24,9 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 extern "C"
 {
-#include "scp_sys_search.h"
 #include "sc_memory_headers.h"
+
+#include "scp_sys_search.h"
 #include "../scp_types.h"
 }
 

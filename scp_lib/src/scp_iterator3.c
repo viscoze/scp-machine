@@ -20,9 +20,9 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
+#include "sc_memory_headers.h"
+
 #include "scp_iterator3.h"
-#include "sc_iterator3.h"
-#include "sc_memory.h"
 #include "scp_utils.h"
 
 scp_iterator3 *scp_iterator3_new(scp_operand *param1, scp_operand *param2, scp_operand *param3)
