@@ -1,0 +1,61 @@
+rrel_1 => nrel_main_en_idtf:
+	[1'];;
+rrel_1 => nrel_main_ru_idtf:
+	[1'];;
+
+rrel_2 => nrel_main_en_idtf:
+	[2'];;
+rrel_2 => nrel_main_ru_idtf:
+	[2'];;
+
+rrel_3 => nrel_main_en_idtf:
+	[3'];;
+rrel_3 => nrel_main_ru_idtf:
+	[3'];;
+
+rrel_4 => nrel_main_en_idtf:
+	[4'];;
+rrel_4 => nrel_main_ru_idtf:
+	[4'];;
+
+rrel_5 => nrel_main_en_idtf:
+	[5'];;
+rrel_5 => nrel_main_ru_idtf:
+	[5'];;
+
+rrel_6 => nrel_main_en_idtf:
+	[6'];;
+rrel_6 => nrel_main_ru_idtf:
+	[7'];;
+
+rrel_7 => nrel_main_en_idtf:
+	[7'];;
+rrel_7 => nrel_main_ru_idtf:
+	[7'];;
+
+rrel_8 => nrel_main_en_idtf:
+	[8'];;
+rrel_8 => nrel_main_ru_idtf:
+	[8'];;
+
+rrel_9 => nrel_main_en_idtf:
+	[9'];;
+rrel_9 => nrel_main_ru_idtf:
+	[9'];;
+
+rrel_10 => nrel_main_en_idtf:
+	[10'];;
+rrel_10 => nrel_main_ru_idtf:
+	[10'];;
+
+ordinal_rrel -> rrel_1;;
+ordinal_rrel -> rrel_2;;
+ordinal_rrel -> rrel_3;;
+ordinal_rrel -> rrel_4;;
+ordinal_rrel -> rrel_5;;
+ordinal_rrel -> rrel_6;;
+ordinal_rrel -> rrel_7;;
+ordinal_rrel -> rrel_8;;
+ordinal_rrel -> rrel_9;;
+ordinal_rrel -> rrel_10;;
+

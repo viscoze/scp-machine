@@ -1,0 +1,55 @@
+
+scp_operator -> searchElStr3;;
+scp_operator -> searchElStr5;;
+
+scp_operator -> searchIterStr3;;
+scp_operator -> searchIterStr5;;
+
+scp_operator -> genEl;;
+scp_operator -> genElStr3;;
+scp_operator -> genElStr5;;
+
+scp_operator -> eraseEl;;
+scp_operator -> eraseElStr3;;
+scp_operator -> eraseElStr5;;
+scp_operator -> eraseSetStr3;;
+scp_operator -> eraseSetStr5;;
+
+scp_operator -> ifVarAssign;;
+scp_operator -> ifFormCont;;
+scp_operator -> ifCoin;;
+scp_operator -> ifEq;;
+scp_operator -> ifGr;;
+scp_operator -> ifType;;
+
+scp_operator -> varAssign;;
+
+scp_operator -> contAdd;;
+scp_operator -> contDiv;;
+scp_operator -> contMult;;
+scp_operator -> contSub;;
+scp_operator -> contPow;;
+
+scp_operator -> contLn;;
+scp_operator -> contSin;;
+scp_operator -> contCos;;
+scp_operator -> contTg;;
+scp_operator -> contAsin;;
+scp_operator -> contACos;;
+scp_operator -> contATg;;
+
+scp_operator -> contAssign;;
+scp_operator -> contErase;;
+
+scp_operator -> print;;
+scp_operator -> printNl;;
+scp_operator -> printEl;;
+
+scp_operator -> sys_search;;
+scp_operator -> sys_gen;;
+
+scp_operator -> call;;
+scp_operator -> waitReturn;;
+scp_operator -> waitReturnSet;;
+scp_operator -> return;;
+

@@ -1,0 +1,61 @@
+/* SCP program specification */
+rrel_vars => nrel_main_ru_idtf:
+	[переменные'];;
+rrel_vars => nrel_main_en_idtf:
+	[variables'];;
+rrel_consts => nrel_main_ru_idtf:
+	[константы'];;
+rrel_consts => nrel_main_en_idtf:
+	[constants'];;
+rrel_params => nrel_main_ru_idtf:
+	[параметры'];;
+rrel_params => nrel_main_en_idtf:
+	[parameters'];;
+rrel_operators => nrel_main_ru_idtf:
+	[операторы'];;
+rrel_operators => nrel_main_en_idtf:
+	[operators'];;
+rrel_init => nrel_main_en_idtf:
+	[init operator'];;
+
+/* Parameter type rrels */
+rrel_in => nrel_main_ru_idtf:
+	[входной параметр'];;
+rrel_in => nrel_main_en_idtf:
+	[in parameter'];;
+rrel_out => nrel_main_ru_idtf:
+	[выходной параметр'];;
+rrel_out => nrel_main_en_idtf:
+	[out parameter'];;
+
+/* Operand type rrels */
+rrel_fixed => nrel_main_en_idtf:
+	[fixed'];;
+rrel_assign => nrel_main_en_idtf:
+	[assign'];;
+rrel_set => nrel_main_en_idtf:
+	[set'];;
+rrel_erase => nrel_main_en_idtf:
+	[erase'];;
+
+/* Element type rrels */
+rrel_const => nrel_main_en_idtf:
+	[const'];;
+rrel_var => nrel_main_en_idtf:
+	[var'];;
+rrel_node => nrel_main_en_idtf:
+	[node'];;
+rrel_arc => nrel_main_en_idtf:
+	[arc'];;
+rrel_pos => nrel_main_en_idtf:
+	[pos'];;
+rrel_neg => nrel_main_en_idtf:
+	[neg'];;
+rrel_fuz => nrel_main_en_idtf:
+	[fuz'];;
+rrel_temp => nrel_main_en_idtf:
+	[temp'];;
+rrel_perm => nrel_main_en_idtf:
+	[perm'];;
+
+

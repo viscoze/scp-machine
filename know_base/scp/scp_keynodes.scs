@@ -1,0 +1,10 @@
+scp_procedure => nrel_main_ru_idtf:
+	[scp-процедура];;
+scp_procedure => nrel_main_en_idtf:
+	[scp-procedure];;
+
+scp_operator => nrel_main_ru_idtf:
+	[scp-оператор];;
+scp_operator => nrel_main_en_idtf:
+	[scp-operator];;
+
