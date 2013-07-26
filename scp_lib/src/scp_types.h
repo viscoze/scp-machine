@@ -24,6 +24,9 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "sc_types.h"
 
+#define MAKE_DEFAULT_OPERAND_FIXED(operand) { operand.addr.seg = 0; operand.addr.offset = 0; operand.element_type = 0; operand.param_type = SCP_FIXED; operand.erase = SCP_FALSE; operand.set = SCP_FALSE; }
+#define MAKE_DEFAULT_OPERAND_ASSIGN(operand) { operand.addr.seg = 0; operand.addr.offset = 0; operand.element_type = 0; operand.param_type = SCP_ASSIGN; operand.erase = SCP_FALSE; operand.set = SCP_FALSE; }
+
 // parameter type
 enum _scp_param_type
 {

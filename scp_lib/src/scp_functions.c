@@ -221,7 +221,7 @@ scp_result searchElStr3(scp_operand *param1, scp_operand *param2, scp_operand *p
         }
         fixed3 = 0x100;
     }
-    fixed = (fixed1 | fixed2 | fixed3);
+    fixed = (fixed1 | fixed2 | fixed3);    
     switch (fixed)
     {
         case 0x001:

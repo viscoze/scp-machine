@@ -78,7 +78,7 @@ scp_result searchElStr3_a_f_a(scp_operand *param1, scp_operand *param2, scp_oper
     {
         return SCP_RESULT_ERROR;
     }
-    if (SCP_RESULT_TRUE != check_type(begin, param1->element_type) && SCP_RESULT_TRUE != check_type(end, param3->element_type))
+    if (SCP_RESULT_TRUE == check_type(begin, param1->element_type) && SCP_RESULT_TRUE == check_type(end, param3->element_type))
     {
         param1->addr = begin;
         param3->addr = end;
@@ -104,7 +104,7 @@ scp_result searchElStr3_f_f_a(scp_operand *param1, scp_operand *param2, scp_oper
         {
             return SCP_RESULT_ERROR;
         }
-        if (SCP_RESULT_TRUE != check_type(end, param3->element_type))
+        if (SCP_RESULT_TRUE == check_type(end, param3->element_type))
         {
             return SCP_RESULT_FALSE;
         }
@@ -131,7 +131,7 @@ scp_result searchElStr3_a_f_f(scp_operand *param1, scp_operand *param2, scp_oper
         {
             return SCP_RESULT_ERROR;
         }
-        if (SCP_RESULT_TRUE != check_type(begin, param1->element_type))
+        if (SCP_RESULT_TRUE == check_type(begin, param1->element_type))
         {
             return SCP_RESULT_FALSE;
         }

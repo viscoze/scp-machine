@@ -19,9 +19,16 @@ unix {
 }
 
 HEADERS += \
+    src/scp_interpreter.h \
     src/scp_keynodes.h \
-    src/scp_interpreter.h
+    src/scp_operator_keynodes.h \
+    src/scp_interpreter_utils.h \
+    src/scp_process_creator.h
 
 SOURCES += \
-    src/scp_interpreter.c
+    src/scp_interpreter.c \
+    src/scp_keynodes.c \
+    src/scp_operator_keynodes.c \
+    src/scp_interpreter_utils.c \
+    src/scp_process_creator.c
 
