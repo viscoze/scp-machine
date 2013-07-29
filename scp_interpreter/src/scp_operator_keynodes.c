@@ -24,6 +24,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scp_operator_keynodes.h"
 #include "scp_interpreter_utils.h"
 
+scp_operand scp_operator;
+
 scp_operand op_searchElStr3;
 scp_operand op_searchElStr5;
 
@@ -80,6 +82,7 @@ scp_operand op_return;
 
 scp_result init_operator_keynodes()
 {
+    MAKE_DEFAULT_OPERAND_FIXED(scp_operator);
     MAKE_DEFAULT_OPERAND_FIXED(op_searchElStr3);
     MAKE_DEFAULT_OPERAND_FIXED(op_searchElStr5);
     MAKE_DEFAULT_OPERAND_FIXED(op_searchIterStr3);
@@ -122,7 +125,10 @@ scp_result init_operator_keynodes()
     MAKE_DEFAULT_OPERAND_FIXED(op_waitReturn);
     MAKE_DEFAULT_OPERAND_FIXED(op_waitReturnSet);
     MAKE_DEFAULT_OPERAND_FIXED(op_return);
-
+    if (SC_TRUE != sc_helper_resolve_system_identifier("scp_operator", &scp_operator.addr))
+    {
+        return print_error("Keynode not found", "scp_operator");
+    }
     if (SC_TRUE != sc_helper_resolve_system_identifier("searchElStr3", &op_searchElStr3.addr))
     {
         return print_error("Keynode not found", "searchElStr3");

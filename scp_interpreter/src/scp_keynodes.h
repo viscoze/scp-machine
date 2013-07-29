@@ -36,6 +36,8 @@ extern scp_operand rrel_vars;
 extern scp_operand rrel_consts;
 extern scp_operand rrel_params;
 extern scp_operand rrel_operators;
+extern scp_operand rrel_copies;
+extern scp_operand rrel_values;
 extern scp_operand rrel_init;
 
 extern scp_operand rrel_in;

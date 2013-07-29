@@ -25,6 +25,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "scp_lib.h"
 
+extern scp_operand scp_operator;
+
 extern scp_operand op_searchElStr3;
 extern scp_operand op_searchElStr5;
 

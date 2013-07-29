@@ -35,6 +35,8 @@ scp_operand rrel_vars;
 scp_operand rrel_consts;
 scp_operand rrel_params;
 scp_operand rrel_operators;
+scp_operand rrel_copies;
+scp_operand rrel_values;
 scp_operand rrel_init;
 
 scp_operand rrel_in;
@@ -77,6 +79,8 @@ scp_result scp_keynodes_init()
     MAKE_DEFAULT_OPERAND_FIXED(rrel_consts);
     MAKE_DEFAULT_OPERAND_FIXED(rrel_params);
     MAKE_DEFAULT_OPERAND_FIXED(rrel_operators);
+    MAKE_DEFAULT_OPERAND_FIXED(rrel_operators);
+    MAKE_DEFAULT_OPERAND_FIXED(rrel_values);
     MAKE_DEFAULT_OPERAND_FIXED(rrel_init);
     MAKE_DEFAULT_OPERAND_FIXED(rrel_in);
     MAKE_DEFAULT_OPERAND_FIXED(rrel_out);
@@ -135,6 +139,14 @@ scp_result scp_keynodes_init()
     if (SC_TRUE != sc_helper_resolve_system_identifier("rrel_operators", &rrel_operators.addr))
     {
         return print_error("Keynode not found", "rrel_operators");
+    }
+    if (SC_TRUE != sc_helper_resolve_system_identifier("rrel_copies", &rrel_copies.addr))
+    {
+        return print_error("Keynode not found", "rrel_copies");
+    }
+    if (SC_TRUE != sc_helper_resolve_system_identifier("rrel_values", &rrel_values.addr))
+    {
+        return print_error("Keynode not found", "rrel_values");
     }
     if (SC_TRUE != sc_helper_resolve_system_identifier("rrel_init", &rrel_init.addr))
     {

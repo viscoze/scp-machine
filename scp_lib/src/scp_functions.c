@@ -221,7 +221,7 @@ scp_result searchElStr3(scp_operand *param1, scp_operand *param2, scp_operand *p
         }
         fixed3 = 0x100;
     }
-    fixed = (fixed1 | fixed2 | fixed3);    
+    fixed = (fixed1 | fixed2 | fixed3);
     switch (fixed)
     {
         case 0x001:
@@ -652,10 +652,12 @@ scp_result printEl(scp_operand *param)
     {
         sc_stream *stream;
         sc_uint32 length = 0, read_length = 0;
+        sc_char *data;
         sc_memory_get_link_content(idtf, &stream);
         sc_stream_get_length(stream, &length);
-        sc_char *data = calloc(length, sizeof(sc_char));
+        data = calloc(length + 1, sizeof(sc_char));
         sc_stream_read_data(stream, data, length, &read_length);
+        data[length] = '\0';
         printf("\nPrint element: %s =\n", data);
         sc_stream_free(stream);
         free(data);
@@ -680,26 +682,44 @@ scp_result printEl(scp_operand *param)
         {
             sc_stream *stream;
             sc_uint32 length = 0, read_length = 0;
-            sc_char *data = calloc(length, sizeof(sc_char));
+            sc_char *data;
             sc_memory_get_link_content(idtf, &stream);
             sc_stream_get_length(stream, &length);
+            data = calloc(length + 1, sizeof(sc_char));
             sc_stream_read_data(stream, data, length, &read_length);
-            printf("\t%s <- ", data);
+            data[length] = '\0';
+            if (SCP_RESULT_TRUE == check_type(addr3, scp_type_arc_common))
+            {
+                printf("\t%s <= ", data);
+            }
+            else
+            {
+                printf("\t%s <- ", data);
+            }
             sc_stream_free(stream);
             free(data);
         }
         else
         {
-            printf("\t%u|%u <- ", addr3.seg, addr3.offset);
+            if (SCP_RESULT_TRUE == check_type(addr3, scp_type_arc_common))
+            {
+                printf("\t%u|%u <= ", addr3.seg, addr3.offset);
+            }
+            else
+            {
+                printf("\t%u|%u <- ", addr3.seg, addr3.offset);
+            }
         }
         if (SC_RESULT_OK == sc_helper_get_system_identifier(addr2, &idtf))
         {
             sc_stream *stream;
             sc_uint32 length = 0, read_length = 0;
-            sc_char *data = calloc(length, sizeof(sc_char));
+            sc_char *data;
             sc_memory_get_link_content(idtf, &stream);
             sc_stream_get_length(stream, &length);
+            data = calloc(length + 1, sizeof(sc_char));
             sc_stream_read_data(stream, data, length, &read_length);
+            data[length] = '\0';
             printf("%s;\n", data);
             sc_stream_free(stream);
             free(data);
@@ -726,17 +746,34 @@ scp_result printEl(scp_operand *param)
         {
             sc_stream *stream;
             sc_uint32 length = 0, read_length = 0;
-            sc_char *data = calloc(length, sizeof(sc_char));
+            sc_char *data;
             sc_memory_get_link_content(idtf, &stream);
             sc_stream_get_length(stream, &length);
+            data = calloc(length + 1, sizeof(sc_char));
             sc_stream_read_data(stream, data, length, &read_length);
-            printf("\t%s -> ", data);
+            data[length] = '\0';
+            if (SCP_RESULT_TRUE == check_type(addr2, scp_type_arc_common))
+            {
+                printf("\t%s => ", data);
+            }
+            else
+            {
+                printf("\t%s -> ", data);
+            }
             sc_stream_free(stream);
             free(data);
         }
         else
         {
-            printf("\t%u|%u -> ", addr2.seg, addr2.offset);
+            if (SCP_RESULT_TRUE == check_type(addr2, scp_type_arc_common))
+            {
+                printf("\t%u|%u => ", addr2.seg, addr2.offset);
+            }
+            else
+            {
+                printf("\t%u|%u -> ", addr2.seg, addr2.offset);
+            }
+
         }
         if (SC_RESULT_OK == sc_helper_get_system_identifier(addr3, &idtf))
         {
@@ -745,8 +782,9 @@ scp_result printEl(scp_operand *param)
             sc_char *data;
             sc_memory_get_link_content(idtf, &stream);
             sc_stream_get_length(stream, &length);
-            data = calloc(length, sizeof(sc_char));
+            data = calloc(length + 1, sizeof(sc_char));
             sc_stream_read_data(stream, data, length, &read_length);
+            data[length] = '\0';
             printf("%s;\n", data);
             sc_stream_free(stream);
             free(data);
@@ -778,8 +816,9 @@ scp_result printL(scp_operand *param, sc_bool new_line)
         return print_error("print", "Content reading error");
     }
     sc_stream_get_length(stream, &length);
-    data = calloc(length, sizeof(sc_char));
+    data = calloc(length + 1, sizeof(sc_char));
     sc_stream_read_data(stream, data, length, &read_length);
+    data[length] = '\0';
     printf("%s", data);
     if (SC_TRUE == new_line)
     {
