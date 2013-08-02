@@ -125,163 +125,163 @@ scp_result init_operator_keynodes()
     MAKE_DEFAULT_OPERAND_FIXED(op_waitReturn);
     MAKE_DEFAULT_OPERAND_FIXED(op_waitReturnSet);
     MAKE_DEFAULT_OPERAND_FIXED(op_return);
-    if (SC_TRUE != sc_helper_resolve_system_identifier("scp_operator", &scp_operator.addr))
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("scp_operator", &scp_operator))
     {
         return print_error("Keynode not found", "scp_operator");
     }
-    if (SC_TRUE != sc_helper_resolve_system_identifier("searchElStr3", &op_searchElStr3.addr))
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("searchElStr3", &op_searchElStr3))
     {
         return print_error("Keynode not found", "searchElStr3");
     }
-    if (SC_TRUE != sc_helper_resolve_system_identifier("searchElStr5", &op_searchElStr5.addr))
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("searchElStr5", &op_searchElStr5))
     {
         return print_error("Keynode not found", "searchElStr5");
     }
-    if (SC_TRUE != sc_helper_resolve_system_identifier("searchIterStr3", &op_searchIterStr3.addr))
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("searchIterStr3", &op_searchIterStr3))
     {
         return print_error("Keynode not found", "searchIterStr3");
     }
-    if (SC_TRUE != sc_helper_resolve_system_identifier("searchIterStr5", &op_searchIterStr5.addr))
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("searchIterStr5", &op_searchIterStr5))
     {
         return print_error("Keynode not found", "searchIterStr5");
     }
-    if (SC_TRUE != sc_helper_resolve_system_identifier("eraseEl", &op_eraseEl.addr))
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("eraseEl", &op_eraseEl))
     {
         return print_error("Keynode not found", "eraseEl");
     }
-    if (SC_TRUE != sc_helper_resolve_system_identifier("eraseElStr3", &op_eraseElStr3.addr))
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("eraseElStr3", &op_eraseElStr3))
     {
         return print_error("Keynode not found", "eraseElStr3");
     }
-    if (SC_TRUE != sc_helper_resolve_system_identifier("eraseElStr5", &op_eraseElStr5.addr))
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("eraseElStr5", &op_eraseElStr5))
     {
         return print_error("Keynode not found", "eraseElStr5");
     }
-    if (SC_TRUE != sc_helper_resolve_system_identifier("eraseSetStr3", &op_eraseSetStr3.addr))
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("eraseSetStr3", &op_eraseSetStr3))
     {
         return print_error("Keynode not found", "eraseSetStr3");
     }
-    if (SC_TRUE != sc_helper_resolve_system_identifier("eraseSetStr5", &op_eraseSetStr5.addr))
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("eraseSetStr5", &op_eraseSetStr5))
     {
         return print_error("Keynode not found", "eraseSetStr5");
     }
-    if (SC_TRUE != sc_helper_resolve_system_identifier("ifVarAssign", &op_ifVarAssign.addr))
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("ifVarAssign", &op_ifVarAssign))
     {
         return print_error("Keynode not found", "ifVarAssign");
     }
-    if (SC_TRUE != sc_helper_resolve_system_identifier("ifFormCont", &op_ifFormCont.addr))
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("ifFormCont", &op_ifFormCont))
     {
         return print_error("Keynode not found", "ifFormCont");
     }
-    if (SC_TRUE != sc_helper_resolve_system_identifier("ifCoin", &op_ifCoin.addr))
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("ifCoin", &op_ifCoin))
     {
         return print_error("Keynode not found", "ifCoin");
     }
-    if (SC_TRUE != sc_helper_resolve_system_identifier("ifEq", &op_ifEq.addr))
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("ifEq", &op_ifEq))
     {
         return print_error("Keynode not found", "ifEq");
     }
-    if (SC_TRUE != sc_helper_resolve_system_identifier("ifGr", &op_ifGr.addr))
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("ifGr", &op_ifGr))
     {
         return print_error("Keynode not found", "ifGr");
     }
-    if (SC_TRUE != sc_helper_resolve_system_identifier("ifType", &op_ifType.addr))
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("ifType", &op_ifType))
     {
         return print_error("Keynode not found", "ifType");
     }
-    if (SC_TRUE != sc_helper_resolve_system_identifier("varAssign", &op_varAssign.addr))
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("varAssign", &op_varAssign))
     {
         return print_error("Keynode not found", "varAssign");
     }
-    if (SC_TRUE != sc_helper_resolve_system_identifier("contAdd", &op_contAdd.addr))
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("contAdd", &op_contAdd))
     {
         return print_error("Keynode not found", "contAdd");
     }
-    if (SC_TRUE != sc_helper_resolve_system_identifier("contDiv", &op_contDiv.addr))
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("contDiv", &op_contDiv))
     {
         return print_error("Keynode not found", "contDiv");
     }
-    if (SC_TRUE != sc_helper_resolve_system_identifier("contMult", &op_contMult.addr))
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("contMult", &op_contMult))
     {
         return print_error("Keynode not found", "contMult");
     }
-    if (SC_TRUE != sc_helper_resolve_system_identifier("contSub", &op_contSub.addr))
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("contSub", &op_contSub))
     {
         return print_error("Keynode not found", "contSub");
     }
-    if (SC_TRUE != sc_helper_resolve_system_identifier("contPow", &op_contPow.addr))
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("contPow", &op_contPow))
     {
         return print_error("Keynode not found", "contPow");
     }
-    if (SC_TRUE != sc_helper_resolve_system_identifier("contLn", &op_contLn.addr))
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("contLn", &op_contLn))
     {
         return print_error("Keynode not found", "contLn");
     }
-    if (SC_TRUE != sc_helper_resolve_system_identifier("contSin", &op_contSin.addr))
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("contSin", &op_contSin))
     {
         return print_error("Keynode not found", "contSin");
     }
-    if (SC_TRUE != sc_helper_resolve_system_identifier("contCos", &op_contCos.addr))
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("contCos", &op_contCos))
     {
         return print_error("Keynode not found", "contCos");
     }
-    if (SC_TRUE != sc_helper_resolve_system_identifier("contTg", &op_contTg.addr))
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("contTg", &op_contTg))
     {
         return print_error("Keynode not found", "contTg");
     }
-    if (SC_TRUE != sc_helper_resolve_system_identifier("contAsin", &op_contAsin.addr))
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("contAsin", &op_contAsin))
     {
         return print_error("Keynode not found", "contAsin");
     }
-    if (SC_TRUE != sc_helper_resolve_system_identifier("contACos", &op_contACos.addr))
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("contACos", &op_contACos))
     {
         return print_error("Keynode not found", "contACos");
     }
-    if (SC_TRUE != sc_helper_resolve_system_identifier("contATg", &op_contATg.addr))
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("contATg", &op_contATg))
     {
         return print_error("Keynode not found", "contATg");
     }
-    if (SC_TRUE != sc_helper_resolve_system_identifier("contAssign", &op_contAssign.addr))
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("contAssign", &op_contAssign))
     {
         return print_error("Keynode not found", "contAssign");
     }
-    if (SC_TRUE != sc_helper_resolve_system_identifier("contErase", &op_contErase.addr))
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("contErase", &op_contErase))
     {
         return print_error("Keynode not found", "contErase");
     }
-    if (SC_TRUE != sc_helper_resolve_system_identifier("print", &op_print.addr))
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("print", &op_print))
     {
         return print_error("Keynode not found", "print");
     }
-    if (SC_TRUE != sc_helper_resolve_system_identifier("printNl", &op_printNl.addr))
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("printNl", &op_printNl))
     {
         return print_error("Keynode not found", "printNl");
     }
-    if (SC_TRUE != sc_helper_resolve_system_identifier("printEl", &op_printEl.addr))
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("printEl", &op_printEl))
     {
         return print_error("Keynode not found", "printEl");
     }
-    if (SC_TRUE != sc_helper_resolve_system_identifier("sys_search", &op_sys_search.addr))
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("sys_search", &op_sys_search))
     {
         return print_error("Keynode not found", "sys_search");
     }
-    if (SC_TRUE != sc_helper_resolve_system_identifier("sys_gen", &op_sys_gen.addr))
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("sys_gen", &op_sys_gen))
     {
         return print_error("Keynode not found", "sys_gen");
     }
-    if (SC_TRUE != sc_helper_resolve_system_identifier("call", &op_call.addr))
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("call", &op_call))
     {
         return print_error("Keynode not found", "call");
     }
-    if (SC_TRUE != sc_helper_resolve_system_identifier("waitReturn", &op_waitReturn.addr))
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("waitReturn", &op_waitReturn))
     {
         return print_error("Keynode not found", "waitReturn");
     }
-    if (SC_TRUE != sc_helper_resolve_system_identifier("waitReturnSet", &op_waitReturnSet.addr))
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("waitReturnSet", &op_waitReturnSet))
     {
         return print_error("Keynode not found", "waitReturnSet");
     }
-    if (SC_TRUE != sc_helper_resolve_system_identifier("return", &op_return.addr))
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("return", &op_return))
     {
         return print_error("Keynode not found", "return");
     }

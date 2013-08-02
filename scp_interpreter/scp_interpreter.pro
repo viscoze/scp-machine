@@ -23,12 +23,14 @@ HEADERS += \
     src/scp_keynodes.h \
     src/scp_operator_keynodes.h \
     src/scp_interpreter_utils.h \
-    src/scp_process_creator.h
+    src/scp_process_creator.h \
+    src/scp_operators_copiers.h
 
 SOURCES += \
     src/scp_interpreter.c \
     src/scp_keynodes.c \
     src/scp_operator_keynodes.c \
     src/scp_interpreter_utils.c \
-    src/scp_process_creator.c
+    src/scp_process_creator.c \
+    src/scp_operators_copiers.c
 

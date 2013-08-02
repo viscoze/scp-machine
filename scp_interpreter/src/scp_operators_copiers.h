@@ -20,12 +20,14 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-#ifndef SCP_INTERPRETER_UTILS_H
-#define SCP_INTERPRETER_UTILS_H
+#ifndef SCP_OPERATORS_COPIERS_H
+#define SCP_OPERATORS_COPIERS_H
 
-#include "scp_lib.h"
+#include "sc_memory_headers.h"
 
-scp_result print_error(const char *error_type, const char *text);
-scp_result resolve_operator_type(scp_operand *oper, scp_operand *type);
+sc_result copy_sys_operator(sc_event *event, sc_addr arg);
+sc_result copy_return_operator(sc_event *event, sc_addr arg);
+sc_result copy_call_operator(sc_event *event, sc_addr arg);
+sc_result copy_ordinary_operator(sc_event *event, sc_addr arg);
 
-#endif // SCP_INTERPRETER_UTILS_H
+#endif // SCP_OPERATORS_COPIERS_H

@@ -23,3 +23,8 @@ question_scp_interpretation_request => nrel_main_ru_idtf:
 question_scp_interpretation_request => nrel_main_en_idtf:
 	[interpretation request];;
 
+question_scp_operator_copying_request => nrel_main_ru_idtf:
+	[запрос копирования scp-оператора];;
+question_scp_operator_copying_request => nrel_main_en_idtf:
+	[scp operator copying request];;
+

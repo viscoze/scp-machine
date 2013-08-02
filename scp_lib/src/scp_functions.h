@@ -76,4 +76,6 @@ scp_result print(scp_operand *param);
 scp_result printNl(scp_operand *param);
 scp_result printEl(scp_operand *param);
 
+scp_result scp_lib_resolve_system_identifier(const char* idtf, scp_operand *param);
+
 #endif // SCP_FUNCTIONS_H

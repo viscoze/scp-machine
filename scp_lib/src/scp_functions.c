@@ -60,6 +60,18 @@ scp_result scp_lib_shutdown()
     return SCP_RESULT_TRUE;
 }
 
+scp_result scp_lib_resolve_system_identifier(const char *idtf, scp_operand *param)
+{
+    if (SC_TRUE == sc_helper_resolve_system_identifier(idtf, &(param->addr)))
+    {
+        return SCP_RESULT_TRUE;
+    }
+    else
+    {
+        return SCP_RESULT_ERROR;
+    }
+}
+
 scp_result genEl(scp_operand *param)
 {
     if (param->param_type != SCP_ASSIGN)
