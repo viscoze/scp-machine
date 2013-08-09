@@ -1,0 +1,4 @@
+question_finished_successfully <- sc_node_not_relation;;
+
+question_finished_successfully => nrel_main_ru_idtf:
+	[успешно завершенный вопрос];;

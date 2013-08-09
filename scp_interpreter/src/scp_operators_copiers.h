@@ -30,4 +30,7 @@ sc_result copy_return_operator(sc_event *event, sc_addr arg);
 sc_result copy_call_operator(sc_event *event, sc_addr arg);
 sc_result copy_ordinary_operator(sc_event *event, sc_addr arg);
 
+sc_result process_successfully_finished_operator_copying_request(sc_event *event, sc_addr arg);
+sc_result process_unsuccessfully_finished_operator_copying_request(sc_event *event, sc_addr arg);
+
 #endif // SCP_OPERATORS_COPIERS_H

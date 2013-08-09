@@ -28,4 +28,19 @@ question_scp_operator_copying_request => nrel_main_ru_idtf:
 question_scp_operator_copying_request => nrel_main_en_idtf:
 	[scp operator copying request];;
 
+nrel_scp_process_operator_copying_requests => nrel_main_ru_idtf:
+	[запросы копирования операторов scp-процесса*];;
+nrel_scp_process_operator_copying_requests => nrel_main_en_idtf:
+	[scp-process operator copying requests set*];;
+
+successfully_copied_scp_operator_set => nrel_main_ru_idtf:
+	[множество успешно скопированных scp-операторов];;
+successfully_copied_scp_operator_set => nrel_main_en_idtf:
+	[set of successfully copied scp-operators];;
+
+unsuccessfully_copied_scp_operator_set => nrel_main_ru_idtf:
+	[множество безуспешно скопированных scp-операторов];;
+unsuccessfully_copied_scp_operator_set => nrel_main_en_idtf:
+	[set of unsuccessfully copied scp-operators];;
+
 FORMAT_NUMERIC -> [0];;

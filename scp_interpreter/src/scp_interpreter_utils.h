@@ -28,4 +28,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 scp_result print_error(const char *error_type, const char *text);
 scp_result resolve_operator_type(scp_operand *oper, scp_operand *type);
 
+void finish_question_successfully(scp_operand *param);
+void finish_question_unsuccessfully(scp_operand *param);
+
 #endif // SCP_INTERPRETER_UTILS_H

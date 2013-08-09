@@ -112,7 +112,7 @@ scp_result copy_operand_set_with_modifiers_system_pair(scp_operand *source, scp_
         return SCP_RESULT_ERROR;
     }
     arc1.param_type = SCP_FIXED;
-    second_operand.param_type=SCP_FIXED;
+    second_operand.param_type = SCP_FIXED;
     if (SCP_RESULT_TRUE != searchElStr5(&second_operand, &arc3, &second_operand_copy, &arc2, copies))
     {
         printEl(&second_operand);
@@ -129,7 +129,7 @@ scp_result copy_operand_set_with_modifiers_system_pair(scp_operand *source, scp_
 
 sc_result copy_sys_operator(sc_event *event, sc_addr arg)
 {
-    printf("ENTERED\n");
+
     scp_operand arc1, arc2, scp_operator_copy, scp_process_node, node1, question_node, sys_pattern, pattern_params, pattern_results,
                 pattern_params_copy, pattern_results_copy, all_result_param, all_result_param_copy, scp_operator_source, scp_process_copies, operator_type, current_pair, current_pair_copy;
     scp_iterator3 *it;
@@ -145,11 +145,16 @@ sc_result copy_sys_operator(sc_event *event, sc_addr arg)
     MAKE_DEFAULT_NODE_ASSIGN(scp_process_node);
     if (SCP_RESULT_TRUE != searchElStr3(&node1, &arc1, &question_node))
     {
-        print_error("scp-operator copying", "Can't find interpreting request node");
+        print_error("scp-operator copying", "Can't find copying request node");
         return SC_RESULT_ERROR;
     }
     MAKE_DEFAULT_ARC_ASSIGN(arc1);
     question_node.param_type = SCP_FIXED;
+
+    if (SCP_RESULT_TRUE != searchElStr3(&question_scp_operator_copying_request, &arc1, &question_node))
+    {
+        return SC_RESULT_ERROR;
+    }
 
     if (SCP_RESULT_TRUE != searchElStr5(&question_node, &arc1, &scp_operator_copy, &arc2, &rrel_1))
     {
@@ -169,6 +174,7 @@ sc_result copy_sys_operator(sc_event *event, sc_addr arg)
     scp_operator_copy.param_type = SCP_FIXED;
     if (SCP_RESULT_TRUE != searchElStr5(&question_node, &arc1, &scp_process_node, &arc2, &rrel_2))
     {
+        finish_question_unsuccessfully(&question_node);
         print_error("scp-operator copying", "Can't find scp-process node");
         return SC_RESULT_ERROR;
     }
@@ -176,6 +182,7 @@ sc_result copy_sys_operator(sc_event *event, sc_addr arg)
 
     if (SCP_RESULT_TRUE != searchElStr5(&scp_process_node, &arc1, &scp_process_copies, &arc2, &rrel_copies))
     {
+        finish_question_unsuccessfully(&question_node);
         print_error("scp-operator copying", "Can't find scp-process copies element");
         return SC_RESULT_ERROR;
     }
@@ -185,6 +192,7 @@ sc_result copy_sys_operator(sc_event *event, sc_addr arg)
     MAKE_COMMON_ARC_ASSIGN(arc1);
     if (SCP_RESULT_TRUE != searchElStr5(&scp_operator_source, &arc1, &scp_operator_copy, &arc2, &scp_process_copies))
     {
+        finish_question_unsuccessfully(&question_node);
         print_error("scp-operator copying", "Can't find scp-operator for given copy");
         return SC_RESULT_ERROR;
     }
@@ -194,6 +202,7 @@ sc_result copy_sys_operator(sc_event *event, sc_addr arg)
     MAKE_DEFAULT_NODE_ASSIGN(sys_pattern);
     if (SCP_RESULT_TRUE != searchElStr5(&scp_operator_source, &arc1, &sys_pattern, &arc2, &rrel_1))
     {
+        finish_question_unsuccessfully(&question_node);
         print_error("scp-operator copying", "Can't find system operator pattern");
         return SC_RESULT_ERROR;
     }
@@ -201,6 +210,7 @@ sc_result copy_sys_operator(sc_event *event, sc_addr arg)
     arc1.param_type = SCP_FIXED;
     if (SCP_RESULT_TRUE != searchElStr3(&rrel_fixed, &arc2, &arc1))
     {
+        finish_question_unsuccessfully(&question_node);
         print_error("scp-operator copying", "System operator pattern must have FIXED modifier");
         return SC_RESULT_ERROR;
     }
@@ -214,6 +224,7 @@ sc_result copy_sys_operator(sc_event *event, sc_addr arg)
     MAKE_DEFAULT_NODE_ASSIGN(pattern_results);
     if (SCP_RESULT_TRUE != searchElStr5(&scp_operator_source, &arc1, &pattern_results, &arc2, &rrel_2))
     {
+        finish_question_unsuccessfully(&question_node);
         print_error("scp-operator copying", "Can't find result variables set");
         return SC_RESULT_ERROR;
     }
@@ -221,6 +232,7 @@ sc_result copy_sys_operator(sc_event *event, sc_addr arg)
     arc1.param_type = SCP_FIXED;
     if (SCP_RESULT_TRUE != searchElStr3(&rrel_fixed, &arc2, &arc1))
     {
+        finish_question_unsuccessfully(&question_node);
         print_error("scp-operator copying", "Result variables set must have FIXED modifier");
         return SC_RESULT_ERROR;
     }
@@ -235,6 +247,7 @@ sc_result copy_sys_operator(sc_event *event, sc_addr arg)
     MAKE_DEFAULT_NODE_ASSIGN(pattern_params);
     if (SCP_RESULT_TRUE != searchElStr5(&scp_operator_source, &arc1, &pattern_params, &arc2, &rrel_3))
     {
+        finish_question_unsuccessfully(&question_node);
         print_error("scp-operator copying", "Can't find params set for sys operator");
         return SC_RESULT_ERROR;
     }
@@ -242,6 +255,7 @@ sc_result copy_sys_operator(sc_event *event, sc_addr arg)
     arc1.param_type = SCP_FIXED;
     if (SCP_RESULT_TRUE != searchElStr3(&rrel_fixed, &arc2, &arc1))
     {
+        finish_question_unsuccessfully(&question_node);
         print_error("scp-operator copying", "Params set must have FIXED modifier");
         return SC_RESULT_ERROR;
     }
@@ -275,7 +289,12 @@ sc_result copy_sys_operator(sc_event *event, sc_addr arg)
         current_pair_copy.param_type = SCP_ASSIGN;
         genElStr3(&pattern_params_copy, &arc2, &current_pair_copy);
         current_pair_copy.param_type = SCP_FIXED;
-        copy_operand_set_with_modifiers_system_pair(&current_pair, &current_pair_copy, &scp_process_copies);
+        if (SCP_RESULT_TRUE != copy_operand_set_with_modifiers_system_pair(&current_pair, &current_pair_copy, &scp_process_copies))
+        {
+            finish_question_unsuccessfully(&question_node);
+            scp_iterator3_free(it);
+            return SC_RESULT_ERROR;
+        }
         current_pair.param_type = SCP_ASSIGN;
         current_pair_copy.param_type = SCP_ASSIGN;
     }
@@ -290,20 +309,24 @@ sc_result copy_sys_operator(sc_event *event, sc_addr arg)
         current_pair_copy.param_type = SCP_ASSIGN;
         genElStr3(&pattern_results_copy, &arc2, &current_pair_copy);
         current_pair_copy.param_type = SCP_FIXED;
-        copy_operand_set_with_modifiers_system_pair(&current_pair, &current_pair_copy, &scp_process_copies);
+        if (SCP_RESULT_TRUE != copy_operand_set_with_modifiers_system_pair(&current_pair, &current_pair_copy, &scp_process_copies))
+        {
+            finish_question_unsuccessfully(&question_node);
+            scp_iterator3_free(it);
+            return SC_RESULT_ERROR;
+        }
         current_pair.param_type = SCP_ASSIGN;
         current_pair_copy.param_type = SCP_ASSIGN;
     }
     scp_iterator3_free(it);
 
     printf("SYSTEM\n");
-
+    finish_question_successfully(&question_node);
     return SC_RESULT_OK;
 }
 
 sc_result copy_call_operator(sc_event *event, sc_addr arg)
 {
-    printf("ENTERED\n");
     scp_operand arc1, arc2, scp_operator_copy, scp_process_node, node1, question_node, call_procedure, call_procedure_params,
                 call_procedure_params_copy, scp_operator_source, scp_process_copies, operator_type;
     MAKE_DEFAULT_OPERAND_FIXED(arc1);
@@ -318,11 +341,16 @@ sc_result copy_call_operator(sc_event *event, sc_addr arg)
     MAKE_DEFAULT_NODE_ASSIGN(scp_process_node);
     if (SCP_RESULT_TRUE != searchElStr3(&node1, &arc1, &question_node))
     {
-        print_error("scp-operator copying", "Can't find interpreting request node");
+        print_error("scp-operator copying", "Can't find copying request node");
         return SC_RESULT_ERROR;
     }
     MAKE_DEFAULT_ARC_ASSIGN(arc1);
     question_node.param_type = SCP_FIXED;
+
+    if (SCP_RESULT_TRUE != searchElStr3(&question_scp_operator_copying_request, &arc1, &question_node))
+    {
+        return SC_RESULT_ERROR;
+    }
 
     if (SCP_RESULT_TRUE != searchElStr5(&question_node, &arc1, &scp_operator_copy, &arc2, &rrel_1))
     {
@@ -341,6 +369,7 @@ sc_result copy_call_operator(sc_event *event, sc_addr arg)
     scp_operator_copy.param_type = SCP_FIXED;
     if (SCP_RESULT_TRUE != searchElStr5(&question_node, &arc1, &scp_process_node, &arc2, &rrel_2))
     {
+        finish_question_unsuccessfully(&question_node);
         print_error("scp-operator copying", "Can't find scp-process node");
         return SC_RESULT_ERROR;
     }
@@ -348,6 +377,7 @@ sc_result copy_call_operator(sc_event *event, sc_addr arg)
 
     if (SCP_RESULT_TRUE != searchElStr5(&scp_process_node, &arc1, &scp_process_copies, &arc2, &rrel_copies))
     {
+        finish_question_unsuccessfully(&question_node);
         print_error("scp-operator copying", "Can't find scp-process copies element");
         return SC_RESULT_ERROR;
     }
@@ -357,6 +387,7 @@ sc_result copy_call_operator(sc_event *event, sc_addr arg)
     MAKE_COMMON_ARC_ASSIGN(arc1);
     if (SCP_RESULT_TRUE != searchElStr5(&scp_operator_source, &arc1, &scp_operator_copy, &arc2, &scp_process_copies))
     {
+        finish_question_unsuccessfully(&question_node);
         print_error("scp-operator copying", "Can't find scp-operator for given copy");
         return SC_RESULT_ERROR;
     }
@@ -366,6 +397,7 @@ sc_result copy_call_operator(sc_event *event, sc_addr arg)
     MAKE_DEFAULT_NODE_ASSIGN(call_procedure);
     if (SCP_RESULT_TRUE != searchElStr5(&scp_operator_source, &arc1, &call_procedure, &arc2, &rrel_1))
     {
+        finish_question_unsuccessfully(&question_node);
         print_error("scp-operator copying", "Can't find scp-procedure for call");
         return SC_RESULT_ERROR;
     }
@@ -373,6 +405,7 @@ sc_result copy_call_operator(sc_event *event, sc_addr arg)
     arc1.param_type = SCP_FIXED;
     if (SCP_RESULT_TRUE != searchElStr3(&rrel_fixed, &arc2, &arc1))
     {
+        finish_question_unsuccessfully(&question_node);
         print_error("scp-operator copying", "scp-procedure must have FIXED modifier");
         return SC_RESULT_ERROR;
     }
@@ -386,6 +419,7 @@ sc_result copy_call_operator(sc_event *event, sc_addr arg)
     MAKE_DEFAULT_NODE_ASSIGN(call_procedure_params);
     if (SCP_RESULT_TRUE != searchElStr5(&scp_operator_source, &arc1, &call_procedure_params, &arc2, &rrel_2))
     {
+        finish_question_unsuccessfully(&question_node);
         print_error("scp-operator copying", "Can't find params for call");
         return SC_RESULT_ERROR;
     }
@@ -393,6 +427,7 @@ sc_result copy_call_operator(sc_event *event, sc_addr arg)
     arc1.param_type = SCP_FIXED;
     if (SCP_RESULT_TRUE != searchElStr3(&rrel_fixed, &arc2, &arc1))
     {
+        finish_question_unsuccessfully(&question_node);
         print_error("scp-operator copying", "Params set must have FIXED modifier");
         return SC_RESULT_ERROR;
     }
@@ -406,17 +441,18 @@ sc_result copy_call_operator(sc_event *event, sc_addr arg)
 
     if (SCP_RESULT_TRUE != copy_operand_set_with_modifiers(&call_procedure_params, &call_procedure_params_copy, &scp_process_copies))
     {
+        finish_question_unsuccessfully(&question_node);
         return SC_RESULT_ERROR;
     }
 
     printf("CALL\n");
-
+    finish_question_successfully(&question_node);
     return SC_RESULT_OK;
 }
 
 sc_result copy_return_operator(sc_event *event, sc_addr arg)
 {
-    printf("ENTERED\n");
+
     scp_operand arc1, arc2, scp_operator_copy, node1, question_node, operator_type;
     MAKE_DEFAULT_OPERAND_FIXED(arc1);
     MAKE_DEFAULT_ARC_ASSIGN(arc2);
@@ -428,11 +464,16 @@ sc_result copy_return_operator(sc_event *event, sc_addr arg)
     MAKE_DEFAULT_NODE_ASSIGN(question_node);
     if (SCP_RESULT_TRUE != searchElStr3(&node1, &arc1, &question_node))
     {
-        print_error("scp-operator copying", "Can't find interpreting request node");
+        print_error("scp-operator copying", "Can't find copying request node");
         return SC_RESULT_ERROR;
     }
     MAKE_DEFAULT_ARC_ASSIGN(arc1);
     question_node.param_type = SCP_FIXED;
+
+    if (SCP_RESULT_TRUE != searchElStr3(&question_scp_operator_copying_request, &arc1, &question_node))
+    {
+        return SC_RESULT_ERROR;
+    }
 
     if (SCP_RESULT_TRUE != searchElStr5(&question_node, &arc1, &scp_operator_copy, &arc2, &rrel_1))
     {
@@ -449,12 +490,13 @@ sc_result copy_return_operator(sc_event *event, sc_addr arg)
     }
 
     printf("RETURN\n");
+    finish_question_successfully(&question_node);
     return SC_RESULT_OK;
 }
 
 sc_result copy_ordinary_operator(sc_event *event, sc_addr arg)
 {
-    printf("ENTERED\n");
+
     scp_operand arc1, arc2, scp_operator_copy, scp_process_node, node1, question_node,
                 scp_operator_source, scp_process_copies, operator_type;
     MAKE_DEFAULT_OPERAND_FIXED(arc1);
@@ -469,11 +511,16 @@ sc_result copy_ordinary_operator(sc_event *event, sc_addr arg)
     MAKE_DEFAULT_NODE_ASSIGN(scp_process_node);
     if (SCP_RESULT_TRUE != searchElStr3(&node1, &arc1, &question_node))
     {
-        print_error("scp-operator copying", "Can't find interpreting request node");
+        print_error("scp-operator copying", "Can't find copying request node");
         return SC_RESULT_ERROR;
     }
     MAKE_DEFAULT_ARC_ASSIGN(arc1);
     question_node.param_type = SCP_FIXED;
+
+    if (SCP_RESULT_TRUE != searchElStr3(&question_scp_operator_copying_request, &arc1, &question_node))
+    {
+        return SC_RESULT_ERROR;
+    }
 
     if (SCP_RESULT_TRUE != searchElStr5(&question_node, &arc1, &scp_operator_copy, &arc2, &rrel_1))
     {
@@ -495,6 +542,7 @@ sc_result copy_ordinary_operator(sc_event *event, sc_addr arg)
     scp_operator_copy.param_type = SCP_FIXED;
     if (SCP_RESULT_TRUE != searchElStr5(&question_node, &arc1, &scp_process_node, &arc2, &rrel_2))
     {
+        finish_question_unsuccessfully(&question_node);
         print_error("scp-operator copying", "Can't find scp-process node");
         return SC_RESULT_ERROR;
     }
@@ -502,6 +550,7 @@ sc_result copy_ordinary_operator(sc_event *event, sc_addr arg)
 
     if (SCP_RESULT_TRUE != searchElStr5(&scp_process_node, &arc1, &scp_process_copies, &arc2, &rrel_copies))
     {
+        finish_question_unsuccessfully(&question_node);
         print_error("scp-operator copying", "Can't find scp-process copies element");
         return SC_RESULT_ERROR;
     }
@@ -511,6 +560,7 @@ sc_result copy_ordinary_operator(sc_event *event, sc_addr arg)
     MAKE_COMMON_ARC_ASSIGN(arc1);
     if (SCP_RESULT_TRUE != searchElStr5(&scp_operator_source, &arc1, &scp_operator_copy, &arc2, &scp_process_copies))
     {
+        finish_question_unsuccessfully(&question_node);
         print_error("scp-operator copying", "Can't find scp-operator for given copy");
         return SC_RESULT_ERROR;
     }
@@ -519,11 +569,109 @@ sc_result copy_ordinary_operator(sc_event *event, sc_addr arg)
 
     if (SCP_RESULT_TRUE != copy_operand_set_with_modifiers(&scp_operator_source, &scp_operator_copy, &scp_process_copies))
     {
+        finish_question_unsuccessfully(&question_node);
         return SC_RESULT_ERROR;
     }
 
     printf("ORDINARY\n");
-
+    finish_question_successfully(&question_node);
     return SC_RESULT_OK;
 }
 
+sc_result process_successfully_finished_operator_copying_request(sc_event *event, sc_addr arg)
+{
+
+    scp_operand arc1, arc2, arc3, node1, question_node, request_set;
+    scp_iterator3 *it;
+    MAKE_DEFAULT_OPERAND_FIXED(arc1);
+    MAKE_COMMON_ARC_ASSIGN(arc2);
+    arc1.addr = arg;
+    MAKE_DEFAULT_NODE_ASSIGN(node1);
+    MAKE_DEFAULT_NODE_ASSIGN(question_node);
+    if (SCP_RESULT_TRUE != searchElStr3(&node1, &arc1, &question_node))
+    {
+        print_error("scp-operator copying", "Can't find copying request node");
+        return SC_RESULT_ERROR;
+    }
+    MAKE_DEFAULT_ARC_ASSIGN(arc1);
+    question_node.param_type = SCP_FIXED;
+    //Initiation condition check
+    if (SCP_RESULT_TRUE != searchElStr3(&question_scp_operator_copying_request, &arc1, &question_node))
+    {
+        return SC_RESULT_ERROR;
+    }
+    MAKE_DEFAULT_NODE_ASSIGN(request_set);
+    MAKE_DEFAULT_ARC_ASSIGN(arc3);
+    it = scp_iterator3_new(&request_set, &arc3, &question_node);
+    while (SCP_RESULT_TRUE == scp_iterator3_next(it, &request_set, &arc3, &question_node))
+    {
+        request_set.param_type = SCP_FIXED;
+        if (SCP_RESULT_TRUE == searchElStr5(&node1, &arc2, &request_set, &arc1, &nrel_scp_process_operator_copying_requests))
+        {
+            arc3.param_type = SCP_FIXED;
+            arc3.erase=SCP_TRUE;
+            printf("BEFORE\n");
+            printEl(&request_set);
+            printf("ARC\n");
+            printEl(&arc3);
+            eraseEl(&arc3);
+            printf("AFTER\n");
+            printEl(&request_set);
+            if (SCP_RESULT_TRUE != searchElStr3(&request_set, &arc1, &node1))
+            {
+                genElStr3(&successfully_copied_scp_operator_set, &arc1, &request_set);
+            }
+            break;
+        }
+        request_set.param_type = SCP_ASSIGN;
+    }
+    scp_iterator3_free(it);
+    printf("SUCCESS\n");
+    //question_node.erase=SCP_TRUE;
+    //eraseEl(&question_node);
+    return SC_RESULT_OK;
+}
+
+sc_result process_unsuccessfully_finished_operator_copying_request(sc_event *event, sc_addr arg)
+{
+    scp_operand arc1, arc2, arc3, node1, question_node, request_set;
+    scp_iterator3 *it;
+    MAKE_DEFAULT_OPERAND_FIXED(arc1);
+    MAKE_COMMON_ARC_ASSIGN(arc2);
+    arc1.addr = arg;
+    MAKE_DEFAULT_NODE_ASSIGN(node1);
+    MAKE_DEFAULT_NODE_ASSIGN(question_node);
+    if (SCP_RESULT_TRUE != searchElStr3(&node1, &arc1, &question_node))
+    {
+        print_error("scp-operator copying", "Can't find copying request node");
+        return SC_RESULT_ERROR;
+    }
+    MAKE_DEFAULT_ARC_ASSIGN(arc1);
+    question_node.param_type = SCP_FIXED;
+    //Initiation condition check
+    if (SCP_RESULT_TRUE != searchElStr3(&question_scp_operator_copying_request, &arc1, &question_node))
+    {
+        return SC_RESULT_ERROR;
+    }
+
+    MAKE_DEFAULT_NODE_ASSIGN(request_set);
+    MAKE_DEFAULT_ARC_ASSIGN(arc3);
+    it = scp_iterator3_new(&request_set, &arc3, &question_node);
+    while (SCP_RESULT_TRUE == scp_iterator3_next(it, &request_set, &arc3, &question_node))
+    {
+        request_set.param_type = SCP_FIXED;
+        if (SCP_RESULT_TRUE == searchElStr5(&node1, &arc2, &request_set, &arc1, &nrel_scp_process_operator_copying_requests))
+        {
+            arc3.param_type = SCP_FIXED;
+            arc3.erase=SCP_TRUE;
+            eraseEl(&arc3);
+            genElStr3(&unsuccessfully_copied_scp_operator_set, &arc1, &request_set);
+            break;
+        }
+        request_set.param_type = SCP_ASSIGN;
+    }
+    scp_iterator3_free(it);
+    //question_node.erase=SCP_TRUE;
+    //eraseEl(&question_node);
+    return SC_RESULT_OK;
+}

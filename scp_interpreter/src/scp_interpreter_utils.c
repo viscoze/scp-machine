@@ -40,14 +40,28 @@ scp_result resolve_operator_type(scp_operand *oper, scp_operand *type)
     scp_iterator3 *it = scp_iterator3_new(type, &arc, oper);
     while (SCP_RESULT_TRUE == scp_iterator3_next(it, type, &arc, oper))
     {
-        type->param_type=SCP_FIXED;
+        type->param_type = SCP_FIXED;
         if (SCP_RESULT_TRUE == searchElStr3(&scp_operator, &arc, type))
         {
             scp_iterator3_free(it);
             return SCP_RESULT_TRUE;
         }
-        type->param_type=SCP_ASSIGN;
+        type->param_type = SCP_ASSIGN;
     }
     scp_iterator3_free(it);
     return SCP_RESULT_FALSE;
+}
+
+void finish_question_successfully(scp_operand *param)
+{
+    scp_operand arc;
+    MAKE_DEFAULT_ARC_ASSIGN(arc);
+    genElStr3(&question_finished_successfully, &arc, param);
+}
+
+void finish_question_unsuccessfully(scp_operand *param)
+{
+    scp_operand arc;
+    MAKE_DEFAULT_ARC_ASSIGN(arc);
+    genElStr3(&question_finished_unsuccessfully, &arc, param);
 }
