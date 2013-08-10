@@ -148,6 +148,10 @@ sc_result copy_sys_operator(sc_event *event, sc_addr arg)
         print_error("scp-operator copying", "Can't find copying request node");
         return SC_RESULT_ERROR;
     }
+    if (SCP_RESULT_TRUE != ifVarAssign(&question_node))
+    {
+        return SC_RESULT_ERROR;
+    }
     MAKE_DEFAULT_ARC_ASSIGN(arc1);
     question_node.param_type = SCP_FIXED;
 
@@ -344,6 +348,10 @@ sc_result copy_call_operator(sc_event *event, sc_addr arg)
         print_error("scp-operator copying", "Can't find copying request node");
         return SC_RESULT_ERROR;
     }
+    if (SCP_RESULT_TRUE != ifVarAssign(&question_node))
+    {
+        return SC_RESULT_ERROR;
+    }
     MAKE_DEFAULT_ARC_ASSIGN(arc1);
     question_node.param_type = SCP_FIXED;
 
@@ -467,6 +475,10 @@ sc_result copy_return_operator(sc_event *event, sc_addr arg)
         print_error("scp-operator copying", "Can't find copying request node");
         return SC_RESULT_ERROR;
     }
+    if (SCP_RESULT_TRUE != ifVarAssign(&question_node))
+    {
+        return SC_RESULT_ERROR;
+    }
     MAKE_DEFAULT_ARC_ASSIGN(arc1);
     question_node.param_type = SCP_FIXED;
 
@@ -512,6 +524,10 @@ sc_result copy_ordinary_operator(sc_event *event, sc_addr arg)
     if (SCP_RESULT_TRUE != searchElStr3(&node1, &arc1, &question_node))
     {
         print_error("scp-operator copying", "Can't find copying request node");
+        return SC_RESULT_ERROR;
+    }
+    if (SCP_RESULT_TRUE != ifVarAssign(&question_node))
+    {
         return SC_RESULT_ERROR;
     }
     MAKE_DEFAULT_ARC_ASSIGN(arc1);
@@ -593,6 +609,10 @@ sc_result process_successfully_finished_operator_copying_request(sc_event *event
         print_error("scp-operator copying", "Can't find copying request node");
         return SC_RESULT_ERROR;
     }
+    if (SCP_RESULT_TRUE != ifVarAssign(&question_node))
+    {
+        return SC_RESULT_ERROR;
+    }
     MAKE_DEFAULT_ARC_ASSIGN(arc1);
     question_node.param_type = SCP_FIXED;
     //Initiation condition check
@@ -609,26 +629,48 @@ sc_result process_successfully_finished_operator_copying_request(sc_event *event
         if (SCP_RESULT_TRUE == searchElStr5(&node1, &arc2, &request_set, &arc1, &nrel_scp_process_operator_copying_requests))
         {
             arc3.param_type = SCP_FIXED;
-            arc3.erase=SCP_TRUE;
-            printf("BEFORE\n");
-            printEl(&request_set);
-            printf("ARC\n");
-            printEl(&arc3);
+            arc3.erase = SCP_TRUE;
             eraseEl(&arc3);
-            printf("AFTER\n");
-            printEl(&request_set);
             if (SCP_RESULT_TRUE != searchElStr3(&request_set, &arc1, &node1))
             {
-                genElStr3(&successfully_copied_scp_operator_set, &arc1, &request_set);
+                if (SCP_RESULT_TRUE != searchElStr3(&unsuccessfully_finished_scp_operator_copying_request_set, &arc1, &request_set))
+                {
+                    genElStr3(&successfully_finished_scp_operator_copying_request_set, &arc1, &request_set);
+                }
+                genElStr3(&completed_scp_operator_copying_request_set, &arc1, &request_set);
             }
+            // TODO Remove kostyl
+            else
+            {
+                scp_iterator3 *it1 = scp_iterator3_new(&request_set, &arc1, &node1);
+                scp_bool flag = SCP_FALSE;
+                while (SCP_RESULT_TRUE == scp_iterator3_next(it1, &request_set, &arc1, &node1))
+                {
+                    //printf("ARC\n");
+                    if (SCP_RESULT_TRUE == ifVarAssign(&arc1))
+                    {
+                        flag = SCP_TRUE;
+                        break;
+                    }
+                }
+                scp_iterator3_free(it1);
+                if (flag == SCP_FALSE)
+                {
+                    if (SCP_RESULT_TRUE != searchElStr3(&unsuccessfully_finished_scp_operator_copying_request_set, &arc1, &request_set))
+                    {
+                        genElStr3(&successfully_finished_scp_operator_copying_request_set, &arc1, &request_set);
+                    }
+                    genElStr3(&completed_scp_operator_copying_request_set, &arc1, &request_set);
+                }
+            }
+            // Kostyl END
             break;
         }
         request_set.param_type = SCP_ASSIGN;
     }
     scp_iterator3_free(it);
-    printf("SUCCESS\n");
-    //question_node.erase=SCP_TRUE;
-    //eraseEl(&question_node);
+    question_node.erase = SCP_TRUE;
+    eraseEl(&question_node);
     return SC_RESULT_OK;
 }
 
@@ -646,6 +688,10 @@ sc_result process_unsuccessfully_finished_operator_copying_request(sc_event *eve
         print_error("scp-operator copying", "Can't find copying request node");
         return SC_RESULT_ERROR;
     }
+    if (SCP_RESULT_TRUE != ifVarAssign(&question_node))
+    {
+        return SC_RESULT_ERROR;
+    }
     MAKE_DEFAULT_ARC_ASSIGN(arc1);
     question_node.param_type = SCP_FIXED;
     //Initiation condition check
@@ -663,15 +709,33 @@ sc_result process_unsuccessfully_finished_operator_copying_request(sc_event *eve
         if (SCP_RESULT_TRUE == searchElStr5(&node1, &arc2, &request_set, &arc1, &nrel_scp_process_operator_copying_requests))
         {
             arc3.param_type = SCP_FIXED;
-            arc3.erase=SCP_TRUE;
+            arc3.erase = SCP_TRUE;
             eraseEl(&arc3);
-            genElStr3(&unsuccessfully_copied_scp_operator_set, &arc1, &request_set);
+            genElStr3(&unsuccessfully_finished_scp_operator_copying_request_set, &arc1, &request_set);
+            // TODO Remove kostyl
+            scp_iterator3 *it1 = scp_iterator3_new(&request_set, &arc1, &node1);
+            scp_bool flag = SCP_FALSE;
+            while (SCP_RESULT_TRUE == scp_iterator3_next(it1, &request_set, &arc1, &node1))
+            {
+                //printf("ARC\n");
+                if (SCP_RESULT_TRUE == ifVarAssign(&arc1))
+                {
+                    flag = SCP_TRUE;
+                    break;
+                }
+            }
+            scp_iterator3_free(it1);
+            if (flag == SCP_FALSE)
+            {
+                genElStr3(&completed_scp_operator_copying_request_set, &arc1, &request_set);
+            }
+            // Kostyl END
             break;
         }
         request_set.param_type = SCP_ASSIGN;
     }
     scp_iterator3_free(it);
-    //question_node.erase=SCP_TRUE;
-    //eraseEl(&question_node);
+    question_node.erase = SCP_TRUE;
+    eraseEl(&question_node);
     return SC_RESULT_OK;
 }

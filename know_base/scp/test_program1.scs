@@ -18,7 +18,7 @@ scp_procedure -> test_prog1 (*
 			-> rrel_5: rrel_fixed: _first_relation;;
 		*);;
 		
-		/*-> .test_prog1_operator2 (*
+		-> .test_prog1_operator2 (*
 			<- searchElStr5;;
 			-> rrel_1: rrel_fixed: _node1;;
 			-> rrel_2: rrel_assign: rrel_const: rrel_pos: _arc1;;
@@ -55,7 +55,7 @@ scp_procedure -> test_prog1 (*
 				-> .op6_param1 (* -> rrel_1: rrel_fixed: _a;; -> rrel_2: rrel_fixed: _node2;; *);;
 				-> .op6_param2 (* -> rrel_1: rrel_fixed: _b;; -> rrel_2: rrel_fixed: nrel_value;; *);;
 			*);;
-		*);;*/
+		*);;
 
 	*);;
 *);;

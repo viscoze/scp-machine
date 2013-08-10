@@ -16,15 +16,26 @@ void create_process_test()
 
 }
 
+void test1()
+{
+    sc_addr node;
+    node = sc_memory_node_new(0);
+    //sc_memory_element_free(node);
+    if (SC_FALSE == sc_memory_is_element(node))
+    {
+        printf("FALSE\n");
+    }
+    else
+    {
+        printf("TRUE\n");
+    }
+}
+
 int main(void)
 {
     scp_interpreter_init((sc_char *)"repo", (sc_char *)"test.ini");
 
-    /*scp_operand p;
-    sc_helper_resolve_system_identifier("searchElStr5", &(p.addr));
-    printEl(&p);*/
-
-
+    //test1();
     create_process_test();
 
     return 0;

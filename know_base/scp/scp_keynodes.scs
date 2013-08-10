@@ -33,14 +33,19 @@ nrel_scp_process_operator_copying_requests => nrel_main_ru_idtf:
 nrel_scp_process_operator_copying_requests => nrel_main_en_idtf:
 	[scp-process operator copying requests set*];;
 
-successfully_copied_scp_operator_set => nrel_main_ru_idtf:
-	[множество успешно скопированных scp-операторов];;
-successfully_copied_scp_operator_set => nrel_main_en_idtf:
-	[set of successfully copied scp-operators];;
+successfully_finished_scp_operator_copying_request_set => nrel_main_ru_idtf:
+	[множество успешно заврешенных запросов копирования scp-операторов];;
+successfully_finished_scp_operator_copying_request_set => nrel_main_en_idtf:
+	[set of successfully finished scp-operator copying requests];;
 
-unsuccessfully_copied_scp_operator_set => nrel_main_ru_idtf:
-	[множество безуспешно скопированных scp-операторов];;
-unsuccessfully_copied_scp_operator_set => nrel_main_en_idtf:
-	[set of unsuccessfully copied scp-operators];;
+unsuccessfully_finished_scp_operator_copying_request_set => nrel_main_ru_idtf:
+	[множество безуспешно завершенных запросов копирования scp-операторов];;
+unsuccessfully_finished_scp_operator_copying_request_set => nrel_main_en_idtf:
+	[set of unsuccessfully finished scp-operator copying requests];;
+
+completed_scp_operator_copying_request_set => nrel_main_ru_idtf:
+	[полностью просмотренное множество запросов копирования scp-операторов];;
+completed_scp_operator_copying_request_set => nrel_main_en_idtf:
+	[completely overlooked set of scp-operator copying requests];;
 
 FORMAT_NUMERIC -> [0];;
