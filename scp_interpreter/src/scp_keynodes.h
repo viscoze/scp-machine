@@ -79,6 +79,7 @@ extern scp_operand rrel_7;
 extern scp_operand rrel_8;
 extern scp_operand rrel_9;
 extern scp_operand rrel_10;
+extern scp_operand ordinal_rrel;
 
 scp_result scp_keynodes_init();
 

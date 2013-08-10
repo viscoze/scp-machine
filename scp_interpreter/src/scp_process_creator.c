@@ -122,38 +122,42 @@ scp_result copy_operator_set(scp_operand *source, scp_operand *dest, scp_operand
 
 scp_result copy_parameters_set(scp_operand *call_parameters, scp_operand *scp_procedure_vars, scp_operand *scp_procedure_params, scp_operand *scp_process_vars, scp_operand *scp_process_consts, scp_operand *scp_process_copies, scp_operand *scp_process_values)
 {
-    scp_operand arc1, arc2, arc3, elem1, source_var, dest_var, dest_value;
+    scp_operand arc1, arc2, source_var, arc3, dest_var, dest_value, ordinal;
     scp_result is_out;
     scp_iterator3 *it;
     MAKE_DEFAULT_ARC_ASSIGN(arc1);
     MAKE_DEFAULT_ARC_ASSIGN(arc2);
-    MAKE_DEFAULT_OPERAND_ASSIGN(elem1);
     MAKE_COMMON_ARC_ASSIGN(arc3);
     MAKE_DEFAULT_OPERAND_ASSIGN(source_var);
     MAKE_DEFAULT_OPERAND_ASSIGN(dest_var);
     MAKE_DEFAULT_OPERAND_ASSIGN(dest_value);
+    MAKE_DEFAULT_NODE_ASSIGN(ordinal);
 
-    it = scp_iterator3_new(call_parameters, &arc1, &elem1);
-    while (SCP_RESULT_TRUE == scp_iterator3_next(it, call_parameters, &arc1, &elem1))
+    it = scp_iterator3_new(scp_procedure_params, &arc1, &dest_var);
+    while (SCP_RESULT_TRUE == scp_iterator3_next(it, scp_procedure_params, &arc1, &source_var))
     {
-        elem1.param_type = SCP_FIXED;
-        searchElStr3(&source_var, &elem1, &dest_value);
-
         source_var.param_type = SCP_FIXED;
-        dest_value.param_type = SCP_FIXED;
-
-        if (SCP_RESULT_TRUE != searchElStr5(scp_procedure_params, &arc1, &source_var, &arc2, &rrel_in))
+        arc1.param_type = SCP_FIXED;
+        if (SCP_RESULT_TRUE != resolve_ordinal_rrel(&arc1, &ordinal))
         {
-            printEl(scp_procedure_params);
-            printEl(&source_var);
-            return print_error("Illegal parameter", "Call parameter is not scp-procedure in-parameter");
+            scp_iterator3_free(it);
+            return print_error("Illegal procedure parameter", "Parameter ordinal rrel not found");;
         }
+        arc1.param_type = SCP_ASSIGN;
+
         if (SCP_RESULT_TRUE != searchElStr3(scp_procedure_vars, &arc1, &source_var))
         {
             printEl(scp_procedure_vars);
             printEl(&source_var);
             return print_error("Illegal parameter", "Call parameter is not scp-procedure variable");
         }
+
+        if (SCP_RESULT_TRUE != searchElStr5(call_parameters, &arc1, &dest_value, &arc2, &ordinal))
+        {
+            scp_iterator3_free(it);
+            return print_error("Illegal procedure parameter", "Call parameter missed");;
+        }
+        dest_value.param_type = SCP_FIXED;
 
         is_out = searchElStr5(scp_procedure_params, &arc1, &source_var, &arc2, &rrel_out);
         if (is_out == SCP_RESULT_ERROR)
@@ -175,7 +179,6 @@ scp_result copy_parameters_set(scp_operand *call_parameters, scp_operand *scp_pr
             genElStr5(&source_var, &arc3, &dest_value, &arc2, scp_process_copies);
         }
 
-        elem1.param_type = SCP_ASSIGN;
         source_var.param_type = SCP_ASSIGN;
         dest_value.param_type = SCP_ASSIGN;
     }
@@ -330,7 +333,6 @@ sc_result create_scp_process(sc_event *event, sc_addr arg)
     printEl(&scp_process_values);
     printEl(&scp_process_vars);
     printEl(&scp_process_operators);*/
-
 
     MAKE_COMMON_ARC_ASSIGN(arc1);
     MAKE_DEFAULT_NODE_ASSIGN(scp_operators_copying_request_set);

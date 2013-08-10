@@ -65,8 +65,8 @@ triangle_A_B_C => nrel_square: .triangle_A_B_C_square (* => nrel_value: [120];; 
 
 quest1 -> rrel_1: test_prog1;;
 quest1 -> rrel_2: .quest1_params (* 
-	-> (_start_node => triangle_A_B_C);; 
-	-> (_first_relation => nrel_square);;
-	-> (_node1 => nrel_perimeter);;
+	-> rrel_1: triangle_A_B_C;; 
+	-> rrel_2: nrel_square;;
+	-> rrel_3: nrel_perimeter;;
 	*);;
 

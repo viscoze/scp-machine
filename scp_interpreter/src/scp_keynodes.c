@@ -78,6 +78,7 @@ scp_operand rrel_7;
 scp_operand rrel_8;
 scp_operand rrel_9;
 scp_operand rrel_10;
+scp_operand ordinal_rrel;
 
 scp_result scp_keynodes_init()
 {
@@ -125,6 +126,7 @@ scp_result scp_keynodes_init()
     MAKE_DEFAULT_OPERAND_FIXED(rrel_8);
     MAKE_DEFAULT_OPERAND_FIXED(rrel_9);
     MAKE_DEFAULT_OPERAND_FIXED(rrel_10);
+    MAKE_DEFAULT_OPERAND_FIXED(ordinal_rrel);
 
     if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("scp_procedure", &scp_procedure))
     {
@@ -303,6 +305,10 @@ scp_result scp_keynodes_init()
     if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("rrel_10", &rrel_10))
     {
         return print_error("Keynode not found", "rrel_10");
+    }
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("ordinal_rrel", &ordinal_rrel))
+    {
+        return print_error("Keynode not found", "ordinal_rrel");
     }
 
     return init_operator_keynodes();

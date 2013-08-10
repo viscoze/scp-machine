@@ -52,6 +52,28 @@ scp_result resolve_operator_type(scp_operand *oper, scp_operand *type)
     return SCP_RESULT_FALSE;
 }
 
+scp_result resolve_ordinal_rrel(scp_operand *arc_param, scp_operand *result)
+{
+    scp_operand arc;
+    MAKE_DEFAULT_ARC_ASSIGN(arc);
+    MAKE_DEFAULT_NODE_ASSIGN((*result));
+
+    arc_param->param_type = SCP_FIXED;
+    scp_iterator3 *it = scp_iterator3_new(result, &arc, arc_param);
+    while (SCP_RESULT_TRUE == scp_iterator3_next(it, result, &arc, arc_param))
+    {
+        result->param_type = SCP_FIXED;
+        if (SCP_RESULT_TRUE == searchElStr3(&ordinal_rrel, &arc, result))
+        {
+            scp_iterator3_free(it);
+            return SCP_RESULT_TRUE;
+        }
+        result->param_type = SCP_ASSIGN;
+    }
+    scp_iterator3_free(it);
+    return SCP_RESULT_FALSE;
+}
+
 void finish_question_successfully(scp_operand *param)
 {
     scp_operand arc;
