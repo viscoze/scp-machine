@@ -278,6 +278,7 @@ sc_result create_scp_process(sc_event *event, sc_addr arg)
     }
     else
     {
+        mark_scp_process_as_useless(&scp_process_node);
         print_error("scp-process creating", "Can't find scp-procedure's constant set");
         return SC_RESULT_ERROR;
     }
@@ -290,6 +291,7 @@ sc_result create_scp_process(sc_event *event, sc_addr arg)
     }
     else
     {
+        mark_scp_process_as_useless(&scp_process_node);
         print_error("scp-process creating", "Can't find scp-procedure's parameter set");
         return SC_RESULT_ERROR;
     }
@@ -300,12 +302,15 @@ sc_result create_scp_process(sc_event *event, sc_addr arg)
     }
     else
     {
+        mark_scp_process_as_useless(&scp_process_node);
         print_error("scp-process creating", "Can't find scp-procedure's variable set");
         return SC_RESULT_ERROR;
     }
     //Parameters set copying
     if (SCP_RESULT_ERROR == copy_parameters_set(&call_parameters, &node2, &node1, &scp_process_vars, &scp_process_consts, &scp_process_copies, &scp_process_values))
     {
+        mark_scp_process_as_useless(&scp_process_node);
+        print_error("scp-process creating", "Parameters loading error");
         return SC_RESULT_ERROR;
     }
 
@@ -320,10 +325,12 @@ sc_result create_scp_process(sc_event *event, sc_addr arg)
     }
     else
     {
+        mark_scp_process_as_useless(&scp_process_node);
         print_error("scp-process creating", "Can't find scp-procedure's operator set");
     }
     if (SCP_RESULT_ERROR == copy_operator_set(&node1, &scp_process_operators, &scp_process_copies))
     {
+        mark_scp_process_as_useless(&scp_process_node);
         return SC_RESULT_ERROR;
     }
 
@@ -383,6 +390,7 @@ sc_result process_completed_operator_copying_request_set(sc_event *event, sc_add
     {
         return SC_RESULT_ERROR;
     }
+    scp_process_node.param_type = SCP_FIXED;
 
     if (SCP_RESULT_TRUE == searchElStr3(&successfully_finished_scp_operator_copying_request_set, &arc1, &request_set))
     {
@@ -394,6 +402,7 @@ sc_result process_completed_operator_copying_request_set(sc_event *event, sc_add
         if (SCP_RESULT_TRUE == searchElStr3(&unsuccessfully_finished_scp_operator_copying_request_set, &arc1, &request_set))
         {
             //!TODO Start process destroying
+            mark_scp_process_as_useless(&scp_process_node);
             printf("PROCESS DESTROYING\n");
         }
     }

@@ -38,6 +38,7 @@ extern scp_operand unsuccessfully_finished_scp_operator_copying_request_set;
 extern scp_operand completed_scp_operator_copying_request_set;
 
 extern scp_operand scp_process;
+extern scp_operand useless_scp_process;
 extern scp_operand nrel_scp_process;
 extern scp_operand nrel_scp_process_operator_copying_requests;
 

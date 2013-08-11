@@ -87,3 +87,10 @@ void finish_question_unsuccessfully(scp_operand *param)
     MAKE_DEFAULT_ARC_ASSIGN(arc);
     genElStr3(&question_finished_unsuccessfully, &arc, param);
 }
+
+void mark_scp_process_as_useless(scp_operand *param)
+{
+    scp_operand arc;
+    MAKE_DEFAULT_ARC_ASSIGN(arc);
+    genElStr3(&useless_scp_process, &arc, param);
+}

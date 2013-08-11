@@ -48,4 +48,9 @@ completed_scp_operator_copying_request_set => nrel_main_ru_idtf:
 completed_scp_operator_copying_request_set => nrel_main_en_idtf:
 	[completely overlooked set of scp-operator copying requests];;
 
+useless_scp_process => nrel_main_ru_idtf:
+	[бесполезный scp-процесс];;
+useless_scp_process => nrel_main_en_idtf:
+	[useless scp-process];;
+
 FORMAT_NUMERIC -> [0];;
