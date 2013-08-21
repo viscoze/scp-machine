@@ -53,4 +53,9 @@ useless_scp_process => nrel_main_ru_idtf:
 useless_scp_process => nrel_main_en_idtf:
 	[useless scp-process];;
 
+active_scp_operator => nrel_main_ru_idtf:
+	[активный scp-оператор];;
+active_scp_operator => nrel_main_en_idtf:
+	[active scp-operator];;
+
 FORMAT_NUMERIC -> [0];;

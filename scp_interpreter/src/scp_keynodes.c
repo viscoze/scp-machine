@@ -20,7 +20,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-#include "sc_helper.h"
 #include "scp_interpreter_utils.h"
 
 #include "scp_keynodes.h"
@@ -40,6 +39,8 @@ scp_operand scp_process;
 scp_operand useless_scp_process;
 scp_operand nrel_scp_process;
 scp_operand nrel_scp_process_operator_copying_requests;
+
+scp_operand active_scp_operator;
 
 // rrels
 scp_operand rrel_vars;
@@ -96,6 +97,7 @@ scp_result scp_keynodes_init()
     MAKE_DEFAULT_OPERAND_FIXED(scp_process);
     MAKE_DEFAULT_OPERAND_FIXED(nrel_scp_process);
     MAKE_DEFAULT_OPERAND_FIXED(nrel_scp_process_operator_copying_requests);
+    MAKE_DEFAULT_OPERAND_FIXED(active_scp_operator);
     MAKE_DEFAULT_OPERAND_FIXED(rrel_vars);
     MAKE_DEFAULT_OPERAND_FIXED(rrel_consts);
     MAKE_DEFAULT_OPERAND_FIXED(rrel_params);
@@ -181,6 +183,10 @@ scp_result scp_keynodes_init()
     if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("nrel_scp_process_operator_copying_requests", &nrel_scp_process_operator_copying_requests))
     {
         return print_error("Keynode not found", "nrel_scp_process_operator_copying_requests");
+    }
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("active_scp_operator", &active_scp_operator))
+    {
+        return print_error("Keynode not found", "active_scp_operator");
     }
     if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("rrel_vars", &rrel_vars))
     {

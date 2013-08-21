@@ -42,6 +42,8 @@ extern scp_operand useless_scp_process;
 extern scp_operand nrel_scp_process;
 extern scp_operand nrel_scp_process_operator_copying_requests;
 
+extern scp_operand active_scp_operator;
+
 // rrels
 extern scp_operand rrel_vars;
 extern scp_operand rrel_consts;

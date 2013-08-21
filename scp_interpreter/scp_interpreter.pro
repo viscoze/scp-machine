@@ -25,7 +25,9 @@ HEADERS += \
     src/scp_interpreter_utils.h \
     src/scp_process_creator.h \
     src/scp_operators_copiers.h \
-    src/scp_process_destroyer.h
+    src/scp_process_destroyer.h \
+    src/scp_operator_interpreter_agents.h \
+    src/scp_operator_interpreter_functions.h
 
 SOURCES += \
     src/scp_interpreter.c \
@@ -34,5 +36,7 @@ SOURCES += \
     src/scp_interpreter_utils.c \
     src/scp_process_creator.c \
     src/scp_operators_copiers.c \
-    src/scp_process_destroyer.c
+    src/scp_process_destroyer.c \
+    src/scp_operator_interpreter_agents.c \
+    src/scp_operator_interpreter_functions.c
 
