@@ -32,22 +32,22 @@ sc_event *event_search_operators_interpreter;
 
 sc_result interpreter_agent_search_operators(sc_event *event, sc_addr arg)
 {
-    scp_operand arc1, arc2, node1, operator_node, operator_type;
+    scp_operand input_arc, node1, operator_node, operator_type;
+    scp_result res;
 
-    MAKE_DEFAULT_OPERAND_FIXED(arc1);
-    arc1.addr = arg;
+    MAKE_DEFAULT_OPERAND_FIXED(input_arc);
+    input_arc.addr = arg;
 
     MAKE_DEFAULT_NODE_ASSIGN(node1);
-    if (SCP_RESULT_TRUE != ifVarAssign(&arc1))
+    if (SCP_RESULT_TRUE != ifVarAssign(&input_arc))
     {
         return SC_RESULT_ERROR;
     }
-    if (SCP_RESULT_TRUE != searchElStr3(&node1, &arc1, &operator_node))
+    if (SCP_RESULT_TRUE != searchElStr3(&node1, &input_arc, &operator_node))
     {
         print_error("scp-operator interpreting", "Can't find operator node");
         return SC_RESULT_ERROR;
     }
-    MAKE_DEFAULT_ARC_ASSIGN(arc1);
     operator_node.param_type = SCP_FIXED;
 
     MAKE_DEFAULT_NODE_ASSIGN(operator_type);
@@ -56,9 +56,13 @@ sc_result interpreter_agent_search_operators(sc_event *event, sc_addr arg)
         print_error("scp-operator interpreting", "Can't resolve operator type");
         return SC_RESULT_ERROR;
     }
+
+    //searchElStr3 case
     if (SCP_RESULT_TRUE == ifCoin(&operator_type, &op_searchElStr3))
     {
-        scp_operand operands[3];
+        scp_operand operands[3], operand_values[3];
+        input_arc.erase = SCP_TRUE;
+        eraseEl(&input_arc);
         if (SCP_RESULT_TRUE != resolve_operand_modifiers(&operator_node, operands, &rrel_1))
         {
             return SC_RESULT_ERROR;
@@ -71,20 +75,111 @@ sc_result interpreter_agent_search_operators(sc_event *event, sc_addr arg)
         {
             return SC_RESULT_ERROR;
         }
-        resolve_operands_values(&operator_node, operands, 3);
 
-        // !TODO searchElStr3
+        if (SCP_RESULT_TRUE != get_operands_values(&operator_node, operands, operand_values, 3))
+        {
+            return SC_RESULT_ERROR;
+        }
 
-        // !TODO update variables values
-
-        // !TODO got then ot else or goto
-
-        return SC_RESULT_OK;
+        //Operator body
+        res = searchElStr3(operand_values, operand_values + 1, operand_values + 2);
+        switch (res)
+        {
+            case SCP_RESULT_TRUE:
+            {
+                set_operands_values(&operator_node, operands, operand_values, 3);
+                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &rrel_then))
+                {
+                    return SC_RESULT_ERROR;
+                }
+                return SC_RESULT_OK;
+            }
+            case SCP_RESULT_FALSE:
+            {
+                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &rrel_else))
+                {
+                    return SC_RESULT_ERROR;
+                }
+                return SC_RESULT_OK;
+            }
+            case SCP_RESULT_ERROR:
+            {
+                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &rrel_error))
+                {
+                    return SC_RESULT_ERROR;
+                }
+                return SC_RESULT_OK;
+            }
+        }
+        return SC_RESULT_ERROR;
     }
 
+    //searchElStr5 case
+    if (SCP_RESULT_TRUE == ifCoin(&operator_type, &op_searchElStr5))
+    {
+        scp_operand operands[5], operand_values[5];
+        input_arc.erase = SCP_TRUE;
+        eraseEl(&input_arc);
+        if (SCP_RESULT_TRUE != resolve_operand_modifiers(&operator_node, operands, &rrel_1))
+        {
+            return SC_RESULT_ERROR;
+        }
+        if (SCP_RESULT_TRUE != resolve_operand_modifiers(&operator_node, operands + 1, &rrel_2))
+        {
+            return SC_RESULT_ERROR;
+        }
+        if (SCP_RESULT_TRUE != resolve_operand_modifiers(&operator_node, operands + 2, &rrel_3))
+        {
+            return SC_RESULT_ERROR;
+        }
+        if (SCP_RESULT_TRUE != resolve_operand_modifiers(&operator_node, operands + 3, &rrel_4))
+        {
+            return SC_RESULT_ERROR;
+        }
+        if (SCP_RESULT_TRUE != resolve_operand_modifiers(&operator_node, operands + 4, &rrel_5))
+        {
+            return SC_RESULT_ERROR;
+        }
 
+        if (SCP_RESULT_TRUE != get_operands_values(&operator_node, operands, operand_values, 5))
+        {
+            return SC_RESULT_ERROR;
+        }
 
-    return SC_RESULT_OK;
+        //Operator body
+        res = searchElStr5(operand_values, operand_values + 1, operand_values + 2, operand_values + 3, operand_values + 4);
+        switch (res)
+        {
+            case SCP_RESULT_TRUE:
+            {
+                set_operands_values(&operator_node, operands, operand_values, 5);
+                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &rrel_then))
+                {
+                    return SC_RESULT_ERROR;
+                }
+                return SC_RESULT_OK;
+            }
+            case SCP_RESULT_FALSE:
+            {
+                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &rrel_else))
+                {
+                    return SC_RESULT_ERROR;
+                }
+                return SC_RESULT_OK;
+            }
+            case SCP_RESULT_ERROR:
+            {
+                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &rrel_error))
+                {
+                    return SC_RESULT_ERROR;
+                }
+                return SC_RESULT_OK;
+            }
+        }
+        return SC_RESULT_ERROR;
+    }
+
+    return SC_RESULT_ERROR;
 }
 
 scp_result scp_operator_interpreter_agents_init()
