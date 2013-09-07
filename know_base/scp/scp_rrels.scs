@@ -21,10 +21,6 @@ rrel_copies => nrel_main_ru_idtf:
 	[копии'];;
 rrel_copies => nrel_main_en_idtf:
 	[copies'];;
-rrel_values => nrel_main_ru_idtf:
-	[значения'];;
-rrel_values => nrel_main_en_idtf:
-	[values'];;
 
 
 /* Parameter type rrels */

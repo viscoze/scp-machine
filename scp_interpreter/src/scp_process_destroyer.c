@@ -52,14 +52,14 @@ sc_result destroy_scp_process(sc_event *event, sc_addr arg)
     node2.erase = SCP_TRUE;
     if (SCP_RESULT_TRUE == searchElStr5(&scp_process_node, &arc1, &node1, &arc2, &rrel_copies))
     {
-        printf("COPIES\n");
+        //printf("COPIES\n");
         node1.param_type = SCP_FIXED;
         eraseSetStr3(&node1, &arc2, &node2);
         node1.param_type = SCP_ASSIGN;
     }
     if (SCP_RESULT_TRUE == searchElStr5(&scp_process_node, &arc1, &node1, &arc2, &rrel_vars))
     {
-        printf("VARS\n");
+        //printf("VARS\n");
         node1.param_type = SCP_FIXED;
         eraseSetStr3(&node1, &arc2, &node2);
         node1.param_type = SCP_ASSIGN;
@@ -87,7 +87,7 @@ sc_result destroy_scp_process(sc_event *event, sc_addr arg)
 
             if (SCP_RESULT_TRUE == ifCoin(&operator_type, &op_call))
             {
-                printf("OPERATOR CALL\n");
+                //printf("OPERATOR CALL\n");
                 if (SCP_RESULT_TRUE == searchElStr5(&node2, &arc1, &node3, &arc2, &rrel_2))
                 {
                     node3.param_type = SCP_FIXED;
@@ -103,7 +103,7 @@ sc_result destroy_scp_process(sc_event *event, sc_addr arg)
             if (SCP_RESULT_TRUE == ifCoin(&operator_type, &op_sys_gen) ||
                 SCP_RESULT_TRUE == ifCoin(&operator_type, &op_sys_search))
             {
-                printf("OPERATOR SYSTEM\n");
+                //printf("OPERATOR SYSTEM\n");
                 if (SCP_RESULT_TRUE == searchElStr5(&node2, &arc1, &node3, &arc2, &rrel_2))
                 {
                     node3.param_type = SCP_FIXED;
@@ -121,7 +121,7 @@ sc_result destroy_scp_process(sc_event *event, sc_addr arg)
                 node2.param_type = SCP_ASSIGN;
                 continue;
             }
-            printf("OPERATOR ORDINARY\n");
+            //printf("OPERATOR ORDINARY\n");
             eraseEl(&node2);
             operator_type.param_type = SCP_ASSIGN;
             node2.param_type = SCP_ASSIGN;
@@ -134,7 +134,7 @@ sc_result destroy_scp_process(sc_event *event, sc_addr arg)
     scp_process_node.erase = SCP_TRUE;
     eraseSetStr3(&scp_process_node, &arc1, &node1);
 
-    printf("PROCESS DESTROYED SUCCESSFULLY\n");
+    //printf("PROCESS DESTROYED SUCCESSFULLY\n");
     return SC_RESULT_OK;
 }
 

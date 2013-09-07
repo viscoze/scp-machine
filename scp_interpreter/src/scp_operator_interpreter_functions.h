@@ -32,6 +32,7 @@ scp_result set_operands_values(scp_operand *scp_operator_node, scp_operand *oper
 scp_result goto_conditional(scp_operand *scp_operator_node, scp_operand *rrel);
 scp_result goto_unconditional(scp_operand *scp_operator_node);
 void set_active_operator(scp_operand *scp_operator_node);
+void operator_interpreting_crash(scp_operand *operator_node);
 
 
 #endif // SCP_OPERATOR_INTERPRETER_FUNCTIONS_H

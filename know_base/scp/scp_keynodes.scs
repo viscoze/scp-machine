@@ -13,6 +13,11 @@ nrel_scp_process => nrel_main_ru_idtf:
 nrel_scp_process => nrel_main_en_idtf:
 	[scp-process*];;
 
+nrel_scp_var_value => nrel_main_ru_idtf:
+	[значение scp-переменной'];;
+nrel_scp_var_value => nrel_main_en_idtf:
+	[scp-variable value'];;
+
 scp_operator => nrel_main_ru_idtf:
 	[scp-оператор];;
 scp_operator => nrel_main_en_idtf:

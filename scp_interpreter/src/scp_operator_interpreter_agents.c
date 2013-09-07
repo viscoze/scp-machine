@@ -140,7 +140,6 @@ sc_result interpreter_agent_search_operators(sc_event *event, sc_addr arg)
         {
             return SC_RESULT_ERROR;
         }
-
         if (SCP_RESULT_TRUE != get_operands_values(&operator_node, operands, operand_values, 5))
         {
             return SC_RESULT_ERROR;

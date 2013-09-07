@@ -94,3 +94,17 @@ void mark_scp_process_as_useless(scp_operand *param)
     MAKE_DEFAULT_ARC_ASSIGN(arc);
     genElStr3(&useless_scp_process, &arc, param);
 }
+
+void prepare_scp_process_for_interpreting(scp_operand *process)
+{
+    scp_operand arc1, arc2, copies, temp;
+    MAKE_DEFAULT_ARC_ASSIGN(arc1);
+    MAKE_DEFAULT_ARC_ASSIGN(arc2);
+    MAKE_DEFAULT_OPERAND_ASSIGN(copies);
+    MAKE_DEFAULT_OPERAND_ASSIGN(temp);
+    searchElStr5(process, &arc1, &copies, &arc2, &rrel_copies);
+    copies.param_type = SCP_FIXED;
+    copies.erase = SCP_TRUE;
+    temp.erase = SCP_TRUE;
+    eraseSetStr3(&copies, &arc1, &temp);
+}

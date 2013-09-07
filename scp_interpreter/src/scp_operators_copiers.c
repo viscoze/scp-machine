@@ -324,7 +324,7 @@ sc_result copy_sys_operator(sc_event *event, sc_addr arg)
     }
     scp_iterator3_free(it);
 
-    printf("SYSTEM\n");
+    //printf("SYSTEM\n");
     finish_question_successfully(&question_node);
     return SC_RESULT_OK;
 }
@@ -453,7 +453,7 @@ sc_result copy_call_operator(sc_event *event, sc_addr arg)
         return SC_RESULT_ERROR;
     }
 
-    printf("CALL\n");
+    //printf("CALL\n");
     finish_question_successfully(&question_node);
     return SC_RESULT_OK;
 }
@@ -501,7 +501,7 @@ sc_result copy_return_operator(sc_event *event, sc_addr arg)
         return SC_RESULT_ERROR;
     }
 
-    printf("RETURN\n");
+    //printf("RETURN\n");
     finish_question_successfully(&question_node);
     return SC_RESULT_OK;
 }
@@ -589,7 +589,7 @@ sc_result copy_ordinary_operator(sc_event *event, sc_addr arg)
         return SC_RESULT_ERROR;
     }
 
-    printf("ORDINARY\n");
+    //printf("ORDINARY\n");
     finish_question_successfully(&question_node);
     return SC_RESULT_OK;
 }

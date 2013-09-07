@@ -32,6 +32,7 @@ scp_result resolve_ordinal_rrel(scp_operand *arc_param, scp_operand *result);
 void finish_question_successfully(scp_operand *param);
 void finish_question_unsuccessfully(scp_operand *param);
 
+void prepare_scp_process_for_interpreting(scp_operand *process);
 void mark_scp_process_as_useless(scp_operand *param);
 
 #endif // SCP_INTERPRETER_UTILS_H

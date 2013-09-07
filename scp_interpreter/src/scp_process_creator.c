@@ -120,7 +120,7 @@ scp_result copy_operator_set(scp_operand *source, scp_operand *dest, scp_operand
     return SCP_RESULT_TRUE;
 }
 
-scp_result copy_parameters_set(scp_operand *call_parameters, scp_operand *scp_procedure_vars, scp_operand *scp_procedure_params, scp_operand *scp_process_vars, scp_operand *scp_process_consts, scp_operand *scp_process_copies, scp_operand *scp_process_values)
+scp_result copy_parameters_set(scp_operand *call_parameters, scp_operand *scp_procedure_vars, scp_operand *scp_procedure_params, scp_operand *scp_process_vars, scp_operand *scp_process_consts, scp_operand *scp_process_copies)
 {
     scp_operand arc1, arc2, source_var, arc3, dest_var, dest_value, ordinal;
     scp_result is_out;
@@ -166,18 +166,13 @@ scp_result copy_parameters_set(scp_operand *call_parameters, scp_operand *scp_pr
         }
         if (is_out == SCP_RESULT_TRUE)
         {
-            dest_var.param_type = SCP_ASSIGN;
-            dest_var.element_type = source_var.element_type;
-            genElStr3(scp_process_vars, &arc2, &dest_var);
-            dest_var.param_type = SCP_FIXED;
-            genElStr5(&source_var, &arc3, &dest_var, &arc2, scp_process_copies);
-            genElStr5(&dest_var, &arc3, &dest_value, &arc2, scp_process_values);
+            genElStr3(scp_process_vars, &arc2, &dest_value);
         }
         else
         {
             genElStr3(scp_process_consts, &arc1, &dest_value);
-            genElStr5(&source_var, &arc3, &dest_value, &arc2, scp_process_copies);
         }
+        genElStr5(&source_var, &arc3, &dest_value, &arc2, scp_process_copies);
 
         source_var.param_type = SCP_ASSIGN;
         dest_value.param_type = SCP_ASSIGN;
@@ -204,7 +199,7 @@ scp_result create_operator_copying_request(scp_operand *operator_copy, scp_opera
 sc_result create_scp_process(sc_event *event, sc_addr arg)
 {
     scp_operand arc1, arc2, scp_procedure_node, scp_process_node, node1, node2, question_node, call_parameters,
-                scp_process_consts, scp_process_vars, scp_process_copies, scp_process_values, scp_process_operators,
+                scp_process_consts, scp_process_vars, scp_process_copies, scp_process_operators,
                 scp_operators_copying_request_set;
     scp_iterator3 *it;
     MAKE_DEFAULT_OPERAND_FIXED(arc1);
@@ -212,7 +207,6 @@ sc_result create_scp_process(sc_event *event, sc_addr arg)
     MAKE_DEFAULT_NODE_ASSIGN(scp_process_consts);
     MAKE_DEFAULT_NODE_ASSIGN(scp_process_vars);
     MAKE_DEFAULT_NODE_ASSIGN(scp_process_copies);
-    MAKE_DEFAULT_NODE_ASSIGN(scp_process_values);
     MAKE_DEFAULT_NODE_ASSIGN(scp_process_operators);
     MAKE_DEFAULT_OPERAND_ASSIGN(scp_procedure_node);
     MAKE_DEFAULT_OPERAND_FIXED(scp_process_node);
@@ -266,8 +260,6 @@ sc_result create_scp_process(sc_event *event, sc_addr arg)
     scp_process_operators.param_type = SCP_FIXED;
     genElStr5(&scp_process_node, &arc1, &scp_process_copies, &arc2, &rrel_copies);
     scp_process_copies.param_type = SCP_FIXED;
-    genElStr5(&scp_process_node, &arc1, &scp_process_values, &arc2, &rrel_values);
-    scp_process_values.param_type = SCP_FIXED;
 
     //Const set copying
     MAKE_DEFAULT_NODE_ASSIGN(node1);
@@ -307,7 +299,7 @@ sc_result create_scp_process(sc_event *event, sc_addr arg)
         return SC_RESULT_ERROR;
     }
     //Parameters set copying
-    if (SCP_RESULT_ERROR == copy_parameters_set(&call_parameters, &node2, &node1, &scp_process_vars, &scp_process_consts, &scp_process_copies, &scp_process_values))
+    if (SCP_RESULT_ERROR == copy_parameters_set(&call_parameters, &node2, &node1, &scp_process_vars, &scp_process_consts, &scp_process_copies))
     {
         mark_scp_process_as_useless(&scp_process_node);
         print_error("scp-process creating", "Parameters loading error");
@@ -395,14 +387,16 @@ sc_result process_completed_operator_copying_request_set(sc_event *event, sc_add
     if (SCP_RESULT_TRUE == searchElStr3(&successfully_finished_scp_operator_copying_request_set, &arc1, &request_set))
     {
         //!TODO Start process interpreting
-        printf("PROCESS INTERPRETING\n");
+        prepare_scp_process_for_interpreting(&scp_process_node);
+        //mark_scp_process_as_useless(&scp_process_node);
+        //printf("PROCESS INTERPRETING\n");
     }
     else
     {
         if (SCP_RESULT_TRUE == searchElStr3(&unsuccessfully_finished_scp_operator_copying_request_set, &arc1, &request_set))
         {
             //!TODO Start process destroying
-            mark_scp_process_as_useless(&scp_process_node);
+            //mark_scp_process_as_useless(&scp_process_node);
             printf("PROCESS DESTROYING\n");
         }
     }
