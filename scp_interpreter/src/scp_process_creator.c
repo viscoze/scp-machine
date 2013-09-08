@@ -87,10 +87,13 @@ scp_result copy_vars_set(scp_operand *source, scp_operand *dest, scp_operand *co
 
 scp_result copy_operator_set(scp_operand *source, scp_operand *dest, scp_operand *copies)
 {
-    scp_operand arc1, node1, node2, arc2, type;
+    scp_operand arc1, node1, node2, arc2, arc3, type;
     scp_iterator3 *it;
+    scp_bool init_op = SCP_FALSE;
+    scp_bool init_op_done = SCP_FALSE;
     MAKE_COMMON_ARC_ASSIGN(arc1);
     MAKE_DEFAULT_ARC_ASSIGN(arc2);
+    MAKE_DEFAULT_ARC_ASSIGN(arc3);
     MAKE_DEFAULT_NODE_ASSIGN(node1);
     MAKE_DEFAULT_NODE_ASSIGN(node2);
     MAKE_DEFAULT_NODE_ASSIGN(type);
@@ -100,9 +103,26 @@ scp_result copy_operator_set(scp_operand *source, scp_operand *dest, scp_operand
     it = scp_iterator3_new(source, &arc2, &node1);
     while (SCP_RESULT_TRUE == scp_iterator3_next(it, source, &arc2, &node1))
     {
+        if (init_op_done == SCP_FALSE)
+        {
+            arc2.param_type = SCP_FIXED;
+            if (SCP_RESULT_TRUE == searchElStr3(&rrel_init, &arc3, &arc2))
+            {
+                init_op = SCP_TRUE;
+            }
+            arc2.param_type = SCP_ASSIGN;
+        }
         node1.param_type = SCP_FIXED;
         node2.param_type = SCP_ASSIGN;
         genElStr3(dest, &arc2, &node2);
+        if (init_op == SCP_TRUE)
+        {
+            init_op = SCP_FALSE;
+            init_op_done = SCP_TRUE;
+            arc2.param_type = SCP_FIXED;
+            genElStr3(&rrel_init, &arc3, &arc2);
+            arc2.param_type = SCP_ASSIGN;
+        }
         node2.param_type = SCP_FIXED;
         genElStr5(&node1, &arc1, &node2, &arc2, copies);
         type.param_type = SCP_ASSIGN;
@@ -117,6 +137,10 @@ scp_result copy_operator_set(scp_operand *source, scp_operand *dest, scp_operand
         node1.param_type = SCP_ASSIGN;
     }
     scp_iterator3_free(it);
+    if (init_op_done == SCP_FALSE)
+    {
+        return print_error("Process creating error", "Can't find init operator");
+    }
     return SCP_RESULT_TRUE;
 }
 
@@ -187,9 +211,9 @@ scp_result create_operator_copying_request(scp_operand *operator_copy, scp_opera
     MAKE_DEFAULT_NODE_ASSIGN(quest);
     MAKE_DEFAULT_ARC_ASSIGN(arc1);
     MAKE_DEFAULT_ARC_ASSIGN(arc2);
-    genElStr5(&quest, &arc1, operator_copy, &arc2, &rrel_1);
+    genElStr5(&quest, &arc1, operator_copy, &arc2, &(ordinal_rrels[1]));
     quest.param_type = SCP_FIXED;
-    genElStr5(&quest, &arc1, scp_process_node, &arc2, &rrel_2);
+    genElStr5(&quest, &arc1, scp_process_node, &arc2, &(ordinal_rrels[2]));
     genElStr3(scp_operators_copying_request_set, &arc1, &quest);
     genElStr3(&question_scp_operator_copying_request, &arc1, &quest);
     //genElStr3(&question_initiated, &arc1, &quest);
@@ -220,15 +244,22 @@ sc_result create_scp_process(sc_event *event, sc_addr arg)
         print_error("scp-process creating", "Can't find interpreting request node");
         return SC_RESULT_ERROR;
     }
-    MAKE_DEFAULT_ARC_ASSIGN(arc1);
+
     question_node.param_type = SCP_FIXED;
-    if (SCP_RESULT_TRUE != searchElStr5(&question_node, &arc1, &scp_procedure_node, &arc2, &rrel_1))
+    if (SCP_RESULT_TRUE != searchElStr3(&question_scp_interpretation_request, &arc2, &question_node))
+    {
+        return SC_RESULT_ERROR;
+    }
+    arc1.erase = SCP_TRUE;
+    eraseEl(&arc1);
+    MAKE_DEFAULT_ARC_ASSIGN(arc1);
+    if (SCP_RESULT_TRUE != searchElStr5(&question_node, &arc1, &scp_procedure_node, &arc2, &(ordinal_rrels[1])))
     {
         print_error("scp-process creating", "Can't find scp-procedure");
         return SC_RESULT_ERROR;
     }
     scp_procedure_node.param_type = SCP_FIXED;
-    if (SCP_RESULT_TRUE != searchElStr5(&question_node, &arc1, &call_parameters, &arc2, &rrel_2))
+    if (SCP_RESULT_TRUE != searchElStr5(&question_node, &arc1, &call_parameters, &arc2, &(ordinal_rrels[2])))
     {
         print_error("scp-process creating", "Can't find call parameters");
         return SC_RESULT_ERROR;
@@ -246,7 +277,7 @@ sc_result create_scp_process(sc_event *event, sc_addr arg)
     MAKE_DEFAULT_ARC_ASSIGN(arc2);
     MAKE_DEFAULT_NODE_ASSIGN(scp_process_node);
     scp_procedure_node.param_type = SCP_FIXED;
-    genElStr5(&scp_procedure_node, &arc1, &scp_process_node, &arc2, &nrel_scp_process);
+    genElStr5(&question_node, &arc1, &scp_process_node, &arc2, &nrel_scp_process);
 
     //printEl(&scp_process_node);
     MAKE_DEFAULT_ARC_ASSIGN(arc1);
@@ -386,18 +417,34 @@ sc_result process_completed_operator_copying_request_set(sc_event *event, sc_add
 
     if (SCP_RESULT_TRUE == searchElStr3(&successfully_finished_scp_operator_copying_request_set, &arc1, &request_set))
     {
-        //!TODO Start process interpreting
+        // Start process interpreting
+        printf("PROCESS CREATED. INTERPRETING...\n");
+
+        scp_operand operator_set, init_operator;
         prepare_scp_process_for_interpreting(&scp_process_node);
-        //mark_scp_process_as_useless(&scp_process_node);
-        //printf("PROCESS INTERPRETING\n");
+        MAKE_DEFAULT_NODE_ASSIGN(operator_set);
+        MAKE_DEFAULT_ARC_ASSIGN(arc1);
+        MAKE_DEFAULT_ARC_ASSIGN(arc2);
+        searchElStr5(&scp_process_node, &arc1, &operator_set, &arc2, &rrel_operators);
+        operator_set.param_type = SCP_FIXED;
+        MAKE_DEFAULT_OPERAND_ASSIGN(init_operator);
+        if (SCP_RESULT_TRUE == searchElStr5(&operator_set, &arc1, &init_operator, &arc2, &rrel_init))
+        {
+            init_operator.param_type = SCP_FIXED;
+            set_active_operator(&init_operator);
+        }
+        else
+        {
+            print_error("scp-process interpreting", "Can't find init operator");
+            mark_scp_process_as_useless(&scp_process_node);
+        }
     }
     else
     {
         if (SCP_RESULT_TRUE == searchElStr3(&unsuccessfully_finished_scp_operator_copying_request_set, &arc1, &request_set))
         {
-            //!TODO Start process destroying
-            //mark_scp_process_as_useless(&scp_process_node);
-            printf("PROCESS DESTROYING\n");
+            // Start process destroying
+            mark_scp_process_as_useless(&scp_process_node);
         }
     }
 
@@ -409,7 +456,7 @@ sc_result process_completed_operator_copying_request_set(sc_event *event, sc_add
 
 scp_result scp_process_creator_init()
 {
-    event_program_iterpretation = sc_event_new(question_scp_interpretation_request.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, create_scp_process, 0);
+    event_program_iterpretation = sc_event_new(question_initiated.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, create_scp_process, 0);
     if (event_program_iterpretation == nullptr)
         return SCP_RESULT_ERROR;
     event_ordinary_operator_copying = sc_event_new(question_initiated.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, copy_ordinary_operator, 0);

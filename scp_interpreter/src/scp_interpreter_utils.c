@@ -40,6 +40,11 @@ scp_result resolve_operator_type(scp_operand *oper, scp_operand *type)
     scp_iterator3 *it = scp_iterator3_new(type, &arc, oper);
     while (SCP_RESULT_TRUE == scp_iterator3_next(it, type, &arc, oper))
     {
+        //! TODO Remove temporary check
+        if (SCP_RESULT_TRUE != ifVarAssign(type))
+        {
+            continue;
+        }
         type->param_type = SCP_FIXED;
         if (SCP_RESULT_TRUE == searchElStr3(&scp_operator, &arc, type))
         {
@@ -93,6 +98,7 @@ void mark_scp_process_as_useless(scp_operand *param)
     scp_operand arc;
     MAKE_DEFAULT_ARC_ASSIGN(arc);
     genElStr3(&useless_scp_process, &arc, param);
+    printf("PROCESS DESTROYING...\n");
 }
 
 void prepare_scp_process_for_interpreting(scp_operand *process)
@@ -107,4 +113,11 @@ void prepare_scp_process_for_interpreting(scp_operand *process)
     copies.erase = SCP_TRUE;
     temp.erase = SCP_TRUE;
     eraseSetStr3(&copies, &arc1, &temp);
+}
+
+void set_active_operator(scp_operand *scp_operator_node)
+{
+    scp_operand arc;
+    MAKE_DEFAULT_ARC_ASSIGN(arc);
+    genElStr3(&active_scp_operator, &arc, scp_operator_node);
 }

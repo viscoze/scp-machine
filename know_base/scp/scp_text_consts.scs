@@ -1,0 +1,2 @@
+scp_text_const -> [YES] (* => hypermedia_nrel_system_identifier: [scp_text_const_yes];; *);;
+scp_text_const -> [NO] (* => hypermedia_nrel_system_identifier: [scp_text_const_no];; *);;

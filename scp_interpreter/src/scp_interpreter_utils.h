@@ -35,4 +35,5 @@ void finish_question_unsuccessfully(scp_operand *param);
 void prepare_scp_process_for_interpreting(scp_operand *process);
 void mark_scp_process_as_useless(scp_operand *param);
 
+void set_active_operator(scp_operand *scp_operator_node);
 #endif // SCP_INTERPRETER_UTILS_H

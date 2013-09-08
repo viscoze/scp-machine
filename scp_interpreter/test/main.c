@@ -9,10 +9,13 @@
 
 void create_process_test()
 {
-    sc_addr quest, prog;
-    sc_helper_resolve_system_identifier("question_scp_interpretation_request", &quest);
-    sc_helper_resolve_system_identifier("quest1", &prog);
-    sc_memory_arc_new(sc_type_arc_pos_const_perm, quest, prog);
+    sc_addr quest, init, request;
+
+    sc_helper_resolve_system_identifier("question_scp_interpretation_request", &request);
+    sc_helper_resolve_system_identifier("quest2", &quest);
+    sc_helper_resolve_system_identifier("question_initiated", &init);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm, request, quest);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm, init, quest);
 }
 
 void test1()
@@ -47,7 +50,7 @@ int main(void)
     timer = g_timer_new();
     g_timer_start(timer);
 
-    test_scp_process_creating(1000);
+    test_scp_process_creating(1);
 
     g_timer_stop(timer);
     printf((sc_char *)"Time: %f s\n", g_timer_elapsed(timer, 0));

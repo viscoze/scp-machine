@@ -88,7 +88,7 @@ sc_result destroy_scp_process(sc_event *event, sc_addr arg)
             if (SCP_RESULT_TRUE == ifCoin(&operator_type, &op_call))
             {
                 //printf("OPERATOR CALL\n");
-                if (SCP_RESULT_TRUE == searchElStr5(&node2, &arc1, &node3, &arc2, &rrel_2))
+                if (SCP_RESULT_TRUE == searchElStr5(&node2, &arc1, &node3, &arc2, &(ordinal_rrels[2])))
                 {
                     node3.param_type = SCP_FIXED;
                     eraseEl(&node3);
@@ -104,13 +104,13 @@ sc_result destroy_scp_process(sc_event *event, sc_addr arg)
                 SCP_RESULT_TRUE == ifCoin(&operator_type, &op_sys_search))
             {
                 //printf("OPERATOR SYSTEM\n");
-                if (SCP_RESULT_TRUE == searchElStr5(&node2, &arc1, &node3, &arc2, &rrel_2))
+                if (SCP_RESULT_TRUE == searchElStr5(&node2, &arc1, &node3, &arc2, &(ordinal_rrels[2])))
                 {
                     node3.param_type = SCP_FIXED;
                     eraseSetStr3(&node3, &arc1, &node4);
                     node3.param_type = SCP_ASSIGN;
                 }
-                if (SCP_RESULT_TRUE == searchElStr5(&node2, &arc1, &node3, &arc2, &rrel_3))
+                if (SCP_RESULT_TRUE == searchElStr5(&node2, &arc1, &node3, &arc2, &(ordinal_rrels[3])))
                 {
                     node3.param_type = SCP_FIXED;
                     eraseSetStr3(&node3, &arc1, &node4);
