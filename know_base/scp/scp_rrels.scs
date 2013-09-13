@@ -7,6 +7,11 @@ rrel_consts => nrel_main_ru_idtf:
 	[константы'];;
 rrel_consts => nrel_main_en_idtf:
 	[constants'];;
+rrel_operators_copying_pattern => nrel_main_ru_idtf:
+	[шаблон копирования операторов'];;
+rrel_operators_copying_pattern => nrel_main_en_idtf:
+	[operators copying pattern'];;
+
 rrel_params => nrel_main_ru_idtf:
 	[параметры'];;
 rrel_params => nrel_main_en_idtf:
@@ -21,7 +26,6 @@ rrel_copies => nrel_main_ru_idtf:
 	[копии'];;
 rrel_copies => nrel_main_en_idtf:
 	[copies'];;
-
 
 /* Parameter type rrels */
 rrel_in => nrel_main_ru_idtf:
@@ -73,3 +77,8 @@ rrel_goto => nrel_main_en_idtf:
 rrel_error => nrel_main_en_idtf:
 	[error'];;
 
+/* scp-operand variability rrels */
+rrel_scp_var => nrel_main_en_idtf:
+	[scp variable'];;
+rrel_scp_const => nrel_main_en_idtf:
+	[scp constant'];;

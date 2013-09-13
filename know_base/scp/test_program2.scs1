@@ -1,0 +1,46 @@
+
+const_yes = [YES];;
+const_no = [NO];;
+
+scp_procedure -> test_prog2 (*
+	/*-> rrel_vars: { _parameter; _elem; _arc1 };;
+	-> rrel_consts: .test_prog2_consts;;*/
+	
+	-> rrel_params: .test_prog2_params (*
+		-> rrel_1: rrel_in: _parameter;;
+	*);;
+	
+	-> rrel_operators:
+		[*	
+		
+		searchElStr3 -> .test_prog2_operator1 (*
+		 -> rrel_1: rrel_fixed: rrel_scp_var: _parameter;;
+		 -> rrel_2: rrel_assign: rrel_const: rrel_pos: rrel_scp_var: _arc1;;
+		 -> rrel_3: rrel_assign: rrel_node: rrel_scp_var: _elem;;
+		 -> rrel_then: .test_prog2_operator2;;
+		 -> rrel_else: .test_prog2_operator3;;
+		*);;
+		  
+		printNl -> .test_prog2_operator2 (*
+		 -> rrel_1: rrel_fixed: rrel_scp_const: const_yes (* <- .test_prog2_consts;; *);;
+		 -> rrel_goto: .test_prog2_operator4;;
+		*);;
+		
+		printNl -> .test_prog2_operator3 (*
+		 -> rrel_1: rrel_fixed: rrel_scp_const: const_no (* <- .test_prog2_consts;; *);;
+		 -> rrel_goto: .test_prog2_operator4;;
+		*);;
+		
+		return -> .test_prog2_operator4;;
+		  
+		*] (* -> rrel_init: .test_prog2_operator1;; *);;
+*);;
+
+node1 -> node2;;
+node2 -> node3;;
+
+quest2 -> rrel_1: test_prog2;;
+quest2 -> rrel_2: .quest2_params (* 
+	-> rrel_1: node1;; 
+	*);;
+

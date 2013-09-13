@@ -37,7 +37,8 @@ sc_event *event_operator_copying_finished_successfully;
 sc_event *event_operator_copying_finished_unsuccessfully;
 sc_event *event_operators_set_copying_completed;
 
-scp_result copy_consts_set(scp_operand *source, scp_operand *dest, scp_operand *copies)
+//! Old code
+/*scp_result copy_consts_set(scp_operand *source, scp_operand *dest, scp_operand *copies)
 {
     scp_operand arc1, node, arc2;
     scp_iterator3 *it;
@@ -357,13 +358,6 @@ sc_result create_scp_process(sc_event *event, sc_addr arg)
         return SC_RESULT_ERROR;
     }
 
-    /*printEl(&scp_procedure_node);
-    printEl(&scp_process_node);
-    printEl(&scp_process_consts);
-    printEl(&scp_process_values);
-    printEl(&scp_process_vars);
-    printEl(&scp_process_operators);*/
-
     MAKE_COMMON_ARC_ASSIGN(arc1);
     MAKE_DEFAULT_NODE_ASSIGN(scp_operators_copying_request_set);
     genElStr5(&scp_process_node, &arc1, &scp_operators_copying_request_set, &arc2, &nrel_scp_process_operator_copying_requests);
@@ -452,7 +446,9 @@ sc_result process_completed_operator_copying_request_set(sc_event *event, sc_add
     eraseEl(&request_set);
 
     return SC_RESULT_OK;
-}
+}*/
+
+
 
 scp_result scp_process_creator_init()
 {

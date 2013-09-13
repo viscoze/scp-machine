@@ -33,6 +33,11 @@ question_scp_operator_copying_request => nrel_main_ru_idtf:
 question_scp_operator_copying_request => nrel_main_en_idtf:
 	[scp operator copying request];;
 
+question_scp_procedure_preprocessing_request => nrel_main_ru_idtf:
+	[запрос предобработки scp-процедуры];;
+question_scp_procedure_preprocessing_request => nrel_main_en_idtf:
+	[scp procedure preprocessing request];;
+	
 nrel_scp_process_operator_copying_requests => nrel_main_ru_idtf:
 	[запросы копирования операторов scp-процесса*];;
 nrel_scp_process_operator_copying_requests => nrel_main_en_idtf:

@@ -30,6 +30,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 extern scp_operand scp_procedure;
 extern scp_operand question_scp_interpretation_request;
+extern scp_operand question_scp_procedure_preprocessing_request;
 extern scp_operand question_scp_operator_copying_request;
 
 extern scp_operand question_initiated;
@@ -55,6 +56,7 @@ extern scp_operand rrel_error;
 
 extern scp_operand rrel_vars;
 extern scp_operand rrel_consts;
+extern scp_operand rrel_operators_copying_pattern;
 extern scp_operand rrel_params;
 extern scp_operand rrel_operators;
 extern scp_operand rrel_copies;
@@ -70,6 +72,8 @@ extern scp_operand rrel_erase;
 
 extern scp_operand rrel_const;
 extern scp_operand rrel_var;
+extern scp_operand rrel_scp_const;
+extern scp_operand rrel_scp_var;
 extern scp_operand rrel_node;
 extern scp_operand rrel_arc;
 extern scp_operand rrel_pos;
