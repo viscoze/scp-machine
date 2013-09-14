@@ -23,216 +23,195 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "sc_memory_headers.h"
 #include "scp_process_creator.h"
 #include "scp_interpreter_utils.h"
-#include "scp_operators_copiers.h"
 #include "scp_keynodes.h"
 
 #include <stdio.h>
+#include <glib.h>
 
-sc_event *event_program_iterpretation;
-sc_event *event_ordinary_operator_copying;
-sc_event *event_call_operator_copying;
-sc_event *event_return_operator_copying;
-sc_event *event_sys_operator_copying;
-sc_event *event_operator_copying_finished_successfully;
-sc_event *event_operator_copying_finished_unsuccessfully;
-sc_event *event_operators_set_copying_completed;
+sc_event *event_procedure_iterpretation;
 
-//! Old code
-/*scp_result copy_consts_set(scp_operand *source, scp_operand *dest, scp_operand *copies)
+scp_result copy_parameter_set(scp_operand *set, scp_operand *call_params, GHashTable *table, GHashTable *pattern_hash)
 {
-    scp_operand arc1, node, arc2;
-    scp_iterator3 *it;
-    MAKE_COMMON_ARC_ASSIGN(arc1);
-    MAKE_DEFAULT_ARC_ASSIGN(arc2);
-    MAKE_DEFAULT_OPERAND_ASSIGN(node);
-    it = scp_iterator3_new(source, &arc2, &node);
-    while (SCP_RESULT_TRUE == scp_iterator3_next(it, source, &arc2, &node))
-    {
-        node.param_type = SCP_FIXED;
-        genElStr3(dest, &arc2, &node);
-        genElStr5(&node, &arc1, &node, &arc2, copies);
-        node.param_type = SCP_ASSIGN;
-    }
-    scp_iterator3_free(it);
-    return SCP_RESULT_TRUE;
-}
-
-scp_result copy_vars_set(scp_operand *source, scp_operand *dest, scp_operand *copies)
-{
-    scp_operand arc1, node1, node2, arc2;
-    scp_iterator3 *it;
-    MAKE_COMMON_ARC_ASSIGN(arc1);
-    MAKE_DEFAULT_ARC_ASSIGN(arc2);
-    MAKE_DEFAULT_OPERAND_ASSIGN(node1);
-    MAKE_DEFAULT_OPERAND_ASSIGN(node2);
-
-    it = scp_iterator3_new(source, &arc2, &node1);
-    while (SCP_RESULT_TRUE == scp_iterator3_next(it, source, &arc2, &node1))
-    {
-        node1.param_type = SCP_FIXED;
-        node2.param_type = SCP_ASSIGN;
-        node2.element_type = node1.element_type;
-        if (SCP_RESULT_TRUE == searchElStr5(&node1, &arc1, &node2, &arc2, copies))
-        {
-            node1.param_type = SCP_ASSIGN;
-            continue;
-        }
-        genElStr3(dest, &arc2, &node2);
-        node2.param_type = SCP_FIXED;
-        genElStr5(&node1, &arc1, &node2, &arc2, copies);
-        node1.param_type = SCP_ASSIGN;
-    }
-    scp_iterator3_free(it);
-    return SCP_RESULT_TRUE;
-}
-
-scp_result copy_operator_set(scp_operand *source, scp_operand *dest, scp_operand *copies)
-{
-    scp_operand arc1, node1, node2, arc2, arc3, type;
-    scp_iterator3 *it;
-    scp_bool init_op = SCP_FALSE;
-    scp_bool init_op_done = SCP_FALSE;
-    MAKE_COMMON_ARC_ASSIGN(arc1);
-    MAKE_DEFAULT_ARC_ASSIGN(arc2);
-    MAKE_DEFAULT_ARC_ASSIGN(arc3);
-    MAKE_DEFAULT_NODE_ASSIGN(node1);
-    MAKE_DEFAULT_NODE_ASSIGN(node2);
-    MAKE_DEFAULT_NODE_ASSIGN(type);
-
-    //!TODO Check operators count and return existence
-
-    it = scp_iterator3_new(source, &arc2, &node1);
-    while (SCP_RESULT_TRUE == scp_iterator3_next(it, source, &arc2, &node1))
-    {
-        if (init_op_done == SCP_FALSE)
-        {
-            arc2.param_type = SCP_FIXED;
-            if (SCP_RESULT_TRUE == searchElStr3(&rrel_init, &arc3, &arc2))
-            {
-                init_op = SCP_TRUE;
-            }
-            arc2.param_type = SCP_ASSIGN;
-        }
-        node1.param_type = SCP_FIXED;
-        node2.param_type = SCP_ASSIGN;
-        genElStr3(dest, &arc2, &node2);
-        if (init_op == SCP_TRUE)
-        {
-            init_op = SCP_FALSE;
-            init_op_done = SCP_TRUE;
-            arc2.param_type = SCP_FIXED;
-            genElStr3(&rrel_init, &arc3, &arc2);
-            arc2.param_type = SCP_ASSIGN;
-        }
-        node2.param_type = SCP_FIXED;
-        genElStr5(&node1, &arc1, &node2, &arc2, copies);
-        type.param_type = SCP_ASSIGN;
-        if (SCP_RESULT_TRUE != resolve_operator_type(&node1, &type))
-        {
-            printEl(&node1);
-            scp_iterator3_free(it);
-            return print_error("Illegal operator", "Can't resolve operator type");
-        }
-        type.param_type = SCP_FIXED;
-        genElStr3(&type, &arc2, &node2);
-        node1.param_type = SCP_ASSIGN;
-    }
-    scp_iterator3_free(it);
-    if (init_op_done == SCP_FALSE)
-    {
-        return print_error("Process creating error", "Can't find init operator");
-    }
-    return SCP_RESULT_TRUE;
-}
-
-scp_result copy_parameters_set(scp_operand *call_parameters, scp_operand *scp_procedure_vars, scp_operand *scp_procedure_params, scp_operand *scp_process_vars, scp_operand *scp_process_consts, scp_operand *scp_process_copies)
-{
-    scp_operand arc1, arc2, source_var, arc3, dest_var, dest_value, ordinal;
-    scp_result is_out;
+    scp_operand arc1, arc2, elem, new_elem, ordinal;
     scp_iterator3 *it;
     MAKE_DEFAULT_ARC_ASSIGN(arc1);
     MAKE_DEFAULT_ARC_ASSIGN(arc2);
-    MAKE_COMMON_ARC_ASSIGN(arc3);
-    MAKE_DEFAULT_OPERAND_ASSIGN(source_var);
-    MAKE_DEFAULT_OPERAND_ASSIGN(dest_var);
-    MAKE_DEFAULT_OPERAND_ASSIGN(dest_value);
-    MAKE_DEFAULT_NODE_ASSIGN(ordinal);
-
-    it = scp_iterator3_new(scp_procedure_params, &arc1, &dest_var);
-    while (SCP_RESULT_TRUE == scp_iterator3_next(it, scp_procedure_params, &arc1, &source_var))
+    MAKE_DEFAULT_OPERAND_ASSIGN(elem);
+    MAKE_DEFAULT_OPERAND_ASSIGN(new_elem);
+    it = scp_iterator3_new(set, &arc1, &elem);
+    while (SCP_RESULT_TRUE == scp_iterator3_next(it, set, &arc1, &elem))
     {
-        source_var.param_type = SCP_FIXED;
         arc1.param_type = SCP_FIXED;
-        if (SCP_RESULT_TRUE != resolve_ordinal_rrel(&arc1, &ordinal))
-        {
-            scp_iterator3_free(it);
-            return print_error("Illegal procedure parameter", "Parameter ordinal rrel not found");;
-        }
+        ordinal.param_type = SCP_ASSIGN;
+        resolve_ordinal_rrel(&arc1, &ordinal);
+        ordinal.param_type = SCP_FIXED;
         arc1.param_type = SCP_ASSIGN;
-
-        if (SCP_RESULT_TRUE != searchElStr3(scp_procedure_vars, &arc1, &source_var))
-        {
-            printEl(scp_procedure_vars);
-            printEl(&source_var);
-            return print_error("Illegal parameter", "Call parameter is not scp-procedure variable");
-        }
-
-        if (SCP_RESULT_TRUE != searchElStr5(call_parameters, &arc1, &dest_value, &arc2, &ordinal))
+        new_elem.param_type = SCP_ASSIGN;
+        if (SCP_RESULT_TRUE != searchElStr5(call_params, &arc1, &new_elem, &arc2, &ordinal))
         {
             scp_iterator3_free(it);
             return print_error("Illegal procedure parameter", "Call parameter missed");;
         }
-        dest_value.param_type = SCP_FIXED;
-
-        is_out = searchElStr5(scp_procedure_params, &arc1, &source_var, &arc2, &rrel_out);
-        if (is_out == SCP_RESULT_ERROR)
-        {
-            return SCP_RESULT_ERROR;
-        }
-        if (is_out == SCP_RESULT_TRUE)
-        {
-            genElStr3(scp_process_vars, &arc2, &dest_value);
-        }
-        else
-        {
-            genElStr3(scp_process_consts, &arc1, &dest_value);
-        }
-        genElStr5(&source_var, &arc3, &dest_value, &arc2, scp_process_copies);
-
-        source_var.param_type = SCP_ASSIGN;
-        dest_value.param_type = SCP_ASSIGN;
+        new_elem.param_type = SCP_FIXED;
+        g_hash_table_insert(table, MAKE_HASH(elem), MAKE_HASH(new_elem));
+        g_hash_table_steal(pattern_hash, MAKE_HASH(elem));
     }
     scp_iterator3_free(it);
     return SCP_RESULT_TRUE;
 }
 
-scp_result create_operator_copying_request(scp_operand *operator_copy, scp_operand *scp_process_node, scp_operand *scp_operators_copying_request_set)
+scp_result copy_const_set(scp_operand *set, GHashTable *table, GHashTable *pattern_hash)
 {
-    scp_operand quest, arc1, arc2;
-    MAKE_DEFAULT_NODE_ASSIGN(quest);
+    scp_operand arc1, elem;
+    scp_iterator3 *it;
     MAKE_DEFAULT_ARC_ASSIGN(arc1);
-    MAKE_DEFAULT_ARC_ASSIGN(arc2);
-    genElStr5(&quest, &arc1, operator_copy, &arc2, &(ordinal_rrels[1]));
-    quest.param_type = SCP_FIXED;
-    genElStr5(&quest, &arc1, scp_process_node, &arc2, &(ordinal_rrels[2]));
-    genElStr3(scp_operators_copying_request_set, &arc1, &quest);
-    genElStr3(&question_scp_operator_copying_request, &arc1, &quest);
-    //genElStr3(&question_initiated, &arc1, &quest);
+    MAKE_DEFAULT_OPERAND_ASSIGN(elem);
+    it = scp_iterator3_new(set, &arc1, &elem);
+    while (SCP_RESULT_TRUE == scp_iterator3_next(it, set, &arc1, &elem))
+    {
+        if (TRUE == g_hash_table_contains(table, MAKE_HASH(elem)))
+        {
+            continue;
+        }
+        g_hash_table_insert(table, MAKE_HASH(elem), MAKE_HASH(elem));
+        g_hash_table_steal(pattern_hash, MAKE_HASH(elem));
+    }
+    scp_iterator3_free(it);
     return SCP_RESULT_TRUE;
 }
 
+scp_result copy_var_set(scp_operand *set, GHashTable *table, GHashTable *pattern_hash)
+{
+    scp_operand arc1, elem, new_elem;
+    scp_iterator3 *it;
+    MAKE_DEFAULT_ARC_ASSIGN(arc1);
+    MAKE_DEFAULT_OPERAND_ASSIGN(elem);
+    MAKE_DEFAULT_NODE_ASSIGN(new_elem);
+    new_elem.element_type = new_elem.element_type | scp_type_var;
+    it = scp_iterator3_new(set, &arc1, &elem);
+    while (SCP_RESULT_TRUE == scp_iterator3_next(it, set, &arc1, &elem))
+    {
+        if (TRUE == g_hash_table_contains(table, MAKE_HASH(elem)))
+        {
+            continue;
+        }
+        genEl(&new_elem);
+        g_hash_table_insert(table, MAKE_HASH(elem), MAKE_HASH(new_elem));
+        g_hash_table_steal(pattern_hash, MAKE_HASH(elem));
+    }
+    scp_iterator3_free(it);
+    return SCP_RESULT_TRUE;
+}
+
+void load_set_to_hash(scp_operand *set, GHashTable *table)
+{
+    scp_operand arc1, elem;
+    scp_iterator3 *it;
+    MAKE_DEFAULT_ARC_ASSIGN(arc1);
+    MAKE_DEFAULT_OPERAND_ASSIGN(elem);
+    it = scp_iterator3_new(set, &arc1, &elem);
+    while (SCP_RESULT_TRUE == scp_iterator3_next(it, set, &arc1, &elem))
+    {
+        g_hash_table_add(table, MAKE_HASH(elem));
+    }
+    scp_iterator3_free(it);
+}
+
+sc_addr resolve_sc_addr_from_pointer(gpointer data)
+{
+    sc_addr elem;
+    elem.offset = SC_ADDR_LOCAL_OFFSET_FROM_INT(GPOINTER_TO_INT(data));
+    elem.seg = SC_ADDR_LOCAL_SEG_FROM_INT(GPOINTER_TO_INT(data));
+    return elem;
+}
+
+scp_result check_type(sc_addr element, sc_type input_type)
+{
+    sc_type type;
+    if (SC_RESULT_OK != sc_memory_get_element_type(element, &type))
+    {
+        return SCP_RESULT_ERROR;
+    }
+    if ((input_type & type) == input_type)
+    {
+        return SCP_RESULT_TRUE;
+    }
+    else
+    {
+        return SCP_RESULT_FALSE;
+    }
+    return SCP_RESULT_ERROR;
+}
+
+gboolean compare_keys(gpointer key, gpointer value, gpointer user_data)
+{
+    if (key == user_data)
+        return TRUE;
+    else
+        return FALSE;
+}
+
+sc_addr gen_copy(sc_addr elem, GHashTable *copies_hash, GHashTable *pattern_hash)
+{
+    gpointer result;
+    result = g_hash_table_find(copies_hash, compare_keys, MAKE_SC_ADDR_HASH(elem));
+    if (result != NULL)
+    {
+        return resolve_sc_addr_from_pointer(result);
+        //g_hash_table_steal(pattern_hash, MAKE_SC_ADDR_HASH(elem));
+        //return el;
+    }
+    if (SCP_RESULT_TRUE == check_type(elem, scp_type_node))
+    {
+        sc_addr node;
+        sc_type type;
+        if (FALSE == g_hash_table_contains(pattern_hash, MAKE_SC_ADDR_HASH(elem)))
+        {
+            result = g_hash_table_find(copies_hash, compare_keys, MAKE_SC_ADDR_HASH(elem));
+            if (result == NULL)
+            {
+                return elem;
+            }
+            else
+            {
+                return resolve_sc_addr_from_pointer(result);
+            }
+        }
+        sc_memory_get_element_type(elem, &type);
+        node = sc_memory_node_new(type);
+        g_hash_table_insert(copies_hash, MAKE_SC_ADDR_HASH(elem), MAKE_SC_ADDR_HASH(node));
+        //g_hash_table_steal(pattern_hash, MAKE_SC_ADDR_HASH(elem));
+        return node;
+    }
+    else
+    {
+        sc_addr begin, end, new_begin, new_end, new_arc;
+        sc_type type;
+        sc_memory_get_arc_begin(elem, &begin);
+        sc_memory_get_arc_end(elem, &end);
+        new_begin = gen_copy(begin, copies_hash, pattern_hash);
+        new_end = gen_copy(end, copies_hash, pattern_hash);
+        sc_memory_get_element_type(elem, &type);
+        new_arc = sc_memory_arc_new(type, new_begin, new_end);
+        g_hash_table_insert(copies_hash, MAKE_SC_ADDR_HASH(elem), MAKE_SC_ADDR_HASH(new_arc));
+        //g_hash_table_steal(pattern_hash, MAKE_SC_ADDR_HASH(elem));
+        return new_arc;
+    }
+}
+
+
 sc_result create_scp_process(sc_event *event, sc_addr arg)
 {
-    scp_operand arc1, arc2, scp_procedure_node, scp_process_node, node1, node2, question_node, call_parameters,
-                scp_process_consts, scp_process_vars, scp_process_copies, scp_process_operators,
-                scp_operators_copying_request_set;
-    scp_iterator3 *it;
+    scp_operand arc1, arc2, scp_procedure_node, vars_set, consts_set, params_set, copying_pattern,
+                scp_process_node, node1, question_node, call_parameters;
+    GHashTable *copies_hash, *pattern_hash;
+    GHashTableIter iter;
+    gpointer key, value;
+    copies_hash = g_hash_table_new(NULL, NULL);
+    pattern_hash = g_hash_table_new(NULL, NULL);
+
     MAKE_DEFAULT_OPERAND_FIXED(arc1);
     MAKE_DEFAULT_ARC_ASSIGN(arc2);
-    MAKE_DEFAULT_NODE_ASSIGN(scp_process_consts);
-    MAKE_DEFAULT_NODE_ASSIGN(scp_process_vars);
-    MAKE_DEFAULT_NODE_ASSIGN(scp_process_copies);
-    MAKE_DEFAULT_NODE_ASSIGN(scp_process_operators);
     MAKE_DEFAULT_OPERAND_ASSIGN(scp_procedure_node);
     MAKE_DEFAULT_OPERAND_FIXED(scp_process_node);
     arc1.addr = arg;
@@ -240,6 +219,10 @@ sc_result create_scp_process(sc_event *event, sc_addr arg)
     MAKE_DEFAULT_NODE_ASSIGN(node1);
     MAKE_DEFAULT_NODE_ASSIGN(question_node);
     MAKE_DEFAULT_NODE_ASSIGN(call_parameters);
+    if (SCP_RESULT_TRUE != ifVarAssign(&arc1))
+    {
+        return SC_RESULT_ERROR;
+    }
     if (SCP_RESULT_TRUE != searchElStr3(&node1, &arc1, &question_node))
     {
         print_error("scp-process creating", "Can't find interpreting request node");
@@ -254,6 +237,7 @@ sc_result create_scp_process(sc_event *event, sc_addr arg)
     arc1.erase = SCP_TRUE;
     eraseEl(&arc1);
     MAKE_DEFAULT_ARC_ASSIGN(arc1);
+
     if (SCP_RESULT_TRUE != searchElStr5(&question_node, &arc1, &scp_procedure_node, &arc2, &(ordinal_rrels[1])))
     {
         print_error("scp-process creating", "Can't find scp-procedure");
@@ -272,222 +256,74 @@ sc_result create_scp_process(sc_event *event, sc_addr arg)
     {
         return SC_RESULT_OK;
     }
+    scp_procedure_node.param_type = SCP_FIXED;
+    MAKE_DEFAULT_ARC_ASSIGN(arc1);
+    MAKE_DEFAULT_ARC_ASSIGN(arc2);
 
-    //Genering scp-process
+    MAKE_DEFAULT_OPERAND_ASSIGN(vars_set);
+    searchElStr5(&scp_procedure_node, &arc1, &vars_set, &arc2, &rrel_vars);
+    vars_set.param_type = SCP_FIXED;
+    MAKE_DEFAULT_OPERAND_ASSIGN(consts_set);
+    searchElStr5(&scp_procedure_node, &arc1, &consts_set, &arc2, &rrel_consts);
+    consts_set.param_type = SCP_FIXED;
+    MAKE_DEFAULT_OPERAND_ASSIGN(params_set);
+    searchElStr5(&scp_procedure_node, &arc1, &params_set, &arc2, &rrel_params);
+    params_set.param_type = SCP_FIXED;
+    MAKE_DEFAULT_OPERAND_ASSIGN(copying_pattern);
+    searchElStr5(&scp_procedure_node, &arc1, &copying_pattern, &arc2, &rrel_operators_copying_pattern);
+    copying_pattern.param_type = SCP_FIXED;
+
+    load_set_to_hash(&copying_pattern, pattern_hash);
+
+    if (SCP_RESULT_TRUE != copy_parameter_set(&params_set, &call_parameters, copies_hash, pattern_hash))
+    {
+        return SC_RESULT_OK;
+    }
+    if (SCP_RESULT_TRUE != copy_var_set(&vars_set, copies_hash, pattern_hash))
+    {
+        return SC_RESULT_OK;
+    }
+    if (SCP_RESULT_TRUE != copy_const_set(&consts_set, copies_hash, pattern_hash))
+    {
+        return SC_RESULT_OK;
+    }
+
     MAKE_COMMON_ARC_ASSIGN(arc1);
     MAKE_DEFAULT_ARC_ASSIGN(arc2);
     MAKE_DEFAULT_NODE_ASSIGN(scp_process_node);
     scp_procedure_node.param_type = SCP_FIXED;
     genElStr5(&question_node, &arc1, &scp_process_node, &arc2, &nrel_scp_process);
-
-    //printEl(&scp_process_node);
-    MAKE_DEFAULT_ARC_ASSIGN(arc1);
-    //Gen scp-process elements
     scp_process_node.param_type = SCP_FIXED;
-    genElStr5(&scp_process_node, &arc1, &scp_process_consts, &arc2, &rrel_consts);
-    scp_process_consts.param_type = SCP_FIXED;
-    genElStr5(&scp_process_node, &arc1, &scp_process_vars, &arc2, &rrel_vars);
-    scp_process_vars.param_type = SCP_FIXED;
-    genElStr5(&scp_process_node, &arc1, &scp_process_operators, &arc2, &rrel_operators);
-    scp_process_operators.param_type = SCP_FIXED;
-    genElStr5(&scp_process_node, &arc1, &scp_process_copies, &arc2, &rrel_copies);
-    scp_process_copies.param_type = SCP_FIXED;
+    MAKE_DEFAULT_ARC_ASSIGN(arc1)
 
-    //Const set copying
-    MAKE_DEFAULT_NODE_ASSIGN(node1);
-    if (SCP_RESULT_TRUE == searchElStr5(&scp_procedure_node, &arc1, &node1, &arc2, &rrel_consts))
+    searchElStr5(&scp_procedure_node, &arc1, &node1, &arc2, &rrel_operators);
+    g_hash_table_insert(copies_hash, MAKE_HASH(node1), MAKE_HASH(scp_process_node));
+    g_hash_table_steal(pattern_hash, MAKE_HASH(node1));
+
+    g_hash_table_iter_init(&iter, pattern_hash);
+    while (TRUE == g_hash_table_iter_next(&iter, &key, &value))
     {
-        node1.param_type = SCP_FIXED;
-        copy_consts_set(&node1, &scp_process_consts, &scp_process_copies);
-    }
-    else
-    {
-        mark_scp_process_as_useless(&scp_process_node);
-        print_error("scp-process creating", "Can't find scp-procedure's constant set");
-        return SC_RESULT_ERROR;
+        gen_copy(resolve_sc_addr_from_pointer(key), copies_hash, pattern_hash);
     }
 
-    //Parameters set processing
-    node1.param_type = SCP_ASSIGN;
-    if (SCP_RESULT_TRUE == searchElStr5(&scp_procedure_node, &arc1, &node1, &arc2, &rrel_params))
-    {
-        node1.param_type = SCP_FIXED;
-    }
-    else
-    {
-        mark_scp_process_as_useless(&scp_process_node);
-        print_error("scp-process creating", "Can't find scp-procedure's parameter set");
-        return SC_RESULT_ERROR;
-    }
-    MAKE_DEFAULT_NODE_ASSIGN(node2);
-    if (SCP_RESULT_TRUE == searchElStr5(&scp_procedure_node, &arc1, &node2, &arc2, &rrel_vars))
-    {
-        node2.param_type = SCP_FIXED;
-    }
-    else
-    {
-        mark_scp_process_as_useless(&scp_process_node);
-        print_error("scp-process creating", "Can't find scp-procedure's variable set");
-        return SC_RESULT_ERROR;
-    }
-    //Parameters set copying
-    if (SCP_RESULT_ERROR == copy_parameters_set(&call_parameters, &node2, &node1, &scp_process_vars, &scp_process_consts, &scp_process_copies))
-    {
-        mark_scp_process_as_useless(&scp_process_node);
-        print_error("scp-process creating", "Parameters loading error");
-        return SC_RESULT_ERROR;
-    }
+    g_hash_table_destroy(copies_hash);
+    g_hash_table_destroy(pattern_hash);
 
-    //Vars set copying
-    copy_vars_set(&node2, &scp_process_vars, &scp_process_copies);
-
-    //Operators set copying
-    node1.param_type = SCP_ASSIGN;
-    if (SCP_RESULT_TRUE == searchElStr5(&scp_procedure_node, &arc1, &node1, &arc2, &rrel_operators))
-    {
-        node1.param_type = SCP_FIXED;
-    }
-    else
-    {
-        mark_scp_process_as_useless(&scp_process_node);
-        print_error("scp-process creating", "Can't find scp-procedure's operator set");
-    }
-    if (SCP_RESULT_ERROR == copy_operator_set(&node1, &scp_process_operators, &scp_process_copies))
-    {
-        mark_scp_process_as_useless(&scp_process_node);
-        return SC_RESULT_ERROR;
-    }
-
-    MAKE_COMMON_ARC_ASSIGN(arc1);
-    MAKE_DEFAULT_NODE_ASSIGN(scp_operators_copying_request_set);
-    genElStr5(&scp_process_node, &arc1, &scp_operators_copying_request_set, &arc2, &nrel_scp_process_operator_copying_requests);
-    scp_operators_copying_request_set.param_type = SCP_FIXED;
-
-    node1.param_type = SCP_ASSIGN;
-    it = scp_iterator3_new(&scp_process_operators, &arc2, &node1);
-    while (SCP_RESULT_TRUE == scp_iterator3_next(it, &scp_process_operators, &arc2, &node1))
-    {
-        node1.param_type = SCP_FIXED;
-        create_operator_copying_request(&node1, &scp_process_node, &scp_operators_copying_request_set);
-        node1.param_type = SCP_ASSIGN;
-    }
-    scp_iterator3_free(it);
-
-    it = scp_iterator3_new(&scp_operators_copying_request_set, &arc2, &node1);
-    while (SCP_RESULT_TRUE == ifVarAssign(&scp_operators_copying_request_set) && SCP_RESULT_TRUE == scp_iterator3_next(it, &scp_operators_copying_request_set, &arc2, &node1))
-    {
-        node1.param_type = SCP_FIXED;
-        genElStr3(&question_initiated, &arc2, &node1);
-        node1.param_type = SCP_ASSIGN;
-    }
-    scp_iterator3_free(it);
+    //! TODO Start process interpreting
 
     return SC_RESULT_OK;
 }
 
-sc_result process_completed_operator_copying_request_set(sc_event *event, sc_addr arg)
-{
-    scp_operand arc1, arc2, node1, request_set, scp_process_node;
-    MAKE_DEFAULT_OPERAND_FIXED(arc1);
-    arc1.addr = arg;
-
-    MAKE_DEFAULT_NODE_ASSIGN(node1);
-    MAKE_DEFAULT_NODE_ASSIGN(request_set);
-    if (SCP_RESULT_TRUE != searchElStr3(&node1, &arc1, &request_set))
-    {
-        print_error("scp-process creating", "Can't find interpreting request node");
-        return SC_RESULT_ERROR;
-    }
-    MAKE_DEFAULT_ARC_ASSIGN(arc1);
-    request_set.param_type = SCP_FIXED;
-
-    MAKE_COMMON_ARC_ASSIGN(arc2);
-    MAKE_DEFAULT_NODE_ASSIGN(scp_process_node);
-    if (SCP_RESULT_TRUE != searchElStr5(&scp_process_node, &arc2, &request_set, &arc1, &nrel_scp_process_operator_copying_requests))
-    {
-        return SC_RESULT_ERROR;
-    }
-    scp_process_node.param_type = SCP_FIXED;
-
-    if (SCP_RESULT_TRUE == searchElStr3(&successfully_finished_scp_operator_copying_request_set, &arc1, &request_set))
-    {
-        // Start process interpreting
-        printf("PROCESS CREATED. INTERPRETING...\n");
-
-        scp_operand operator_set, init_operator;
-        prepare_scp_process_for_interpreting(&scp_process_node);
-        MAKE_DEFAULT_NODE_ASSIGN(operator_set);
-        MAKE_DEFAULT_ARC_ASSIGN(arc1);
-        MAKE_DEFAULT_ARC_ASSIGN(arc2);
-        searchElStr5(&scp_process_node, &arc1, &operator_set, &arc2, &rrel_operators);
-        operator_set.param_type = SCP_FIXED;
-        MAKE_DEFAULT_OPERAND_ASSIGN(init_operator);
-        if (SCP_RESULT_TRUE == searchElStr5(&operator_set, &arc1, &init_operator, &arc2, &rrel_init))
-        {
-            init_operator.param_type = SCP_FIXED;
-            set_active_operator(&init_operator);
-        }
-        else
-        {
-            print_error("scp-process interpreting", "Can't find init operator");
-            mark_scp_process_as_useless(&scp_process_node);
-        }
-    }
-    else
-    {
-        if (SCP_RESULT_TRUE == searchElStr3(&unsuccessfully_finished_scp_operator_copying_request_set, &arc1, &request_set))
-        {
-            // Start process destroying
-            mark_scp_process_as_useless(&scp_process_node);
-        }
-    }
-
-    request_set.erase = SCP_TRUE;
-    eraseEl(&request_set);
-
-    return SC_RESULT_OK;
-}*/
-
-
-
 scp_result scp_process_creator_init()
 {
-    event_program_iterpretation = sc_event_new(question_initiated.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, create_scp_process, 0);
-    if (event_program_iterpretation == nullptr)
-        return SCP_RESULT_ERROR;
-    event_ordinary_operator_copying = sc_event_new(question_initiated.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, copy_ordinary_operator, 0);
-    if (event_ordinary_operator_copying == nullptr)
-        return SCP_RESULT_ERROR;
-    event_call_operator_copying = sc_event_new(question_initiated.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, copy_call_operator, 0);
-    if (event_call_operator_copying == nullptr)
-        return SCP_RESULT_ERROR;
-    event_return_operator_copying = sc_event_new(question_initiated.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, copy_return_operator, 0);
-    if (event_return_operator_copying == nullptr)
-        return SCP_RESULT_ERROR;
-    event_sys_operator_copying = sc_event_new(question_initiated.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, copy_sys_operator, 0);
-    if (event_sys_operator_copying == nullptr)
-        return SCP_RESULT_ERROR;
-    event_operator_copying_finished_successfully = sc_event_new(question_finished_successfully.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, process_successfully_finished_operator_copying_request, 0);
-    if (event_operator_copying_finished_successfully == nullptr)
-        return SCP_RESULT_ERROR;
-    event_operator_copying_finished_unsuccessfully = sc_event_new(question_finished_unsuccessfully.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, process_unsuccessfully_finished_operator_copying_request, 0);
-    if (event_operator_copying_finished_unsuccessfully == nullptr)
-        return SCP_RESULT_ERROR;
-    event_operators_set_copying_completed = sc_event_new(completed_scp_operator_copying_request_set.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, process_completed_operator_copying_request_set, 0);
-    if (event_operators_set_copying_completed == nullptr)
-        return SCP_RESULT_ERROR;
+    event_procedure_iterpretation = sc_event_new(question_initiated.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, create_scp_process, 0);
+    if (event_procedure_iterpretation == nullptr)
+        return SCP_RESULT_ERROR;  
     return SCP_RESULT_TRUE;
 }
 
 scp_result scp_process_creator_shutdown()
 {
-    sc_event_destroy(event_program_iterpretation);
-    sc_event_destroy(event_ordinary_operator_copying);
-    sc_event_destroy(event_call_operator_copying);
-    sc_event_destroy(event_return_operator_copying);
-    sc_event_destroy(event_sys_operator_copying);
-    sc_event_destroy(event_operator_copying_finished_successfully);
-    sc_event_destroy(event_operator_copying_finished_unsuccessfully);
-    sc_event_destroy(event_operators_set_copying_completed);
+    sc_event_destroy(event_procedure_iterpretation);
     return SCP_RESULT_TRUE;
 }

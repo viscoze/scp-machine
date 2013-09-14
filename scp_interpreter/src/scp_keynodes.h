@@ -36,15 +36,11 @@ extern scp_operand question_scp_operator_copying_request;
 extern scp_operand question_initiated;
 extern scp_operand question_finished_successfully;
 extern scp_operand question_finished_unsuccessfully;
-extern scp_operand successfully_finished_scp_operator_copying_request_set;
-extern scp_operand unsuccessfully_finished_scp_operator_copying_request_set;
-extern scp_operand completed_scp_operator_copying_request_set;
 
 extern scp_operand scp_process;
 extern scp_operand useless_scp_process;
 extern scp_operand nrel_scp_process;
 extern scp_operand nrel_value;
-extern scp_operand nrel_scp_process_operator_copying_requests;
 
 extern scp_operand active_scp_operator;
 
@@ -59,7 +55,6 @@ extern scp_operand rrel_consts;
 extern scp_operand rrel_operators_copying_pattern;
 extern scp_operand rrel_params;
 extern scp_operand rrel_operators;
-extern scp_operand rrel_copies;
 extern scp_operand rrel_init;
 
 extern scp_operand rrel_in;

@@ -34,15 +34,10 @@ scp_operand question_finished_unsuccessfully;
 
 scp_operand question_scp_interpretation_request;
 scp_operand question_scp_procedure_preprocessing_request;
-scp_operand question_scp_operator_copying_request;
-scp_operand successfully_finished_scp_operator_copying_request_set;
-scp_operand unsuccessfully_finished_scp_operator_copying_request_set;
-scp_operand completed_scp_operator_copying_request_set;
 scp_operand scp_process;
 scp_operand useless_scp_process;
 scp_operand nrel_scp_process;
 scp_operand nrel_value;
-scp_operand nrel_scp_process_operator_copying_requests;
 
 scp_operand active_scp_operator;
 
@@ -58,7 +53,6 @@ scp_operand rrel_consts;
 scp_operand rrel_operators_copying_pattern;
 scp_operand rrel_params;
 scp_operand rrel_operators;
-scp_operand rrel_copies;
 scp_operand rrel_init;
 
 scp_operand rrel_in;
@@ -106,13 +100,9 @@ scp_result scp_keynodes_init()
     MAKE_DEFAULT_OPERAND_FIXED(question_initiated);
     MAKE_DEFAULT_OPERAND_FIXED(question_finished_successfully);
     MAKE_DEFAULT_OPERAND_FIXED(question_finished_unsuccessfully);
-    MAKE_DEFAULT_OPERAND_FIXED(successfully_finished_scp_operator_copying_request_set);
-    MAKE_DEFAULT_OPERAND_FIXED(unsuccessfully_finished_scp_operator_copying_request_set);
-    MAKE_DEFAULT_OPERAND_FIXED(completed_scp_operator_copying_request_set);
     MAKE_DEFAULT_OPERAND_FIXED(useless_scp_process);
     MAKE_DEFAULT_OPERAND_FIXED(scp_process);
     MAKE_DEFAULT_OPERAND_FIXED(nrel_scp_process);
-    MAKE_DEFAULT_OPERAND_FIXED(nrel_scp_process_operator_copying_requests);
     MAKE_DEFAULT_OPERAND_FIXED(active_scp_operator);
     MAKE_DEFAULT_OPERAND_FIXED(rrel_then);
     MAKE_DEFAULT_OPERAND_FIXED(rrel_else);
@@ -122,7 +112,6 @@ scp_result scp_keynodes_init()
     MAKE_DEFAULT_OPERAND_FIXED(rrel_consts);
     MAKE_DEFAULT_OPERAND_FIXED(rrel_operators_copying_pattern);
     MAKE_DEFAULT_OPERAND_FIXED(rrel_params);
-    MAKE_DEFAULT_OPERAND_FIXED(rrel_copies);
     MAKE_DEFAULT_OPERAND_FIXED(rrel_operators);
     MAKE_DEFAULT_OPERAND_FIXED(nrel_value);
     MAKE_DEFAULT_OPERAND_FIXED(rrel_init);
@@ -186,19 +175,7 @@ scp_result scp_keynodes_init()
     if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("question_finished_unsuccessfully", &question_finished_unsuccessfully))
     {
         return print_error("Keynode not found", "question_finished_unsuccessfully");
-    }
-    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("successfully_finished_scp_operator_copying_request_set", &successfully_finished_scp_operator_copying_request_set))
-    {
-        return print_error("Keynode not found", "successfully_finished_scp_operator_copying_request_set");
-    }
-    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("unsuccessfully_finished_scp_operator_copying_request_set", &unsuccessfully_finished_scp_operator_copying_request_set))
-    {
-        return print_error("Keynode not found", "unsuccessfully_finished_scp_operator_copying_request_set");
-    }
-    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("completed_scp_operator_copying_request_set", &completed_scp_operator_copying_request_set))
-    {
-        return print_error("Keynode not found", "completed_scp_operator_copying_request_set");
-    }
+    }    
     if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("useless_scp_process", &useless_scp_process))
     {
         return print_error("Keynode not found", "useless_scp_process");
@@ -210,10 +187,6 @@ scp_result scp_keynodes_init()
     if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("nrel_scp_process", &nrel_scp_process))
     {
         return print_error("Keynode not found", "nrel_scp_process");
-    }
-    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("nrel_scp_process_operator_copying_requests", &nrel_scp_process_operator_copying_requests))
-    {
-        return print_error("Keynode not found", "nrel_scp_process_operator_copying_requests");
     }
     if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("active_scp_operator", &active_scp_operator))
     {
@@ -254,10 +227,6 @@ scp_result scp_keynodes_init()
     if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("rrel_operators", &rrel_operators))
     {
         return print_error("Keynode not found", "rrel_operators");
-    }
-    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("rrel_copies", &rrel_copies))
-    {
-        return print_error("Keynode not found", "rrel_copies");
     }
     if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("nrel_scp_var_value", &nrel_value))
     {

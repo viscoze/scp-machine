@@ -22,10 +22,6 @@ rrel_operators => nrel_main_en_idtf:
 	[operators'];;
 rrel_init => nrel_main_en_idtf:
 	[init operator'];;
-rrel_copies => nrel_main_ru_idtf:
-	[копии'];;
-rrel_copies => nrel_main_en_idtf:
-	[copies'];;
 
 /* Parameter type rrels */
 rrel_in => nrel_main_ru_idtf:

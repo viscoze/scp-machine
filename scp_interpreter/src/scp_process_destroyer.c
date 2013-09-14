@@ -50,7 +50,15 @@ sc_result destroy_scp_process(sc_event *event, sc_addr arg)
     MAKE_DEFAULT_OPERAND_ASSIGN(node2);
     node1.erase = SCP_TRUE;
     node2.erase = SCP_TRUE;
-    if (SCP_RESULT_TRUE == searchElStr5(&scp_process_node, &arc1, &node1, &arc2, &rrel_copies))
+
+    /*it = scp_iterator3_new(&node1, &arc1, &node2);
+    while (SCP_RESULT_TRUE == scp_iterator3_next(it, &node1, &arc1, &node2))
+    {
+
+    }
+    scp_iterator3_free(it);*/
+
+    /*if (SCP_RESULT_TRUE == searchElStr5(&scp_process_node, &arc1, &node1, &arc2, &rrel_copies))
     {
         //printf("COPIES\n");
         node1.param_type = SCP_FIXED;
@@ -132,9 +140,9 @@ sc_result destroy_scp_process(sc_event *event, sc_addr arg)
     }
 
     scp_process_node.erase = SCP_TRUE;
-    eraseSetStr3(&scp_process_node, &arc1, &node1);
+    eraseSetStr3(&scp_process_node, &arc1, &node1);*/
 
-    //printf("PROCESS DESTROYED SUCCESSFULLY\n");
+    printf("PROCESS DESTROYED SUCCESSFULLY\n");
     return SC_RESULT_OK;
 }
 

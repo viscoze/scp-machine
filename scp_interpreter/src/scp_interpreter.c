@@ -25,7 +25,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scp_interpreter.h"
 #include "scp_keynodes.h"
 #include "scp_procedure_preprocessor.h"
-//#include "scp_process_creator.h"
+#include "scp_process_creator.h"
 #include "scp_process_destroyer.h"
 #include "scp_operator_interpreter_agents.h"
 
@@ -35,8 +35,8 @@ scp_result scp_interpreter_init(const sc_char *repo_path, const sc_char *config_
         SCP_RESULT_TRUE == scp_keynodes_init() &&
         SCP_RESULT_TRUE == scp_process_destroyer_init() &&
         SCP_RESULT_TRUE == scp_operator_interpreter_agents_init() &&
-        SCP_RESULT_TRUE == scp_procedure_preprocessor_init())
-        //SCP_RESULT_TRUE == scp_process_creator_init())
+        SCP_RESULT_TRUE == scp_procedure_preprocessor_init() &&
+        SCP_RESULT_TRUE == scp_process_creator_init())
         return SCP_RESULT_TRUE;
     else
         return SCP_RESULT_ERROR;
@@ -47,8 +47,8 @@ scp_result scp_interpreter_shutdown()
     if (SCP_RESULT_TRUE == scp_lib_shutdown() &&
         SCP_RESULT_TRUE == scp_process_destroyer_shutdown() &&
         SCP_RESULT_TRUE == scp_operator_interpreter_agents_shutdown() &&
-        SCP_RESULT_TRUE == scp_procedure_preprocessor_shutdown())
-        //SCP_RESULT_TRUE == scp_process_creator_shutdown())
+        SCP_RESULT_TRUE == scp_procedure_preprocessor_shutdown() &&
+        SCP_RESULT_TRUE == scp_process_creator_shutdown())
         return SCP_RESULT_TRUE;
     else
         return SCP_RESULT_ERROR;

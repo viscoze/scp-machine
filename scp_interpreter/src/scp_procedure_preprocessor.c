@@ -32,7 +32,7 @@ sc_event *event_procedure_preprocessing;
 
 void append_to_hash(GHashTable *table, scp_operand *elem)
 {
-    g_hash_table_add(table, GINT_TO_POINTER(SC_ADDR_LOCAL_TO_INT(elem->addr)));
+    g_hash_table_add(table, MAKE_PHASH(elem));
 }
 
 void append_to_set(gpointer key, gpointer value, gpointer set)
@@ -160,12 +160,8 @@ scp_result gen_system_structures(scp_operand *operator_set, scp_operand *paramet
     }
     scp_iterator3_free(it);
 
-    //printEl(vars_set);
-    //printEl(const_set);
-    //printEl(operators_copying_pattern);
-    printf("SIZE: %d\n", g_hash_table_size(table));
+    //printf("SIZE: %d\n", g_hash_table_size(table));
     gen_set_from_hash(table, operators_copying_pattern);
-    printEl(operators_copying_pattern);
     g_hash_table_destroy(table);
     return SCP_RESULT_TRUE;
 }
@@ -181,6 +177,10 @@ sc_result preprocess_scp_procedure(sc_event *event, sc_addr arg)
 
     MAKE_DEFAULT_NODE_ASSIGN(node1);
     MAKE_DEFAULT_NODE_ASSIGN(question_node);
+    if (SCP_RESULT_TRUE != ifVarAssign(&arc1))
+    {
+        return SC_RESULT_ERROR;
+    }
     searchElStr3(&node1, &arc1, &question_node);
 
     question_node.param_type = SCP_FIXED;

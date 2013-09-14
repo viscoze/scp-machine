@@ -18,7 +18,7 @@ scp_procedure -> test_prog2 (*
 		  -> rrel_else: .test_prog2_operator3;;
 		*);;
 		  
-		/*-> .test_prog2_operator2 (*
+		-> .test_prog2_operator2 (*
 		  <- printNl;;
 		  -> rrel_1: rrel_fixed: rrel_scp_const: const_yes;;
 		  -> rrel_goto: .test_prog2_operator4;;
@@ -32,7 +32,7 @@ scp_procedure -> test_prog2 (*
 		
 		-> .test_prog2_operator4 (*
 		  <- return;;
-		*);;	*/
+		*);;	
 	*);;
 *);;
 
