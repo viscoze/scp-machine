@@ -98,7 +98,7 @@ void mark_scp_process_as_useless(scp_operand *param)
     scp_operand arc;
     MAKE_DEFAULT_ARC_ASSIGN(arc);
     genElStr3(&useless_scp_process, &arc, param);
-    printf("PROCESS DESTROYING...\n");
+    //printf("PROCESS DESTROYING...\n");
 }
 
 void set_active_operator(scp_operand *scp_operator_node)

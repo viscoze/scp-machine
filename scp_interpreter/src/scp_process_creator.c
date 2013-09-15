@@ -203,7 +203,7 @@ sc_addr gen_copy(sc_addr elem, GHashTable *copies_hash, GHashTable *pattern_hash
 sc_result create_scp_process(sc_event *event, sc_addr arg)
 {
     scp_operand arc1, arc2, scp_procedure_node, vars_set, consts_set, params_set, copying_pattern,
-                scp_process_node, node1, question_node, call_parameters;
+                scp_process_node, node1, question_node, call_parameters, init_operator;
     GHashTable *copies_hash, *pattern_hash;
     GHashTableIter iter;
     gpointer key, value;
@@ -294,7 +294,8 @@ sc_result create_scp_process(sc_event *event, sc_addr arg)
     scp_procedure_node.param_type = SCP_FIXED;
     genElStr5(&question_node, &arc1, &scp_process_node, &arc2, &nrel_scp_process);
     scp_process_node.param_type = SCP_FIXED;
-    MAKE_DEFAULT_ARC_ASSIGN(arc1)
+    MAKE_DEFAULT_ARC_ASSIGN(arc1);
+    genElStr3(&scp_process, &arc1, &scp_process_node);
 
     searchElStr5(&scp_procedure_node, &arc1, &node1, &arc2, &rrel_operators);
     g_hash_table_insert(copies_hash, MAKE_HASH(node1), MAKE_HASH(scp_process_node));
@@ -309,7 +310,20 @@ sc_result create_scp_process(sc_event *event, sc_addr arg)
     g_hash_table_destroy(copies_hash);
     g_hash_table_destroy(pattern_hash);
 
-    //! TODO Start process interpreting
+    // Start process interpreting
+    //printf("PROCESS CREATED. INTERPRETING...\n");
+
+    MAKE_DEFAULT_OPERAND_ASSIGN(init_operator);
+    if (SCP_RESULT_TRUE == searchElStr5(&scp_process_node, &arc1, &init_operator, &arc2, &rrel_init))
+    {
+        init_operator.param_type = SCP_FIXED;
+        set_active_operator(&init_operator);
+    }
+    else
+    {
+        print_error("scp-process interpreting", "Can't find init operator");
+        mark_scp_process_as_useless(&scp_process_node);
+    }
 
     return SC_RESULT_OK;
 }
@@ -318,7 +332,7 @@ scp_result scp_process_creator_init()
 {
     event_procedure_iterpretation = sc_event_new(question_initiated.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, create_scp_process, 0);
     if (event_procedure_iterpretation == nullptr)
-        return SCP_RESULT_ERROR;  
+        return SCP_RESULT_ERROR;
     return SCP_RESULT_TRUE;
 }
 

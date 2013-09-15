@@ -28,7 +28,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 scp_result resolve_operand_modifiers(scp_operand *scp_operator_node, scp_operand *operand, scp_operand *attr);
 scp_result find_scp_process_for_scp_operator(scp_operand *scp_operator_node, scp_operand *scp_process_node);
 scp_result get_operands_values(scp_operand *scp_operator_node, scp_operand *operands, scp_operand *operands_values, scp_uint32 count);
-scp_result set_operands_values(scp_operand *scp_operator_node, scp_operand *operands, scp_operand *operands_values, scp_uint32 count);
+scp_result set_operands_values(scp_operand *operands, scp_operand *operands_values, scp_uint32 count);
 scp_result goto_conditional(scp_operand *scp_operator_node, scp_operand *rrel);
 scp_result goto_unconditional(scp_operand *scp_operator_node);
 void set_active_operator(scp_operand *scp_operator_node);

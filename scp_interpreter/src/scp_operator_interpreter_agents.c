@@ -34,7 +34,7 @@ sc_event *event_search_operators_interpreter;
 sc_event *event_return_operator_interpreter;
 sc_event *event_print_operators_interpreter;
 
-scp_bool debug_mode = SCP_TRUE;
+scp_bool debug_mode = SCP_FALSE;
 
 void print_debug_info(const char *info)
 {
@@ -105,7 +105,7 @@ sc_result interpreter_agent_search_operators(sc_event *event, sc_addr arg)
         {
             case SCP_RESULT_TRUE:
             {
-                set_operands_values(&operator_node, operands, operand_values, 3);
+                set_operands_values(operands, operand_values, 3);
                 if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &rrel_then))
                 {
                     return SC_RESULT_ERROR;
@@ -170,7 +170,7 @@ sc_result interpreter_agent_search_operators(sc_event *event, sc_addr arg)
         {
             case SCP_RESULT_TRUE:
             {
-                set_operands_values(&operator_node, operands, operand_values, 5);
+                set_operands_values(operands, operand_values, 5);
                 if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &rrel_then))
                 {
                     return SC_RESULT_ERROR;
@@ -231,7 +231,6 @@ sc_result interpreter_agent_return_operator(sc_event *event, sc_addr arg)
     //return case
     if (SCP_RESULT_TRUE == ifCoin(&operator_type, &op_return))
     {
-        //scp_operand operands[3], operand_values[3];
         scp_operand scp_process_node, arc1, arc2, quest;
         input_arc.erase = SCP_TRUE;
         eraseEl(&input_arc);
@@ -244,8 +243,6 @@ sc_result interpreter_agent_return_operator(sc_event *event, sc_addr arg)
         quest.param_type = SCP_FIXED;
         finish_question_successfully(&quest);
         scp_process_node.param_type = SCP_FIXED;
-
-        //! TODO fix error
         mark_scp_process_as_useless(&scp_process_node);
     }
 
@@ -371,7 +368,7 @@ sc_result interpreting_question_finished_successfully(sc_event *event, sc_addr a
     MAKE_DEFAULT_ARC_ASSIGN(input_arc);
     if (SCP_RESULT_TRUE == searchElStr3(&question_scp_interpretation_request, &input_arc, &quest))
     {
-        printf("INTERPRETATION FINISHED SUCCESSFULLY\n");
+        //printf("INTERPRETATION FINISHED SUCCESSFULLY\n");
     }
     return SC_RESULT_OK;
 }

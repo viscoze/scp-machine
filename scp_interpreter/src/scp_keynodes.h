@@ -31,7 +31,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 extern scp_operand scp_procedure;
 extern scp_operand question_scp_interpretation_request;
 extern scp_operand question_scp_procedure_preprocessing_request;
-extern scp_operand question_scp_operator_copying_request;
 
 extern scp_operand question_initiated;
 extern scp_operand question_finished_successfully;

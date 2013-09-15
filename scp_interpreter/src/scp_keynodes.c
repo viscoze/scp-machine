@@ -95,7 +95,6 @@ scp_result scp_keynodes_init()
     char name[8];
     MAKE_DEFAULT_OPERAND_FIXED(scp_procedure);
     MAKE_DEFAULT_OPERAND_FIXED(question_scp_interpretation_request);
-    MAKE_DEFAULT_OPERAND_FIXED(question_scp_operator_copying_request);
     MAKE_DEFAULT_OPERAND_FIXED(question_scp_procedure_preprocessing_request);
     MAKE_DEFAULT_OPERAND_FIXED(question_initiated);
     MAKE_DEFAULT_OPERAND_FIXED(question_finished_successfully);
@@ -159,10 +158,6 @@ scp_result scp_keynodes_init()
     if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("question_scp_procedure_preprocessing_request", &question_scp_procedure_preprocessing_request))
     {
         return print_error("Keynode not found", "question_scp_procedure_preprocessing_request");
-    }
-    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("question_scp_operator_copying_request", &question_scp_operator_copying_request))
-    {
-        return print_error("Keynode not found", "question_scp_operator_copying_request");
     }
     if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("question_initiated", &question_initiated))
     {

@@ -1,6 +1,6 @@
 
-const_yes = [YES];;
-const_no = [NO];;
+[YES] = const_yes;;
+[NO] = const_no;;
 
 scp_procedure -> test_prog2 (*	
 	-> rrel_params: .test_prog2_params (*

@@ -39,6 +39,15 @@ enum _scp_param_type
 
 typedef enum _scp_param_type scp_param_type;
 
+// operand type
+enum _scp_operand_type
+{
+    SCP_CONST = 0,
+    SCP_VAR = 1
+};
+
+typedef enum _scp_operand_type scp_operand_type;
+
 // result types
 enum _scp_result
 {
@@ -86,7 +95,8 @@ struct _scp_operand
 {
     sc_addr addr;
     scp_param_type param_type;
-    sc_type element_type;
+    scp_type element_type;
+    scp_operand_type operand_type;
     scp_bool erase;
     scp_bool set;
 };

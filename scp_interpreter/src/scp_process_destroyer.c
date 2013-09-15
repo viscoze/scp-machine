@@ -142,7 +142,7 @@ sc_result destroy_scp_process(sc_event *event, sc_addr arg)
     scp_process_node.erase = SCP_TRUE;
     eraseSetStr3(&scp_process_node, &arc1, &node1);*/
 
-    printf("PROCESS DESTROYED SUCCESSFULLY\n");
+    //printf("PROCESS DESTROYED SUCCESSFULLY\n");
     return SC_RESULT_OK;
 }
 
