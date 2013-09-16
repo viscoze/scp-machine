@@ -25,7 +25,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "scp_lib.h"
 
-scp_result resolve_operand_modifiers(scp_operand *scp_operator_node, scp_operand *operand, scp_operand *attr);
+//scp_result resolve_operand_modifiers(scp_operand *scp_operator_node, scp_operand *operand, scp_operand *attr);
+scp_result resolve_operands_modifiers(scp_operand *scp_operator_node, scp_operand *operands, scp_uint32 count);
 scp_result find_scp_process_for_scp_operator(scp_operand *scp_operator_node, scp_operand *scp_process_node);
 scp_result get_operands_values(scp_operand *scp_operator_node, scp_operand *operands, scp_operand *operands_values, scp_uint32 count);
 scp_result set_operands_values(scp_operand *operands, scp_operand *operands_values, scp_uint32 count);

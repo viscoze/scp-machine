@@ -81,18 +81,7 @@ sc_result interpreter_agent_search_operators(sc_event *event, sc_addr arg)
         eraseEl(&input_arc);
         print_debug_info("searchElStr3");
 
-        if (SCP_RESULT_TRUE != resolve_operand_modifiers(&operator_node, operands, &(ordinal_rrels[1])))
-        {
-            return SC_RESULT_ERROR;
-        }
-        if (SCP_RESULT_TRUE != resolve_operand_modifiers(&operator_node, operands + 1, &(ordinal_rrels[2])))
-        {
-            return SC_RESULT_ERROR;
-        }
-        if (SCP_RESULT_TRUE != resolve_operand_modifiers(&operator_node, operands + 2, &(ordinal_rrels[3])))
-        {
-            return SC_RESULT_ERROR;
-        }
+        resolve_operands_modifiers(&operator_node, operands, 3);
 
         if (SCP_RESULT_TRUE != get_operands_values(&operator_node, operands, operand_values, 3))
         {
@@ -139,26 +128,9 @@ sc_result interpreter_agent_search_operators(sc_event *event, sc_addr arg)
         input_arc.erase = SCP_TRUE;
         eraseEl(&input_arc);
         print_debug_info("searchElStr5");
-        if (SCP_RESULT_TRUE != resolve_operand_modifiers(&operator_node, operands, &(ordinal_rrels[1])))
-        {
-            return SC_RESULT_ERROR;
-        }
-        if (SCP_RESULT_TRUE != resolve_operand_modifiers(&operator_node, operands + 1, &(ordinal_rrels[2])))
-        {
-            return SC_RESULT_ERROR;
-        }
-        if (SCP_RESULT_TRUE != resolve_operand_modifiers(&operator_node, operands + 2, &(ordinal_rrels[3])))
-        {
-            return SC_RESULT_ERROR;
-        }
-        if (SCP_RESULT_TRUE != resolve_operand_modifiers(&operator_node, operands + 3, &(ordinal_rrels[4])))
-        {
-            return SC_RESULT_ERROR;
-        }
-        if (SCP_RESULT_TRUE != resolve_operand_modifiers(&operator_node, operands + 4, &(ordinal_rrels[5])))
-        {
-            return SC_RESULT_ERROR;
-        }
+
+        resolve_operands_modifiers(&operator_node, operands, 5);
+
         if (SCP_RESULT_TRUE != get_operands_values(&operator_node, operands, operand_values, 5))
         {
             return SC_RESULT_ERROR;
@@ -284,10 +256,8 @@ sc_result interpreter_agent_print_operators(sc_event *event, sc_addr arg)
         input_arc.erase = SCP_TRUE;
         eraseEl(&input_arc);
         print_debug_info("print");
-        if (SCP_RESULT_TRUE != resolve_operand_modifiers(&operator_node, operands, &(ordinal_rrels[1])))
-        {
-            return SC_RESULT_ERROR;
-        }
+
+        resolve_operands_modifiers(&operator_node, operands, 1);
 
         if (SCP_RESULT_TRUE != get_operands_values(&operator_node, operands, operand_values, 1))
         {
@@ -307,10 +277,8 @@ sc_result interpreter_agent_print_operators(sc_event *event, sc_addr arg)
         input_arc.erase = SCP_TRUE;
         eraseEl(&input_arc);
         print_debug_info("printNl");
-        if (SCP_RESULT_TRUE != resolve_operand_modifiers(&operator_node, operands, &(ordinal_rrels[1])))
-        {
-            return SC_RESULT_ERROR;
-        }
+
+        resolve_operands_modifiers(&operator_node, operands, 1);
 
         if (SCP_RESULT_TRUE != get_operands_values(&operator_node, operands, operand_values, 1))
         {
@@ -330,10 +298,8 @@ sc_result interpreter_agent_print_operators(sc_event *event, sc_addr arg)
         input_arc.erase = SCP_TRUE;
         eraseEl(&input_arc);
         print_debug_info("printEl");
-        if (SCP_RESULT_TRUE != resolve_operand_modifiers(&operator_node, operands, &(ordinal_rrels[1])))
-        {
-            return SC_RESULT_ERROR;
-        }
+
+        resolve_operands_modifiers(&operator_node, operands, 1);
 
         if (SCP_RESULT_TRUE != get_operands_values(&operator_node, operands, operand_values, 1))
         {

@@ -76,16 +76,6 @@ scp_operand rrel_temp;
 scp_operand rrel_perm;
 
 // Ordinals
-/*scp_operand rrel_1;
-scp_operand rrel_2;
-scp_operand rrel_3;
-scp_operand rrel_4;
-scp_operand rrel_5;
-scp_operand rrel_6;
-scp_operand rrel_7;
-scp_operand rrel_8;
-scp_operand rrel_9;
-scp_operand rrel_10;*/
 scp_operand ordinal_rrel;
 scp_operand ordinal_rrels[ORDINAL_RRELS_COUNT + 1]; // 0 element reserved
 
@@ -131,16 +121,6 @@ scp_result scp_keynodes_init()
     MAKE_DEFAULT_OPERAND_FIXED(rrel_fuz);
     MAKE_DEFAULT_OPERAND_FIXED(rrel_temp);
     MAKE_DEFAULT_OPERAND_FIXED(rrel_perm);
-    /*MAKE_DEFAULT_OPERAND_FIXED(rrel_1);
-    MAKE_DEFAULT_OPERAND_FIXED(rrel_2);
-    MAKE_DEFAULT_OPERAND_FIXED(rrel_3);
-    MAKE_DEFAULT_OPERAND_FIXED(rrel_4);
-    MAKE_DEFAULT_OPERAND_FIXED(rrel_5);
-    MAKE_DEFAULT_OPERAND_FIXED(rrel_6);
-    MAKE_DEFAULT_OPERAND_FIXED(rrel_7);
-    MAKE_DEFAULT_OPERAND_FIXED(rrel_8);
-    MAKE_DEFAULT_OPERAND_FIXED(rrel_9);
-    MAKE_DEFAULT_OPERAND_FIXED(rrel_10);*/
     MAKE_DEFAULT_OPERAND_FIXED(ordinal_rrel);
     for (i = 1; i <= ORDINAL_RRELS_COUNT; i++)
     {
@@ -301,46 +281,6 @@ scp_result scp_keynodes_init()
         return print_error("Keynode not found", "rrel_perm");
     }
 
-    /*if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("rrel_1", &(ordinal_rrels[1])))
-    {
-        return print_error("Keynode not found", "rrel_1");
-    }
-    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("rrel_2", &(ordinal_rrels[2])))
-    {
-        return print_error("Keynode not found", "rrel_2");
-    }
-    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("rrel_3", &(ordinal_rrels[3])))
-    {
-        return print_error("Keynode not found", "rrel_3");
-    }
-    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("rrel_4", &(ordinal_rrels[4])))
-    {
-        return print_error("Keynode not found", "rrel_4");
-    }
-    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("rrel_5", &(ordinal_rrels[5])))
-    {
-        return print_error("Keynode not found", "rrel_5");
-    }
-    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("rrel_6", &rrel_6))
-    {
-        return print_error("Keynode not found", "rrel_6");
-    }
-    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("rrel_7", &rrel_7))
-    {
-        return print_error("Keynode not found", "rrel_7");
-    }
-    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("rrel_8", &rrel_8))
-    {
-        return print_error("Keynode not found", "rrel_8");
-    }
-    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("rrel_9", &rrel_9))
-    {
-        return print_error("Keynode not found", "rrel_9");
-    }
-    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("rrel_10", &(ordinal_rrels[1])0))
-    {
-        return print_error("Keynode not found", "rrel_10");
-    }*/
     if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("ordinal_rrel", &ordinal_rrel))
     {
         return print_error("Keynode not found", "ordinal_rrel");
