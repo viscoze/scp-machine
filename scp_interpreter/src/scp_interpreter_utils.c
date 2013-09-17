@@ -107,3 +107,47 @@ void set_active_operator(scp_operand *scp_operator_node)
     MAKE_DEFAULT_ARC_ASSIGN(arc);
     genElStr3(&active_scp_operator, &arc, scp_operator_node);
 }
+
+void load_set_to_hash(scp_operand *set, GHashTable *table)
+{
+    scp_operand arc1, elem;
+    scp_iterator3 *it;
+    MAKE_DEFAULT_ARC_ASSIGN(arc1);
+    MAKE_DEFAULT_OPERAND_ASSIGN(elem);
+    it = scp_iterator3_new(set, &arc1, &elem);
+    while (SCP_RESULT_TRUE == scp_iterator3_next(it, set, &arc1, &elem))
+    {
+        g_hash_table_add(table, MAKE_HASH(elem));
+    }
+    scp_iterator3_free(it);
+}
+
+void cantorize_set(scp_operand *set)
+{
+    GHashTable *table;
+    GHashTableIter iter;
+    gpointer key, value;
+    scp_operand elem, arc1;
+    MAKE_DEFAULT_ARC_ASSIGN(arc1);
+    MAKE_DEFAULT_OPERAND_ASSIGN(elem);
+    table = g_hash_table_new(NULL, NULL);
+    load_set_to_hash(set, table);
+    g_hash_table_iter_init(&iter, table);
+    arc1.erase = SCP_TRUE;
+    eraseSetStr3(set, &arc1, &elem);
+    elem.param_type = SCP_FIXED;
+    while (TRUE == g_hash_table_iter_next(&iter, &key, &value))
+    {
+        elem.addr = resolve_sc_addr_from_pointer(key);
+        genElStr3(set, &arc1, &elem);
+    }
+    g_hash_table_destroy(table);
+}
+
+sc_addr resolve_sc_addr_from_pointer(gpointer data)
+{
+    sc_addr elem;
+    elem.offset = SC_ADDR_LOCAL_OFFSET_FROM_INT(GPOINTER_TO_INT(data));
+    elem.seg = SC_ADDR_LOCAL_SEG_FROM_INT(GPOINTER_TO_INT(data));
+    return elem;
+}

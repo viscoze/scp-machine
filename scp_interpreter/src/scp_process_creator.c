@@ -103,28 +103,6 @@ scp_result copy_var_set(scp_operand *set, GHashTable *table, GHashTable *pattern
     return SCP_RESULT_TRUE;
 }
 
-void load_set_to_hash(scp_operand *set, GHashTable *table)
-{
-    scp_operand arc1, elem;
-    scp_iterator3 *it;
-    MAKE_DEFAULT_ARC_ASSIGN(arc1);
-    MAKE_DEFAULT_OPERAND_ASSIGN(elem);
-    it = scp_iterator3_new(set, &arc1, &elem);
-    while (SCP_RESULT_TRUE == scp_iterator3_next(it, set, &arc1, &elem))
-    {
-        g_hash_table_add(table, MAKE_HASH(elem));
-    }
-    scp_iterator3_free(it);
-}
-
-sc_addr resolve_sc_addr_from_pointer(gpointer data)
-{
-    sc_addr elem;
-    elem.offset = SC_ADDR_LOCAL_OFFSET_FROM_INT(GPOINTER_TO_INT(data));
-    elem.seg = SC_ADDR_LOCAL_SEG_FROM_INT(GPOINTER_TO_INT(data));
-    return elem;
-}
-
 scp_result check_type(sc_addr element, sc_type input_type)
 {
     sc_type type;

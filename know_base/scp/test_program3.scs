@@ -1,0 +1,49 @@
+
+[YES] = const_yes;;
+[NO] = const_no;;
+
+scp_procedure -> test_prog3 (*	
+	-> rrel_params: .test_prog3_params (*
+		-> rrel_1: rrel_in: _parameter;;
+	*);;
+	
+	-> rrel_operators: .test_prog3_operator_set (*
+		
+		 /*-> rrel_init: .test_prog3_operator1 (*
+		  <- call;;
+		  -> rrel_1: rrel_fixed: rrel_scp_const: program1;;
+		  -> rrel_2: rrel_fixed: .test_prog3_operator1_params (*
+		    -> rrel_1: rrel_fixed: rrel_scp_var: _parameter;;
+		    -> rrel_2: rrel_assign: rrel_scp_var: _arc1;;
+		  *);;
+		  -> rrel_3: rrel_assign: rrel_scp_var: _descr;;
+		*);;*/
+		
+		-> rrel_init: .test_prog3_operator1 (*
+		  <- sys_search;;
+		  -> rrel_1: rrel_fixed: rrel_scp_const: pattern1;;  
+		  -> rrel_2: rrel_fixed: .test_prog3_operator1_results (*
+		    -> .test_prog3_operator1_result1 (*
+			  -> rrel_1: rrel_fixed: rrel_scp_var: _result1;;
+			  -> rrel_2: rrel_fixed: rrel_scp_var: _pattern_parameter;;
+			*);; 
+		  *);;
+		  -> rrel_3: rrel_fixed: .test_prog3_operator1_params (*
+		    -> .test_prog3_operator1_param1 (*
+			  -> rrel_1: rrel_fixed: rrel_scp_var: _parameter;;
+			  -> rrel_2: rrel_fixed: rrel_scp_var: _pattern_parameter;;
+			*);; 
+		  *);;
+		  -> rrel_4: rrel_assign: rrel_scp_var: _result;;
+		*);;
+	*);;
+*);;
+
+node1 -> node2;;
+node2 -> node3;;
+
+quest2 -> rrel_1: test_prog3;;
+quest2 -> rrel_2: .quest2_params (* 
+	-> rrel_1: node1;; 
+	*);;
+
