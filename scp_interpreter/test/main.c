@@ -58,7 +58,7 @@ int main(void)
     g_timer_start(timer);
 
     test_scp_procedure_preprocessor(1);
-    test_scp_process_creating(1);
+    test_scp_process_creating(1000);
 
     g_timer_stop(timer);
     printf((sc_char *)"Time: %f s\n", g_timer_elapsed(timer, 0));
