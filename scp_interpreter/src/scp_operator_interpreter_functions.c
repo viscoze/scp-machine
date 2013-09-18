@@ -206,7 +206,7 @@ scp_result get_operands_values(scp_operand *scp_operator_node, scp_operand *oper
         operand_node.addr = operands[i].addr;
         if (operands[i].param_type == SCP_FIXED)
         {
-            if (SCP_VAR == operands[i].element_type)
+            if (SCP_VAR == operands[i].operand_type)
             {
                 if (SCP_RESULT_TRUE == searchElStr5(&operand_node, &arc3, &var_value, &arc1, &nrel_value))
                 {
@@ -223,12 +223,16 @@ scp_result get_operands_values(scp_operand *scp_operator_node, scp_operand *oper
         }
         else
         {
-            if (SCP_CONST == operands[i].element_type)
+            if (SCP_CONST == operands[i].operand_type)
             {
                 printEl(operands + i);
                 print_error("scp-operator interpreting", "Constant has ASSIGN modifier");
                 operator_interpreting_crash(scp_operator_node);
                 return SCP_RESULT_ERROR;
+            }
+            else
+            {
+                eraseElStr5(&operand_node, &arc3, &var_value, &arc1, &nrel_value);
             }
         }
     }
@@ -237,19 +241,19 @@ scp_result get_operands_values(scp_operand *scp_operator_node, scp_operand *oper
 
 scp_result set_operands_values(scp_operand *operands, scp_operand *operands_values, scp_uint32 count)
 {
-    scp_operand arc2, arc3, var_value, operand_node;
+    scp_operand arc2, arc3, operand_node;
     scp_uint32 i;
     MAKE_DEFAULT_ARC_ASSIGN(arc2);
     MAKE_COMMON_ARC_ASSIGN(arc3);
-    MAKE_DEFAULT_OPERAND_ASSIGN(var_value);
+    //MAKE_DEFAULT_OPERAND_ASSIGN(var_value);
     MAKE_DEFAULT_OPERAND_FIXED(operand_node);
-    var_value.param_type = SCP_ASSIGN;
+    //var_value.param_type = SCP_ASSIGN;
     for (i = 0; i < count; i++)
     {
         if (operands[i].param_type == SCP_ASSIGN)
         {
             operand_node.addr = operands[i].addr;
-            eraseElStr5(&operand_node, &arc3, &var_value, &arc2, &nrel_value);
+            //eraseElStr5(&operand_node, &arc3, &var_value, &arc2, &nrel_value);
             operands_values[i].param_type = SCP_FIXED;
             genElStr5(&operand_node, &arc3, operands_values + i, &arc2, &nrel_value);
         }

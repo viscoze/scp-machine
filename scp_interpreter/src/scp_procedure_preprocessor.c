@@ -348,9 +348,9 @@ scp_result gen_system_structures(scp_operand *operator_set, scp_operand *paramet
 
     //cantorize_set(const_set);
     //cantorize_set(vars_set);
-    printf("SIZE: %d\n", g_hash_table_size(table));
-    printEl(const_set);
-    printEl(vars_set);
+    //printf("SIZE: %d\n", g_hash_table_size(table));
+    //printEl(const_set);
+    //printEl(vars_set);
     gen_set_from_hash(table, operators_copying_pattern);
     g_hash_table_destroy(table);
     return SCP_RESULT_TRUE;
