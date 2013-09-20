@@ -33,7 +33,7 @@ scp_iterator3 *scp_iterator3_new(scp_operand *param1, scp_operand *param2, scp_o
     if (param2->param_type == SCP_FIXED)
     {
         print_error("SCP ITERATOR 3 NEW", "Parameter 2 must have ASSIGN modifier");
-        return nullptr;                ;
+        return nullptr;
     }
     if (param1->param_type == SCP_FIXED)
     {

@@ -42,7 +42,7 @@ void delete_vars_from_set(scp_operand *set, GHashTable *non_erasable_vars)
     {
         elem.param_type = SCP_FIXED;
         //if (SCP_RESULT_TRUE != searchElStr3(non_erasable_vars, &arc1, &elem))
-        if (FALSE == g_hash_table_contains(non_erasable_vars, MAKE_HASH(elem)))
+        if (non_erasable_vars != nullptr && FALSE == g_hash_table_contains(non_erasable_vars, MAKE_HASH(elem)))
         {
             //printf("ERASED:\n");
             //printEl(&elem);
@@ -77,7 +77,7 @@ void delete_vars_from_relation(scp_operand *set, GHashTable *non_erasable_vars)
         {
             elem.param_type = SCP_FIXED;
             //if (SCP_RESULT_TRUE != searchElStr3(non_erasable_vars, &arc1, &elem))
-            if (FALSE == g_hash_table_contains(non_erasable_vars, MAKE_HASH(elem)))
+            if (non_erasable_vars != nullptr && FALSE == g_hash_table_contains(non_erasable_vars, MAKE_HASH(elem)))
             {
                 eraseEl(&elem);
             }
@@ -94,7 +94,8 @@ sc_result destroy_scp_process(sc_event *event, sc_addr arg)
 {
     scp_operand arc1, arc2, node1, curr_operator, node3, scp_process_node, operator_type, question_node, call_parameters;
     scp_iterator3 *it;
-    GHashTable *params;
+    GHashTable *params = nullptr;
+    scp_result params_found;
     MAKE_DEFAULT_OPERAND_FIXED(arc1);
     MAKE_DEFAULT_NODE_ASSIGN(scp_process_node);
     arc1.addr = arg;
@@ -119,16 +120,21 @@ sc_result destroy_scp_process(sc_event *event, sc_addr arg)
 
     MAKE_DEFAULT_OPERAND_ASSIGN(question_node);
     MAKE_COMMON_ARC_ASSIGN(arc1);
-    searchElStr5(&question_node, &arc1, &scp_process_node, &arc2, &nrel_scp_process);
+    params_found = searchElStr5(&question_node, &arc1, &scp_process_node, &arc2, &nrel_scp_process);
     question_node.param_type = SCP_FIXED;
 
     MAKE_DEFAULT_ARC_ASSIGN(arc1);
-    MAKE_DEFAULT_OPERAND_ASSIGN(call_parameters);
-    searchElStr5(&question_node, &arc1, &call_parameters, &arc2, &ordinal_rrels[2]);
-    call_parameters.param_type = SCP_FIXED;
-
-    params = g_hash_table_new(NULL, NULL);
-    load_set_to_hash(&call_parameters, params);
+    if (params_found == SCP_RESULT_TRUE)
+    {
+        MAKE_DEFAULT_OPERAND_ASSIGN(call_parameters);
+        params_found = searchElStr5(&question_node, &arc1, &call_parameters, &arc2, &ordinal_rrels[2]);
+        call_parameters.param_type = SCP_FIXED;
+        if (params_found == SCP_RESULT_TRUE)
+        {
+            params = g_hash_table_new(NULL, NULL);
+            load_set_to_hash(&call_parameters, params);
+        }
+    }
 
     MAKE_DEFAULT_NODE_ASSIGN(operator_type);
 
@@ -198,7 +204,15 @@ sc_result destroy_scp_process(sc_event *event, sc_addr arg)
     scp_process_node.erase = SCP_TRUE;
     eraseEl(&scp_process_node);
 
-    g_hash_table_destroy(params);
+    if (SCP_RESULT_FALSE == params_found)
+    {
+        question_node.erase = SCP_TRUE;
+        eraseEl(&question_node);
+    }
+    else
+    {
+        g_hash_table_destroy(params);
+    }
 
     //printf("PROCESS DESTROYED SUCCESSFULLY\n");
     return SC_RESULT_OK;

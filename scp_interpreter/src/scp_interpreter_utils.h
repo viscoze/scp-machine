@@ -42,6 +42,7 @@ void mark_scp_process_as_useless(scp_operand *param);
 void set_active_operator(scp_operand *scp_operator_node);
 
 void cantorize_set(scp_operand *set);
+void erase_var_set_values(scp_operand *set);
 void load_set_to_hash(scp_operand *set, GHashTable *table);
 sc_addr resolve_sc_addr_from_pointer(gpointer data);
 #endif // SCP_INTERPRETER_UTILS_H

@@ -144,6 +144,31 @@ void cantorize_set(scp_operand *set)
     g_hash_table_destroy(table);
 }
 
+void erase_var_set_values(scp_operand *set)
+{
+    scp_operand arc1, arc2, elem, value;
+    scp_iterator5 *it;
+    MAKE_DEFAULT_ARC_ASSIGN(arc1);
+    arc1.erase = SCP_TRUE;
+    MAKE_DEFAULT_ARC_ASSIGN(arc2);
+    MAKE_DEFAULT_OPERAND_ASSIGN(elem);
+    MAKE_DEFAULT_OPERAND_ASSIGN(value);
+    it = scp_iterator5_new(set, &arc1, &elem, &arc2, &rrel_assign);
+    while (SCP_RESULT_TRUE == scp_iterator5_next(it, set, &arc1, &elem, &arc2, &rrel_assign))
+    {
+        elem.param_type = SCP_FIXED;
+        arc1.param_type = SCP_FIXED;
+        if (SCP_RESULT_TRUE == searchElStr3(&rrel_scp_var, &arc2, &arc1))
+        {
+            arc1.param_type = SCP_ASSIGN;
+            eraseSetStr5(&elem, &arc1, &value, &arc2, &nrel_value);
+        }
+        arc1.param_type = SCP_ASSIGN;
+        elem.param_type = SCP_ASSIGN;
+    }
+    scp_iterator5_free(it);
+}
+
 sc_addr resolve_sc_addr_from_pointer(gpointer data)
 {
     sc_addr elem;
