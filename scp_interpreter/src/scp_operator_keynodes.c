@@ -61,7 +61,7 @@ scp_operand op_contLn;
 scp_operand op_contSin;
 scp_operand op_contCos;
 scp_operand op_contTg;
-scp_operand op_contAsin;
+scp_operand op_contASin;
 scp_operand op_contACos;
 scp_operand op_contATg;
 
@@ -111,7 +111,7 @@ scp_result init_operator_keynodes()
     MAKE_DEFAULT_OPERAND_FIXED(op_contSin);
     MAKE_DEFAULT_OPERAND_FIXED(op_contCos);
     MAKE_DEFAULT_OPERAND_FIXED(op_contTg);
-    MAKE_DEFAULT_OPERAND_FIXED(op_contAsin);
+    MAKE_DEFAULT_OPERAND_FIXED(op_contASin);
     MAKE_DEFAULT_OPERAND_FIXED(op_contACos);
     MAKE_DEFAULT_OPERAND_FIXED(op_contATg);
     MAKE_DEFAULT_OPERAND_FIXED(op_contAssign);
@@ -136,6 +136,18 @@ scp_result init_operator_keynodes()
     if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("searchElStr5", &op_searchElStr5))
     {
         return print_error("Keynode not found", "searchElStr5");
+    }
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("genEl", &op_genEl))
+    {
+        return print_error("Keynode not found", "genEl");
+    }
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("genElStr3", &op_genElStr3))
+    {
+        return print_error("Keynode not found", "genElStr3");
+    }
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("genElStr5", &op_genElStr5))
+    {
+        return print_error("Keynode not found", "genElStr5");
     }
     if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("searchIterStr3", &op_searchIterStr3))
     {
@@ -229,7 +241,7 @@ scp_result init_operator_keynodes()
     {
         return print_error("Keynode not found", "contTg");
     }
-    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("contAsin", &op_contAsin))
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("contAsin", &op_contASin))
     {
         return print_error("Keynode not found", "contAsin");
     }
@@ -285,6 +297,7 @@ scp_result init_operator_keynodes()
     {
         return print_error("Keynode not found", "return");
     }
+    printEl(&op_genElStr3);
 
     return SCP_RESULT_TRUE;
 }

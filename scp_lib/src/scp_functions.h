@@ -62,7 +62,7 @@ scp_result contLn(scp_operand *param1, scp_operand *param2);
 scp_result contSin(scp_operand *param1, scp_operand *param2);
 scp_result contCos(scp_operand *param1, scp_operand *param2);
 scp_result contTg(scp_operand *param1, scp_operand *param2);
-scp_result contAsin(scp_operand *param1, scp_operand *param2);
+scp_result contASin(scp_operand *param1, scp_operand *param2);
 scp_result contACos(scp_operand *param1, scp_operand *param2);
 scp_result contATg(scp_operand *param1, scp_operand *param2);
 

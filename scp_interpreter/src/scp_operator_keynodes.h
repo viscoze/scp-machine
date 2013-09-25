@@ -62,7 +62,7 @@ extern scp_operand op_contLn;
 extern scp_operand op_contSin;
 extern scp_operand op_contCos;
 extern scp_operand op_contTg;
-extern scp_operand op_contAsin;
+extern scp_operand op_contASin;
 extern scp_operand op_contACos;
 extern scp_operand op_contATg;
 
