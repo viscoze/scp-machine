@@ -1,0 +1,63 @@
+scp_procedure -> test_prog3 (*	
+	-> rrel_params: .test_prog3_params (*
+		-> rrel_1: rrel_in: _parameter;;
+	*);;
+	
+	-> rrel_operators: .test_prog3_operator_set (*
+		
+		-> rrel_init: .test_prog3_operator1 (*
+		  <- sys_search;;
+		  -> rrel_1: rrel_fixed: rrel_scp_const: pattern1;;  
+		  -> rrel_2: rrel_fixed: .test_prog3_operator1_results (*
+		    -> .test_prog3_operator1_result1 (*
+			  -> rrel_1: rrel_fixed: rrel_scp_const: _subchild;;
+			  -> rrel_2: rrel_assign: rrel_scp_var: _pattern_result1;;
+			*);; 
+		    -> .test_prog3_operator1_result2 (*
+			  -> rrel_1: rrel_fixed: rrel_scp_const: _child;;
+			  -> rrel_2: rrel_assign: rrel_scp_var: _pattern_result2;;
+			*);; 
+		  *);;
+/*		  -> rrel_2: rrel_assign: rrel_scp_var: _result2;;*/
+		  -> rrel_3: rrel_fixed: .test_prog3_operator1_params (*
+		    -> .test_prog3_operator1_param1 (*
+			  -> rrel_1: rrel_fixed: rrel_scp_const: _parent;;
+			  -> rrel_2: rrel_fixed: rrel_scp_var: _parameter;;
+			*);; 
+		  *);;
+/*		  -> rrel_4: rrel_assign: rrel_scp_var: _result;;*/
+		  -> rrel_then: .test_prog3_operator2;;
+		  -> rrel_else: .test_prog3_operator3;;
+		*);;
+		 
+		-> .test_prog3_operator2 (*
+		  <- printEl;;
+		  -> rrel_1: rrel_fixed: rrel_scp_var: _pattern_result2;;
+		  -> rrel_goto: .test_prog3_operator4;;
+		*);;
+		
+		-> .test_prog3_operator3 (*
+		  <- printNl;;
+		  -> rrel_1: rrel_fixed: rrel_scp_const: const_no;;
+		  -> rrel_goto: .test_prog3_operator4;;
+		*);;
+			
+		-> .test_prog3_operator4 (*
+		  <- return;;
+		*);;	
+	*);;
+*);;
+
+[* _parent _-> _child (* _-> _subchild;; *);; *] = pattern1;;
+
+node111 -> node222;;
+node111 -> node222;;
+node111 -> node222;;
+node222 -> node333;;
+node222 -> node333;;
+
+quest3 -> rrel_1: test_prog3;;
+quest3 -> rrel_2: .quest3_params (* 
+	-> rrel_1: node111;;
+	*);;
+

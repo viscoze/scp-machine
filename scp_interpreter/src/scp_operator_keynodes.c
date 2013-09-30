@@ -297,7 +297,6 @@ scp_result init_operator_keynodes()
     {
         return print_error("Keynode not found", "return");
     }
-    printEl(&op_genElStr3);
 
     return SCP_RESULT_TRUE;
 }

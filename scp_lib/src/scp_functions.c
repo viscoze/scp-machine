@@ -924,6 +924,11 @@ scp_result contAssign(scp_operand *param1, scp_operand *param2)
     return SCP_RESULT_TRUE;
 }
 
+scp_result contErase(scp_operand *param1)
+{
+    return SCP_RESULT_TRUE;
+}
+
 scp_result ifEq(scp_operand *param1, scp_operand *param2)
 {
     double num1, num2;
