@@ -52,7 +52,7 @@ extern "C" scp_result sys_gen(scp_operand *param1, scp_operand *param2, scp_oper
         sc_memory_arc_new(sc_type_arc_pos_const_perm, param2->addr, arc);
         if (param4 != nullptr)
         {
-            sc_memory_arc_new(sc_type_arc_common | sc_type_const, param4->addr, addr2);
+            sc_memory_arc_new(sc_type_arc_pos_const_perm, param4->addr, addr2);
         }
     }
 
@@ -85,7 +85,7 @@ extern "C" scp_result sys_gen_for_variables(scp_operand *param1, scp_operand_pai
         find_result_pair_for_var(&result, op1->addr, &(op2->addr));
         if (param4 != nullptr)
         {
-            sc_memory_arc_new(sc_type_arc_common | sc_type_const, param4->addr, op2->addr);
+            sc_memory_arc_new(sc_type_arc_pos_const_perm, param4->addr, op2->addr);
         }
     }
 
