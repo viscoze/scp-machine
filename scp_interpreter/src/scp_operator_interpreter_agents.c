@@ -94,8 +94,9 @@ sc_result interpreter_agent_search_operators(sc_event *event, sc_addr arg)
 
         resolve_operands_modifiers(&operator_node, operands, 3);
 
-        if (SCP_RESULT_TRUE != get_operands_values(&operator_node, operands, operand_values, 3))
+        if (SCP_RESULT_TRUE != get_operands_values(operands, operand_values, 3))
         {
+            operator_interpreting_crash(&operator_node);
             return SC_RESULT_ERROR;
         }
 
@@ -142,8 +143,9 @@ sc_result interpreter_agent_search_operators(sc_event *event, sc_addr arg)
 
         resolve_operands_modifiers(&operator_node, operands, 5);
 
-        if (SCP_RESULT_TRUE != get_operands_values(&operator_node, operands, operand_values, 5))
+        if (SCP_RESULT_TRUE != get_operands_values(operands, operand_values, 5))
         {
+            operator_interpreting_crash(&operator_node);
             return SC_RESULT_ERROR;
         }
 
@@ -223,8 +225,9 @@ sc_result interpreter_agent_gen_operators(sc_event *event, sc_addr arg)
 
         resolve_operands_modifiers(&operator_node, &operand, 1);
 
-        if (SCP_RESULT_TRUE != get_operands_values(&operator_node, &operand, &operand_value, 1))
+        if (SCP_RESULT_TRUE != get_operands_values(&operand, &operand_value, 1))
         {
+            operator_interpreting_crash(&operator_node);
             return SC_RESULT_ERROR;
         }
 
@@ -248,8 +251,9 @@ sc_result interpreter_agent_gen_operators(sc_event *event, sc_addr arg)
 
         resolve_operands_modifiers(&operator_node, operands, 3);
 
-        if (SCP_RESULT_TRUE != get_operands_values(&operator_node, operands, operand_values, 3))
+        if (SCP_RESULT_TRUE != get_operands_values(operands, operand_values, 3))
         {
+            operator_interpreting_crash(&operator_node);
             return SC_RESULT_ERROR;
         }
 
@@ -273,8 +277,9 @@ sc_result interpreter_agent_gen_operators(sc_event *event, sc_addr arg)
 
         resolve_operands_modifiers(&operator_node, operands, 5);
 
-        if (SCP_RESULT_TRUE != get_operands_values(&operator_node, operands, operand_values, 5))
+        if (SCP_RESULT_TRUE != get_operands_values(operands, operand_values, 5))
         {
+            operator_interpreting_crash(&operator_node);
             return SC_RESULT_ERROR;
         }
 
@@ -331,8 +336,9 @@ sc_result interpreter_agent_erase_operators(sc_event *event, sc_addr arg)
 
         resolve_operands_modifiers(&operator_node, &operand, 1);
 
-        if (SCP_RESULT_TRUE != get_operands_values(&operator_node, &operand, &operand_value, 1))
+        if (SCP_RESULT_TRUE != get_operands_values(&operand, &operand_value, 1))
         {
+            operator_interpreting_crash(&operator_node);
             return SC_RESULT_ERROR;
         }
 
@@ -355,8 +361,9 @@ sc_result interpreter_agent_erase_operators(sc_event *event, sc_addr arg)
 
         resolve_operands_modifiers(&operator_node, operands, 3);
 
-        if (SCP_RESULT_TRUE != get_operands_values(&operator_node, operands, operand_values, 3))
+        if (SCP_RESULT_TRUE != get_operands_values(operands, operand_values, 3))
         {
+            operator_interpreting_crash(&operator_node);
             return SC_RESULT_ERROR;
         }
 
@@ -379,8 +386,9 @@ sc_result interpreter_agent_erase_operators(sc_event *event, sc_addr arg)
 
         resolve_operands_modifiers(&operator_node, operands, 5);
 
-        if (SCP_RESULT_TRUE != get_operands_values(&operator_node, operands, operand_values, 5))
+        if (SCP_RESULT_TRUE != get_operands_values(operands, operand_values, 5))
         {
+            operator_interpreting_crash(&operator_node);
             return SC_RESULT_ERROR;
         }
 
@@ -403,8 +411,9 @@ sc_result interpreter_agent_erase_operators(sc_event *event, sc_addr arg)
 
         resolve_operands_modifiers(&operator_node, operands, 3);
 
-        if (SCP_RESULT_TRUE != get_operands_values(&operator_node, operands, operand_values, 3))
+        if (SCP_RESULT_TRUE != get_operands_values(operands, operand_values, 3))
         {
+            operator_interpreting_crash(&operator_node);
             return SC_RESULT_ERROR;
         }
 
@@ -427,8 +436,9 @@ sc_result interpreter_agent_erase_operators(sc_event *event, sc_addr arg)
 
         resolve_operands_modifiers(&operator_node, operands, 5);
 
-        if (SCP_RESULT_TRUE != get_operands_values(&operator_node, operands, operand_values, 5))
+        if (SCP_RESULT_TRUE != get_operands_values(operands, operand_values, 5))
         {
+            operator_interpreting_crash(&operator_node);
             return SC_RESULT_ERROR;
         }
 
@@ -484,8 +494,9 @@ sc_result interpreter_agent_content_arithmetic_operators(sc_event *event, sc_add
 
         resolve_operands_modifiers(&operator_node, operands, 3);
 
-        if (SCP_RESULT_TRUE != get_operands_values(&operator_node, operands, operand_values, 3))
+        if (SCP_RESULT_TRUE != get_operands_values(operands, operand_values, 3))
         {
+            operator_interpreting_crash(&operator_node);
             return SC_RESULT_ERROR;
         }
 
@@ -507,8 +518,9 @@ sc_result interpreter_agent_content_arithmetic_operators(sc_event *event, sc_add
 
         resolve_operands_modifiers(&operator_node, operands, 3);
 
-        if (SCP_RESULT_TRUE != get_operands_values(&operator_node, operands, operand_values, 3))
+        if (SCP_RESULT_TRUE != get_operands_values(operands, operand_values, 3))
         {
+            operator_interpreting_crash(&operator_node);
             return SC_RESULT_ERROR;
         }
 
@@ -530,8 +542,9 @@ sc_result interpreter_agent_content_arithmetic_operators(sc_event *event, sc_add
 
         resolve_operands_modifiers(&operator_node, operands, 3);
 
-        if (SCP_RESULT_TRUE != get_operands_values(&operator_node, operands, operand_values, 3))
+        if (SCP_RESULT_TRUE != get_operands_values(operands, operand_values, 3))
         {
+            operator_interpreting_crash(&operator_node);
             return SC_RESULT_ERROR;
         }
 
@@ -553,8 +566,9 @@ sc_result interpreter_agent_content_arithmetic_operators(sc_event *event, sc_add
 
         resolve_operands_modifiers(&operator_node, operands, 3);
 
-        if (SCP_RESULT_TRUE != get_operands_values(&operator_node, operands, operand_values, 3))
+        if (SCP_RESULT_TRUE != get_operands_values(operands, operand_values, 3))
         {
+            operator_interpreting_crash(&operator_node);
             return SC_RESULT_ERROR;
         }
 
@@ -576,8 +590,9 @@ sc_result interpreter_agent_content_arithmetic_operators(sc_event *event, sc_add
 
         resolve_operands_modifiers(&operator_node, operands, 3);
 
-        if (SCP_RESULT_TRUE != get_operands_values(&operator_node, operands, operand_values, 3))
+        if (SCP_RESULT_TRUE != get_operands_values(operands, operand_values, 3))
         {
+            operator_interpreting_crash(&operator_node);
             return SC_RESULT_ERROR;
         }
 
@@ -599,8 +614,9 @@ sc_result interpreter_agent_content_arithmetic_operators(sc_event *event, sc_add
 
         resolve_operands_modifiers(&operator_node, operands, 2);
 
-        if (SCP_RESULT_TRUE != get_operands_values(&operator_node, operands, operand_values, 2))
+        if (SCP_RESULT_TRUE != get_operands_values(operands, operand_values, 2))
         {
+            operator_interpreting_crash(&operator_node);
             return SC_RESULT_ERROR;
         }
 
@@ -656,8 +672,9 @@ sc_result interpreter_agent_content_trig_operators(sc_event *event, sc_addr arg)
 
         resolve_operands_modifiers(&operator_node, operands, 2);
 
-        if (SCP_RESULT_TRUE != get_operands_values(&operator_node, operands, operand_values, 2))
+        if (SCP_RESULT_TRUE != get_operands_values(operands, operand_values, 2))
         {
+            operator_interpreting_crash(&operator_node);
             return SC_RESULT_ERROR;
         }
 
@@ -679,8 +696,9 @@ sc_result interpreter_agent_content_trig_operators(sc_event *event, sc_addr arg)
 
         resolve_operands_modifiers(&operator_node, operands, 2);
 
-        if (SCP_RESULT_TRUE != get_operands_values(&operator_node, operands, operand_values, 2))
+        if (SCP_RESULT_TRUE != get_operands_values(operands, operand_values, 2))
         {
+            operator_interpreting_crash(&operator_node);
             return SC_RESULT_ERROR;
         }
 
@@ -702,8 +720,9 @@ sc_result interpreter_agent_content_trig_operators(sc_event *event, sc_addr arg)
 
         resolve_operands_modifiers(&operator_node, operands, 2);
 
-        if (SCP_RESULT_TRUE != get_operands_values(&operator_node, operands, operand_values, 2))
+        if (SCP_RESULT_TRUE != get_operands_values(operands, operand_values, 2))
         {
+            operator_interpreting_crash(&operator_node);
             return SC_RESULT_ERROR;
         }
 
@@ -725,8 +744,9 @@ sc_result interpreter_agent_content_trig_operators(sc_event *event, sc_addr arg)
 
         resolve_operands_modifiers(&operator_node, operands, 2);
 
-        if (SCP_RESULT_TRUE != get_operands_values(&operator_node, operands, operand_values, 2))
+        if (SCP_RESULT_TRUE != get_operands_values(operands, operand_values, 2))
         {
+            operator_interpreting_crash(&operator_node);
             return SC_RESULT_ERROR;
         }
 
@@ -748,8 +768,9 @@ sc_result interpreter_agent_content_trig_operators(sc_event *event, sc_addr arg)
 
         resolve_operands_modifiers(&operator_node, operands, 2);
 
-        if (SCP_RESULT_TRUE != get_operands_values(&operator_node, operands, operand_values, 2))
+        if (SCP_RESULT_TRUE != get_operands_values(operands, operand_values, 2))
         {
+            operator_interpreting_crash(&operator_node);
             return SC_RESULT_ERROR;
         }
 
@@ -771,8 +792,9 @@ sc_result interpreter_agent_content_trig_operators(sc_event *event, sc_addr arg)
 
         resolve_operands_modifiers(&operator_node, operands, 2);
 
-        if (SCP_RESULT_TRUE != get_operands_values(&operator_node, operands, operand_values, 2))
+        if (SCP_RESULT_TRUE != get_operands_values(operands, operand_values, 2))
         {
+            operator_interpreting_crash(&operator_node);
             return SC_RESULT_ERROR;
         }
 
@@ -828,8 +850,9 @@ sc_result interpreter_agent_if_operators(sc_event *event, sc_addr arg)
 
         resolve_operands_modifiers(&operator_node, &operands, 1);
 
-        if (SCP_RESULT_TRUE != get_operands_values(&operator_node, &operands, &operand_values, 1))
+        if (SCP_RESULT_TRUE != get_operands_values(&operands, &operand_values, 1))
         {
+            operator_interpreting_crash(&operator_node);
             return SC_RESULT_ERROR;
         }
 
@@ -874,8 +897,9 @@ sc_result interpreter_agent_if_operators(sc_event *event, sc_addr arg)
 
         resolve_operands_modifiers(&operator_node, &operands, 1);
 
-        if (SCP_RESULT_TRUE != get_operands_values(&operator_node, &operands, &operand_values, 1))
+        if (SCP_RESULT_TRUE != get_operands_values(&operands, &operand_values, 1))
         {
+            operator_interpreting_crash(&operator_node);
             return SC_RESULT_ERROR;
         }
 
@@ -920,8 +944,9 @@ sc_result interpreter_agent_if_operators(sc_event *event, sc_addr arg)
 
         resolve_operands_modifiers(&operator_node, &operands, 1);
 
-        if (SCP_RESULT_TRUE != get_operands_values(&operator_node, &operands, &operand_values, 1))
+        if (SCP_RESULT_TRUE != get_operands_values(&operands, &operand_values, 1))
         {
+            operator_interpreting_crash(&operator_node);
             return SC_RESULT_ERROR;
         }
 
@@ -966,8 +991,9 @@ sc_result interpreter_agent_if_operators(sc_event *event, sc_addr arg)
 
         resolve_operands_modifiers(&operator_node, operands, 2);
 
-        if (SCP_RESULT_TRUE != get_operands_values(&operator_node, operands, operand_values, 2))
+        if (SCP_RESULT_TRUE != get_operands_values(operands, operand_values, 2))
         {
+            operator_interpreting_crash(&operator_node);
             return SC_RESULT_ERROR;
         }
 
@@ -1012,8 +1038,9 @@ sc_result interpreter_agent_if_operators(sc_event *event, sc_addr arg)
 
         resolve_operands_modifiers(&operator_node, operands, 2);
 
-        if (SCP_RESULT_TRUE != get_operands_values(&operator_node, operands, operand_values, 2))
+        if (SCP_RESULT_TRUE != get_operands_values(operands, operand_values, 2))
         {
+            operator_interpreting_crash(&operator_node);
             return SC_RESULT_ERROR;
         }
 
@@ -1058,8 +1085,9 @@ sc_result interpreter_agent_if_operators(sc_event *event, sc_addr arg)
 
         resolve_operands_modifiers(&operator_node, operands, 2);
 
-        if (SCP_RESULT_TRUE != get_operands_values(&operator_node, operands, operand_values, 2))
+        if (SCP_RESULT_TRUE != get_operands_values(operands, operand_values, 2))
         {
+            operator_interpreting_crash(&operator_node);
             return SC_RESULT_ERROR;
         }
 
@@ -1138,8 +1166,9 @@ sc_result interpreter_agent_other_operators(sc_event *event, sc_addr arg)
 
         resolve_operands_modifiers(&operator_node, operands, 2);
 
-        if (SCP_RESULT_TRUE != get_operands_values(&operator_node, operands, operand_values, 2))
+        if (SCP_RESULT_TRUE != get_operands_values(operands, operand_values, 2))
         {
+            operator_interpreting_crash(&operator_node);
             return SC_RESULT_ERROR;
         }
 
@@ -1161,8 +1190,9 @@ sc_result interpreter_agent_other_operators(sc_event *event, sc_addr arg)
 
         resolve_operands_modifiers(&operator_node, operands, 2);
 
-        if (SCP_RESULT_TRUE != get_operands_values(&operator_node, operands, operand_values, 2))
+        if (SCP_RESULT_TRUE != get_operands_values(operands, operand_values, 2))
         {
+            operator_interpreting_crash(&operator_node);
             return SC_RESULT_ERROR;
         }
 
@@ -1184,8 +1214,9 @@ sc_result interpreter_agent_other_operators(sc_event *event, sc_addr arg)
 
         resolve_operands_modifiers(&operator_node, &operands, 1);
 
-        if (SCP_RESULT_TRUE != get_operands_values(&operator_node, &operands, &operand_values, 1))
+        if (SCP_RESULT_TRUE != get_operands_values(&operands, &operand_values, 1))
         {
+            operator_interpreting_crash(&operator_node);
             return SC_RESULT_ERROR;
         }
 
@@ -1532,8 +1563,9 @@ sc_result interpreter_agent_print_operators(sc_event *event, sc_addr arg)
 
         resolve_operands_modifiers(&operator_node, operands, 1);
 
-        if (SCP_RESULT_TRUE != get_operands_values(&operator_node, operands, operand_values, 1))
+        if (SCP_RESULT_TRUE != get_operands_values(operands, operand_values, 1))
         {
+            operator_interpreting_crash(&operator_node);
             return SC_RESULT_ERROR;
         }
 
@@ -1553,8 +1585,9 @@ sc_result interpreter_agent_print_operators(sc_event *event, sc_addr arg)
 
         resolve_operands_modifiers(&operator_node, operands, 1);
 
-        if (SCP_RESULT_TRUE != get_operands_values(&operator_node, operands, operand_values, 1))
+        if (SCP_RESULT_TRUE != get_operands_values(operands, operand_values, 1))
         {
+            operator_interpreting_crash(&operator_node);
             return SC_RESULT_ERROR;
         }
 
@@ -1574,8 +1607,9 @@ sc_result interpreter_agent_print_operators(sc_event *event, sc_addr arg)
 
         resolve_operands_modifiers(&operator_node, operands, 1);
 
-        if (SCP_RESULT_TRUE != get_operands_values(&operator_node, operands, operand_values, 1))
+        if (SCP_RESULT_TRUE != get_operands_values(operands, operand_values, 1))
         {
+            operator_interpreting_crash(&operator_node);
             return SC_RESULT_ERROR;
         }
 
@@ -1649,8 +1683,9 @@ sc_result sys_search_agent_body(scp_operand *operator_node)
 
         if (rrel_number == 1)
         {
-            if (SCP_RESULT_TRUE != get_operand_value(operator_node, &operand, &param1))
+            if (SCP_RESULT_TRUE != get_operand_value(&operand, &param1))
             {
+                operator_interpreting_crash(operator_node);
                 fun_result = SC_RESULT_ERROR;
                 goto exit;
             }
@@ -1663,8 +1698,9 @@ sc_result sys_search_agent_body(scp_operand *operator_node)
             if (operand.param_type == SCP_ASSIGN)
             {
                 param2_node = operand;
-                if (SCP_RESULT_TRUE != get_operand_value(operator_node, &param2_node, &param2))
+                if (SCP_RESULT_TRUE != get_operand_value(&param2_node, &param2))
                 {
+                    operator_interpreting_crash(operator_node);
                     fun_result = SC_RESULT_ERROR;
                     goto exit;
                 }
@@ -1691,7 +1727,7 @@ sc_result sys_search_agent_body(scp_operand *operator_node)
             {
                 operand_elem.param_type = SCP_FIXED;
                 resolve_operands_modifiers(&operand_elem, pair_elems2[i], 2);
-                if (SCP_RESULT_TRUE != get_operands_values(operator_node, pair_elems2[i], pair_values2[i], 2))
+                if (SCP_RESULT_TRUE != get_operands_values(pair_elems2[i], pair_values2[i], 2))
                 {
                     operator_interpreting_crash(operator_node);
                     fun_result = SC_RESULT_ERROR;
@@ -1727,7 +1763,7 @@ sc_result sys_search_agent_body(scp_operand *operator_node)
             {
                 operand_elem.param_type = SCP_FIXED;
                 resolve_operands_modifiers(&operand_elem, pair_elems3[i], 2);
-                if (SCP_RESULT_TRUE != get_operands_values(operator_node, pair_elems3[i], pair_values3[i], 2))
+                if (SCP_RESULT_TRUE != get_operands_values(pair_elems3[i], pair_values3[i], 2))
                 {
                     operator_interpreting_crash(operator_node);
                     fun_result = SC_RESULT_ERROR;
@@ -1747,7 +1783,7 @@ sc_result sys_search_agent_body(scp_operand *operator_node)
         {
             is4 = SCP_TRUE;
             param4_node = operand;
-            if (SCP_RESULT_TRUE != get_operand_value(operator_node, &operand, &param4))
+            if (SCP_RESULT_TRUE != get_operand_value(&operand, &param4))
             {
                 operator_interpreting_crash(operator_node);
                 fun_result = SC_RESULT_ERROR;
@@ -2009,8 +2045,9 @@ sc_result sys_gen_agent_body(scp_operand *operator_node)
 
         if (rrel_number == 1)
         {
-            if (SCP_RESULT_TRUE != get_operand_value(operator_node, &operand, &param1))
+            if (SCP_RESULT_TRUE != get_operand_value(&operand, &param1))
             {
+                operator_interpreting_crash(operator_node);
                 fun_result = SC_RESULT_ERROR;
                 goto exit;
             }
@@ -2023,8 +2060,9 @@ sc_result sys_gen_agent_body(scp_operand *operator_node)
             if (operand.param_type == SCP_ASSIGN)
             {
                 param2_node = operand;
-                if (SCP_RESULT_TRUE != get_operand_value(operator_node, &param2_node, &param2))
+                if (SCP_RESULT_TRUE != get_operand_value(&param2_node, &param2))
                 {
+                    operator_interpreting_crash(operator_node);
                     fun_result = SC_RESULT_ERROR;
                     goto exit;
                 }
@@ -2051,7 +2089,7 @@ sc_result sys_gen_agent_body(scp_operand *operator_node)
             {
                 operand_elem.param_type = SCP_FIXED;
                 resolve_operands_modifiers(&operand_elem, pair_elems2[i], 2);
-                if (SCP_RESULT_TRUE != get_operands_values(operator_node, pair_elems2[i], pair_values2[i], 2))
+                if (SCP_RESULT_TRUE != get_operands_values(pair_elems2[i], pair_values2[i], 2))
                 {
                     operator_interpreting_crash(operator_node);
                     fun_result = SC_RESULT_ERROR;
@@ -2087,7 +2125,7 @@ sc_result sys_gen_agent_body(scp_operand *operator_node)
             {
                 operand_elem.param_type = SCP_FIXED;
                 resolve_operands_modifiers(&operand_elem, pair_elems3[i], 2);
-                if (SCP_RESULT_TRUE != get_operands_values(operator_node, pair_elems3[i], pair_values3[i], 2))
+                if (SCP_RESULT_TRUE != get_operands_values(pair_elems3[i], pair_values3[i], 2))
                 {
                     operator_interpreting_crash(operator_node);
                     fun_result = SC_RESULT_ERROR;
@@ -2107,7 +2145,7 @@ sc_result sys_gen_agent_body(scp_operand *operator_node)
         {
             is4 = SCP_TRUE;
             param4_node = operand;
-            if (SCP_RESULT_TRUE != get_operand_value(operator_node, &operand, &param4))
+            if (SCP_RESULT_TRUE != get_operand_value(&operand, &param4))
             {
                 operator_interpreting_crash(operator_node);
                 fun_result = SC_RESULT_ERROR;

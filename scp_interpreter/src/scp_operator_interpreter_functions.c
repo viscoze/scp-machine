@@ -191,7 +191,7 @@ scp_result find_scp_process_for_scp_operator(scp_operand *scp_operator_node, scp
     return SCP_RESULT_FALSE;
 }
 
-scp_result get_operand_value(scp_operand *scp_operator_node, scp_operand *operand, scp_operand *operand_value)
+scp_result get_operand_value(scp_operand *operand, scp_operand *operand_value)
 {
     scp_operand var_value, operand_node, arc1, arc3;
     MAKE_DEFAULT_ARC_ASSIGN(arc1);
@@ -213,7 +213,7 @@ scp_result get_operand_value(scp_operand *scp_operator_node, scp_operand *operan
             {
                 printEl(operand);
                 print_error("scp-operator interpreting", "Variable has FIXED modifier, but has no value");
-                operator_interpreting_crash(scp_operator_node);
+                //operator_interpreting_crash(scp_operator_node);
                 return SCP_RESULT_ERROR;
             }
         }
@@ -224,7 +224,7 @@ scp_result get_operand_value(scp_operand *scp_operator_node, scp_operand *operan
         {
             printEl(operand);
             print_error("scp-operator interpreting", "Constant has ASSIGN modifier");
-            operator_interpreting_crash(scp_operator_node);
+            //operator_interpreting_crash(scp_operator_node);
             return SCP_RESULT_ERROR;
         }
         else
@@ -235,7 +235,7 @@ scp_result get_operand_value(scp_operand *scp_operator_node, scp_operand *operan
     return SCP_RESULT_TRUE;
 }
 
-scp_result get_operands_values(scp_operand *scp_operator_node, scp_operand *operands, scp_operand *operands_values, scp_uint32 count)
+scp_result get_operands_values(scp_operand *operands, scp_operand *operands_values, scp_uint32 count)
 {
     scp_operand arc1, arc3, var_value, operand_node;
     scp_uint32 i;
@@ -280,85 +280,6 @@ scp_result get_operands_values(scp_operand *scp_operator_node, scp_operand *oper
             }
         }
     }
-    return SCP_RESULT_TRUE;
-}
-
-scp_result get_operands_values_for_pair(scp_operand *scp_operator_node, scp_operand_pair *operands, scp_operand_pair *operands_values)
-{
-    scp_operand arc1, arc3, var_value, operand_node;
-    //scp_uint32 i;
-    MAKE_DEFAULT_ARC_ASSIGN(arc1);
-    MAKE_COMMON_ARC_ASSIGN(arc3);
-    MAKE_DEFAULT_OPERAND_ASSIGN(var_value);
-    MAKE_DEFAULT_OPERAND_FIXED(operand_node);
-    var_value.param_type = SCP_ASSIGN;
-    operands_values->operand1 = operands->operand1;
-    operands_values->operand2 = operands->operand2;
-
-    operand_node.addr = operands->operand1->addr;
-    if (operands->operand1->param_type == SCP_FIXED)
-    {
-        if (SCP_VAR == operands->operand1->operand_type)
-        {
-            if (SCP_RESULT_TRUE == searchElStr5(&operand_node, &arc3, &var_value, &arc1, &nrel_value))
-            {
-                operands_values->operand1->addr = var_value.addr;
-            }
-            else
-            {
-                printEl(operands->operand1);
-                print_error("scp-operator interpreting", "Variable has FIXED modifier, but has no value");
-                //operator_interpreting_crash(scp_operator_node);
-                return SCP_RESULT_ERROR;
-            }
-        }
-    }
-    else
-    {
-        if (SCP_CONST == operands->operand1->operand_type)
-        {
-            printEl(operands->operand1);
-            print_error("scp-operator interpreting", "Constant has ASSIGN modifier");
-            return SCP_RESULT_ERROR;
-        }
-        else
-        {
-            eraseElStr5(&operand_node, &arc3, &var_value, &arc1, &nrel_value);
-        }
-    }
-
-    operand_node.addr = operands->operand2->addr;
-    if (operands->operand2->param_type == SCP_FIXED)
-    {
-        if (SCP_VAR == operands->operand2->operand_type)
-        {
-            if (SCP_RESULT_TRUE == searchElStr5(&operand_node, &arc3, &var_value, &arc1, &nrel_value))
-            {
-                operands_values->operand2->addr = var_value.addr;
-            }
-            else
-            {
-                printEl(operands->operand2);
-                print_error("scp-operator interpreting", "Variable has FIXED modifier, but has no value");
-                return SCP_RESULT_ERROR;
-            }
-        }
-    }
-    else
-    {
-        if (SCP_CONST == operands->operand2->operand_type)
-        {
-            printEl(operands->operand2);
-            print_error("scp-operator interpreting", "Constant has ASSIGN modifier");
-            //operator_interpreting_crash(scp_operator_node);
-            return SCP_RESULT_ERROR;
-        }
-        else
-        {
-            eraseElStr5(&operand_node, &arc3, &var_value, &arc1, &nrel_value);
-        }
-    }
-
     return SCP_RESULT_TRUE;
 }
 
