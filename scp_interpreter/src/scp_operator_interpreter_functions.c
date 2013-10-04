@@ -40,6 +40,19 @@ scp_uint32 check_ordinal_rrel(scp_operand *node, scp_uint32 count)
     return 0;
 }
 
+scp_uint32 check_ordinal_set_rrel(scp_operand *node, scp_uint32 count)
+{
+    scp_uint32 i = 0;
+    for (i = 1; i <= count; i++)
+    {
+        if (SCP_RESULT_TRUE == ifCoin(node, ordinal_set_rrels + i))
+        {
+            return i;
+        }
+    }
+    return 0;
+}
+
 scp_result resolve_operands_modifiers(scp_operand *scp_operator_node, scp_operand *operands, scp_uint32 count)
 {
     scp_operand arc1, arc2, modifier, operand_node, operand;
@@ -169,6 +182,151 @@ scp_result resolve_operands_modifiers(scp_operand *scp_operator_node, scp_operan
     return SCP_RESULT_TRUE;
 }
 
+scp_result resolve_operands_modifiers_with_set(scp_operand *scp_operator_node, scp_operand *operands, scp_operand *sets, scp_uint32 count)
+{
+    scp_operand arc1, arc2, modifier, operand_node, operand;
+    scp_iterator3 *it, *it0;
+    scp_uint32 rrel_number = 0, set_number = 0;
+    MAKE_DEFAULT_ARC_ASSIGN(arc1);
+    MAKE_DEFAULT_ARC_ASSIGN(arc2);
+    MAKE_DEFAULT_OPERAND_ASSIGN(operand);
+    MAKE_DEFAULT_OPERAND_ASSIGN(operand_node);
+    MAKE_DEFAULT_NODE_ASSIGN(modifier);
+    scp_operator_node->param_type = SCP_FIXED;
+    it0 = scp_iterator3_new(scp_operator_node, &arc1, &operand_node);
+    while (SCP_RESULT_TRUE == scp_iterator3_next(it0, scp_operator_node, &arc1, &operand_node))
+    {
+        arc1.param_type = SCP_FIXED;
+        operand_node.param_type = SCP_FIXED;
+        rrel_number = 0;
+        set_number = 0;
+        MAKE_DEFAULT_OPERAND_ASSIGN(operand);
+        it = scp_iterator3_new(&modifier, &arc2, &arc1);
+        while (SCP_RESULT_TRUE == scp_iterator3_next(it, &modifier, &arc2, &arc1))
+        {
+            if (rrel_number == 0)
+            {
+                rrel_number = check_ordinal_rrel(&modifier, count);
+                if (rrel_number > 0)
+                {
+                    continue;
+                }
+            }
+
+            if (set_number == 0)
+            {
+                set_number = check_ordinal_set_rrel(&modifier, count);
+                if (set_number > 0)
+                {
+                    operand.set = SC_TRUE;
+                    continue;
+                }
+            }
+
+            // Operand type
+            if (SCP_RESULT_TRUE == ifCoin(&modifier, &rrel_scp_const))
+            {
+                operand.operand_type = SCP_CONST;
+                continue;
+            }
+            if (SCP_RESULT_TRUE == ifCoin(&modifier, &rrel_scp_var))
+            {
+                operand.operand_type = SCP_VAR;
+                continue;
+            }
+
+            // Param type
+            if (SCP_RESULT_TRUE == ifCoin(&modifier, &rrel_assign))
+            {
+                operand.param_type = SCP_ASSIGN;
+                continue;
+            }
+            if (SCP_RESULT_TRUE == ifCoin(&modifier, &rrel_fixed))
+            {
+                operand.param_type = SCP_FIXED;
+                continue;
+            }
+
+            // Element type
+            if (SCP_RESULT_TRUE == ifCoin(&modifier, &rrel_node))
+            {
+                operand.element_type = operand.element_type | scp_type_node;
+                continue;
+            }
+            if (SCP_RESULT_TRUE == ifCoin(&modifier, &rrel_arc))
+            {
+                operand.element_type = operand.element_type | (~scp_type_node);
+                continue;
+            }
+            if (SCP_RESULT_TRUE == ifCoin(&modifier, &rrel_temp))
+            {
+                operand.element_type = operand.element_type | scp_type_arc_temp;
+                continue;
+            }
+            if (SCP_RESULT_TRUE == ifCoin(&modifier, &rrel_perm))
+            {
+                operand.element_type = operand.element_type | scp_type_arc_perm;
+                continue;
+            }
+            if (SCP_RESULT_TRUE == ifCoin(&modifier, &rrel_pos))
+            {
+                operand.element_type = operand.element_type | scp_type_arc_pos;
+                continue;
+            }
+            if (SCP_RESULT_TRUE == ifCoin(&modifier, &rrel_neg))
+            {
+                operand.element_type = operand.element_type | scp_type_arc_neg;
+                continue;
+            }
+            if (SCP_RESULT_TRUE == ifCoin(&modifier, &rrel_fuz))
+            {
+                operand.element_type = operand.element_type | scp_type_arc_fuz;
+                continue;
+            }
+            if (SCP_RESULT_TRUE == ifCoin(&modifier, &rrel_var))
+            {
+                operand.element_type = operand.element_type | scp_type_var;
+                continue;
+            }
+            if (SCP_RESULT_TRUE == ifCoin(&modifier, &rrel_const))
+            {
+                operand.element_type = operand.element_type | scp_type_const;
+                continue;
+            }
+
+            // Set
+            if (SCP_RESULT_TRUE == ifCoin(&modifier, &rrel_set))
+            {
+                operand.set = SCP_TRUE;
+                continue;
+            }
+
+            // Erase
+            if (SCP_RESULT_TRUE == ifCoin(&modifier, &rrel_erase))
+            {
+                operand.erase = SCP_TRUE;
+                continue;
+            }
+        }
+        scp_iterator3_free(it);
+
+        if (rrel_number > 0)
+        {
+            operands[rrel_number - 1] = operand;
+            operands[rrel_number - 1].addr = operand_node.addr;
+        }
+        else if (set_number > 0)
+        {
+            sets[set_number - 1] = operand;
+            sets[set_number - 1].addr = operand_node.addr;
+        }
+        arc1.param_type = SCP_ASSIGN;
+        operand_node.param_type = SCP_ASSIGN;
+    }
+    scp_iterator3_free(it0);
+    return SCP_RESULT_TRUE;
+}
+
 scp_result find_scp_process_for_scp_operator(scp_operand *scp_operator_node, scp_operand *scp_process_node)
 {
     scp_operand arc1;
@@ -213,7 +371,6 @@ scp_result get_operand_value(scp_operand *operand, scp_operand *operand_value)
             {
                 printEl(operand);
                 print_error("scp-operator interpreting", "Variable has FIXED modifier, but has no value");
-                //operator_interpreting_crash(scp_operator_node);
                 return SCP_RESULT_ERROR;
             }
         }
@@ -224,7 +381,6 @@ scp_result get_operand_value(scp_operand *operand, scp_operand *operand_value)
         {
             printEl(operand);
             print_error("scp-operator interpreting", "Constant has ASSIGN modifier");
-            //operator_interpreting_crash(scp_operator_node);
             return SCP_RESULT_ERROR;
         }
         else
@@ -260,7 +416,6 @@ scp_result get_operands_values(scp_operand *operands, scp_operand *operands_valu
                 {
                     printEl(operands + i);
                     print_error("scp-operator interpreting", "Variable has FIXED modifier, but has no value");
-                    //operator_interpreting_crash(scp_operator_node);
                     return SCP_RESULT_ERROR;
                 }
             }
@@ -271,7 +426,54 @@ scp_result get_operands_values(scp_operand *operands, scp_operand *operands_valu
             {
                 printEl(operands + i);
                 print_error("scp-operator interpreting", "Constant has ASSIGN modifier");
-                //operator_interpreting_crash(scp_operator_node);
+                return SCP_RESULT_ERROR;
+            }
+            else
+            {
+                eraseElStr5(&operand_node, &arc3, &var_value, &arc1, &nrel_value);
+            }
+        }
+    }
+    return SCP_RESULT_TRUE;
+}
+
+scp_result get_set_operands_values(scp_operand *operands, scp_operand *operands_values, scp_uint32 count)
+{
+    scp_operand arc1, arc3, var_value, operand_node;
+    scp_uint32 i;
+    MAKE_DEFAULT_ARC_ASSIGN(arc1);
+    MAKE_COMMON_ARC_ASSIGN(arc3);
+    MAKE_DEFAULT_OPERAND_ASSIGN(var_value);
+    MAKE_DEFAULT_OPERAND_FIXED(operand_node);
+    var_value.param_type = SCP_ASSIGN;
+    for (i = 0; i < count; i++)
+    {
+        if (operands[i].set != SCP_TRUE)
+            continue;
+        operands_values[i] = operands[i];
+        operand_node.addr = operands[i].addr;
+        if (operands[i].param_type == SCP_FIXED)
+        {
+            if (SCP_VAR == operands[i].operand_type)
+            {
+                if (SCP_RESULT_TRUE == searchElStr5(&operand_node, &arc3, &var_value, &arc1, &nrel_value))
+                {
+                    operands_values[i].addr = var_value.addr;
+                }
+                else
+                {
+                    printEl(operands + i);
+                    print_error("scp-operator interpreting", "Variable has FIXED modifier, but has no value");
+                    return SCP_RESULT_ERROR;
+                }
+            }
+        }
+        else
+        {
+            if (SCP_CONST == operands[i].operand_type)
+            {
+                printEl(operands + i);
+                print_error("scp-operator interpreting", "Constant has ASSIGN modifier");
                 return SCP_RESULT_ERROR;
             }
             else
@@ -289,15 +491,31 @@ scp_result set_operands_values(scp_operand *operands, scp_operand *operands_valu
     scp_uint32 i;
     MAKE_DEFAULT_ARC_ASSIGN(arc2);
     MAKE_COMMON_ARC_ASSIGN(arc3);
-    //MAKE_DEFAULT_OPERAND_ASSIGN(var_value);
     MAKE_DEFAULT_OPERAND_FIXED(operand_node);
-    //var_value.param_type = SCP_ASSIGN;
     for (i = 0; i < count; i++)
     {
         if (operands[i].param_type == SCP_ASSIGN)
         {
             operand_node.addr = operands[i].addr;
-            //eraseElStr5(&operand_node, &arc3, &var_value, &arc2, &nrel_value);
+            operands_values[i].param_type = SCP_FIXED;
+            genElStr5(&operand_node, &arc3, operands_values + i, &arc2, &nrel_value);
+        }
+    }
+    return SCP_RESULT_TRUE;
+}
+
+scp_result set_set_operands_values(scp_operand *operands, scp_operand *operands_values, scp_uint32 count)
+{
+    scp_operand arc2, arc3, operand_node;
+    scp_uint32 i;
+    MAKE_DEFAULT_ARC_ASSIGN(arc2);
+    MAKE_COMMON_ARC_ASSIGN(arc3);
+    MAKE_DEFAULT_OPERAND_FIXED(operand_node);
+    for (i = 0; i < count; i++)
+    {
+        if (operands[i].set == SCP_TRUE && operands[i].param_type == SCP_ASSIGN)
+        {
+            operand_node.addr = operands[i].addr;
             operands_values[i].param_type = SCP_FIXED;
             genElStr5(&operand_node, &arc3, operands_values + i, &arc2, &nrel_value);
         }

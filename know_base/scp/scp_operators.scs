@@ -2,6 +2,9 @@
 scp_operator -> searchElStr3;;
 scp_operator -> searchElStr5;;
 
+scp_operator -> searchSetStr3;;
+scp_operator -> searchSetStr5;;
+
 scp_operator -> searchIterStr3;;
 scp_operator -> searchIterStr5;;
 

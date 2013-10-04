@@ -46,7 +46,7 @@ scp_result eraseElStr3F(scp_operand *param1, scp_operand *param2, scp_operand *p
 scp_result eraseElStr3_a_a_f(scp_operand *param1, scp_operand *param2, scp_operand *param3)
 {
     sc_iterator3 *it = sc_iterator3_a_a_f_new(param1->element_type, param2->element_type, param3->addr);
-    if (sc_iterator3_next(it))
+    if (SC_TRUE == sc_iterator3_next(it))
     {
         param1->addr = sc_iterator3_value(it, 0);
         param2->addr = sc_iterator3_value(it, 1);
@@ -65,7 +65,7 @@ scp_result eraseElStr3_a_a_f(scp_operand *param1, scp_operand *param2, scp_opera
 scp_result eraseElStr3_f_a_a(scp_operand *param1, scp_operand *param2, scp_operand *param3)
 {
     sc_iterator3 *it = sc_iterator3_f_a_a_new(param1->addr, param2->element_type, param3->element_type);
-    if (sc_iterator3_next(it))
+    if (SC_TRUE == sc_iterator3_next(it))
     {
         param2->addr = sc_iterator3_value(it, 1);
         param3->addr = sc_iterator3_value(it, 2);
@@ -84,7 +84,7 @@ scp_result eraseElStr3_f_a_a(scp_operand *param1, scp_operand *param2, scp_opera
 scp_result eraseElStr3_f_a_f(scp_operand *param1, scp_operand *param2, scp_operand *param3)
 {
     sc_iterator3 *it = sc_iterator3_f_a_f_new(param1->addr, param2->element_type, param3->addr);
-    if (sc_iterator3_next(it))
+    if (SC_TRUE == sc_iterator3_next(it))
     {
         param2->addr = sc_iterator3_value(it, 1);
         eraseElStr3F(param1, param2, param3);

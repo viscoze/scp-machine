@@ -33,6 +33,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 scp_result print_error(const char *error_type, const char *text);
 scp_result resolve_operator_type(scp_operand *oper, scp_operand *type);
 scp_result resolve_ordinal_rrel(scp_operand *arc_param, scp_operand *result);
+scp_result resolve_ordinal_set_rrel(scp_operand *arc_param, scp_operand *result);
 scp_result get_set_power(scp_operand *set, scp_uint32 *result);
 
 void finish_question_successfully(scp_operand *param);

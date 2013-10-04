@@ -37,7 +37,9 @@ HEADERS += \
     src/scp_system_operators/scp_sys_search.h \
     src/scp_system_operators/scp_sys.h \
     src/scp_system_operators/scp_sys_gen.h \
-    src/scp_lib.h
+    src/scp_lib.h \
+    src/scp_searchSetStr3.h \
+    src/scp_searchSetStr5.h
 
 SOURCES += \
     src/scp_functions.c \
@@ -58,4 +60,6 @@ SOURCES += \
     src/scp_system_operators/sc_system_gen.cpp \
     src/scp_system_operators/scp_sys_search.cpp \
     src/scp_system_operators/scp_sys.c \
-    src/scp_system_operators/scp_sys_gen.cpp
+    src/scp_system_operators/scp_sys_gen.cpp \
+    src/scp_searchSetStr3.c \
+    src/scp_searchSetStr5.c

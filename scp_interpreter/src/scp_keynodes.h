@@ -24,6 +24,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #define SCP_KEYNODES_H
 
 #define ORDINAL_RRELS_COUNT 10
+#define ORDINAL_SET_RRELS_COUNT 5
 
 #include "scp_lib.h"
 #include "scp_operator_keynodes.h"
@@ -77,18 +78,10 @@ extern scp_operand rrel_temp;
 extern scp_operand rrel_perm;
 
 // Ordinals
-/*extern scp_operand rrel_1;
-extern scp_operand rrel_2;
-extern scp_operand rrel_3;
-extern scp_operand rrel_4;
-extern scp_operand rrel_5;
-extern scp_operand rrel_6;
-extern scp_operand rrel_7;
-extern scp_operand rrel_8;
-extern scp_operand rrel_9;
-extern scp_operand rrel_10;*/
 extern scp_operand ordinal_rrel;
+extern scp_operand ordinal_set_rrel;
 extern scp_operand ordinal_rrels[ORDINAL_RRELS_COUNT + 1]; // 0 element reserved
+extern scp_operand ordinal_set_rrels[ORDINAL_RRELS_COUNT + 1]; // 0 element reserved
 
 scp_result scp_keynodes_init();
 

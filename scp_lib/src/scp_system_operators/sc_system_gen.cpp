@@ -63,7 +63,7 @@ sc_result system_sys_gen(sc_addr pattern, sc_type_result params, sc_type_result 
     sc_type_result all_pairs;
     all_pairs.insert(params.begin(), params.end());
     sc_iterator3 *it = sc_iterator3_f_a_a_new(pattern, 0, sc_type_node | sc_type_const);
-    while (sc_iterator3_next(it))
+    while (SC_TRUE == sc_iterator3_next(it))
     {
         sc_addr node = sc_iterator3_value(it, 2);
         all_pairs.insert(sc_addr_pair(node, node));
@@ -71,7 +71,7 @@ sc_result system_sys_gen(sc_addr pattern, sc_type_result params, sc_type_result 
     sc_iterator3_free(it);
 
     it = sc_iterator3_f_a_a_new(pattern, 0, sc_type_var);
-    while (sc_iterator3_next(it))
+    while (SC_TRUE == sc_iterator3_next(it))
     {
         sc_addr node = sc_iterator3_value(it, 2);
         gen_correspondence_for_var(node, &all_pairs, result);
@@ -88,7 +88,7 @@ sc_result system_sys_gen_for_variables(sc_addr pattern, sc_type_result params, s
     sc_type_result all_pairs;
     all_pairs.insert(params.begin(), params.end());
     sc_iterator3 *it = sc_iterator3_f_a_a_new(pattern, 0, sc_type_node | sc_type_const);
-    while (sc_iterator3_next(it))
+    while (SC_TRUE == sc_iterator3_next(it))
     {
         sc_addr node = sc_iterator3_value(it, 2);
         all_pairs.insert(sc_addr_pair(node, node));
@@ -96,7 +96,7 @@ sc_result system_sys_gen_for_variables(sc_addr pattern, sc_type_result params, s
     sc_iterator3_free(it);
 
     it = sc_iterator3_f_a_a_new(pattern, 0, sc_type_var);
-    while (sc_iterator3_next(it))
+    while (SC_TRUE == sc_iterator3_next(it))
     {
         sc_addr node = sc_iterator3_value(it, 2);
         gen_correspondence_for_var(node, &all_pairs, result);

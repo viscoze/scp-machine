@@ -59,3 +59,34 @@ ordinal_rrel -> rrel_8;;
 ordinal_rrel -> rrel_9;;
 ordinal_rrel -> rrel_10;;
 
+rrel_set_1 => nrel_main_en_idtf:
+	[set1'];;
+rrel_set_1 => nrel_main_ru_idtf:
+	[set1'];;
+
+rrel_set_2 => nrel_main_en_idtf:
+	[set2'];;
+rrel_set_2 => nrel_main_ru_idtf:
+	[set2'];;
+
+rrel_set_3 => nrel_main_en_idtf:
+	[set3'];;
+rrel_set_3 => nrel_main_ru_idtf:
+	[set3'];;
+
+rrel_set_4 => nrel_main_en_idtf:
+	[set4'];;
+rrel_set_4 => nrel_main_ru_idtf:
+	[set4'];;
+
+rrel_set_5 => nrel_main_en_idtf:
+	[set5'];;
+rrel_set_5 => nrel_main_ru_idtf:
+	[set5'];;
+
+ordinal_set_rrel -> rrel_set_1;;
+ordinal_set_rrel -> rrel_set_2;;
+ordinal_set_rrel -> rrel_set_3;;
+ordinal_set_rrel -> rrel_set_4;;
+ordinal_set_rrel -> rrel_set_5;;
+

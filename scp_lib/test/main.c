@@ -17,7 +17,7 @@
     sc_memory_element_free(addr2);
 
     sc_iterator3 *it = sc_iterator3_f_a_a_new(addr1, 0, 0);
-    while (sc_iterator3_next(it))
+    while (SC_TRUE == sc_iterator3_next(it))
     {
         printf("ELEM FOUND\n");
     }
@@ -272,10 +272,39 @@ void print_test()
     printEl(&param1);
 }
 
+void test_searchSet3()
+{
+    scp_operand param1, param2, param3, sets[3];
+    MAKE_DEFAULT_OPERAND_FIXED(param1);
+    MAKE_DEFAULT_OPERAND_ASSIGN(param2);
+    MAKE_DEFAULT_OPERAND_ASSIGN(param3);
+    MAKE_DEFAULT_OPERAND_ASSIGN(sets[2]);
+    sets[2].set = SCP_TRUE;
+    sc_helper_resolve_system_identifier("hypermedia_nrel_system_identifier", &(param1.addr));
+    searchSetStr3(&param1, &param2, &param3, sets);
+    printEl(sets + 2);
+}
+
+void test_searchSet5()
+{
+    scp_operand param1, param2, param3, param4, param5, sets[5];
+    MAKE_DEFAULT_OPERAND_ASSIGN(param1);
+    MAKE_DEFAULT_OPERAND_ASSIGN(param2);
+    MAKE_DEFAULT_OPERAND_ASSIGN(param3);
+    MAKE_DEFAULT_OPERAND_ASSIGN(param4);
+    MAKE_DEFAULT_OPERAND_FIXED(param5);
+    MAKE_DEFAULT_OPERAND_ASSIGN(sets[0]);
+    sets[0].set = SCP_TRUE;
+    sc_helper_resolve_system_identifier("hypermedia_nrel_system_identifier", &(param5.addr));
+    searchSetStr5(&param1, &param2, &param3, &param4, &param5, sets);
+    printEl(sets);
+}
+
 int main(void)
 {
     scp_lib_init((sc_char *)"repo", (sc_char *)"test.ini");
-    test_system_operator_gen();
+    //test_system_operator_gen();
+    test_searchSet5();
     return 0;
     scp_operand param1;
     param1.element_type = scp_type_node | scp_type_const;

@@ -77,7 +77,7 @@ sc_bool system_sys_search_recurse(sc_addr sc_pattern, sc_type_hash pattern, sc_a
 
     sc_iterator3 *it_pattern_arc = sc_iterator3_f_a_a_new(curr_pattern_element, 0, 0);
     if (it_pattern_arc == nullptr) {return SC_FALSE;}
-    while (sc_iterator3_next(it_pattern_arc))
+    while (SC_TRUE == sc_iterator3_next(it_pattern_arc))
     {
         addr2 = sc_iterator3_value(it_pattern_arc, 1);
         if (pattern.find(SC_ADDR_LOCAL_TO_INT(addr2)) != pattern.end())
@@ -90,7 +90,7 @@ sc_bool system_sys_search_recurse(sc_addr sc_pattern, sc_type_hash pattern, sc_a
 
     it_pattern_arc = sc_iterator3_a_a_f_new(0, 0, curr_pattern_element);
     if (it_pattern_arc == nullptr) {return SC_FALSE;}
-    while (sc_iterator3_next(it_pattern_arc))
+    while (SC_TRUE == sc_iterator3_next(it_pattern_arc))
     {
         addr1 = sc_iterator3_value(it_pattern_arc, 0);
         if (SC_ADDR_IS_EQUAL(addr1, sc_pattern)) continue;
@@ -237,7 +237,7 @@ sc_bool system_sys_search_recurse(sc_addr sc_pattern, sc_type_hash pattern, sc_a
                     it_const_arc = sc_iterator3_a_a_f_new(next_const_element_type, const_arc_type, curr_const_element);
                 }
             }
-            while (sc_iterator3_next(it_const_arc))
+            while (SC_TRUE == sc_iterator3_next(it_const_arc))
             {
                 if (out_arc_flag == SC_FALSE)
                 {
@@ -378,7 +378,7 @@ sc_bool system_sys_search_recurse(sc_addr sc_pattern, sc_type_hash pattern, sc_a
 sc_bool get_const_element(sc_addr pattern, sc_addr *result)
 {
     sc_iterator3 *it = sc_iterator3_f_a_a_new(pattern, sc_type_arc_pos_const_perm, sc_type_const);
-    if (sc_iterator3_next(it))
+    if (SC_TRUE == sc_iterator3_next(it))
     {
         *result = sc_iterator3_value(it, 2);
         sc_iterator3_free(it);

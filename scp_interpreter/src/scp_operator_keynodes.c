@@ -29,8 +29,11 @@ scp_operand scp_operator;
 scp_operand op_searchElStr3;
 scp_operand op_searchElStr5;
 
-scp_operand op_searchIterStr3;
-scp_operand op_searchIterStr5;
+//scp_operand op_searchIterStr3;
+//scp_operand op_searchIterStr5;
+
+scp_operand op_searchSetStr3;
+scp_operand op_searchSetStr5;
 
 scp_operand op_genEl;
 scp_operand op_genElStr3;
@@ -85,8 +88,10 @@ scp_result init_operator_keynodes()
     MAKE_DEFAULT_OPERAND_FIXED(scp_operator);
     MAKE_DEFAULT_OPERAND_FIXED(op_searchElStr3);
     MAKE_DEFAULT_OPERAND_FIXED(op_searchElStr5);
-    MAKE_DEFAULT_OPERAND_FIXED(op_searchIterStr3);
-    MAKE_DEFAULT_OPERAND_FIXED(op_searchIterStr5);
+    MAKE_DEFAULT_OPERAND_FIXED(op_searchSetStr3);
+    MAKE_DEFAULT_OPERAND_FIXED(op_searchSetStr5);
+    //MAKE_DEFAULT_OPERAND_FIXED(op_searchIterStr3);
+    //MAKE_DEFAULT_OPERAND_FIXED(op_searchIterStr5);
     MAKE_DEFAULT_OPERAND_FIXED(op_genEl);
     MAKE_DEFAULT_OPERAND_FIXED(op_genElStr3);
     MAKE_DEFAULT_OPERAND_FIXED(op_genElStr5);
@@ -137,6 +142,14 @@ scp_result init_operator_keynodes()
     {
         return print_error("Keynode not found", "searchElStr5");
     }
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("searchSetStr3", &op_searchSetStr3))
+    {
+        return print_error("Keynode not found", "searchSetStr3");
+    }
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("searchSetStr5", &op_searchSetStr5))
+    {
+        return print_error("Keynode not found", "searchSetStr5");
+    }
     if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("genEl", &op_genEl))
     {
         return print_error("Keynode not found", "genEl");
@@ -149,14 +162,14 @@ scp_result init_operator_keynodes()
     {
         return print_error("Keynode not found", "genElStr5");
     }
-    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("searchIterStr3", &op_searchIterStr3))
+    /*if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("searchIterStr3", &op_searchIterStr3))
     {
         return print_error("Keynode not found", "searchIterStr3");
     }
     if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("searchIterStr5", &op_searchIterStr5))
     {
         return print_error("Keynode not found", "searchIterStr5");
-    }
+    }*/
     if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("eraseEl", &op_eraseEl))
     {
         return print_error("Keynode not found", "eraseEl");

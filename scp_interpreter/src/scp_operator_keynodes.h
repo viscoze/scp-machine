@@ -30,8 +30,11 @@ extern scp_operand scp_operator;
 extern scp_operand op_searchElStr3;
 extern scp_operand op_searchElStr5;
 
-extern scp_operand op_searchIterStr3;
-extern scp_operand op_searchIterStr5;
+//extern scp_operand op_searchIterStr3;
+//extern scp_operand op_searchIterStr5;
+
+extern scp_operand op_searchSetStr3;
+extern scp_operand op_searchSetStr5;
 
 extern scp_operand op_genEl;
 extern scp_operand op_genElStr3;

@@ -26,6 +26,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scp_functions.h"
 #include "scp_searchElStr3.h"
 #include "scp_searchElStr5.h"
+#include "scp_searchSetStr3.h"
+#include "scp_searchSetStr5.h"
 #include "scp_genElStr3.h"
 #include "scp_genElStr5.h"
 #include "scp_eraseElStr3.h"
@@ -257,6 +259,60 @@ scp_result searchElStr3(scp_operand *param1, scp_operand *param2, scp_operand *p
     return SCP_RESULT_ERROR;
 }
 
+scp_result searchSetStr3(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *sets)
+{
+    sc_uint32 fixed1 = 0;
+    sc_uint32 fixed2 = 0;
+    sc_uint32 fixed3 = 0;
+    sc_uint32 fixed = 0;
+    if (param2->param_type == SCP_FIXED)
+    {
+        return print_error("searchSetStr3", "Parameter 2 must have ASSIGN modifier");
+    }
+    if (param1->param_type == SCP_ASSIGN && param2->param_type == SCP_ASSIGN && param3->param_type == SCP_ASSIGN)
+    {
+        return print_error("searchSetStr3", "At least one operand must have FIXED modifier");
+    }
+    if (param1->param_type == SCP_FIXED)
+    {
+        if (SCP_TRUE == sets[0].set)
+        {
+            return print_error("searchSetStr3", "Parameter 1 has modifier FIXED, but marked as SET");
+        }
+        if (SC_FALSE == sc_memory_is_element(param1->addr))
+        {
+            return print_error("searchSetStr3", "Parameter 1 has modifier FIXED, but has not value");
+        }
+        fixed1 = 0x1;
+    }
+    if (param3->param_type == SCP_FIXED)
+    {
+        if (SCP_TRUE == sets[2].set)
+        {
+            return print_error("searchSetStr3", "Parameter 3 has modifier FIXED, but marked as SET");
+        }
+        if (SC_FALSE == sc_memory_is_element(param3->addr))
+        {
+            return print_error("searchSetStr3", "Parameter 3 has modifier FIXED, but has not value");
+        }
+        fixed3 = 0x100;
+    }
+    fixed = (fixed1 | fixed2 | fixed3);
+    switch (fixed)
+    {
+        case 0x001:
+            return searchSetStr3_f_a_a(param1, param2, param3, sets);
+        case 0x100:
+            return searchSetStr3_a_a_f(param1, param2, param3, sets);
+        case 0x101:
+            return searchSetStr3_f_a_f(param1, param2, param3, sets);
+        default:
+            return print_error("searchElStr3", "Unsupported parameter type combination");
+    }
+
+    return SCP_RESULT_ERROR;
+}
+
 scp_result searchElStr5(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5)
 {
     sc_uint32 fixed1 = 0;
@@ -338,6 +394,81 @@ scp_result searchElStr5(scp_operand *param1, scp_operand *param2, scp_operand *p
             return searchElStr5_a_a_a_a_f(param1, param2, param3, param4, param5);
         default:
             return print_error("searchElStr5", "Unsupported parameter type combination");
+    }
+    return SCP_RESULT_ERROR;
+}
+
+scp_result searchSetStr5(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5, scp_operand *sets)
+{
+    sc_uint32 fixed1 = 0;
+    sc_uint32 fixed2 = 0;
+    sc_uint32 fixed3 = 0;
+    sc_uint32 fixed4 = 0;
+    sc_uint32 fixed5 = 0;
+    sc_uint32 fixed = 0;
+    if (param2->param_type == SCP_FIXED)
+    {
+        return print_error("searchSetStr5", "Parameter 2 must have ASSIGN modifier");
+    }
+    if (param4->param_type == SCP_FIXED)
+    {
+        return print_error("searchSetStr5", "Parameter 4 must have ASSIGN modifier");
+    }
+    if (param1->param_type == SCP_FIXED)
+    {
+        if (SCP_TRUE == sets[0].set)
+        {
+            return print_error("searchSetStr5", "Parameter 1 has modifier FIXED, but marked as SET");
+        }
+        if (SC_FALSE == sc_memory_is_element(param1->addr))
+        {
+            return print_error("searchSetStr5", "Parameter 1 has modifier FIXED, but has not value");
+        }
+        fixed1 = 0x1;
+    }
+    if (param3->param_type == SCP_FIXED)
+    {
+        if (SCP_TRUE == sets[2].set)
+        {
+            return print_error("searchSetStr5", "Parameter 3 has modifier FIXED, but marked as SET");
+        }
+        if (SC_FALSE == sc_memory_is_element(param3->addr))
+        {
+            return print_error("searchSetStr5", "Parameter 3 has modifier FIXED, but has not value");
+        }
+        fixed3 = 0x100;
+    }
+    if (param5->param_type == SCP_FIXED)
+    {
+        if (SCP_TRUE == sets[4].set)
+        {
+            return print_error("searchSetStr5", "Parameter 5 has modifier FIXED, but marked as SET");
+        }
+        if (SC_FALSE == sc_memory_is_element(param5->addr))
+        {
+            return print_error("searchSetStr5", "Parameter 5 has modifier FIXED, but has not value");
+        }
+        fixed3 = 0x10000;
+    }
+    fixed = (fixed1 | fixed2 | fixed3 | fixed4 | fixed5);
+    switch (fixed)
+    {
+        case 0x10101:
+            return searchSetStr5_f_a_f_a_f(param1, param2, param3, param4, param5, sets);
+        case 0x10001:
+            return searchSetStr5_f_a_a_a_f(param1, param2, param3, param4, param5, sets);
+        case 0x00101:
+            return searchSetStr5_f_a_f_a_a(param1, param2, param3, param4, param5, sets);
+        case 0x10100:
+            return searchSetStr5_a_a_f_a_f(param1, param2, param3, param4, param5, sets);
+        case 0x00100:
+            return searchSetStr5_a_a_f_a_a(param1, param2, param3, param4, param5, sets);
+        case 0x00001:
+            return searchSetStr5_f_a_a_a_a(param1, param2, param3, param4, param5, sets);
+        case 0x10000:
+            return searchSetStr5_a_a_a_a_f(param1, param2, param3, param4, param5, sets);
+        default:
+            return print_error("searchSetStr5", "Unsupported parameter type combination");
     }
     return SCP_RESULT_ERROR;
 }
@@ -685,7 +816,7 @@ scp_result printEl(scp_operand *param)
         return SCP_RESULT_ERROR;
     }
     printf("Input arcs:\n");
-    while (sc_iterator3_next(it))
+    while (SC_TRUE == sc_iterator3_next(it))
     {
         addr2 = sc_iterator3_value(it, 0);
         addr3 = sc_iterator3_value(it, 1);
@@ -749,7 +880,7 @@ scp_result printEl(scp_operand *param)
         return SCP_RESULT_ERROR;
     }
     printf("Output arcs:\n");
-    while (sc_iterator3_next(it))
+    while (SC_TRUE == sc_iterator3_next(it))
     {
         addr2 = sc_iterator3_value(it, 1);
         addr3 = sc_iterator3_value(it, 2);

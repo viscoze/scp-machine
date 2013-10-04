@@ -132,7 +132,6 @@ sc_result interpreter_agent_search_operators(sc_event *event, sc_addr arg)
         }
         return SC_RESULT_ERROR;
     }
-
     //searchElStr5 case
     if (SCP_RESULT_TRUE == ifCoin(&operator_type, &op_searchElStr5))
     {
@@ -156,6 +155,114 @@ sc_result interpreter_agent_search_operators(sc_event *event, sc_addr arg)
             case SCP_RESULT_TRUE:
             {
                 set_operands_values(operands, operand_values, 5);
+                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &rrel_then))
+                {
+                    return SC_RESULT_ERROR;
+                }
+                return SC_RESULT_OK;
+            }
+            case SCP_RESULT_FALSE:
+            {
+                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &rrel_else))
+                {
+                    return SC_RESULT_ERROR;
+                }
+                return SC_RESULT_OK;
+            }
+            case SCP_RESULT_ERROR:
+            {
+                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &rrel_error))
+                {
+                    return SC_RESULT_ERROR;
+                }
+                return SC_RESULT_OK;
+            }
+        }
+        return SC_RESULT_ERROR;
+    }
+    //searchSetStr3 case
+    if (SCP_RESULT_TRUE == ifCoin(&operator_type, &op_searchSetStr3))
+    {
+        scp_operand operands[3], operand_values[3], sets[3], sets_values[3];
+        input_arc.erase = SCP_TRUE;
+        eraseEl(&input_arc);
+        print_debug_info("searchSetStr3");
+
+        resolve_operands_modifiers_with_set(&operator_node, operands, sets, 3);
+
+        if (SCP_RESULT_TRUE != get_operands_values(operands, operand_values, 3))
+        {
+            operator_interpreting_crash(&operator_node);
+            return SC_RESULT_ERROR;
+        }
+        if (SCP_RESULT_TRUE != get_set_operands_values(sets, sets_values, 3))
+        {
+            operator_interpreting_crash(&operator_node);
+            return SC_RESULT_ERROR;
+        }
+
+        //Operator body
+        res = searchSetStr3(operand_values, operand_values + 1, operand_values + 2, sets_values);
+        switch (res)
+        {
+            case SCP_RESULT_TRUE:
+            {
+                set_operands_values(operands, operand_values, 3);
+                set_set_operands_values(sets, sets_values, 3);
+                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &rrel_then))
+                {
+                    return SC_RESULT_ERROR;
+                }
+                return SC_RESULT_OK;
+            }
+            case SCP_RESULT_FALSE:
+            {
+                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &rrel_else))
+                {
+                    return SC_RESULT_ERROR;
+                }
+                return SC_RESULT_OK;
+            }
+            case SCP_RESULT_ERROR:
+            {
+                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &rrel_error))
+                {
+                    return SC_RESULT_ERROR;
+                }
+                return SC_RESULT_OK;
+            }
+        }
+        return SC_RESULT_ERROR;
+    }
+    //searchSetStr5 case
+    if (SCP_RESULT_TRUE == ifCoin(&operator_type, &op_searchSetStr5))
+    {
+        scp_operand operands[5], operand_values[5], sets[5], sets_values[5];
+        input_arc.erase = SCP_TRUE;
+        eraseEl(&input_arc);
+        print_debug_info("searchSetStr5");
+
+        resolve_operands_modifiers_with_set(&operator_node, operands, sets, 5);
+
+        if (SCP_RESULT_TRUE != get_operands_values(operands, operand_values, 5))
+        {
+            operator_interpreting_crash(&operator_node);
+            return SC_RESULT_ERROR;
+        }
+        if (SCP_RESULT_TRUE != get_set_operands_values(sets, sets_values, 5))
+        {
+            operator_interpreting_crash(&operator_node);
+            return SC_RESULT_ERROR;
+        }
+
+        //Operator body
+        res = searchSetStr5(operand_values, operand_values + 1, operand_values + 2, operand_values + 3, operand_values + 4, sets_values);
+        switch (res)
+        {
+            case SCP_RESULT_TRUE:
+            {
+                set_operands_values(operands, operand_values, 5);
+                set_set_operands_values(sets, sets_values, 5);
                 if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &rrel_then))
                 {
                     return SC_RESULT_ERROR;

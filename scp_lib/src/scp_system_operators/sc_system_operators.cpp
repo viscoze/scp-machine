@@ -75,7 +75,7 @@ sc_bool copy_set_into_hash(sc_addr set, sc_type arc_type, sc_type end_type, sc_t
     {
         return SC_FALSE;
     }
-    while (sc_iterator3_next(it))
+    while (SC_TRUE == sc_iterator3_next(it))
     {
         addr3 = sc_iterator3_value(it, 2);
         table->insert(sc_hash_pair(SC_ADDR_LOCAL_TO_INT(addr3), addr3));

@@ -34,8 +34,8 @@ scp_result genElStr5(scp_operand *param1, scp_operand *param2, scp_operand *para
 scp_result searchElStr3(scp_operand *param1, scp_operand *param2, scp_operand *param3);
 scp_result searchElStr5(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5);
 
-//scp_result searchSetStr3(scp_operand *param1, scp_operand *param2, scp_operand *param3);
-//scp_result searchSetStr5(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5);
+scp_result searchSetStr3(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *sets);
+scp_result searchSetStr5(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5, scp_operand *sets);
 
 scp_result eraseEl(scp_operand *param);
 scp_result eraseElStr3(scp_operand *param1, scp_operand *param2, scp_operand *param3);
@@ -76,6 +76,6 @@ scp_result print(scp_operand *param);
 scp_result printNl(scp_operand *param);
 scp_result printEl(scp_operand *param);
 
-scp_result scp_lib_resolve_system_identifier(const char* idtf, scp_operand *param);
+scp_result scp_lib_resolve_system_identifier(const char *idtf, scp_operand *param);
 
 #endif // SCP_FUNCTIONS_H

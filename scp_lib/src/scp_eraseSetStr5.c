@@ -54,7 +54,7 @@ scp_result eraseSetStr5_f_a_a_a_a(scp_operand *param1, scp_operand *param2, scp_
 {
     sc_iterator5 *it = sc_iterator5_f_a_a_a_a_new(param1->addr, param2->element_type, param3->element_type, param4->element_type, param5->element_type);
     sc_bool flag = SC_FALSE;
-    while (sc_iterator5_next(it))
+    while (SC_TRUE == sc_iterator5_next(it))
     {
         flag = SC_TRUE;
         param2->addr = sc_iterator5_value(it, 1);
@@ -73,11 +73,12 @@ scp_result eraseSetStr5_f_a_a_a_a(scp_operand *param1, scp_operand *param2, scp_
     else
         return SCP_RESULT_FALSE;
 }
+
 scp_result eraseSetStr5_a_a_f_a_a(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5)
 {
     sc_iterator5 *it = sc_iterator5_a_a_f_a_a_new(param1->element_type, param2->element_type, param3->addr, param4->element_type, param5->element_type);
     sc_bool flag = SC_FALSE;
-    while (sc_iterator5_next(it))
+    while (SC_TRUE == sc_iterator5_next(it))
     {
         flag = SC_TRUE;
         param1->addr = sc_iterator5_value(it, 0);
@@ -96,11 +97,12 @@ scp_result eraseSetStr5_a_a_f_a_a(scp_operand *param1, scp_operand *param2, scp_
     else
         return SCP_RESULT_FALSE;
 }
+
 scp_result eraseSetStr5_a_a_a_a_f(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5)
 {
     sc_iterator3 *it = sc_iterator3_f_a_a_new(param5->addr, param4->element_type, param2->element_type);
     sc_bool flag = SC_FALSE;
-    while (sc_iterator3_next(it))
+    while (SC_TRUE == sc_iterator3_next(it))
     {
         flag = SC_TRUE;
         param4->addr = sc_iterator3_value(it, 1);
@@ -119,11 +121,12 @@ scp_result eraseSetStr5_a_a_a_a_f(scp_operand *param1, scp_operand *param2, scp_
     else
         return SCP_RESULT_FALSE;
 }
+
 scp_result eraseSetStr5_f_a_f_a_a(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5)
 {
     sc_iterator5 *it = sc_iterator5_f_a_f_a_a_new(param1->addr, param2->element_type, param3->addr, param4->element_type, param5->element_type);
     sc_bool flag = SC_FALSE;
-    while (sc_iterator5_next(it))
+    while (SC_TRUE == sc_iterator5_next(it))
     {
         flag = SC_TRUE;
         param2->addr = sc_iterator5_value(it, 1);
@@ -145,11 +148,12 @@ scp_result eraseSetStr5_f_a_f_a_a(scp_operand *param1, scp_operand *param2, scp_
     else
         return SCP_RESULT_FALSE;
 }
+
 scp_result eraseSetStr5_f_a_a_a_f(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5)
 {
     sc_iterator5 *it = sc_iterator5_f_a_a_a_f_new(param1->addr, param2->element_type, param3->element_type, param4->element_type, param5->addr);
     sc_bool flag = SC_FALSE;
-    while (sc_iterator5_next(it))
+    while (SC_TRUE == sc_iterator5_next(it))
     {
         flag = SC_TRUE;
         param2->addr = sc_iterator5_value(it, 1);
@@ -171,11 +175,12 @@ scp_result eraseSetStr5_f_a_a_a_f(scp_operand *param1, scp_operand *param2, scp_
     else
         return SCP_RESULT_FALSE;
 }
+
 scp_result eraseSetStr5_a_a_f_a_f(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5)
 {
     sc_iterator5 *it = sc_iterator5_a_a_f_a_f_new(param1->element_type, param2->element_type, param3->addr, param4->element_type, param5->addr);
     sc_bool flag = SC_FALSE;
-    while (sc_iterator5_next(it))
+    while (SC_TRUE == sc_iterator5_next(it))
     {
         flag = SC_TRUE;
         param1->addr = sc_iterator5_value(it, 0);
@@ -201,7 +206,7 @@ scp_result eraseSetStr5_f_a_f_a_f(scp_operand *param1, scp_operand *param2, scp_
 {
     sc_iterator5 *it = sc_iterator5_f_a_f_a_f_new(param1->addr, param2->element_type, param3->addr, param4->element_type, param5->addr);
     sc_bool flag = SC_FALSE;
-    while (sc_iterator5_next(it))
+    while (SC_TRUE == sc_iterator5_next(it))
     {
         flag = SC_TRUE;
         param2->addr = sc_iterator5_value(it, 1);
