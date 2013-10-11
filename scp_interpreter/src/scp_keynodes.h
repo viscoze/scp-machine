@@ -40,6 +40,7 @@ extern scp_operand question_finished_unsuccessfully;
 extern scp_operand scp_process;
 extern scp_operand useless_scp_process;
 extern scp_operand nrel_scp_process;
+extern scp_operand nrel_parent_scp_operator;
 extern scp_operand nrel_value;
 
 extern scp_operand active_scp_operator;

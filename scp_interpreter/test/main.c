@@ -13,7 +13,7 @@ void create_process_test()
     sc_addr quest, init, request;
 
     sc_helper_resolve_system_identifier("question_scp_interpretation_request", &request);
-    sc_helper_resolve_system_identifier("quest4", &quest);
+    sc_helper_resolve_system_identifier("quest2", &quest);
     sc_helper_resolve_system_identifier("question_initiated", &init);
     sc_memory_arc_new(sc_type_arc_pos_const_perm, request, quest);
     sc_memory_arc_new(sc_type_arc_pos_const_perm, init, quest);
@@ -43,7 +43,7 @@ void test_scp_process_creating(int value)
 
 int main(void)
 {
-    scp_interpreter_init((sc_char *)"repo", (sc_char *)"test.ini");
+    scp_interpreter_init((sc_char *)"repo", (sc_char *)"sctp_config.ini");
 
     GTimer *timer = 0;
     timer = g_timer_new();

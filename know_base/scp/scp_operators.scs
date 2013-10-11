@@ -5,8 +5,8 @@ scp_operator -> searchElStr5;;
 scp_operator -> searchSetStr3;;
 scp_operator -> searchSetStr5;;
 
-scp_operator -> searchIterStr3;;
-scp_operator -> searchIterStr5;;
+/*scp_operator -> searchIterStr3;;
+scp_operator -> searchIterStr5;;*/
 
 scp_operator -> genEl;;
 scp_operator -> genElStr3;;

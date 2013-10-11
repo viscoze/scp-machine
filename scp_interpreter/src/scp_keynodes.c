@@ -37,6 +37,7 @@ scp_operand question_scp_procedure_preprocessing_request;
 scp_operand scp_process;
 scp_operand useless_scp_process;
 scp_operand nrel_scp_process;
+scp_operand nrel_parent_scp_operator;
 scp_operand nrel_value;
 
 scp_operand active_scp_operator;
@@ -94,6 +95,7 @@ scp_result scp_keynodes_init()
     MAKE_DEFAULT_OPERAND_FIXED(useless_scp_process);
     MAKE_DEFAULT_OPERAND_FIXED(scp_process);
     MAKE_DEFAULT_OPERAND_FIXED(nrel_scp_process);
+    MAKE_DEFAULT_OPERAND_FIXED(nrel_parent_scp_operator);
     MAKE_DEFAULT_OPERAND_FIXED(active_scp_operator);
     MAKE_DEFAULT_OPERAND_FIXED(rrel_then);
     MAKE_DEFAULT_OPERAND_FIXED(rrel_else);
@@ -169,6 +171,10 @@ scp_result scp_keynodes_init()
     if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("nrel_scp_process", &nrel_scp_process))
     {
         return print_error("Keynode not found", "nrel_scp_process");
+    }
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("nrel_parent_scp_operator", &nrel_parent_scp_operator))
+    {
+        return print_error("Keynode not found", "nrel_parent_scp_operator");
     }
     if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("active_scp_operator", &active_scp_operator))
     {

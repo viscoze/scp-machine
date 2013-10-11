@@ -8,6 +8,11 @@ scp_process => nrel_main_ru_idtf:
 scp_process => nrel_main_en_idtf:
 	[scp-process];;
 
+nrel_parent_scp_operator => nrel_main_ru_idtf:
+	[родительский scp-оператор*];;
+nrel_parent_scp_operator => nrel_main_en_idtf:
+	[parent scp-operator*];;
+
 nrel_scp_process => nrel_main_ru_idtf:
 	[scp-процесс*];;
 nrel_scp_process => nrel_main_en_idtf:
