@@ -62,6 +62,8 @@ rrel_temp => nrel_main_en_idtf:
 	[temp'];;
 rrel_perm => nrel_main_en_idtf:
 	[perm'];;
+rrel_access => nrel_main_en_idtf:
+	[access'];;
 
 /* Next operator selection rrels */
 rrel_then => nrel_main_en_idtf:

@@ -128,6 +128,11 @@ scp_result resolve_operands_modifiers(scp_operand *scp_operator_node, scp_operan
                 operand.element_type = operand.element_type | scp_type_arc_perm;
                 continue;
             }
+            if (SCP_RESULT_TRUE == ifCoin(&modifier, &rrel_access))
+            {
+                operand.element_type = operand.element_type | scp_type_arc_access;
+                continue;
+            }
             if (SCP_RESULT_TRUE == ifCoin(&modifier, &rrel_pos))
             {
                 operand.element_type = operand.element_type | scp_type_arc_pos;

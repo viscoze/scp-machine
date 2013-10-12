@@ -13,7 +13,7 @@ void create_process_test()
     sc_addr quest, init, request;
 
     sc_helper_resolve_system_identifier("question_scp_interpretation_request", &request);
-    sc_helper_resolve_system_identifier("quest2", &quest);
+    sc_helper_resolve_system_identifier("quest_proc_search_all_input", &quest);
     sc_helper_resolve_system_identifier("question_initiated", &init);
     sc_memory_arc_new(sc_type_arc_pos_const_perm, request, quest);
     sc_memory_arc_new(sc_type_arc_pos_const_perm, init, quest);
@@ -53,6 +53,8 @@ int main(void)
     preprocess_procedure("test_prog2_2");
     preprocess_procedure("test_prog3");
     preprocess_procedure("test_prog4");
+    preprocess_procedure("proc_search_all_output");
+    preprocess_procedure("proc_search_all_input");
 
     test_scp_process_creating(1);
 

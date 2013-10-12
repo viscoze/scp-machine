@@ -75,6 +75,7 @@ scp_operand rrel_neg;
 scp_operand rrel_fuz;
 scp_operand rrel_temp;
 scp_operand rrel_perm;
+scp_operand rrel_access;
 
 // Ordinals
 scp_operand ordinal_rrel;
@@ -125,6 +126,7 @@ scp_result scp_keynodes_init()
     MAKE_DEFAULT_OPERAND_FIXED(rrel_fuz);
     MAKE_DEFAULT_OPERAND_FIXED(rrel_temp);
     MAKE_DEFAULT_OPERAND_FIXED(rrel_perm);
+    MAKE_DEFAULT_OPERAND_FIXED(rrel_access);
     MAKE_DEFAULT_OPERAND_FIXED(ordinal_rrel);
     MAKE_DEFAULT_OPERAND_FIXED(ordinal_set_rrel);
     for (i = 1; i <= ORDINAL_RRELS_COUNT; i++)
@@ -292,6 +294,10 @@ scp_result scp_keynodes_init()
     if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("rrel_perm", &rrel_perm))
     {
         return print_error("Keynode not found", "rrel_perm");
+    }
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("rrel_access", &rrel_access))
+    {
+        return print_error("Keynode not found", "rrel_access");
     }
 
     if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("ordinal_rrel", &ordinal_rrel))

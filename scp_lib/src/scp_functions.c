@@ -831,26 +831,26 @@ scp_result printEl(scp_operand *param)
             data = calloc(length + 1, sizeof(sc_char));
             sc_stream_read_data(stream, data, length, &read_length);
             data[length] = '\0';
-            if (SCP_RESULT_TRUE == check_type(addr3, scp_type_arc_common))
+            if (SCP_RESULT_TRUE == check_type(addr3, scp_type_arc_access))
             {
-                printf("\t%s <= ", data);
+                printf("\t%s <- ", data);
             }
             else
             {
-                printf("\t%s <- ", data);
+                printf("\t%s <= ", data);
             }
             sc_stream_free(stream);
             free(data);
         }
         else
         {
-            if (SCP_RESULT_TRUE == check_type(addr3, scp_type_arc_common))
+            if (SCP_RESULT_TRUE == check_type(addr3, scp_type_arc_access))
             {
-                printf("\t%u|%u <= ", addr3.seg, addr3.offset);
+                printf("\t%u|%u <- ", addr3.seg, addr3.offset);
             }
             else
             {
-                printf("\t%u|%u <- ", addr3.seg, addr3.offset);
+                printf("\t%u|%u <= ", addr3.seg, addr3.offset);
             }
         }
         if (SC_RESULT_OK == sc_helper_get_system_identifier(addr2, &idtf))
@@ -895,26 +895,26 @@ scp_result printEl(scp_operand *param)
             data = calloc(length + 1, sizeof(sc_char));
             sc_stream_read_data(stream, data, length, &read_length);
             data[length] = '\0';
-            if (SCP_RESULT_TRUE == check_type(addr2, scp_type_arc_common))
+            if (SCP_RESULT_TRUE == check_type(addr2, scp_type_arc_access))
             {
-                printf("\t%s => ", data);
+                printf("\t%s -> ", data);
             }
             else
             {
-                printf("\t%s -> ", data);
+                printf("\t%s => ", data);
             }
             sc_stream_free(stream);
             free(data);
         }
         else
         {
-            if (SCP_RESULT_TRUE == check_type(addr2, scp_type_arc_common))
+            if (SCP_RESULT_TRUE == check_type(addr2, scp_type_arc_access))
             {
-                printf("\t%u|%u => ", addr2.seg, addr2.offset);
+                printf("\t%u|%u -> ", addr2.seg, addr2.offset);
             }
             else
             {
-                printf("\t%u|%u -> ", addr2.seg, addr2.offset);
+                printf("\t%u|%u => ", addr2.seg, addr2.offset);
             }
 
         }

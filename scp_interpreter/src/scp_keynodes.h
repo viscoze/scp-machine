@@ -77,6 +77,7 @@ extern scp_operand rrel_neg;
 extern scp_operand rrel_fuz;
 extern scp_operand rrel_temp;
 extern scp_operand rrel_perm;
+extern scp_operand rrel_access;
 
 // Ordinals
 extern scp_operand ordinal_rrel;
