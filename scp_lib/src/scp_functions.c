@@ -950,10 +950,10 @@ scp_result printL(scp_operand *param, sc_bool new_line)
     {
         return print_error("print", "Parameter has not value");
     }
-    if (SCP_RESULT_FALSE == check_type(param->addr, sc_type_link))
+    /*if (SCP_RESULT_FALSE == check_type(param->addr, sc_type_link))
     {
         return print_error("print", "Parameter is not an sc-link");
-    }
+    }*/
     if (sc_memory_get_link_content(param->addr, &stream) != SC_RESULT_OK)
     {
         return print_error("print", "Content reading error");

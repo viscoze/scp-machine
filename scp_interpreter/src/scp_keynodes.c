@@ -39,6 +39,7 @@ scp_operand useless_scp_process;
 scp_operand nrel_scp_process;
 scp_operand nrel_parent_scp_operator;
 scp_operand nrel_value;
+scp_operand nrel_system_identifier;
 
 scp_operand active_scp_operator;
 
@@ -97,6 +98,8 @@ scp_result scp_keynodes_init()
     MAKE_DEFAULT_OPERAND_FIXED(scp_process);
     MAKE_DEFAULT_OPERAND_FIXED(nrel_scp_process);
     MAKE_DEFAULT_OPERAND_FIXED(nrel_parent_scp_operator);
+    MAKE_DEFAULT_OPERAND_FIXED(nrel_system_identifier);
+    MAKE_DEFAULT_OPERAND_FIXED(nrel_value);
     MAKE_DEFAULT_OPERAND_FIXED(active_scp_operator);
     MAKE_DEFAULT_OPERAND_FIXED(rrel_then);
     MAKE_DEFAULT_OPERAND_FIXED(rrel_else);
@@ -107,7 +110,6 @@ scp_result scp_keynodes_init()
     MAKE_DEFAULT_OPERAND_FIXED(rrel_operators_copying_pattern);
     MAKE_DEFAULT_OPERAND_FIXED(rrel_params);
     MAKE_DEFAULT_OPERAND_FIXED(rrel_operators);
-    MAKE_DEFAULT_OPERAND_FIXED(nrel_value);
     MAKE_DEFAULT_OPERAND_FIXED(rrel_init);
     MAKE_DEFAULT_OPERAND_FIXED(rrel_in);
     MAKE_DEFAULT_OPERAND_FIXED(rrel_out);
@@ -177,6 +179,10 @@ scp_result scp_keynodes_init()
     if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("nrel_parent_scp_operator", &nrel_parent_scp_operator))
     {
         return print_error("Keynode not found", "nrel_parent_scp_operator");
+    }
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("hypermedia_nrel_system_identifier", &nrel_system_identifier))
+    {
+        return print_error("Keynode not found", "hypermedia_nrel_system_identifier");
     }
     if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("active_scp_operator", &active_scp_operator))
     {

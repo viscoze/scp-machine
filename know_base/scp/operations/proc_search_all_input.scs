@@ -1,6 +1,7 @@
 scp_procedure -> proc_search_all_input (*	
 	-> rrel_params: .proc_search_all_input_params (*
 		-> rrel_1: rrel_in: _parameter;;
+		-> rrel_2: rrel_out: _answer;;
 	*);;
 	
 	-> rrel_operators: .proc_search_all_input_operator_set (*
@@ -79,12 +80,6 @@ scp_procedure -> proc_search_all_input (*
 		/* Garbage cleaning */
 		-> .proc_search_all_input_operator8 (*
 		  <- eraseEl;;
-		  -> rrel_1: rrel_fixed: rrel_erase: rrel_scp_var: _answer;;
-
-		  -> rrel_goto: .proc_search_all_input_operator9;;
-		*);;
-		-> .proc_search_all_input_operator9 (*
-		  <- eraseEl;;
 		  -> rrel_1: rrel_fixed: rrel_erase: rrel_scp_var: _set_elem;;
 
 		  -> rrel_goto: .proc_search_all_input_operator_return;;
@@ -103,5 +98,6 @@ quest_proc_search_all_input_parameter <- node7777;;
 quest_proc_search_all_input -> rrel_1: proc_search_all_input;;
 quest_proc_search_all_input -> rrel_2: .quest_proc_search_all_input_params (* 
 	-> rrel_1: quest_proc_search_all_input_parameter;;
+	-> rrel_2: _var_quest_proc_search_all_input_parameter;;
 	*);;
 

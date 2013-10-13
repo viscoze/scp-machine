@@ -19,19 +19,6 @@ void create_process_test()
     sc_memory_arc_new(sc_type_arc_pos_const_perm, init, quest);
 }
 
-void preprocess_procedure(const sc_char *name)
-{
-    sc_addr quest, init, request, prog;
-
-    sc_helper_resolve_system_identifier("question_scp_procedure_preprocessing_request", &request);
-    sc_helper_resolve_system_identifier(name, &prog);
-    sc_helper_resolve_system_identifier("question_initiated", &init);
-    quest = sc_memory_node_new(scp_type_const);
-    sc_memory_arc_new(sc_type_arc_pos_const_perm, request, quest);
-    sc_memory_arc_new(sc_type_arc_pos_const_perm, quest, prog);
-    sc_memory_arc_new(sc_type_arc_pos_const_perm, init, quest);
-}
-
 void test_scp_process_creating(int value)
 {
     int i = 0;
@@ -48,13 +35,6 @@ int main(void)
     GTimer *timer = 0;
     timer = g_timer_new();
     g_timer_start(timer);
-
-    preprocess_procedure("test_prog2");
-    preprocess_procedure("test_prog2_2");
-    preprocess_procedure("test_prog3");
-    preprocess_procedure("test_prog4");
-    preprocess_procedure("proc_search_all_output");
-    preprocess_procedure("proc_search_all_input");
 
     test_scp_process_creating(1);
 

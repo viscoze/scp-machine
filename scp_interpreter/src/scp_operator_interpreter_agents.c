@@ -44,7 +44,7 @@ sc_event *event_if_operators_interpreter;
 sc_event *event_other_operators_interpreter;
 sc_event *event_system_operators_interpreter;
 
-scp_bool debug_mode = SCP_TRUE;
+scp_bool debug_mode = SCP_FALSE;
 
 void print_debug_info(const char *info)
 {
@@ -2653,7 +2653,7 @@ sc_result interpreting_question_finished_successfully(sc_event *event, sc_addr a
         }
         scp_iterator3_free(it1);
 
-        printf("INTERPRETATION FINISHED SUCCESSFULLY\n");
+        //printf("INTERPRETATION FINISHED SUCCESSFULLY\n");
     }
     return SC_RESULT_OK;
 }
