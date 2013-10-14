@@ -71,6 +71,7 @@ typedef sc_uint32 scp_uint32;
 
 // scp-element types
 extern scp_type scp_type_node;
+extern scp_type scp_type_arc;
 extern scp_type scp_type_link;
 extern scp_type scp_type_edge_common;
 extern scp_type scp_type_arc_common;

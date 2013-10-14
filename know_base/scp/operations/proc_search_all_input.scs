@@ -1,7 +1,7 @@
 scp_procedure -> proc_search_all_input (*	
 	-> rrel_params: .proc_search_all_input_params (*
 		-> rrel_1: rrel_in: _parameter;;
-		-> rrel_2: rrel_out: _answer;;
+		-> rrel_2: rrel_in: _answer;;
 	*);;
 	
 	-> rrel_operators: .proc_search_all_input_operator_set (*
@@ -9,13 +9,6 @@ scp_procedure -> proc_search_all_input (*
 		-> rrel_init: .proc_search_all_input_operator1 (*
 		  <- genEl;;
 		  -> rrel_1: rrel_assign: rrel_const: rrel_node: rrel_scp_var: _set_elem;;
-
-		  -> rrel_goto: .proc_search_all_input_operator2;;
-		*);;
-
-		-> .proc_search_all_input_operator2 (*
-		  <- genEl;;
-		  -> rrel_1: rrel_assign: rrel_const: rrel_node: rrel_scp_var: _answer;;
 
 		  -> rrel_goto: .proc_search_all_input_operator3;;
 		*);;
@@ -41,7 +34,7 @@ scp_procedure -> proc_search_all_input (*
 		  -> rrel_3: rrel_assign: rrel_scp_var: _curr_elem;;
 
 		  -> rrel_then: .proc_search_all_input_operator5;;
-		  -> rrel_else: .proc_search_all_input_operator_print_result;;
+		  -> rrel_else: .proc_search_all_input_operator7_5;;
 		*);;
 
 		-> .proc_search_all_input_operator5 (*
@@ -68,6 +61,15 @@ scp_procedure -> proc_search_all_input (*
 		  -> rrel_3: rrel_fixed: rrel_scp_var: _curr_elem;;
 
 		  -> rrel_goto: .proc_search_all_input_operator4;;
+		*);;
+
+		-> .proc_search_all_input_operator7_5 (*
+		  <- genElStr3;;
+		  -> rrel_1: rrel_fixed: rrel_scp_var: _answer;;
+		  -> rrel_2: rrel_assign: rrel_const: rrel_pos: rrel_access: rrel_scp_var: _arc1;;
+		  -> rrel_3: rrel_fixed: rrel_scp_var: _parameter;;
+
+		  -> rrel_goto: .proc_search_all_input_operator_print_result;;
 		*);;
 
 		-> .proc_search_all_input_operator_print_result (*
@@ -98,6 +100,6 @@ quest_proc_search_all_input_parameter <- node7777;;
 quest_proc_search_all_input -> rrel_1: proc_search_all_input;;
 quest_proc_search_all_input -> rrel_2: .quest_proc_search_all_input_params (* 
 	-> rrel_1: quest_proc_search_all_input_parameter;;
-	-> rrel_2: _var_quest_proc_search_all_input_parameter;;
+	-> rrel_2: quest_proc_search_all_input_answer;;
 	*);;
 

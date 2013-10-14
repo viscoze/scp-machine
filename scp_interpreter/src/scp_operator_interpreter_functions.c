@@ -115,7 +115,7 @@ scp_result resolve_operands_modifiers(scp_operand *scp_operator_node, scp_operan
             }
             if (SCP_RESULT_TRUE == ifCoin(&modifier, &rrel_arc))
             {
-                operand.element_type = operand.element_type | (~scp_type_node);
+                operand.element_type = operand.element_type | scp_type_arc;
                 continue;
             }
             if (SCP_RESULT_TRUE == ifCoin(&modifier, &rrel_temp))

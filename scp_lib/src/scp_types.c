@@ -23,6 +23,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scp_types.h"
 
 scp_type scp_type_node = sc_type_node;
+scp_type scp_type_arc = sc_type_arc_mask;
 scp_type scp_type_link = sc_type_link;
 scp_type scp_type_edge_common = sc_type_edge_common;
 scp_type scp_type_arc_common = sc_type_arc_common;
