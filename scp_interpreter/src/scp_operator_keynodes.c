@@ -83,6 +83,10 @@ scp_operand op_waitReturn;
 scp_operand op_waitReturnSet;
 scp_operand op_return;
 
+scp_operand op_sys_set_event_handler;
+scp_operand op_sys_delete_event_handler;
+scp_operand op_sys_wait;
+
 scp_result init_operator_keynodes()
 {
     MAKE_DEFAULT_OPERAND_FIXED(scp_operator);
@@ -130,6 +134,9 @@ scp_result init_operator_keynodes()
     MAKE_DEFAULT_OPERAND_FIXED(op_waitReturn);
     MAKE_DEFAULT_OPERAND_FIXED(op_waitReturnSet);
     MAKE_DEFAULT_OPERAND_FIXED(op_return);
+    MAKE_DEFAULT_OPERAND_FIXED(op_sys_set_event_handler);
+    MAKE_DEFAULT_OPERAND_FIXED(op_sys_delete_event_handler);
+    MAKE_DEFAULT_OPERAND_FIXED(op_sys_wait);
     if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("scp_operator", &scp_operator))
     {
         return print_error("Keynode not found", "scp_operator");
@@ -309,6 +316,19 @@ scp_result init_operator_keynodes()
     if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("return", &op_return))
     {
         return print_error("Keynode not found", "return");
+    }
+
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("sys_set_event_handler", &op_sys_set_event_handler))
+    {
+        return print_error("Keynode not found", "sys_set_event_handler");
+    }
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("sys_delete_event_handler", &op_sys_delete_event_handler))
+    {
+        return print_error("Keynode not found", "sys_delete_event_handler");
+    }
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("sys_wait", &op_sys_wait))
+    {
+        return print_error("Keynode not found", "sys_wait");
     }
 
     return SCP_RESULT_TRUE;

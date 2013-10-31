@@ -24,7 +24,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "scp_types.h"
 
-scp_result scp_lib_init(const sc_char *repo_path, const sc_char *config_file);
+scp_result scp_lib_init();
 scp_result scp_lib_shutdown();
 
 scp_result genEl(scp_operand *param);

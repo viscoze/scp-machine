@@ -1,6 +1,6 @@
 
-#include "scp_interpreter.h"
-#include "scp_keynodes.h"
+//#include "scp_interpreter.h"
+//#include "scp_keynodes.h"
 #include "sc_helper.h"
 #include "sc_memory_headers.h"
 
@@ -10,12 +10,10 @@
 
 void create_process_test()
 {
-    sc_addr quest, init, request;
+    sc_addr quest, init;
 
-    sc_helper_resolve_system_identifier("question_scp_interpretation_request", &request);
-    sc_helper_resolve_system_identifier("quest_proc_search_all_input_with_attr", &quest);
+    sc_helper_resolve_system_identifier("test_question", &quest);
     sc_helper_resolve_system_identifier("question_initiated", &init);
-    sc_memory_arc_new(sc_type_arc_pos_const_perm, request, quest);
     sc_memory_arc_new(sc_type_arc_pos_const_perm, init, quest);
 }
 
@@ -30,7 +28,10 @@ void test_scp_process_creating(int value)
 
 int main(void)
 {
-    scp_interpreter_init((sc_char *)"repo", (sc_char *)"sctp_config.ini");
+    sc_memory_initialize((sc_char *)"repo", (sc_char *)"sctp_config.ini");
+    sc_helper_init();
+    sc_memory_initialize_ext("extensions");
+    //scp_interpreter_init();
 
     GTimer *timer = 0;
     timer = g_timer_new();

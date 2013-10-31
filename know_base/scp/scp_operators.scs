@@ -56,3 +56,6 @@ scp_operator -> waitReturn;;
 scp_operator -> waitReturnSet;;
 scp_operator -> return;;
 
+scp_operator -> sys_set_event_handler;;
+scp_operator -> sys_delete_event_handler;;
+scp_operator -> sys_wait;;

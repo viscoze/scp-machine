@@ -3,13 +3,13 @@ TEMPLATE = lib
 INCLUDEPATH += ../../sc-machine/sc-memory/src
 INCLUDEPATH += ../../sc-machine/sc-memory/src/sc-store
 INCLUDEPATH += ../scp_lib/src
-DESTDIR = ../../sc-machine/bin
+DESTDIR = ../../sc-machine/bin/extensions
 OBJECTS_DIR = ./obj
 
 win32 {
     CONFIG += qt console
     LIBS += -L "../../sc-machine/bin" -lsc_memoryd
-    LIBS += -L "../../sc-machine/bin" -lscp_libd
+    LIBS += -L "../../sc-machine/bin/extensions" -lscp_libd
 
     INCLUDEPATH += "../glib/include/glib-2.0"
     INCLUDEPATH += "../glib/lib/glib-2.0/include"

@@ -416,7 +416,7 @@ sc_result preprocess_scp_procedure(sc_event *event, sc_addr arg)
     if (SCP_RESULT_TRUE == gen_system_structures(&scp_procedure_operators, &scp_procedure_params, &scp_procedure_vars, &scp_procedure_consts, &scp_procedure_operators_copying_pattern))
     {
         finish_question_successfully(&question_node);
-        //! TODO Remove finished question
+        //! TODO Remove finished question with authors set
         //printf("PREPROCESSING FINISHED\n");
         return SC_RESULT_ERROR;
     }
@@ -442,6 +442,7 @@ scp_result preprocess_all_scp_procedures()
         genElStr3(&question_scp_procedure_preprocessing_request, &arc, &quest);
         quest.param_type = SCP_FIXED;
         genElStr3(&quest, &arc, &proc);
+        set_author(&quest, &scp_interpreter);
         genElStr3(&question_initiated, &arc, &quest);
         proc.param_type = SCP_ASSIGN;
     }

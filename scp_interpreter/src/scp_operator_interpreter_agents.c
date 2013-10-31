@@ -43,6 +43,10 @@ sc_event *event_content_trig_operators_interpreter;
 sc_event *event_if_operators_interpreter;
 sc_event *event_other_operators_interpreter;
 sc_event *event_system_operators_interpreter;
+sc_event *event_event_operators_interpreter;
+
+GHashTable *scp_event_table;
+GHashTable *scp_wait_event_table;
 
 scp_bool debug_mode = SCP_TRUE;
 
@@ -1419,7 +1423,7 @@ sc_result interpreter_agent_call_operator(sc_event *event, sc_addr arg)
         return SC_RESULT_ERROR;
     }
 
-    //return case
+    //call case
     if (SCP_RESULT_TRUE == ifCoin(&operator_type, &op_call))
     {
         scp_operand arc1, arc2, arc3, quest, prog_node, params_node, modifier, new_params_node,
@@ -1563,15 +1567,15 @@ sc_result interpreter_agent_call_operator(sc_event *event, sc_addr arg)
         genElStr5(&quest, &arc3, &operator_node, &arc2, &nrel_parent_scp_operator);
 
         genElStr3(&question_scp_interpretation_request, &arc1, &quest);
+        set_author(&quest, &scp_interpreter);
         genElStr3(&question_initiated, &arc1, &quest);
-
         goto_unconditional(&operator_node);
     }
 
     return SC_RESULT_OK;
 }
 
-sc_result interpreter_agent_waitReturn_operator(sc_event *event, sc_addr arg)
+sc_result interpreter_agent_waitReturn_operators(sc_event *event, sc_addr arg)
 {
     scp_operand input_arc, node1, operator_node, operator_type;
 
@@ -1603,7 +1607,7 @@ sc_result interpreter_agent_waitReturn_operator(sc_event *event, sc_addr arg)
     //waitReturn case
     if (SCP_RESULT_TRUE == ifCoin(&operator_type, &op_waitReturn))
     {
-        scp_operand arc1, arc2, quest, descr_node, params;
+        scp_operand arc1, arc2, quest, descr_node, params, authors;
         input_arc.erase = SCP_TRUE;
         eraseEl(&input_arc);
         print_debug_info("waitReturn");
@@ -1617,10 +1621,18 @@ sc_result interpreter_agent_waitReturn_operator(sc_event *event, sc_addr arg)
         get_operands_values(&descr_node, &quest, 1);
         if (SCP_RESULT_TRUE == searchElStr3(&question_finished_successfully, &arc1, &quest))
         {
-            quest.erase = SCP_TRUE;
             quest.param_type = SCP_FIXED;
+
+            MAKE_COMMON_ARC_ASSIGN(arc1);
+            MAKE_DEFAULT_OPERAND_ASSIGN(authors);
+            authors.erase = SCP_TRUE;
+            quest.erase = SCP_FALSE;
+            eraseElStr5(&authors, &arc1, &quest, &arc2, &nrel_authors);
+            MAKE_DEFAULT_ARC_ASSIGN(arc1);
+
             MAKE_DEFAULT_OPERAND_ASSIGN(params);
             params.erase = SCP_TRUE;
+            quest.erase = SCP_TRUE;
             eraseElStr5(&quest, &arc1, &params, &arc2, &ordinal_rrels[2]);
             goto_unconditional(&operator_node);
         }
@@ -1630,7 +1642,7 @@ sc_result interpreter_agent_waitReturn_operator(sc_event *event, sc_addr arg)
     //waitReturnSet case
     if (SCP_RESULT_TRUE == ifCoin(&operator_type, &op_waitReturnSet))
     {
-        scp_operand arc1, arc2, quest, descr_set, params;
+        scp_operand arc1, arc2, quest, descr_set, params, authors;
         scp_iterator3 *it;
         input_arc.erase = SCP_TRUE;
         eraseEl(&input_arc);
@@ -1651,9 +1663,14 @@ sc_result interpreter_agent_waitReturn_operator(sc_event *event, sc_addr arg)
             quest.param_type = SCP_FIXED;
             if (SCP_RESULT_TRUE == searchElStr3(&question_finished_successfully, &arc1, &quest))
             {
+                MAKE_COMMON_ARC_ASSIGN(arc1);
+                MAKE_DEFAULT_OPERAND_ASSIGN(authors);
+                authors.erase = SCP_TRUE;
+                quest.erase = SCP_FALSE;
+                eraseElStr5(&authors, &arc1, &quest, &arc2, &nrel_authors);
+                MAKE_DEFAULT_ARC_ASSIGN(arc1);
                 quest.erase = SCP_TRUE;
                 eraseElStr5(&quest, &arc1, &params, &arc2, &ordinal_rrels[2]);
-
             }
             quest.param_type = SCP_ASSIGN;
         }
@@ -1665,6 +1682,156 @@ sc_result interpreter_agent_waitReturn_operator(sc_event *event, sc_addr arg)
             eraseEl(&descr_set);
             goto_unconditional(&operator_node);
         }
+        return SC_RESULT_OK;
+    }
+
+    return SC_RESULT_ERROR;
+}
+
+sc_result scp_event_procedure_processor(sc_event *event, sc_addr arg)
+{
+    scp_operand event_node, arc1, arc2, procedure, quest, params, second_param, node, input_arc;
+    MAKE_DEFAULT_OPERAND_FIXED(event_node);
+    MAKE_DEFAULT_ARC_ASSIGN(arc1);
+    MAKE_DEFAULT_ARC_ASSIGN(arc2);
+    MAKE_DEFAULT_NODE_ASSIGN(quest);
+    MAKE_DEFAULT_OPERAND_ASSIGN(procedure);
+
+    MAKE_DEFAULT_OPERAND_FIXED(input_arc);
+    input_arc.addr = arg;
+    MAKE_DEFAULT_OPERAND_ASSIGN(node);
+    if (SCP_RESULT_TRUE != ifVarAssign(&input_arc))
+    {
+        return SC_RESULT_ERROR;
+    }
+    searchElStr3(&node, &input_arc, &quest);
+    quest.param_type = SCP_FIXED;
+    if (SCP_RESULT_TRUE == check_scp_interpreter_question(&quest))
+    {
+        return SC_RESULT_OK;
+    }
+    quest.param_type = SCP_ASSIGN;
+    event_node.addr = resolve_sc_addr_from_int(event->id);
+    searchElStr5(&event_node, &arc1, &procedure, &arc2, &rrel_scp_event_procedure);
+    procedure.param_type = SCP_FIXED;
+
+    genElStr5(&quest, &arc1, &procedure, &arc2, ordinal_rrels + 1);
+    quest.param_type = SCP_FIXED;
+    genElStr5(&quest, &arc1, &params, &arc2, ordinal_rrels + 2);
+    params.param_type = SCP_FIXED;
+    genElStr5(&params, &arc1, &event_node, &arc2, ordinal_rrels + 1);
+    MAKE_DEFAULT_OPERAND_FIXED(second_param);
+    second_param.addr = arg;
+    genElStr5(&params, &arc1, &second_param, &arc2, ordinal_rrels + 2);
+
+    genElStr3(&question_scp_interpretation_request, &arc1, &quest);
+    set_author(&quest, &scp_interpreter);
+    genElStr3(&question_initiated, &arc1, &quest);
+
+    return SC_RESULT_OK;
+}
+
+scp_result create_scp_event(scp_operand *operands)
+{
+    scp_operand arc1, arc2;
+    sc_event_type type;
+    sc_event *event;
+
+    MAKE_DEFAULT_NODE_ASSIGN(operands[3]);
+    MAKE_DEFAULT_ARC_ASSIGN(arc1);
+    MAKE_DEFAULT_ARC_ASSIGN(arc2);
+
+    genElStr5(operands + 3, &arc1, operands, &arc2, &rrel_scp_event_type);
+    operands[3].param_type = SCP_FIXED;
+    genElStr5(operands + 3, &arc1, operands + 1, &arc2, &rrel_scp_event_procedure);
+    genElStr5(operands + 3, &arc1, operands + 2, &arc2, &rrel_scp_event_processing_element);
+
+    if (SCP_RESULT_TRUE != resolve_scp_event_type(operands, &type))
+    {
+        return print_error("Event processing", "Can't resolve event type");
+    }
+
+    event = sc_event_new(operands[2].addr, type, SC_ADDR_LOCAL_TO_INT(operands[3].addr), scp_event_procedure_processor, NULL);
+    g_hash_table_insert(scp_event_table, MAKE_HASH(operands[3]), (gpointer)event);
+    return SC_RESULT_OK;
+}
+
+scp_result delete_scp_event(scp_operand *operand)
+{
+    g_hash_table_remove(scp_event_table, MAKE_PHASH(operand));
+    eraseEl(operand);
+    return SCP_RESULT_TRUE;
+}
+
+/*sc_result scp_wait_processor(sc_event *event, sc_addr arg)
+{
+    return SC_RESULT_OK;
+}*/
+
+sc_result interpreter_agent_event_operators(sc_event *event, sc_addr arg)
+{
+    scp_operand input_arc, node1, operator_node, operator_type;
+
+    MAKE_DEFAULT_OPERAND_FIXED(input_arc);
+    input_arc.addr = arg;
+
+    MAKE_DEFAULT_NODE_ASSIGN(node1);
+    MAKE_DEFAULT_NODE_ASSIGN(operator_node);
+    if (SCP_RESULT_TRUE != ifVarAssign(&input_arc))
+    {
+        return SC_RESULT_ERROR;
+    }
+    if (SCP_RESULT_TRUE != searchElStr3(&node1, &input_arc, &operator_node))
+    {
+        print_error("scp-operator interpreting", "Can't find operator node");
+        return SC_RESULT_ERROR;
+    }
+    operator_node.param_type = SCP_FIXED;
+
+    MAKE_DEFAULT_NODE_ASSIGN(operator_type);
+    if (SCP_RESULT_TRUE != resolve_operator_type(&operator_node, &operator_type))
+    {
+        printEl(&operator_node);
+        print_error("scp-operator interpreting", "Can't resolve operator type");
+        operator_interpreting_crash(&operator_node);
+        return SC_RESULT_ERROR;
+    }
+
+    //sys_set_event_handler case
+    if (SCP_RESULT_TRUE == ifCoin(&operator_type, &op_sys_set_event_handler))
+    {
+        scp_operand operands[4], operands_values[4];
+        input_arc.erase = SCP_TRUE;
+        eraseEl(&input_arc);
+        print_debug_info("sys_set_event_handler");
+
+        resolve_operands_modifiers(&operator_node, operands, 4);
+        get_operands_values(operands, operands_values, 4);
+        if (SCP_RESULT_TRUE != create_scp_event(operands_values))
+        {
+            return SC_RESULT_ERROR;
+        }
+        set_operands_values(operands, operands_values, 4);
+        goto_unconditional(&operator_node);
+        return SC_RESULT_OK;
+    }
+
+    //sys_delete_event_handler case
+    if (SCP_RESULT_TRUE == ifCoin(&operator_type, &op_sys_delete_event_handler))
+    {
+        scp_operand operand, operand_value;
+        input_arc.erase = SCP_TRUE;
+        eraseEl(&input_arc);
+        print_debug_info("sys_delete_event_handler");
+
+        resolve_operands_modifiers(&operator_node, &operand, 1);
+        get_operands_values(&operand, &operand_value, 1);
+        if (SCP_RESULT_TRUE != delete_scp_event(&operand_value))
+        {
+            return SC_RESULT_ERROR;
+        }
+        set_operands_values(&operand, &operand_value, 1);
+        goto_unconditional(&operator_node);
         return SC_RESULT_OK;
     }
 
@@ -2565,7 +2732,7 @@ sc_result interpreting_question_finished_successfully(sc_event *event, sc_addr a
     }
     if (SCP_RESULT_TRUE == searchElStr3(&question_scp_interpretation_request, &input_arc, &quest))
     {
-        scp_operand arc1, arc2, arc3, descr_node, descr_set, operator_node, operator_type, params;
+        scp_operand arc1, arc2, arc3, descr_node, descr_set, operator_node, operator_type, params, authors;
         scp_iterator3 *it1;
         MAKE_DEFAULT_ARC_ASSIGN(arc1);
         MAKE_DEFAULT_ARC_ASSIGN(arc2);
@@ -2589,9 +2756,15 @@ sc_result interpreting_question_finished_successfully(sc_event *event, sc_addr a
                     operator_node.param_type = SCP_FIXED;
                     if (SCP_RESULT_TRUE == searchElStr3(&active_scp_operator, &arc1, &operator_node))
                     {
-                        quest.erase = SCP_TRUE;
+                        MAKE_COMMON_ARC_ASSIGN(arc1);
+                        MAKE_DEFAULT_OPERAND_ASSIGN(authors);
+                        authors.erase = SCP_TRUE;
+                        quest.erase = SCP_FALSE;
+                        eraseElStr5(&authors, &arc1, &quest, &arc2, &nrel_authors);
+                        MAKE_DEFAULT_ARC_ASSIGN(arc1);
                         MAKE_DEFAULT_OPERAND_ASSIGN(params);
                         params.erase = SCP_TRUE;
+                        quest.erase = SCP_TRUE;
                         eraseElStr5(&quest, &arc1, &params, &arc2, &ordinal_rrels[2]);
                         goto_unconditional(&operator_node);
                         return SC_RESULT_OK;
@@ -2623,9 +2796,15 @@ sc_result interpreting_question_finished_successfully(sc_event *event, sc_addr a
                         operator_node.param_type = SCP_FIXED;
                         if (SCP_RESULT_TRUE == searchElStr3(&active_scp_operator, &arc1, &operator_node))
                         {
-                            quest.erase = SCP_TRUE;
+                            MAKE_COMMON_ARC_ASSIGN(arc1);
+                            MAKE_DEFAULT_OPERAND_ASSIGN(authors);
+                            authors.erase = SCP_TRUE;
+                            quest.erase = SCP_FALSE;
+                            eraseElStr5(&authors, &arc1, &quest, &arc2, &nrel_authors);
+                            MAKE_DEFAULT_ARC_ASSIGN(arc1);
                             MAKE_DEFAULT_OPERAND_ASSIGN(params);
                             params.erase = SCP_TRUE;
+                            quest.erase = SCP_TRUE;
                             eraseElStr5(&quest, &arc1, &params, &arc2, &ordinal_rrels[2]);
                             if (SCP_RESULT_TRUE != searchElStr3(&descr_set, &arc1, &params))
                             {
@@ -2649,6 +2828,11 @@ sc_result interpreting_question_finished_successfully(sc_event *event, sc_addr a
         //printf("INTERPRETATION FINISHED SUCCESSFULLY\n");
     }
     return SC_RESULT_OK;
+}
+
+void destroy_event_table_item(gpointer data)
+{
+    sc_event_destroy((sc_event *)data);
 }
 
 scp_result scp_operator_interpreter_agents_init()
@@ -2682,6 +2866,9 @@ scp_result scp_operator_interpreter_agents_init()
     event_system_operators_interpreter = sc_event_new(active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, interpreter_agent_system_operators, 0);
     if (event_system_operators_interpreter == nullptr)
         return SCP_RESULT_ERROR;
+    event_event_operators_interpreter = sc_event_new(active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, interpreter_agent_event_operators, 0);
+    if (event_event_operators_interpreter == nullptr)
+        return SCP_RESULT_ERROR;
     event_print_operators_interpreter = sc_event_new(active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, interpreter_agent_print_operators, 0);
     if (event_print_operators_interpreter == nullptr)
         return SCP_RESULT_ERROR;
@@ -2691,9 +2878,13 @@ scp_result scp_operator_interpreter_agents_init()
     event_call_operator_interpreter = sc_event_new(active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, interpreter_agent_call_operator, 0);
     if (event_call_operator_interpreter == nullptr)
         return SCP_RESULT_ERROR;
-    event_waitReturn_operator_interpreter = sc_event_new(active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, interpreter_agent_waitReturn_operator, 0);
+    event_waitReturn_operator_interpreter = sc_event_new(active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, interpreter_agent_waitReturn_operators, 0);
     if (event_waitReturn_operator_interpreter == nullptr)
         return SCP_RESULT_ERROR;
+
+    scp_event_table = g_hash_table_new_full(NULL, NULL, NULL, destroy_event_table_item);
+    scp_wait_event_table = g_hash_table_new(NULL, NULL);
+
     return SCP_RESULT_TRUE;
 }
 
@@ -2711,7 +2902,12 @@ scp_result scp_operator_interpreter_agents_shutdown()
     sc_event_destroy(event_if_operators_interpreter);
     sc_event_destroy(event_other_operators_interpreter);
     sc_event_destroy(event_system_operators_interpreter);
+    sc_event_destroy(event_event_operators_interpreter);
     sc_event_destroy(event_call_operator_interpreter);
     sc_event_destroy(event_waitReturn_operator_interpreter);
+
+    g_hash_table_destroy(scp_event_table);
+    g_hash_table_destroy(scp_wait_event_table);
+
     return SCP_RESULT_TRUE;
 }

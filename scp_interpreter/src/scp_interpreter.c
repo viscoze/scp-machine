@@ -28,21 +28,47 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scp_process_creator.h"
 #include "scp_process_destroyer.h"
 #include "scp_operator_interpreter_agents.h"
+#include "scp_interpreter_utils.h"
 
-scp_result scp_interpreter_init(const sc_char *repo_path, const sc_char *config_file)
+#include <stdio.h>
+
+scp_result init_all_scp_agents()
 {
-    if (SCP_RESULT_TRUE == scp_lib_init(repo_path, config_file) &&
+    scp_operand proc, arc, com_arc, init_prog;
+    MAKE_DEFAULT_ARC_ASSIGN(arc);
+    MAKE_COMMON_ARC_ASSIGN(com_arc);
+    MAKE_DEFAULT_OPERAND_ASSIGN(proc);
+    MAKE_DEFAULT_NODE_ASSIGN(init_prog);
+    scp_iterator3 *it;
+    it = scp_iterator3_new(&scp_agent, &arc, &proc);
+    while (SCP_RESULT_TRUE == scp_iterator3_next(it, &scp_agent, &arc, &proc))
+    {
+        proc.param_type = SCP_FIXED;
+        init_prog.param_type = SCP_ASSIGN;
+        searchElStr5(&proc, &com_arc, &init_prog, &arc, &nrel_init_program);
+        init_prog.param_type = SCP_FIXED;
+        run_scp_program(&init_prog);
+        proc.param_type = SCP_ASSIGN;
+    }
+    scp_iterator3_free(it);
+    return SC_RESULT_OK;
+}
+
+sc_result initialize()
+{
+    if (SCP_RESULT_TRUE == scp_lib_init() &&
         SCP_RESULT_TRUE == scp_keynodes_init() &&
         SCP_RESULT_TRUE == scp_process_destroyer_init() &&
         SCP_RESULT_TRUE == scp_operator_interpreter_agents_init() &&
         SCP_RESULT_TRUE == scp_procedure_preprocessor_init() &&
-        SCP_RESULT_TRUE == scp_process_creator_init())
+        SCP_RESULT_TRUE == scp_process_creator_init() &&
+        SCP_RESULT_TRUE == init_all_scp_agents())
         return SCP_RESULT_TRUE;
     else
         return SCP_RESULT_ERROR;
 }
 
-scp_result scp_interpreter_shutdown()
+sc_result shutdown()
 {
     if (SCP_RESULT_TRUE == scp_lib_shutdown() &&
         SCP_RESULT_TRUE == scp_process_destroyer_shutdown() &&

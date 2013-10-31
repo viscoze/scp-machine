@@ -32,19 +32,27 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 scp_result print_error(const char *error_type, const char *text);
 scp_result resolve_operator_type(scp_operand *oper, scp_operand *type);
+scp_result resolve_scp_event_type(scp_operand *element, sc_event_type *type);
 scp_result resolve_ordinal_rrel(scp_operand *arc_param, scp_operand *result);
 scp_result resolve_ordinal_set_rrel(scp_operand *arc_param, scp_operand *result);
 scp_result get_set_power(scp_operand *set, scp_uint32 *result);
 
+scp_result check_scp_interpreter_question(scp_operand *quest);
+
 void finish_question_successfully(scp_operand *param);
 void finish_question_unsuccessfully(scp_operand *param);
+
+void set_author(scp_operand *quest, scp_operand *author);
 
 void mark_scp_process_as_useless(scp_operand *param);
 
 void set_active_operator(scp_operand *scp_operator_node);
 
+void run_scp_program(scp_operand *scp_program);
+
 void cantorize_set(scp_operand *set);
 void erase_var_set_values(scp_operand *set);
 void load_set_to_hash(scp_operand *set, GHashTable *table);
 sc_addr resolve_sc_addr_from_pointer(gpointer data);
+sc_addr resolve_sc_addr_from_int(scp_uint32 data);
 #endif // SCP_INTERPRETER_UTILS_H

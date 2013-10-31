@@ -1,7 +1,17 @@
+scp_interpreter => nrel_main_ru_idtf:
+	[scp-интерпретатор];;
+scp_interpreter => nrel_main_en_idtf:
+	[scp-interpreter];;
+
 scp_procedure => nrel_main_ru_idtf:
 	[scp-процедура];;
 scp_procedure => nrel_main_en_idtf:
 	[scp-procedure];;
+
+scp_agent => nrel_main_ru_idtf:
+	[scp-агент];;
+scp_agent => nrel_main_en_idtf:
+	[scp-agent];;
 
 scp_process => nrel_main_ru_idtf:
 	[scp-процесс];;
@@ -17,6 +27,11 @@ nrel_scp_process => nrel_main_ru_idtf:
 	[scp-процесс*];;
 nrel_scp_process => nrel_main_en_idtf:
 	[scp-process*];;
+
+nrel_init_program => nrel_main_ru_idtf:
+	[инициализирующая программа*];;
+nrel_init_program => nrel_main_en_idtf:
+	[initializing program*];;
 
 nrel_scp_var_value => nrel_main_ru_idtf:
 	[значение scp-переменной'];;
@@ -49,3 +64,18 @@ active_scp_operator => nrel_main_en_idtf:
 	[active scp-operator];;
 
 FORMAT_NUMERIC -> [0];;
+
+/* events */
+scp_event => nrel_main_ru_idtf:
+	[scp-событие];;
+scp_event => nrel_main_en_idtf:
+	[scp-event];;
+
+scp_event <= nrel_decomposition: 
+{
+	scp_event_add_output_arc; /* calls after adding */
+	scp_event_add_input_arc; /* calls after adding */
+	scp_event_remove_output_arc; /* calls before removing */
+	scp_event_remove_input_arc; /* calls before removing */
+	scp_event_change_link_content
+};;

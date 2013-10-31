@@ -25,7 +25,13 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "scp_lib.h"
 
-scp_result scp_interpreter_init(const sc_char *repo_path, const sc_char *config_file);
-scp_result scp_interpreter_shutdown();
+//! Module initialization function
+sc_result initialize();
+
+//! Module shutdown function
+sc_result shutdown();
+
+//scp_result scp_interpreter_init(const sc_char *repo_path, const sc_char *config_file);
+//scp_result scp_interpreter_shutdown();
 
 #endif // SCP_INTERPRETER_H

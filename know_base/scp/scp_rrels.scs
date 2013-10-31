@@ -80,3 +80,22 @@ rrel_scp_var => nrel_main_en_idtf:
 	[scp variable'];;
 rrel_scp_const => nrel_main_en_idtf:
 	[scp constant'];;
+
+/* events */
+rrel_scp_event_type => nrel_main_en_idtf:
+	[тип scp-события'];;
+rrel_scp_event_type => nrel_main_en_idtf:
+	[scp-event type'];;
+rrel_scp_event_procedure => nrel_main_en_idtf:
+	[процедура scp-события'];;
+rrel_scp_event_procedure => nrel_main_en_idtf:
+	[scp-event procedure'];;
+rrel_scp_event_delete_procedure => nrel_main_en_idtf:
+	[процедура удаления scp-события'];;
+rrel_scp_event_delete_procedure => nrel_main_en_idtf:
+	[scp-event delete procedure'];;
+rrel_scp_event_processing_element => nrel_main_en_idtf:
+	[обрабатываемый элемент scp-события'];;
+rrel_scp_event_processing_element => nrel_main_en_idtf:
+	[scp-event processing element'];;
+

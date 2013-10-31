@@ -30,6 +30,26 @@ scp_result print_error(const char *error_type, const char *text)
     return SCP_RESULT_ERROR;
 }
 
+scp_result check_scp_interpreter_question(scp_operand *quest)
+{
+    scp_operand arc2, arc1, authors;
+    MAKE_DEFAULT_ARC_ASSIGN(arc1);
+    MAKE_COMMON_ARC_ASSIGN(arc2);
+    MAKE_DEFAULT_OPERAND_ASSIGN(authors);
+
+    if (SCP_RESULT_TRUE != searchElStr5(&authors, &arc2, quest, &arc1, &nrel_authors))
+    {
+        return SCP_RESULT_FALSE;
+    }
+    authors.param_type = SCP_FIXED;
+    if (SCP_RESULT_TRUE != searchElStr3(&authors, &arc1, &scp_interpreter))
+    {
+        return SCP_RESULT_FALSE;
+    }
+
+    return SCP_RESULT_TRUE;
+}
+
 scp_result resolve_operator_type(scp_operand *oper, scp_operand *type)
 {
     scp_operand arc;
@@ -54,6 +74,41 @@ scp_result resolve_operator_type(scp_operand *oper, scp_operand *type)
         type->param_type = SCP_ASSIGN;
     }
     scp_iterator3_free(it);
+    return SCP_RESULT_FALSE;
+}
+
+scp_result resolve_scp_event_type(scp_operand *element, sc_event_type *type)
+{
+    if (SCP_RESULT_TRUE == ifCoin(&scp_event_add_input_arc, element))
+    {
+        *type = SC_EVENT_ADD_INPUT_ARC;
+        return SCP_RESULT_TRUE;
+    }
+    if (SCP_RESULT_TRUE == ifCoin(&scp_event_add_output_arc, element))
+    {
+        *type = SC_EVENT_ADD_OUTPUT_ARC;
+        return SCP_RESULT_TRUE;
+    }
+    if (SCP_RESULT_TRUE == ifCoin(&scp_event_add_input_arc, element))
+    {
+        *type = SC_EVENT_ADD_INPUT_ARC;
+        return SCP_RESULT_TRUE;
+    }
+    if (SCP_RESULT_TRUE == ifCoin(&scp_event_remove_input_arc, element))
+    {
+        *type = SC_EVENT_REMOVE_INPUT_ARC;
+        return SCP_RESULT_TRUE;
+    }
+    if (SCP_RESULT_TRUE == ifCoin(&scp_event_remove_output_arc, element))
+    {
+        *type = SC_EVENT_REMOVE_OUTPUT_ARC;
+        return SCP_RESULT_TRUE;
+    }
+    if (SCP_RESULT_TRUE == ifCoin(&scp_event_change_link_content, element))
+    {
+        *type = SC_EVENT_CHANGE_LINK_CONTENT;
+        return SCP_RESULT_TRUE;
+    }
     return SCP_RESULT_FALSE;
 }
 
@@ -147,6 +202,33 @@ void set_active_operator(scp_operand *scp_operator_node)
     genElStr3(&active_scp_operator, &arc, scp_operator_node);
 }
 
+void set_author(scp_operand *quest, scp_operand *author)
+{
+    scp_operand authors, arc1, arc3;
+    MAKE_DEFAULT_ARC_ASSIGN(arc1);
+    MAKE_COMMON_ARC_ASSIGN(arc3);
+    MAKE_DEFAULT_NODE_ASSIGN(authors);
+    genElStr5(&authors, &arc3, quest, &arc1, &nrel_authors);
+    authors.param_type = SCP_FIXED;
+    genElStr3(&authors, &arc1, author);
+}
+
+void run_scp_program(scp_operand *scp_program)
+{
+    scp_operand arc1, arc2, quest, params;
+    MAKE_DEFAULT_ARC_ASSIGN(arc1);
+    MAKE_DEFAULT_ARC_ASSIGN(arc2);
+    MAKE_DEFAULT_NODE_ASSIGN(quest);
+    scp_program->param_type = SCP_FIXED;
+    genElStr5(&quest, &arc1, scp_program, &arc2, ordinal_rrels + 1);
+    quest.param_type = SCP_FIXED;
+    MAKE_DEFAULT_NODE_ASSIGN(params);
+    genElStr5(&quest, &arc1, &params, &arc2, ordinal_rrels + 2);
+    set_author(&quest, &scp_interpreter);
+    genElStr3(&question_scp_interpretation_request, &arc1, &quest);
+    genElStr3(&question_initiated, &arc1, &quest);
+}
+
 void load_set_to_hash(scp_operand *set, GHashTable *table)
 {
     scp_operand arc1, elem;
@@ -213,5 +295,13 @@ sc_addr resolve_sc_addr_from_pointer(gpointer data)
     sc_addr elem;
     elem.offset = SC_ADDR_LOCAL_OFFSET_FROM_INT(GPOINTER_TO_INT(data));
     elem.seg = SC_ADDR_LOCAL_SEG_FROM_INT(GPOINTER_TO_INT(data));
+    return elem;
+}
+
+sc_addr resolve_sc_addr_from_int(scp_uint32 data)
+{
+    sc_addr elem;
+    elem.offset = SC_ADDR_LOCAL_OFFSET_FROM_INT(data);
+    elem.seg = SC_ADDR_LOCAL_SEG_FROM_INT(data);
     return elem;
 }

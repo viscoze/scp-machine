@@ -41,13 +41,13 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <stdlib.h>
 #include <math.h>
 
-scp_result scp_lib_init(const sc_char *repo_path, const sc_char *config_file)
+scp_result scp_lib_init()
 {
-    if (sc_memory_initialize(repo_path, config_file) == SC_FALSE)
+    /*if (sc_memory_initialize(repo_path, config_file) == SC_FALSE)
     {
         return SCP_RESULT_FALSE;
     }
-    sc_helper_init();
+    sc_helper_init();*/
     if (SC_TRUE != sc_helper_resolve_system_identifier("FORMAT_NUMERIC", &format_numeric))
     {
         return print_error("Init", "FORMAT_NUMERIC element not found");
@@ -160,6 +160,7 @@ scp_result genElStr5(scp_operand *param1, scp_operand *param2, scp_operand *para
     {
         if (SC_FALSE == sc_memory_is_element(param3->addr))
         {
+            printEl(param1);
             return print_error("genElStr5", "Parameter 3 has modifier FIXED, but has not value");
         }
         fixed3 = 0x100;

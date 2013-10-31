@@ -1,0 +1,6 @@
+test_question -> test_node1;;
+test_question <- question_search_full_semantic_neighborhood;;
+test_question <- question;;
+
+test_node1 -> test_attr1: test_node2;;
+test_node1 -> test_attr2: test_node3;;
