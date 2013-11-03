@@ -1426,8 +1426,8 @@ sc_result interpreter_agent_call_operator(sc_event *event, sc_addr arg)
     //call case
     if (SCP_RESULT_TRUE == ifCoin(&operator_type, &op_call))
     {
-        scp_operand arc1, arc2, arc3, quest, prog_node, params_node, modifier, new_params_node,
-                    prog_params_node, descr_node, param, curr_ordinal, value;
+        scp_operand arc1, arc2, arc3, quest, modifier, new_params_node,
+                    prog_params_node, param, curr_ordinal, value, operands[3], operands_values[3];
         scp_iterator3 *it, *it1;
         scp_operand_type operand_type = SCP_CONST;
         sc_char in_out_params[ORDINAL_RRELS_COUNT + 1];
@@ -1441,24 +1441,19 @@ sc_result interpreter_agent_call_operator(sc_event *event, sc_addr arg)
         MAKE_DEFAULT_ARC_ASSIGN(arc1);
         MAKE_DEFAULT_ARC_ASSIGN(arc2);
         MAKE_COMMON_ARC_ASSIGN(arc3);
-        MAKE_DEFAULT_OPERAND_ASSIGN(prog_node);
         MAKE_DEFAULT_OPERAND_ASSIGN(prog_params_node);
-        MAKE_DEFAULT_OPERAND_ASSIGN(params_node);
         MAKE_DEFAULT_OPERAND_ASSIGN(param);
         MAKE_DEFAULT_OPERAND_ASSIGN(value);
-        MAKE_DEFAULT_OPERAND_ASSIGN(descr_node);
         MAKE_DEFAULT_OPERAND_ASSIGN(curr_ordinal);
         MAKE_DEFAULT_OPERAND_ASSIGN(modifier);
 
-        searchElStr5(&operator_node, &arc1, &prog_node, &arc2, &ordinal_rrels[1]);
-        prog_node.param_type = SCP_FIXED;
-        searchElStr5(&prog_node, &arc1, &prog_params_node, &arc2, &rrel_params);
+        resolve_operands_modifiers(&operator_node, operands, 3);
+        get_operands_values(operands, operands_values, 3);
+        operands[2].param_type = SCP_FIXED;
+
+        searchElStr5(operands_values, &arc1, &prog_params_node, &arc2, &rrel_params);
         prog_params_node.param_type = SCP_FIXED;
-        searchElStr5(&operator_node, &arc1, &params_node, &arc2, &ordinal_rrels[2]);
-        params_node.param_type = SCP_FIXED;
-        erase_var_set_values(&params_node);
-        searchElStr5(&operator_node, &arc1, &descr_node, &arc2, &ordinal_rrels[3]);
-        descr_node.param_type = SCP_FIXED;
+        erase_var_set_values(operands_values + 1);
 
         it = scp_iterator3_new(&prog_params_node, &arc1, &param);
         while (SCP_RESULT_TRUE == scp_iterator3_next(it, &prog_params_node, &arc1, &param))
@@ -1497,16 +1492,16 @@ sc_result interpreter_agent_call_operator(sc_event *event, sc_addr arg)
         MAKE_DEFAULT_NODE_ASSIGN(quest);
         MAKE_DEFAULT_NODE_ASSIGN(new_params_node);
         arc1.erase = SCP_TRUE;
-        eraseSetStr5(&descr_node, &arc3, &quest, &arc2, &nrel_value);
-        genElStr5(&quest, &arc1, &prog_node, &arc2, &ordinal_rrels[1]);
+        eraseSetStr5(operands + 2, &arc3, &quest, &arc2, &nrel_value);
+        genElStr5(&quest, &arc1, operands_values, &arc2, &ordinal_rrels[1]);
         quest.param_type = SCP_FIXED;
-        genElStr5(&descr_node, &arc3, &quest, &arc2, &nrel_value);
+        genElStr5(operands + 2, &arc3, &quest, &arc2, &nrel_value);
         genElStr5(&quest, &arc1, &new_params_node, &arc2, &ordinal_rrels[2]);
         new_params_node.param_type = SCP_FIXED;
 
         param.param_type = SCP_ASSIGN;
-        it = scp_iterator3_new(&params_node, &arc1, &param);
-        while (SCP_RESULT_TRUE == scp_iterator3_next(it, &params_node, &arc1, &param))
+        it = scp_iterator3_new(operands_values + 1, &arc1, &param);
+        while (SCP_RESULT_TRUE == scp_iterator3_next(it, operands_values + 1, &arc1, &param))
         {
             param.param_type = SCP_FIXED;
             arc1.param_type = SCP_FIXED;
