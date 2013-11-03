@@ -358,7 +358,7 @@ scp_result gen_system_structures(scp_operand *operator_set, scp_operand *paramet
 
 sc_result preprocess_scp_procedure(sc_event *event, sc_addr arg)
 {
-    scp_operand arc1, arc2, arc3, scp_procedure_node, node1, question_node, scp_procedure_params,
+    scp_operand arc1, arc2, arc3, scp_procedure_node, node1, question_node, scp_procedure_params, authors,
                 scp_procedure_consts, scp_procedure_vars, scp_procedure_operators, scp_procedure_operators_copying_pattern;
     MAKE_DEFAULT_OPERAND_FIXED(arc1);
     MAKE_DEFAULT_ARC_ASSIGN(arc2);
@@ -416,7 +416,8 @@ sc_result preprocess_scp_procedure(sc_event *event, sc_addr arg)
     if (SCP_RESULT_TRUE == gen_system_structures(&scp_procedure_operators, &scp_procedure_params, &scp_procedure_vars, &scp_procedure_consts, &scp_procedure_operators_copying_pattern))
     {
         finish_question_successfully(&question_node);
-        //! TODO Remove finished question with authors set
+        MAKE_DEFAULT_OPERAND_ASSIGN(authors);
+        eraseSetStr5(&authors, &arc3, &question_node, &arc1, &nrel_authors);
         //printf("PREPROCESSING FINISHED\n");
         return SC_RESULT_ERROR;
     }
