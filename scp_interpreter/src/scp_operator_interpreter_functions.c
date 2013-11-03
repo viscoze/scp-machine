@@ -359,6 +359,7 @@ scp_result get_operand_value(scp_operand *operand, scp_operand *operand_value)
     scp_operand var_value, operand_node, arc1, arc3;
     MAKE_DEFAULT_ARC_ASSIGN(arc1);
     MAKE_COMMON_ARC_ASSIGN(arc3);
+    arc3.erase = SCP_TRUE;
     MAKE_DEFAULT_OPERAND_ASSIGN(var_value);
     MAKE_DEFAULT_OPERAND_FIXED(operand_node);
     var_value.param_type = SCP_ASSIGN;
@@ -402,6 +403,7 @@ scp_result get_operands_values(scp_operand *operands, scp_operand *operands_valu
     scp_uint32 i;
     MAKE_DEFAULT_ARC_ASSIGN(arc1);
     MAKE_COMMON_ARC_ASSIGN(arc3);
+    arc3.erase = SCP_TRUE;
     MAKE_DEFAULT_OPERAND_ASSIGN(var_value);
     MAKE_DEFAULT_OPERAND_FIXED(operand_node);
     var_value.param_type = SCP_ASSIGN;
@@ -448,6 +450,7 @@ scp_result get_set_operands_values(scp_operand *operands, scp_operand *operands_
     scp_uint32 i;
     MAKE_DEFAULT_ARC_ASSIGN(arc1);
     MAKE_COMMON_ARC_ASSIGN(arc3);
+    arc3.erase = SCP_TRUE;
     MAKE_DEFAULT_OPERAND_ASSIGN(var_value);
     MAKE_DEFAULT_OPERAND_FIXED(operand_node);
     var_value.param_type = SCP_ASSIGN;
