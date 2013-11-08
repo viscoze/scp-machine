@@ -22,7 +22,7 @@ scp_procedure -> proc_search_semantic_neighborhood (*
 
 		-> .proc_search_semantic_neighborhood_operator2_1 (*
 		  <- call;;
-		  -> rrel_1: rrel_fixed: rrel_scp_const: proc_search_all_output_with_attr;;
+		  -> rrel_1: rrel_fixed: rrel_scp_const: proc_search_all_output_with_rel;;
 		  -> rrel_2: rrel_fixed: rrel_scp_const: .proc_search_semantic_neighborhood_operator2_1_params (*
 				-> rrel_1: rrel_fixed: rrel_scp_var: _parameter;;
 				-> rrel_2: rrel_fixed: rrel_scp_var: _answer;;
