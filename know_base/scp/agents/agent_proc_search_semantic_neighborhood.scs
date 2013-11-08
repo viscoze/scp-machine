@@ -42,7 +42,7 @@ scp_procedure -> agent_proc_search_semantic_neighborhood (*
 		-> .agent_proc_search_semantic_neighborhood_operator2 (*
 		  <- searchElStr3;;
 		  -> rrel_1: rrel_fixed: rrel_scp_const: question_search_full_semantic_neighborhood;;
-		  -> rrel_2: rrel_assign: rrel_const: rrel_pos: rrel_scp_var: _arc;;
+		  -> rrel_2: rrel_assign: rrel_pos_const_perm: rrel_scp_var: _arc;;
 		  -> rrel_3: rrel_fixed: rrel_scp_var: _quest;;
 
 		  -> rrel_then: .agent_proc_search_semantic_neighborhood_operator3;;
@@ -52,7 +52,7 @@ scp_procedure -> agent_proc_search_semantic_neighborhood (*
 		-> .agent_proc_search_semantic_neighborhood_operator3 (*
 		  <- searchElStr3;;
 		  -> rrel_1: rrel_fixed: rrel_scp_var: _quest;;
-		  -> rrel_2: rrel_assign: rrel_const: rrel_pos: rrel_scp_var: _arc;;
+		  -> rrel_2: rrel_assign: rrel_pos_const_perm: rrel_scp_var: _arc;;
 		  -> rrel_3: rrel_assign: rrel_scp_var: _param;;
 
 		  -> rrel_then: .agent_proc_search_semantic_neighborhood_operator4;;
@@ -68,23 +68,33 @@ scp_procedure -> agent_proc_search_semantic_neighborhood (*
 
 		-> .agent_proc_search_semantic_neighborhood_operator5 (*
 		  <- call;;
-		  -> rrel_1: rrel_fixed: rrel_scp_const: proc_search_all_output_with_attr;;
-		  -> rrel_2: rrel_fixed: agent_proc_search_semantic_neighborhood_operator2_1_params (*
+		  -> rrel_1: rrel_fixed: rrel_scp_const: proc_search_all_input;;
+		  -> rrel_2: rrel_fixed: rrel_scp_const: .agent_proc_search_semantic_neighborhood_operator5_params (*
 				-> rrel_1: rrel_fixed: rrel_scp_var: _param;;
 				-> rrel_2: rrel_fixed: rrel_scp_var: _answer;;
 			*);;
 		  -> rrel_3: rrel_assign: rrel_scp_var: _descr;;
-		  -> rrel_goto: .agent_proc_search_semantic_neighborhood_operator_print_result;;
+
+		  -> rrel_goto: .agent_proc_search_semantic_neighborhood_operator6;;
 		*);;
 
-		-> .agent_proc_search_semantic_neighborhood_operator_print_result (*
-		  <- printEl;;
-		  -> rrel_1: rrel_fixed: rrel_scp_var: _answer;;
+		-> .agent_proc_search_semantic_neighborhood_operator6 (*
+		  <- waitReturn;;
+		  -> rrel_1: rrel_fixed: rrel_scp_var: _descr;;
+
+		  -> rrel_goto: .agent_proc_search_semantic_neighborhood_operator_gen_answer;;
+		*);;	
+
+		-> .agent_proc_search_semantic_neighborhood_operator_gen_answer (*
+		  <- genElStr5;;
+		  -> rrel_1: rrel_fixed: rrel_scp_var: _quest;;
+		  -> rrel_2: rrel_assign: rrel_const: rrel_common: rrel_scp_var: _arc;;
+		  -> rrel_3: rrel_fixed: rrel_scp_var: _answer;;
+		  -> rrel_4: rrel_assign: rrel_pos_const_perm: rrel_scp_var: _arc2;;
+		  -> rrel_5: rrel_fixed: rrel_scp_const: question_nrel_answer;;
 
 		  -> rrel_goto: .agent_proc_search_semantic_neighborhood_operator_return;;
 		*);;
-
-		/* TODO Add answer relation link generation */
 					
 		-> .agent_proc_search_semantic_neighborhood_operator_return (*
 		  <- return;;

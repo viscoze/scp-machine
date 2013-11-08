@@ -18,6 +18,7 @@ SOURCES += main.c
     
 INCLUDEPATH += ../../../sc-machine/sc-memory/src/sc-store
 INCLUDEPATH += ../../../sc-machine/sc-memory/src
+INCLUDEPATH += ../../scp_lib/src
 INCLUDEPATH += ../src
 DESTDIR = ../../../sc-machine/bin
 OBJECTS_DIR = ./obj
@@ -25,6 +26,7 @@ OBJECTS_DIR = ./obj
 win32 {
     CONFIG += qt console
     LIBS += -L "../../../sc-machine/bin" -lsc_memoryd
+    LIBS += -L "../../../sc-machine/bin" -lscp_libd
 
     INCLUDEPATH += "../glib/include/glib-2.0"
     INCLUDEPATH += "../glib/lib/glib-2.0/include"
@@ -35,6 +37,7 @@ win32 {
 
 unix {
     LIBS += -L "../../../sc-machine/bin" -lsc_memory
+    LIBS += -L "../../../sc-machine/bin" -lscp_lib
     CONFIG += link_pkgconfig
     PKGCONFIG += glib-2.0
     PKGCONFIG += gmodule-2.0

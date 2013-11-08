@@ -7,6 +7,10 @@ rrel_consts => nrel_main_ru_idtf:
 	[константы'];;
 rrel_consts => nrel_main_en_idtf:
 	[constants'];;
+rrel_copying_consts => nrel_main_ru_idtf:
+	[копируемые константы'];;
+rrel_copying_consts => nrel_main_en_idtf:
+	[copying constants'];;
 rrel_operators_copying_pattern => nrel_main_ru_idtf:
 	[шаблон копирования операторов'];;
 rrel_operators_copying_pattern => nrel_main_en_idtf:
@@ -64,6 +68,10 @@ rrel_perm => nrel_main_en_idtf:
 	[perm'];;
 rrel_access => nrel_main_en_idtf:
 	[access'];;
+rrel_common => nrel_main_en_idtf:
+	[common'];;
+rrel_pos_const_perm => nrel_main_en_idtf:
+	[pos_const_perm'];;
 
 /* Next operator selection rrels */
 rrel_then => nrel_main_en_idtf:

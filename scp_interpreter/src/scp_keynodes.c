@@ -56,6 +56,7 @@ scp_operand rrel_error;
 
 scp_operand rrel_vars;
 scp_operand rrel_consts;
+scp_operand rrel_copying_consts;
 scp_operand rrel_operators_copying_pattern;
 scp_operand rrel_params;
 scp_operand rrel_operators;
@@ -81,6 +82,8 @@ scp_operand rrel_fuz;
 scp_operand rrel_temp;
 scp_operand rrel_perm;
 scp_operand rrel_access;
+scp_operand rrel_common;
+scp_operand rrel_pos_const_perm;
 
 // Events
 
@@ -129,6 +132,7 @@ scp_result scp_keynodes_init()
     MAKE_DEFAULT_OPERAND_FIXED(rrel_error);
     MAKE_DEFAULT_OPERAND_FIXED(rrel_vars);
     MAKE_DEFAULT_OPERAND_FIXED(rrel_consts);
+    MAKE_DEFAULT_OPERAND_FIXED(rrel_copying_consts);
     MAKE_DEFAULT_OPERAND_FIXED(rrel_operators_copying_pattern);
     MAKE_DEFAULT_OPERAND_FIXED(rrel_params);
     MAKE_DEFAULT_OPERAND_FIXED(rrel_operators);
@@ -151,6 +155,8 @@ scp_result scp_keynodes_init()
     MAKE_DEFAULT_OPERAND_FIXED(rrel_temp);
     MAKE_DEFAULT_OPERAND_FIXED(rrel_perm);
     MAKE_DEFAULT_OPERAND_FIXED(rrel_access);
+    MAKE_DEFAULT_OPERAND_FIXED(rrel_common);
+    MAKE_DEFAULT_OPERAND_FIXED(rrel_pos_const_perm);
     MAKE_DEFAULT_OPERAND_FIXED(scp_event);
     MAKE_DEFAULT_OPERAND_FIXED(scp_event_add_input_arc);
     MAKE_DEFAULT_OPERAND_FIXED(scp_event_add_output_arc);
@@ -259,6 +265,10 @@ scp_result scp_keynodes_init()
     {
         return print_error("Keynode not found", "rrel_consts");
     }
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("rrel_copying_consts", &rrel_copying_consts))
+    {
+        return print_error("Keynode not found", "rrel_copying_consts");
+    }
     if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("rrel_operators_copying_pattern", &rrel_operators_copying_pattern))
     {
         return print_error("Keynode not found", "rrel_operators_copying_pattern");
@@ -351,6 +361,14 @@ scp_result scp_keynodes_init()
     if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("rrel_access", &rrel_access))
     {
         return print_error("Keynode not found", "rrel_access");
+    }
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("rrel_common", &rrel_common))
+    {
+        return print_error("Keynode not found", "rrel_common");
+    }
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("rrel_pos_const_perm", &rrel_pos_const_perm))
+    {
+        return print_error("Keynode not found", "rrel_pos_const_perm");
     }
 
     if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("scp_event", &scp_event))

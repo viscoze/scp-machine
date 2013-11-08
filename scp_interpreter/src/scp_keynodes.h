@@ -58,6 +58,7 @@ extern scp_operand rrel_error;
 
 extern scp_operand rrel_vars;
 extern scp_operand rrel_consts;
+extern scp_operand rrel_copying_consts;
 extern scp_operand rrel_operators_copying_pattern;
 extern scp_operand rrel_params;
 extern scp_operand rrel_operators;
@@ -83,6 +84,8 @@ extern scp_operand rrel_fuz;
 extern scp_operand rrel_temp;
 extern scp_operand rrel_perm;
 extern scp_operand rrel_access;
+extern scp_operand rrel_common;
+extern scp_operand rrel_pos_const_perm;
 
 // Events
 

@@ -133,6 +133,17 @@ scp_result resolve_operands_modifiers(scp_operand *scp_operator_node, scp_operan
                 operand.element_type = operand.element_type | scp_type_arc_access;
                 continue;
             }
+            if (SCP_RESULT_TRUE == ifCoin(&modifier, &rrel_common))
+            {
+                operand.element_type = operand.element_type | scp_type_arc_common;
+                continue;
+            }
+            if (SCP_RESULT_TRUE == ifCoin(&modifier, &rrel_pos_const_perm))
+            {
+                operand.element_type = (operand.element_type | scp_type_arc_access | scp_type_arc_pos | scp_type_arc_perm | scp_type_const);
+                continue;
+            }
+
             if (SCP_RESULT_TRUE == ifCoin(&modifier, &rrel_pos))
             {
                 operand.element_type = operand.element_type | scp_type_arc_pos;
@@ -298,6 +309,16 @@ scp_result resolve_operands_modifiers_with_set(scp_operand *scp_operator_node, s
                 operand.element_type = operand.element_type | scp_type_const;
                 continue;
             }
+            if (SCP_RESULT_TRUE == ifCoin(&modifier, &rrel_common))
+            {
+                operand.element_type = operand.element_type | scp_type_arc_common;
+                continue;
+            }
+            if (SCP_RESULT_TRUE == ifCoin(&modifier, &rrel_pos_const_perm))
+            {
+                operand.element_type = (operand.element_type | scp_type_arc_access | scp_type_arc_pos | scp_type_arc_perm | scp_type_const);
+                continue;
+            }
 
             // Set
             if (SCP_RESULT_TRUE == ifCoin(&modifier, &rrel_set))
@@ -423,6 +444,7 @@ scp_result get_operands_values(scp_operand *operands, scp_operand *operands_valu
                 {
                     printEl(operands + i);
                     print_error("scp-operator interpreting", "Variable has FIXED modifier, but has no value");
+                    printf("wrong parameter %d\n", i);
                     return SCP_RESULT_ERROR;
                 }
             }
@@ -433,6 +455,7 @@ scp_result get_operands_values(scp_operand *operands, scp_operand *operands_valu
             {
                 printEl(operands + i);
                 print_error("scp-operator interpreting", "Constant has ASSIGN modifier");
+                printf("wrong parameter %d\n", i);
                 return SCP_RESULT_ERROR;
             }
             else

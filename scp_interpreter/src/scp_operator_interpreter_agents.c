@@ -58,6 +58,20 @@ void print_debug_info(const char *info)
     }
 }
 
+void print_call_debug_info(scp_operand *proc)
+{
+    if (debug_mode == SCP_TRUE)
+    {
+        scp_operand arc1, arc2, name;
+        MAKE_COMMON_ARC_ASSIGN(arc1);
+        MAKE_DEFAULT_ARC_ASSIGN(arc2);
+        MAKE_DEFAULT_OPERAND_ASSIGN(name);
+        searchElStr5(proc, &arc1, &name, &arc2, &nrel_system_identifier);
+        printf("====called program: ");
+        printNl(&name);
+    }
+}
+
 sc_result interpreter_agent_search_operators(sc_event *event, sc_addr arg)
 {
     scp_operand input_arc, node1, operator_node, operator_type;
@@ -1450,6 +1464,7 @@ sc_result interpreter_agent_call_operator(sc_event *event, sc_addr arg)
         resolve_operands_modifiers(&operator_node, operands, 3);
         get_operands_values(operands, operands_values, 3);
         operands[2].param_type = SCP_FIXED;
+        print_call_debug_info(operands_values);
 
         searchElStr5(operands_values, &arc1, &prog_params_node, &arc2, &rrel_params);
         prog_params_node.param_type = SCP_FIXED;

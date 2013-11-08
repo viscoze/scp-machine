@@ -103,6 +103,29 @@ scp_result copy_var_set(scp_operand *set, GHashTable *table, GHashTable *pattern
     return SCP_RESULT_TRUE;
 }
 
+scp_result copy_copying_const_set(scp_operand *set, GHashTable *table, GHashTable *pattern_hash)
+{
+    scp_operand arc1, elem, new_elem;
+    scp_iterator3 *it;
+    MAKE_DEFAULT_ARC_ASSIGN(arc1);
+    MAKE_DEFAULT_OPERAND_ASSIGN(elem);
+    MAKE_DEFAULT_NODE_ASSIGN(new_elem);
+    new_elem.element_type = new_elem.element_type | scp_type_const;
+    it = scp_iterator3_new(set, &arc1, &elem);
+    while (SCP_RESULT_TRUE == scp_iterator3_next(it, set, &arc1, &elem))
+    {
+        if (TRUE == g_hash_table_contains(table, MAKE_HASH(elem)))
+        {
+            continue;
+        }
+        genEl(&new_elem);
+        g_hash_table_insert(table, MAKE_HASH(elem), MAKE_HASH(new_elem));
+        g_hash_table_steal(pattern_hash, MAKE_HASH(elem));
+    }
+    scp_iterator3_free(it);
+    return SCP_RESULT_TRUE;
+}
+
 scp_result check_type(sc_addr element, sc_type input_type)
 {
     sc_type type;
@@ -231,7 +254,7 @@ sc_result create_scp_process(sc_event *event, sc_addr arg)
     //scp-procedure search
     if (SCP_RESULT_TRUE != searchElStr3(&scp_procedure, &arc1, &scp_procedure_node))
     {
-        return SC_RESULT_OK;
+        return SC_RESULT_ERROR;
     }
     scp_procedure_node.param_type = SCP_FIXED;
     MAKE_DEFAULT_ARC_ASSIGN(arc1);
@@ -257,6 +280,10 @@ sc_result create_scp_process(sc_event *event, sc_addr arg)
         return SC_RESULT_OK;
     }
     if (SCP_RESULT_TRUE != copy_var_set(&vars_set, copies_hash, pattern_hash))
+    {
+        return SC_RESULT_OK;
+    }
+    if (SCP_RESULT_TRUE != copy_copying_const_set(&vars_set, copies_hash, pattern_hash))
     {
         return SC_RESULT_OK;
     }

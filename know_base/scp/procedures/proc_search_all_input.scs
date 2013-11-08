@@ -16,7 +16,7 @@ scp_procedure -> proc_search_all_input (*
 		-> .proc_search_all_input_operator3 (*
 		  <- searchSetStr3;;
 		  -> rrel_1: rrel_assign: rrel_scp_var: _elem;;
-		  -> rrel_2: rrel_assign: rrel_const: rrel_pos: rrel_scp_var: _arc1;;
+		  -> rrel_2: rrel_assign: rrel_pos_const_perm: rrel_scp_var: _arc1;;
 		  -> rrel_3: rrel_fixed: rrel_scp_var: _parameter;;
 
 		  -> rrel_set_1: rrel_fixed: rrel_scp_var: _set_elem;;
@@ -30,7 +30,7 @@ scp_procedure -> proc_search_all_input (*
 		-> .proc_search_all_input_operator4 (*
 		  <- searchElStr3;;
 		  -> rrel_1: rrel_fixed: rrel_scp_var: _set_elem;;
-		  -> rrel_2: rrel_assign: rrel_const: rrel_pos: rrel_scp_var: _arc1;;
+		  -> rrel_2: rrel_assign: rrel_pos_const_perm: rrel_scp_var: _arc1;;
 		  -> rrel_3: rrel_assign: rrel_scp_var: _curr_elem;;
 
 		  -> rrel_then: .proc_search_all_input_operator5;;
@@ -47,7 +47,7 @@ scp_procedure -> proc_search_all_input (*
 		-> .proc_search_all_input_operator6 (*
 		  <- searchElStr3;;
 		  -> rrel_1: rrel_fixed: rrel_scp_const: system_element;;
-		  -> rrel_2: rrel_assign: rrel_const: rrel_pos: rrel_scp_var: _arc1;;
+		  -> rrel_2: rrel_assign: rrel_pos_const_perm: rrel_scp_var: _arc1;;
 		  -> rrel_3: rrel_fixed: rrel_scp_var: _curr_elem;;
 
 		  -> rrel_then: .proc_search_all_input_operator4;;
@@ -57,7 +57,7 @@ scp_procedure -> proc_search_all_input (*
 		-> .proc_search_all_input_operator6_1 (*
 		  <- searchElStr3;;
 		  -> rrel_1: rrel_fixed: rrel_scp_var: _answer;;
-		  -> rrel_2: rrel_assign: rrel_const: rrel_pos: rrel_scp_var: _arc1;;
+		  -> rrel_2: rrel_assign: rrel_pos_const_perm: rrel_scp_var: _arc1;;
 		  -> rrel_3: rrel_fixed: rrel_scp_var: _curr_elem;;
 
 		  -> rrel_then: .proc_search_all_input_operator4;;
@@ -67,7 +67,7 @@ scp_procedure -> proc_search_all_input (*
 		-> .proc_search_all_input_operator7 (*
 		  <- genElStr3;;
 		  -> rrel_1: rrel_fixed: rrel_scp_var: _answer;;
-		  -> rrel_2: rrel_assign: rrel_const: rrel_pos: rrel_access: rrel_scp_var: _arc1;;
+		  -> rrel_2: rrel_assign: rrel_pos_const_perm: rrel_scp_var: _arc1;;
 		  -> rrel_3: rrel_fixed: rrel_scp_var: _curr_elem;;
 
 		  -> rrel_goto: .proc_search_all_input_operator4;;
@@ -76,7 +76,7 @@ scp_procedure -> proc_search_all_input (*
 		-> .proc_search_all_input_operator7_5 (*
 		  <- genElStr3;;
 		  -> rrel_1: rrel_fixed: rrel_scp_var: _answer;;
-		  -> rrel_2: rrel_assign: rrel_const: rrel_pos: rrel_access: rrel_scp_var: _arc1;;
+		  -> rrel_2: rrel_assign: rrel_pos_const_perm: rrel_scp_var: _arc1;;
 		  -> rrel_3: rrel_fixed: rrel_scp_var: _parameter;;
 
 		  -> rrel_goto: .proc_search_all_input_operator8;;
