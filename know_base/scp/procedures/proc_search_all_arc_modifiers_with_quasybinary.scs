@@ -94,7 +94,7 @@ scp_procedure -> proc_search_all_arc_modifiers_with_quasybinary (*
 		-> .proc_search_all_arc_modifiers_with_quasybinary_operator6_4 (*
 		  <- call;;
 		  -> rrel_1: rrel_fixed: rrel_scp_const: proc_search_all_output;;
-		  -> rrel_2: rrel_fixed: proc_search_all_arc_modifiers_with_quasybinary_operator6_4_params (*
+		  -> rrel_2: rrel_fixed: rrel_scp_const: .proc_search_all_arc_modifiers_with_quasybinary_operator6_4_params (*
 				-> rrel_1: rrel_fixed: rrel_scp_var: _arc_begin;;
 				-> rrel_2: rrel_fixed: rrel_scp_var: _answer;;
 			*);;

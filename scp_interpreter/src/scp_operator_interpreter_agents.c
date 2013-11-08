@@ -1521,24 +1521,27 @@ sc_result interpreter_agent_call_operator(sc_event *event, sc_addr arg)
             param.param_type = SCP_FIXED;
             arc1.param_type = SCP_FIXED;
             operand_type = SCP_CONST;
-            ordinal_rrel.param_type = SCP_ASSIGN;
+            curr_ordinal.param_type = SCP_ASSIGN;
+            modifier.param_type = SCP_ASSIGN;
             it1 = scp_iterator3_new(&modifier, &arc2, &arc1);
             while (SCP_RESULT_TRUE == scp_iterator3_next(it1, &modifier, &arc2, &arc1))
             {
+                modifier.param_type = SCP_FIXED;
                 // Param type
                 if (SCP_RESULT_TRUE == ifCoin(&rrel_scp_const, &modifier))
                 {
                     operand_type = SCP_CONST;
+                    modifier.param_type = SCP_ASSIGN;
                     continue;
                 }
                 if (SCP_RESULT_TRUE == ifCoin(&rrel_scp_var, &modifier))
                 {
                     operand_type = SCP_VAR;
+                    modifier.param_type = SCP_ASSIGN;
                     continue;
                 }
 
                 // Ordinal
-                modifier.param_type = SCP_FIXED;
                 if (SCP_RESULT_TRUE == searchElStr3(&ordinal_rrel, &arc2, &modifier))
                 {
                     curr_ordinal.param_type = SCP_ASSIGN;
@@ -1550,7 +1553,7 @@ sc_result interpreter_agent_call_operator(sc_event *event, sc_addr arg)
             scp_iterator3_free(it1);
             arc1.param_type = SCP_ASSIGN;
 
-            ordinal_index = check_ordinal_rrel(&curr_ordinal, ORDINAL_RRELS_COUNT + 1);
+            ordinal_index = check_ordinal_rrel(&curr_ordinal, ORDINAL_RRELS_COUNT);
             if (in_out_params[ordinal_index] == 1)
             {
                 if (operand_type == SCP_CONST)
