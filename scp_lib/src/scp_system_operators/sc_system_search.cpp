@@ -73,6 +73,7 @@ sc_bool system_sys_search_recurse(sc_addr sc_pattern, sc_type_hash pattern, sc_a
     common_result.push_back(inp_result);
 
     //Pattern arcs list
+
     sc_addr_vector pattern_arc_set;
 
     sc_iterator3 *it_pattern_arc = sc_iterator3_f_a_a_new(curr_pattern_element, 0, 0);
@@ -115,6 +116,12 @@ sc_bool system_sys_search_recurse(sc_addr sc_pattern, sc_type_hash pattern, sc_a
     sc_bool pattern_arc_is_const_or_has_value = SC_FALSE;
     sc_bool pattern_is_const_or_has_value = SC_FALSE;
 
+    /*if (pattern_arc_set.size() > 0)
+    {
+        printf("INPUT ELEMENT: %u|%u\n", curr_pattern_element.seg, curr_pattern_element.offset);
+        printf("ARCS: %d\n", pattern_arc_set.size());
+    }*/
+
     //Pattern arcs loop
     for (sc_uint i = 0; i < pattern_arc_set.size(); i++)
     {
@@ -142,7 +149,11 @@ sc_bool system_sys_search_recurse(sc_addr sc_pattern, sc_type_hash pattern, sc_a
             out_arc_flag = SC_FALSE;
         }
 
-        if (pattern.find(SC_ADDR_LOCAL_TO_INT(next_pattern_element)) == pattern.end()) {continue;}
+        if (pattern.find(SC_ADDR_LOCAL_TO_INT(next_pattern_element)) == pattern.end())
+        {
+            //printf("PASSED ELEMENT: %u|%u\n", next_pattern_element.seg, next_pattern_element.offset);
+            continue;
+        }
 
         sc_type_result::iterator arc_it = inp_result_copy.find(pattern_arc);
         if (arc_it != inp_result_copy.end())
@@ -159,6 +170,7 @@ sc_bool system_sys_search_recurse(sc_addr sc_pattern, sc_type_hash pattern, sc_a
             }
         }
 
+        //printf("INPUT RESULT SIZE: %d\n", inp_result_copy.size());
         //!check next_pattern_element type
         sc_type next_pattern_element_type;
         if (sc_memory_get_element_type(next_pattern_element, &next_pattern_element_type) != SC_RESULT_OK) {continue;}
@@ -207,10 +219,8 @@ sc_bool system_sys_search_recurse(sc_addr sc_pattern, sc_type_hash pattern, sc_a
 
         if (pattern_arc_is_const_or_has_value == SC_FALSE)
         {
-            //!TODO CHECK ARC TYPE
             sc_iterator3 *it_const_arc;
             sc_type const_arc_type = ((~sc_type_var & pattern_arc_type) | sc_type_const);
-            //sc_type const_arc_type=0;
             if (out_arc_flag == SC_TRUE)
             {
                 if (pattern_is_const_or_has_value == SC_TRUE)
@@ -220,7 +230,6 @@ sc_bool system_sys_search_recurse(sc_addr sc_pattern, sc_type_hash pattern, sc_a
                 else
                 {
                     sc_type next_const_element_type = ((~sc_type_var & next_pattern_element_type) | sc_type_const);
-                    //sc_type next_const_element_type=0;
                     it_const_arc = sc_iterator3_f_a_a_new(curr_const_element, const_arc_type, next_const_element_type);
                 }
             }
@@ -233,7 +242,6 @@ sc_bool system_sys_search_recurse(sc_addr sc_pattern, sc_type_hash pattern, sc_a
                 else
                 {
                     sc_type next_const_element_type = ((~sc_type_var & next_pattern_element_type) | sc_type_const);
-                    //sc_type next_const_element_type=0;
                     it_const_arc = sc_iterator3_a_a_f_new(next_const_element_type, const_arc_type, curr_const_element);
                 }
             }
@@ -241,10 +249,11 @@ sc_bool system_sys_search_recurse(sc_addr sc_pattern, sc_type_hash pattern, sc_a
             {
                 if (out_arc_flag == SC_FALSE)
                 {
-                    addr1 = sc_iterator3_value(it_pattern_arc, 0);
+                    addr1 = sc_iterator3_value(it_const_arc, 0);
                     if (SC_ADDR_IS_EQUAL(addr1, sc_pattern)) continue;
                 }
                 addr2 = sc_iterator3_value(it_const_arc, 1);
+                //printf("ARC ADDED FOR CONST ELEMENT: %u|%u\n", curr_const_element.seg, curr_const_element.offset);
                 const_arc_set.push_back(addr2);
             }
             sc_iterator3_free(it_const_arc);
@@ -276,12 +285,13 @@ sc_bool system_sys_search_recurse(sc_addr sc_pattern, sc_type_hash pattern, sc_a
             {
                 continue;
             }
-            //printf("CONST ELEM: %u|%u\n",next_const_element.seg,next_const_element.offset);
+            //printf("NEXT CONST ELEM: %u|%u\n", next_const_element.seg, next_const_element.offset);
 
             //!Results loop
             for (sc_uint k = 0; k < common_result.size(); k++)
             {
                 sc_type_result *result = common_result[k];
+                sc_bool gen_arc = SC_FALSE;
 
                 if (pattern_arc_is_const_or_has_value == SC_FALSE)
                 {
@@ -308,17 +318,30 @@ sc_bool system_sys_search_recurse(sc_addr sc_pattern, sc_type_hash pattern, sc_a
                         }
                     }
 
-                    //!Genering pair for 2nd element
-                    result->insert(sc_addr_pair(pattern_arc, const_arc));
-                    pattern.erase(SC_ADDR_LOCAL_TO_INT(pattern_arc));
+                    gen_arc = SC_TRUE;
                 }
 
                 //!Genering pair for 3rd element
                 if (pattern_is_const_or_has_value == SC_FALSE
                     && SC_FALSE == find_result_pair_for_var(result, next_pattern_element, &temp))
                 {
+                    //!Genering pair for 2nd element
+                    if (gen_arc == SC_TRUE)
+                    {
+                        result->insert(sc_addr_pair(pattern_arc, const_arc));
+                        pattern.erase(SC_ADDR_LOCAL_TO_INT(pattern_arc));
+                    }
                     result->insert(sc_addr_pair(next_pattern_element, next_const_element));
                     pattern.erase(SC_ADDR_LOCAL_TO_INT(next_pattern_element));
+                }
+                else
+                {
+                    //!Genering pair for 2nd element
+                    if (SC_ADDR_IS_EQUAL(temp, next_const_element) && gen_arc == SC_TRUE)
+                    {
+                        result->insert(sc_addr_pair(pattern_arc, const_arc));
+                        pattern.erase(SC_ADDR_LOCAL_TO_INT(pattern_arc));
+                    }
                 }
 
                 sc_type_result *recurse_result = new sc_type_result();
@@ -422,8 +445,6 @@ sc_result system_sys_search_only_full(sc_addr pattern, sc_type_result params, sc
     sort_result_vector(search_result);
     remove_result_vector_short_results(search_result, var_count);
     print_result_set(search_result);
-    //free_single_result(result);
-    //free_result_vector(search_result);
 
     //printf("Memory balance: %d\n",class_count);
     return SC_RESULT_OK;
@@ -468,8 +489,6 @@ sc_result system_sys_search_for_variables(sc_addr pattern, sc_type_result params
         filter_result_vector_by_variables(search_result, &requested_values);
     }
     print_result_set(search_result);
-    //free_single_result(result);
-    //free_result_vector(search_result);
 
     //printf("Memory balance: %d\n",class_count);
     return SC_RESULT_OK;
@@ -509,8 +528,6 @@ sc_result system_sys_search(sc_addr pattern, sc_type_result params, sc_type_resu
     sort_result_vector(search_result);
     remove_result_vector_short_results(search_result);
     print_result_set(search_result);
-    //free_single_result(result);
-    //free_result_vector(search_result);
 
     //printf("Memory balance: %d\n",class_count);
     return SC_RESULT_OK;

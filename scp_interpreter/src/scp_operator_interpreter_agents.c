@@ -2081,7 +2081,11 @@ sc_result sys_search_agent_body(scp_operand *operator_node)
             MAKE_DEFAULT_OPERAND_ASSIGN(operand_elem);
             get_set_power(&operand, &size2);
             if (size2 == 0)
+            {
+                arc1.param_type = SCP_ASSIGN;
+                MAKE_DEFAULT_OPERAND_ASSIGN(operand);
                 continue;
+            }
             results = (scp_operand_pair *)calloc(sizeof(scp_operand_pair), size2);
             pair_elems2 = (scp_operand **)calloc(sizeof(scp_operand), size2);
             pair_values2 = (scp_operand **)calloc(sizeof(scp_operand), size2);
@@ -2117,7 +2121,11 @@ sc_result sys_search_agent_body(scp_operand *operator_node)
             MAKE_DEFAULT_OPERAND_ASSIGN(operand_elem);
             get_set_power(&operand, &size3);
             if (size3 == 0)
+            {
+                arc1.param_type = SCP_ASSIGN;
+                MAKE_DEFAULT_OPERAND_ASSIGN(operand);
                 continue;
+            }
             params = (scp_operand_pair *)calloc(sizeof(scp_operand_pair), size3);
             pair_elems3 = (scp_operand **)calloc(sizeof(scp_operand), size3);
             pair_values3 = (scp_operand **)calloc(sizeof(scp_operand), size3);

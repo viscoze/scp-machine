@@ -1,0 +1,4 @@
+question_pattern_search <- sc_node_not_relation;;
+
+question_pattern_search => nrel_main_ru_idtf:
+	[вопрос поиска по заданному образцу];;

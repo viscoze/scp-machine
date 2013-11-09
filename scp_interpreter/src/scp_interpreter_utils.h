@@ -26,10 +26,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scp_lib.h"
 #include <glib.h>
 
-#define MAKE_SC_ADDR_HASH(elem) GINT_TO_POINTER(SC_ADDR_LOCAL_TO_INT(elem))
-#define MAKE_HASH(elem) GINT_TO_POINTER(SC_ADDR_LOCAL_TO_INT((elem).addr))
-#define MAKE_PHASH(elem) GINT_TO_POINTER(SC_ADDR_LOCAL_TO_INT((elem)->addr))
-
 scp_result print_error(const char *error_type, const char *text);
 scp_result resolve_operator_type(scp_operand *oper, scp_operand *type);
 scp_result resolve_scp_event_type(scp_operand *element, sc_event_type *type);

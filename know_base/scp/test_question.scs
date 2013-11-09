@@ -1,5 +1,5 @@
-test_question -> test_node1;;
-test_question <- question_search_all_output_arcs_with_rel;;
+test_question -> pattern1;;
+test_question <- question_pattern_search;;
 test_question <- question;;
 
 test_node1 -> test_attr1: test_node2;;
@@ -8,3 +8,15 @@ test_node1 <= nrel_addition: summ1 (* -> const_1; const_2; const_3;; *);;
 test_node1 => nrel_addition: summ2 (* -> const_3; const_2; const_5;; *);;
 
 quasybinary_relation -> nrel_addition;; 
+
+[*
+	o1 _-> _o2;;
+	o1 _<- _o3;;
+	_o3 _-> _o4;;
+	_o2 _-> _o4;;
+*] = pattern1;;
+
+o1 -> o2;;
+o1 <- o3;;
+o3 -> o4;;
+o2 -> o4;;

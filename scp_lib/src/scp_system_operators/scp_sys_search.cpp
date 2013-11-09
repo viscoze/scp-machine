@@ -21,6 +21,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "sc_system_search.hpp"
+#include <glib.h>
 
 extern "C"
 {
@@ -38,6 +39,7 @@ extern "C" scp_result sys_search_for_variables(scp_operand *param1, scp_operand_
     sc_type_result_vector result;
     sc_uint i, j;
     scp_result res = SCP_RESULT_FALSE;
+    GHashTable *table;
 
     for (i = 0; i < param_count; i++)
     {
@@ -79,15 +81,21 @@ extern "C" scp_result sys_search_for_variables(scp_operand *param1, scp_operand_
     }
     if (param4 != nullptr)
     {
+        table = g_hash_table_new(NULL, NULL);
         sc_type_result::iterator it;
         for (i = 0; i < result.size(); i++)
         {
             for (it = result[i]->begin() ; it != result[i]->end(); it++)
             {
                 addr1 = (*it).second;
-                sc_memory_arc_new(sc_type_arc_pos_const_perm, param4->addr, addr1);
+                if (FALSE == g_hash_table_contains(table, MAKE_SC_ADDR_HASH(addr1)))
+                {
+                    sc_memory_arc_new(sc_type_arc_pos_const_perm, param4->addr, addr1);
+                    g_hash_table_add(table, MAKE_SC_ADDR_HASH(addr1));
+                }
             }
         }
+        g_hash_table_destroy(table);
     }
     free_result_vector(&result);
     return res;
@@ -101,6 +109,7 @@ extern "C" scp_result sys_search(scp_operand *param1, scp_operand *param2, scp_o
     sc_type_result::iterator it;
     sc_uint i;
     scp_result res = SCP_RESULT_FALSE;
+    GHashTable *table;
 
     for (i = 0; i < param_count; i++)
     {
@@ -129,6 +138,10 @@ extern "C" scp_result sys_search(scp_operand *param1, scp_operand *param2, scp_o
         free_result_vector(&result);
         return SCP_RESULT_FALSE;
     }
+    if (param4 != nullptr)
+    {
+        table = g_hash_table_new(NULL, NULL);
+    }
     for (i = 0; i < result.size(); i++)
     {
         curr_result_node = sc_memory_node_new(sc_type_const);
@@ -140,11 +153,20 @@ extern "C" scp_result sys_search(scp_operand *param1, scp_operand *param2, scp_o
             sc_memory_arc_new(sc_type_arc_pos_const_perm, curr_result_node, arc);
             if (param4 != nullptr)
             {
-                sc_memory_arc_new(sc_type_arc_pos_const_perm, param4->addr, addr2);
+                if (FALSE == g_hash_table_contains(table, MAKE_SC_ADDR_HASH(addr2)))
+                {
+                    sc_memory_arc_new(sc_type_arc_pos_const_perm, param4->addr, addr2);
+                    g_hash_table_add(table, MAKE_SC_ADDR_HASH(addr2));
+                }
+
             }
         }
         sc_memory_arc_new(sc_type_arc_pos_const_perm, param2->addr, curr_result_node);
     }
     free_result_vector(&result);
+    if (param4 != nullptr)
+    {
+        g_hash_table_destroy(table);
+    }
     return res;
 }
