@@ -85,9 +85,11 @@ scp_procedure -> proc_search_semantic_neighborhood (*
 		  <- ifType;;
 		  -> rrel_1: rrel_fixed: rrel_scp_var: rrel_node: _curr_elem;;
 
-		  -> rrel_then: .proc_search_semantic_neighborhood_operator10_5;;
+		  -> rrel_then: .proc_search_semantic_neighborhood_operator9_1;;
 		  -> rrel_else: .proc_search_semantic_neighborhood_operator9;;
 		*);;
+
+		/* Arc case */
 
 		-> .proc_search_semantic_neighborhood_operator9 (*
 		  <- call;;
@@ -100,30 +102,43 @@ scp_procedure -> proc_search_semantic_neighborhood (*
 		  -> rrel_goto: .proc_search_semantic_neighborhood_operator10;;
 		*);;
 
-		-> .proc_search_semantic_neighborhood_operator10 (*
-		  <- genElStr3;;
-		  -> rrel_1: rrel_fixed: rrel_scp_var: _descr_set;;
-		  -> rrel_2: rrel_assign: rrel_pos_const_perm: rrel_scp_var: _arc1;;
-		  -> rrel_3: rrel_fixed: rrel_scp_var: _descr;;
+		/* Node case */
 
-		  -> rrel_goto: .proc_search_semantic_neighborhood_operator4;;
+		-> .proc_search_semantic_neighborhood_operator9_1 (*
+		  <- call;;
+		  -> rrel_1: rrel_fixed: rrel_scp_const: proc_search_parent_in_quasybinary_for_link;;
+		  -> rrel_2: rrel_fixed: rrel_scp_const: .proc_search_semantic_neighborhood_operator9_1_params (*
+				-> rrel_1: rrel_fixed: rrel_scp_var: _curr_elem;;
+				-> rrel_2: rrel_fixed: rrel_scp_var: _answer;;
+			*);;
+		  -> rrel_3: rrel_assign: rrel_scp_var: _descr;;
+		  -> rrel_goto: .proc_search_semantic_neighborhood_operator9_2;;
 		*);;
 
-		-> .proc_search_semantic_neighborhood_operator10_5 (*
+		-> .proc_search_semantic_neighborhood_operator9_2 (*
 		  <- searchElStr3;;
 		  -> rrel_1: rrel_fixed: rrel_scp_var: _answer;;
 		  -> rrel_2: rrel_assign: rrel_pos_const_perm: rrel_scp_var: _arc1;;
 		  -> rrel_3: rrel_fixed: rrel_scp_var: _curr_elem;;
 
-		  -> rrel_then: .proc_search_semantic_neighborhood_operator4;;
-		  -> rrel_else: .proc_search_semantic_neighborhood_operator11;;
+		  -> rrel_then: .proc_search_semantic_neighborhood_operator10;;
+		  -> rrel_else: .proc_search_semantic_neighborhood_operator9_3;;
 		*);;
 
-		-> .proc_search_semantic_neighborhood_operator11 (*
+		-> .proc_search_semantic_neighborhood_operator9_3 (*
 		  <- genElStr3;;
 		  -> rrel_1: rrel_fixed: rrel_scp_var: _answer;;
 		  -> rrel_2: rrel_assign: rrel_pos_const_perm: rrel_scp_var: _arc1;;
 		  -> rrel_3: rrel_fixed: rrel_scp_var: _curr_elem;;
+
+		  -> rrel_goto: .proc_search_semantic_neighborhood_operator10;;
+		*);;
+
+		-> .proc_search_semantic_neighborhood_operator10 (*
+		  <- genElStr3;;
+		  -> rrel_1: rrel_fixed: rrel_scp_var: _descr_set;;
+		  -> rrel_2: rrel_assign: rrel_pos_const_perm: rrel_scp_var: _arc1;;
+		  -> rrel_3: rrel_fixed: rrel_scp_var: _descr;;
 
 		  -> rrel_goto: .proc_search_semantic_neighborhood_operator4;;
 		*);;

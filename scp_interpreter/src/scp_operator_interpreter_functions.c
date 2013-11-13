@@ -208,6 +208,11 @@ scp_result resolve_operands_modifiers_with_set(scp_operand *scp_operator_node, s
     MAKE_DEFAULT_OPERAND_ASSIGN(operand);
     MAKE_DEFAULT_OPERAND_ASSIGN(operand_node);
     MAKE_DEFAULT_NODE_ASSIGN(modifier);
+    for (set_number = 0; set_number < count; set_number++)
+    {
+        sets[set_number].set = SC_FALSE;
+    }
+    set_number = 0;
     scp_operator_node->param_type = SCP_FIXED;
     it0 = scp_iterator3_new(scp_operator_node, &arc1, &operand_node);
     while (SCP_RESULT_TRUE == scp_iterator3_next(it0, scp_operator_node, &arc1, &operand_node))
@@ -455,7 +460,7 @@ scp_result get_operands_values(scp_operand *operands, scp_operand *operands_valu
             {
                 printEl(operands + i);
                 print_error("scp-operator interpreting", "Constant has ASSIGN modifier");
-                printf("wrong parameter %d\n", i);
+                printf("wrong parameter - %d\n", i);
                 return SCP_RESULT_ERROR;
             }
             else
@@ -505,6 +510,7 @@ scp_result get_set_operands_values(scp_operand *operands, scp_operand *operands_
             {
                 printEl(operands + i);
                 print_error("scp-operator interpreting", "Constant has ASSIGN modifier");
+                printf("wrong parameter - set_%d\n", i);
                 return SCP_RESULT_ERROR;
             }
             else

@@ -482,7 +482,7 @@ scp_result eraseEl(scp_operand *param)
     }
     if (param->erase != SCP_TRUE)
     {
-        return print_error("eraseEl", "Parameter must have ERASE_TRUE modifier");
+        return print_error("eraseEl", "Parameter must have ERASE modifier");
     }
     if (SC_FALSE == sc_memory_is_element(param->addr))
     {

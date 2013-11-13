@@ -1,11 +1,11 @@
-test_question -> pattern1;;
-test_question <- question_pattern_search;;
+test_question -> test_node1;;
+test_question <- question_search_full_semantic_neighborhood;;
 test_question <- question;;
 
 test_node1 -> test_attr1: test_node2;;
 test_node1 <- test_attr2: test_node3;;
 test_node1 <= nrel_addition: summ1 (* -> const_1; const_2; const_3;; *);;
-test_node1 => nrel_addition: summ2 (* -> const_3; const_2; const_5;; *);;
+summresult2 <= nrel_addition: summ2 (* -> const_3; test_node1; const_5;; *);;
 
 quasybinary_relation -> nrel_addition;; 
 
@@ -20,3 +20,14 @@ o1 -> o2;;
 o1 <- o3;;
 o3 -> o4;;
 o2 -> o4;;
+
+/*
+proc_test -> rrel_1: proc_search_parent_in_quasybinary_for_link;;
+proc_test -> rrel_2: proc_search_parent_in_quasybinary_for_link_req_params (*
+	-> rrel_1: test_node1;;
+	-> rrel_2: .proc_search_parent_in_quasybinary_for_link_req_answer;;
+*);;
+proc_test <- question_scp_interpretation_request;;
+proc_test <- question_scp_interpretation_request;;
+proc_test <- question;;
+*/
