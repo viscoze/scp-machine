@@ -449,7 +449,7 @@ scp_result get_operands_values(scp_operand *operands, scp_operand *operands_valu
                 {
                     printEl(operands + i);
                     print_error("scp-operator interpreting", "Variable has FIXED modifier, but has no value");
-                    printf("wrong parameter %d\n", i);
+                    printf("wrong parameter %d\n", i + 1);
                     return SCP_RESULT_ERROR;
                 }
             }
@@ -460,7 +460,7 @@ scp_result get_operands_values(scp_operand *operands, scp_operand *operands_valu
             {
                 printEl(operands + i);
                 print_error("scp-operator interpreting", "Constant has ASSIGN modifier");
-                printf("wrong parameter - %d\n", i);
+                printf("wrong parameter - %d\n", i + 1);
                 return SCP_RESULT_ERROR;
             }
             else
@@ -500,6 +500,7 @@ scp_result get_set_operands_values(scp_operand *operands, scp_operand *operands_
                 {
                     printEl(operands + i);
                     print_error("scp-operator interpreting", "Variable has FIXED modifier, but has no value");
+                    printf("wrong parameter - set_%d\n", i + 1);
                     return SCP_RESULT_ERROR;
                 }
             }
@@ -510,7 +511,7 @@ scp_result get_set_operands_values(scp_operand *operands, scp_operand *operands_
             {
                 printEl(operands + i);
                 print_error("scp-operator interpreting", "Constant has ASSIGN modifier");
-                printf("wrong parameter - set_%d\n", i);
+                printf("wrong parameter - set_%d\n", i + 1);
                 return SCP_RESULT_ERROR;
             }
             else

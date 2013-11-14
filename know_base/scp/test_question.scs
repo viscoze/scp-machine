@@ -6,6 +6,7 @@ test_node1 -> test_attr1: test_node2;;
 test_node1 <- test_attr2: test_node3;;
 test_node1 <= nrel_addition: summ1 (* -> const_1; const_2; const_3;; *);;
 summresult2 <= nrel_addition: summ2 (* -> const_3; test_node1; const_5;; *);;
+summresult3 <= nrel_addition: summ3 (* -> const_3; const_2; const_5;; *);;
 
 quasybinary_relation -> nrel_addition;; 
 
