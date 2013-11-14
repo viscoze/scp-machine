@@ -968,21 +968,56 @@ sc_result interpreter_agent_if_operators(sc_event *event, sc_addr arg)
     //ifVarAssign case
     if (SCP_RESULT_TRUE == ifCoin(&operator_type, &op_ifVarAssign))
     {
-        scp_operand operands, operand_values;
+        scp_operand operand, operand_value;
+        scp_param_type type;
         input_arc.erase = SCP_TRUE;
         eraseEl(&input_arc);
         print_debug_info("ifVarAssign");
 
-        resolve_operands_modifiers(&operator_node, &operands, 1);
+        resolve_operands_modifiers(&operator_node, &operand, 1);
+        type = operand.param_type;
 
-        if (SCP_RESULT_TRUE != get_operands_values(&operands, &operand_values, 1))
+        /*if (SCP_RESULT_TRUE != get_operands_values(&operands, &operand_values, 1))
         {
             operator_interpreting_crash(&operator_node);
             return SC_RESULT_ERROR;
-        }
+        }*/
 
         //Operator body
-        res = ifVarAssign(&operand_values);
+        if (operand.operand_type == SCP_CONST)
+        {
+            if (type == SCP_ASSIGN)
+            {
+                printEl(&operand);
+                print_error("scp-operator interpreting", "Constant has ASSIGN modifier");
+                operator_interpreting_crash(&operator_node);
+                return SCP_RESULT_ERROR;
+            }
+            res = ifVarAssign(&operand);
+        }
+        else
+        {
+            scp_operand arc3, arc2;
+            MAKE_DEFAULT_ARC_ASSIGN(arc2);
+            MAKE_COMMON_ARC_ASSIGN(arc3);
+            MAKE_DEFAULT_OPERAND_ASSIGN(operand_value);
+
+            operand.param_type = SCP_FIXED;
+            if (SCP_RESULT_TRUE == searchElStr5(&operand, &arc3, &operand_value, &arc2, &nrel_value))
+            {
+                res = ifVarAssign(&operand_value);
+            }
+            else
+            {
+                res = SCP_RESULT_FALSE;
+            }
+            if (type == SCP_ASSIGN)
+            {
+                operand_value.param_type = SCP_ASSIGN;
+                eraseElStr5(&operand, &arc3, &operand_value, &arc2, &nrel_value);
+            }
+        }
+
         switch (res)
         {
             case SCP_RESULT_TRUE:
@@ -1447,6 +1482,7 @@ sc_result interpreter_agent_call_operator(sc_event *event, sc_addr arg)
         sc_char in_out_params[ORDINAL_RRELS_COUNT + 1];
         sc_char in_out_value = 0;
         scp_uint32 ordinal_index = 0;
+        scp_param_type param_type = SCP_FIXED;
 
         input_arc.erase = SCP_TRUE;
         eraseEl(&input_arc);
@@ -1521,6 +1557,7 @@ sc_result interpreter_agent_call_operator(sc_event *event, sc_addr arg)
             param.param_type = SCP_FIXED;
             arc1.param_type = SCP_FIXED;
             operand_type = SCP_CONST;
+            param_type = SCP_FIXED;
             curr_ordinal.param_type = SCP_ASSIGN;
             modifier.param_type = SCP_ASSIGN;
             it1 = scp_iterator3_new(&modifier, &arc2, &arc1);
@@ -1541,6 +1578,20 @@ sc_result interpreter_agent_call_operator(sc_event *event, sc_addr arg)
                     continue;
                 }
 
+                // Operand type
+                if (SCP_RESULT_TRUE == ifCoin(&rrel_fixed, &modifier))
+                {
+                    param_type = SCP_FIXED;
+                    modifier.param_type = SCP_ASSIGN;
+                    continue;
+                }
+                if (SCP_RESULT_TRUE == ifCoin(&rrel_assign, &modifier))
+                {
+                    param_type = SCP_ASSIGN;
+                    modifier.param_type = SCP_ASSIGN;
+                    continue;
+                }
+
                 // Ordinal
                 if (SCP_RESULT_TRUE == searchElStr3(&ordinal_rrel, &arc2, &modifier))
                 {
@@ -1556,6 +1607,13 @@ sc_result interpreter_agent_call_operator(sc_event *event, sc_addr arg)
             ordinal_index = check_ordinal_rrel(&curr_ordinal, ORDINAL_RRELS_COUNT);
             if (in_out_params[ordinal_index] == 1)
             {
+                if (param_type == SCP_ASSIGN)
+                {
+                    print_error("scp-operator interpreting", "In-parameter has ASSIGN modifier");
+                    printf("wrong call parameter - %d\n", ordinal_index);
+                    operator_interpreting_crash(&operator_node);
+                    return SC_RESULT_ERROR;
+                }
                 if (operand_type == SCP_CONST)
                 {
                     genElStr5(&new_params_node, &arc1, &param, &arc2, &curr_ordinal);
@@ -1563,13 +1621,33 @@ sc_result interpreter_agent_call_operator(sc_event *event, sc_addr arg)
                 else
                 {
                     value.param_type = SCP_ASSIGN;
-                    searchElStr5(&param, &arc3, &value, &arc2, &nrel_value);
+                    if (SCP_RESULT_TRUE != searchElStr5(&param, &arc3, &value, &arc2, &nrel_value))
+                    {
+                        print_error("scp-operator interpreting", "Variable has FIXED modifier, but has no value");
+                        printf("wrong call parameter - %d\n", ordinal_index);
+                        operator_interpreting_crash(&operator_node);
+                        return SC_RESULT_ERROR;
+                    }
                     value.param_type = SCP_FIXED;
                     genElStr5(&new_params_node, &arc1, &value, &arc2, &curr_ordinal);
                 }
             }
             else
             {
+                if (param_type == SCP_ASSIGN)
+                {
+                    eraseElStr5(&param, &arc3, &value, &arc1, &nrel_value);
+                }
+                else
+                {
+                    if (operand_type == SCP_VAR && SCP_RESULT_TRUE != searchElStr5(&param, &arc3, &value, &arc2, &nrel_value))
+                    {
+                        print_error("scp-operator interpreting", "Variable has FIXED modifier, but has no value");
+                        printf("wrong call parameter - %d\n", ordinal_index);
+                        operator_interpreting_crash(&operator_node);
+                        return SC_RESULT_ERROR;
+                    }
+                }
                 genElStr5(&new_params_node, &arc1, &param, &arc2, &curr_ordinal);
             }
 

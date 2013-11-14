@@ -2,6 +2,7 @@ scp_procedure -> proc_search_parent_in_quasybinary_for_link (*
 	-> rrel_params: .proc_search_parent_in_quasybinary_for_link_params (*
 		-> rrel_1: rrel_in: _parameter;;
 		-> rrel_2: rrel_in: _answer;;
+		-> rrel_3: rrel_out: _parent;;
 	*);;
 	
 	-> rrel_operators: .proc_search_parent_in_quasybinary_for_link_operator_set (*
@@ -171,7 +172,7 @@ scp_procedure -> proc_search_parent_in_quasybinary_for_link (*
 
 		  -> rrel_goto: .proc_search_parent_in_quasybinary_for_link_operator_return;;
 		*);;
-
+		
 		-> .proc_search_parent_in_quasybinary_for_link_operator_return (*
 		  <- return;;
 		*);;
