@@ -113,21 +113,6 @@ scp_procedure -> proc_search_semantic_neighborhood (*
 				-> rrel_3: rrel_assign: rrel_scp_var: _parent;;
 			*);;
 		  -> rrel_3: rrel_assign: rrel_scp_var: _descr;;
-		  -> rrel_goto: .proc_search_semantic_neighborhood_operator_temp1;;
-		*);;
-
-		-> .proc_search_semantic_neighborhood_operator_temp1 (*
-		  <- ifVarAssign;;
-		  -> rrel_1: rrel_fixed: rrel_scp_var: _parent;;
-
-		  -> rrel_then: .proc_search_semantic_neighborhood_operator_temp2;;
-		  -> rrel_else: .proc_search_semantic_neighborhood_operator9_2;;
-		*);;
-
-		-> .proc_search_semantic_neighborhood_operator_temp2 (*
-		  <- printEl;;
-		  -> rrel_1: rrel_fixed: rrel_scp_var: _parent;;
-
 		  -> rrel_goto: .proc_search_semantic_neighborhood_operator9_2;;
 		*);;
 
