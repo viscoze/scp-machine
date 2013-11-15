@@ -1,0 +1,199 @@
+scp_procedure -> proc_search_parent_in_quasybinary_for_link_recursively (*	
+	-> rrel_params: .proc_search_parent_in_quasybinary_for_link_recursively_params (*
+		-> rrel_1: rrel_in: _parameter;;
+		-> rrel_2: rrel_in: _answer;;
+		-> rrel_3: rrel_out: _parent;;
+	*);;
+	
+	-> rrel_operators: .proc_search_parent_in_quasybinary_for_link_recursively_operator_set (*
+		
+		-> rrel_init: .proc_search_parent_in_quasybinary_for_link_recursively_operator1 (*
+		  <- searchSetStr3;;
+		  -> rrel_1: rrel_fixed: rrel_scp_var: _parameter;;
+		  -> rrel_2: rrel_assign: rrel_common: rrel_scp_var: _arc1;;
+		  -> rrel_3: rrel_assign: rrel_scp_var: _curr_arc;;
+
+		  -> rrel_set_2: rrel_assign: rrel_scp_var: _arc_set;;
+
+		  -> rrel_then: .proc_search_parent_in_quasybinary_for_link_recursively_operator2;;
+		  -> rrel_else: .proc_search_parent_in_quasybinary_for_link_recursively_operator_return;;
+		*);;
+
+		/* Common arc cycle */
+
+		-> .proc_search_parent_in_quasybinary_for_link_recursively_operator2 (*
+		  <- searchElStr3;;
+		  -> rrel_1: rrel_fixed: rrel_scp_var: _arc_set;;
+		  -> rrel_2: rrel_assign: rrel_pos_const_perm: rrel_scp_var: _arc1;;
+		  -> rrel_3: rrel_assign: rrel_scp_var: _curr_arc;;
+
+		  -> rrel_then: .proc_search_parent_in_quasybinary_for_link_recursively_operator3;;
+		  -> rrel_else: .proc_search_parent_in_quasybinary_for_link_recursively_operator_exit;;
+		*);;
+
+		-> .proc_search_parent_in_quasybinary_for_link_recursively_operator3 (*
+		  <- eraseEl;;
+		  -> rrel_1: rrel_fixed: rrel_erase: rrel_scp_var: _arc1;;
+
+		  -> rrel_goto: .proc_search_parent_in_quasybinary_for_link_recursively_operator4;;
+		*);;
+
+		-> .proc_search_parent_in_quasybinary_for_link_recursively_operator4 (*
+		  <- searchSetStr3;;
+		  -> rrel_1: rrel_assign: rrel_scp_var: _temp_node;;
+		  -> rrel_2: rrel_assign: rrel_pos_const_perm: rrel_scp_var: _arc1;;
+		  -> rrel_3: rrel_fixed: rrel_scp_var: _curr_arc;;
+
+		  -> rrel_set_2: rrel_assign: rrel_scp_var: _rel_arc_set;;
+
+		  -> rrel_then: .proc_search_parent_in_quasybinary_for_link_recursively_operator5;;
+		  -> rrel_else: .proc_search_parent_in_quasybinary_for_link_recursively_operator2;;
+		*);;
+
+		/* Relation arc cycle */
+
+		-> .proc_search_parent_in_quasybinary_for_link_recursively_operator5 (*
+		  <- searchElStr3;;
+		  -> rrel_1: rrel_fixed: rrel_scp_var: _rel_arc_set;;
+		  -> rrel_2: rrel_assign: rrel_pos_const_perm: rrel_scp_var: _arc1;;
+		  -> rrel_3: rrel_assign: rrel_scp_var: _curr_rel_arc;;
+
+		  -> rrel_then: .proc_search_parent_in_quasybinary_for_link_recursively_operator6;;
+		  -> rrel_else: .proc_search_parent_in_quasybinary_for_link_recursively_operator5_clean;;
+		*);;
+
+		-> .proc_search_parent_in_quasybinary_for_link_recursively_operator5_clean (*
+		  <- eraseEl;;
+		  -> rrel_1: rrel_fixed: rrel_erase: rrel_scp_var: _rel_arc_set;;
+
+		  -> rrel_goto: .proc_search_parent_in_quasybinary_for_link_recursively_operator2;;
+		*);;
+
+		-> .proc_search_parent_in_quasybinary_for_link_recursively_operator6 (*
+		  <- eraseEl;;
+		  -> rrel_1: rrel_fixed: rrel_erase: rrel_scp_var: _arc1;;
+
+		  -> rrel_goto: .proc_search_parent_in_quasybinary_for_link_recursively_operator7;;
+		*);;
+		
+		/* Checking if relation is quasybinary */
+
+		-> .proc_search_parent_in_quasybinary_for_link_recursively_operator7 (*
+		  <- searchElStr3;;
+		  -> rrel_1: rrel_assign: rrel_scp_var: _curr_rel;;
+		  -> rrel_2: rrel_fixed: rrel_scp_var: _curr_rel_arc;;
+		  -> rrel_3: rrel_assign: rrel_scp_var: _temp;;
+
+		  -> rrel_then: .proc_search_parent_in_quasybinary_for_link_recursively_operator8;;
+		  -> rrel_else: .proc_search_parent_in_quasybinary_for_link_recursively_operator5;;
+		*);;
+
+		-> .proc_search_parent_in_quasybinary_for_link_recursively_operator8 (*
+		  <- searchElStr3;;
+		  -> rrel_1: rrel_fixed: rrel_scp_const: quasybinary_relation;;
+		  -> rrel_2: rrel_assign: rrel_pos_const_perm: rrel_scp_var: _arc1;;
+		  -> rrel_3: rrel_fixed: rrel_scp_var: _curr_rel;;
+
+		  -> rrel_then: .proc_search_parent_in_quasybinary_for_link_recursively_operator9;;
+		  -> rrel_else: .proc_search_parent_in_quasybinary_for_link_recursively_operator5;;
+		*);;
+
+		/* Adding current relation to answer */
+
+		-> .proc_search_parent_in_quasybinary_for_link_recursively_operator9 (*
+		  <- searchElStr3;;
+		  -> rrel_1: rrel_fixed: rrel_scp_var: _answer;;
+		  -> rrel_2: rrel_assign: rrel_pos_const_perm: rrel_scp_var: _arc1;;
+		  -> rrel_3: rrel_fixed: rrel_scp_var: _curr_rel;;
+
+		  -> rrel_then: .proc_search_parent_in_quasybinary_for_link_recursively_operator11;;
+		  -> rrel_else: .proc_search_parent_in_quasybinary_for_link_recursively_operator10;;
+		*);;
+
+		-> .proc_search_parent_in_quasybinary_for_link_recursively_operator10 (*
+		  <- genElStr3;;
+		  -> rrel_1: rrel_fixed: rrel_scp_var: _answer;;
+		  -> rrel_2: rrel_assign: rrel_pos_const_perm: rrel_scp_var: _arc1;;
+		  -> rrel_3: rrel_fixed: rrel_scp_var: _curr_rel;;
+
+		  -> rrel_goto: .proc_search_parent_in_quasybinary_for_link_recursively_operator11;;
+		*);;
+
+		-> .proc_search_parent_in_quasybinary_for_link_recursively_operator11 (*
+		  <- genElStr3;;
+		  -> rrel_1: rrel_fixed: rrel_scp_var: _answer;;
+		  -> rrel_2: rrel_assign: rrel_pos_const_perm: rrel_scp_var: _arc1;;
+		  -> rrel_3: rrel_fixed: rrel_scp_var: _curr_rel_arc;;
+
+		  -> rrel_goto: .proc_search_parent_in_quasybinary_for_link_recursively_operator12;;
+		*);;
+
+		-> .proc_search_parent_in_quasybinary_for_link_recursively_operator12 (*
+		  <- genElStr3;;
+		  -> rrel_1: rrel_fixed: rrel_scp_var: _answer;;
+		  -> rrel_2: rrel_assign: rrel_pos_const_perm: rrel_scp_var: _arc1;;
+		  -> rrel_3: rrel_fixed: rrel_scp_var: _curr_arc;;
+
+		  -> rrel_goto: .proc_search_parent_in_quasybinary_for_link_recursively_operator13;;
+		*);;
+
+		-> .proc_search_parent_in_quasybinary_for_link_recursively_operator13 (*
+		  <- searchElStr3;;
+		  -> rrel_1: rrel_assign: rrel_scp_var: _temp_node;;
+		  -> rrel_2: rrel_fixed: rrel_scp_var: _curr_arc;;
+		  -> rrel_3: rrel_assign: rrel_scp_var: _parent;;
+
+		  -> rrel_then: .proc_search_parent_in_quasybinary_for_link_recursively_operator13_1;;
+		  -> rrel_else: .proc_search_parent_in_quasybinary_for_link_recursively_operator5;;
+		*);;
+
+		/* Recursive search of parent nodes */
+		-> .proc_search_parent_in_quasybinary_for_link_recursively_operator13_1 (*
+		  <- call;;
+		  -> rrel_1: rrel_fixed: rrel_scp_const: proc_search_parent_in_quasybinary_for_elem_recursively;;
+		  -> rrel_2: rrel_fixed: rrel_scp_const: .proc_search_parent_in_quasybinary_for_link_recursively_operator9_1_params (*
+				-> rrel_1: rrel_fixed: rrel_scp_var: _parent;;
+				-> rrel_2: rrel_fixed: rrel_scp_var: _answer;;
+			*);;
+		  -> rrel_3: rrel_assign: rrel_scp_var: _descr;;
+		  -> rrel_goto: .proc_search_parent_in_quasybinary_for_link_recursively_operator13_2;;
+		*);;
+
+		-> .proc_search_parent_in_quasybinary_for_link_recursively_operator13_2 (*
+		  <- waitReturn;;
+		  -> rrel_1: rrel_fixed: rrel_scp_var: _descr;;
+
+		  -> rrel_goto: .proc_search_parent_in_quasybinary_for_link_recursively_operator14;;
+		*);;
+
+		-> .proc_search_parent_in_quasybinary_for_link_recursively_operator14 (*
+		  <- searchElStr3;;
+		  -> rrel_1: rrel_fixed: rrel_scp_var: _answer;;
+		  -> rrel_2: rrel_assign: rrel_pos_const_perm: rrel_scp_var: _arc1;;
+		  -> rrel_3: rrel_fixed: rrel_scp_var: _parent;;
+
+		  -> rrel_then: .proc_search_parent_in_quasybinary_for_link_recursively_operator5;;
+		  -> rrel_else: .proc_search_parent_in_quasybinary_for_link_recursively_operator15;;
+		*);;
+
+		-> .proc_search_parent_in_quasybinary_for_link_recursively_operator15 (*
+		  <- genElStr3;;
+		  -> rrel_1: rrel_fixed: rrel_scp_var: _answer;;
+		  -> rrel_2: rrel_assign: rrel_pos_const_perm: rrel_scp_var: _arc1;;
+		  -> rrel_3: rrel_fixed: rrel_scp_var: _parent;;
+
+		  -> rrel_goto: .proc_search_parent_in_quasybinary_for_link_recursively_operator5;;
+		*);;
+
+		-> .proc_search_parent_in_quasybinary_for_link_recursively_operator_exit (*
+		  <- eraseEl;;
+		  -> rrel_1: rrel_fixed: rrel_erase: rrel_scp_var: _arc_set;;
+
+		  -> rrel_goto: .proc_search_parent_in_quasybinary_for_link_recursively_operator_return;;
+		*);;
+		
+		-> .proc_search_parent_in_quasybinary_for_link_recursively_operator_return (*
+		  <- return;;
+		*);;
+	*);;
+*);;

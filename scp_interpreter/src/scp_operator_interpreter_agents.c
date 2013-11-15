@@ -473,6 +473,11 @@ sc_result interpreter_agent_erase_operators(sc_event *event, sc_addr arg)
         {
             goto_unconditional(&operator_node);
         }
+        else
+        {
+            operator_interpreting_crash(&operator_node);
+            return SC_RESULT_ERROR;
+        }
         return SC_RESULT_OK;
     }
 

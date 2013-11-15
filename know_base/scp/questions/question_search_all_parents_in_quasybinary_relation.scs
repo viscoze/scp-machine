@@ -1,0 +1,9 @@
+question_search_all_parents_in_quasybinary_relation <- sc_node_not_relation;;
+
+question_search_all_parents_in_quasybinary_relation <- question;;
+
+question_search_all_parents_in_quasybinary_relation => nrel_main_ru_idtf:
+	[вопрос поиска всех родительских элементов для заданного элемента в квазибинарном отношении];;
+
+question_search_all_parents_in_quasybinary_relation => nrel_main_en_idtf:
+	[question to search all parent elements for given element in quasybinary relation];;
