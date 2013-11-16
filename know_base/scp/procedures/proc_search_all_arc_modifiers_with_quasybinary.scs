@@ -12,15 +12,8 @@ scp_procedure -> proc_search_all_arc_modifiers_with_quasybinary (*
 
 		  -> rrel_goto: .proc_search_all_arc_modifiers_with_quasybinary_operator2;;
 		*);;
-
-		-> .proc_search_all_arc_modifiers_with_quasybinary_operator2 (*
-		  <- genEl;;
-		  -> rrel_1: rrel_assign: rrel_const: rrel_node: rrel_scp_var: _descr_set;;
-
-		  -> rrel_goto: .proc_search_all_arc_modifiers_with_quasybinary_operator3;;
-		*);;
 		
-		-> .proc_search_all_arc_modifiers_with_quasybinary_operator3 (*
+		-> .proc_search_all_arc_modifiers_with_quasybinary_operator2 (*
 		  <- searchSetStr3;;
 		  -> rrel_1: rrel_assign: rrel_scp_var: _elem;;
 		  -> rrel_2: rrel_assign: rrel_scp_var: _arc1;;
@@ -29,8 +22,15 @@ scp_procedure -> proc_search_all_arc_modifiers_with_quasybinary (*
 		  -> rrel_set_1: rrel_fixed: rrel_scp_var: _set_elem;;
 		  -> rrel_set_2: rrel_fixed: rrel_scp_var: _set_elem;;
 
-		  -> rrel_then: .proc_search_all_arc_modifiers_with_quasybinary_operator4;;
-		  -> rrel_else: .proc_search_all_arc_modifiers_with_quasybinary_operator_return;;
+		  -> rrel_then: .proc_search_all_arc_modifiers_with_quasybinary_operator3;;
+		  -> rrel_else: .proc_search_all_arc_modifiers_with_quasybinary_operator_exit;;
+		*);;
+
+		-> .proc_search_all_arc_modifiers_with_quasybinary_operator3 (*
+		  <- genEl;;
+		  -> rrel_1: rrel_assign: rrel_const: rrel_node: rrel_scp_var: _descr_set;;
+
+		  -> rrel_goto: .proc_search_all_arc_modifiers_with_quasybinary_operator4;;
 		*);;
 
 		/* Elements processing cycle */		 
@@ -41,7 +41,7 @@ scp_procedure -> proc_search_all_arc_modifiers_with_quasybinary (*
 		  -> rrel_3: rrel_assign: rrel_scp_var: _curr_elem;;
 
 		  -> rrel_then: .proc_search_all_arc_modifiers_with_quasybinary_operator5;;
-		  -> rrel_else: .proc_search_all_arc_modifiers_with_quasybinary_operator7_5;;
+		  -> rrel_else: .proc_search_all_arc_modifiers_with_quasybinary_operator_loop_end;;
 		*);;
 
 		-> .proc_search_all_arc_modifiers_with_quasybinary_operator5 (*
@@ -58,40 +58,30 @@ scp_procedure -> proc_search_all_arc_modifiers_with_quasybinary (*
 		  -> rrel_3: rrel_fixed: rrel_scp_var: _curr_elem;;
 
 		  -> rrel_then: .proc_search_all_arc_modifiers_with_quasybinary_operator4;;
-		  -> rrel_else: .proc_search_all_arc_modifiers_with_quasybinary_operator6_1;;
+		  -> rrel_else: .proc_search_all_arc_modifiers_with_quasybinary_operator7;;
 		*);;
 
-		-> .proc_search_all_arc_modifiers_with_quasybinary_operator6_1 (*
-		  <- searchElStr3;;
-		  -> rrel_1: rrel_fixed: rrel_scp_var: _answer;;
-		  -> rrel_2: rrel_assign: rrel_pos_const_perm: rrel_scp_var: _arc1;;
-		  -> rrel_3: rrel_fixed: rrel_scp_var: _curr_elem;;
-
-		  -> rrel_then: .proc_search_all_arc_modifiers_with_quasybinary_operator4;;
-		  -> rrel_else: .proc_search_all_arc_modifiers_with_quasybinary_operator6_2;;
-		*);;
-
-		-> .proc_search_all_arc_modifiers_with_quasybinary_operator6_2 (*
+		-> .proc_search_all_arc_modifiers_with_quasybinary_operator7 (*
 		  <- searchElStr3;;
 		  -> rrel_1: rrel_fixed: rrel_scp_const: quasybinary_relation;;
 		  -> rrel_2: rrel_assign: rrel_pos_const_perm: rrel_scp_var: _arc1;;
 		  -> rrel_3: rrel_fixed: rrel_scp_var: _curr_elem;;
 
-		  -> rrel_then: .proc_search_all_arc_modifiers_with_quasybinary_operator6_3;;
-		  -> rrel_else: .proc_search_all_arc_modifiers_with_quasybinary_operator7;;
+		  -> rrel_then: .proc_search_all_arc_modifiers_with_quasybinary_operator8;;
+		  -> rrel_else: .proc_search_all_arc_modifiers_with_quasybinary_operator11;;
 		*);;
 
-		-> .proc_search_all_arc_modifiers_with_quasybinary_operator6_3 (*
+		-> .proc_search_all_arc_modifiers_with_quasybinary_operator8 (*
 		  <- searchElStr3;;
 		  -> rrel_1: rrel_assign: rrel_scp_var: _arc_begin;;
 		  -> rrel_2: rrel_fixed: rrel_scp_var: _parameter;;
 		  -> rrel_3: rrel_assign: rrel_scp_var: _elem;;
 
-		  -> rrel_then: .proc_search_all_arc_modifiers_with_quasybinary_operator6_4;;
-		  -> rrel_else: .proc_search_all_arc_modifiers_with_quasybinary_operator6_4;;
+		  -> rrel_then: .proc_search_all_arc_modifiers_with_quasybinary_operator9;;
+		  -> rrel_else: .proc_search_all_arc_modifiers_with_quasybinary_operator4;;
 		*);;
 
-		-> .proc_search_all_arc_modifiers_with_quasybinary_operator6_4 (*
+		-> .proc_search_all_arc_modifiers_with_quasybinary_operator9 (*
 		  <- call;;
 		  -> rrel_1: rrel_fixed: rrel_scp_const: proc_search_all_output;;
 		  -> rrel_2: rrel_fixed: rrel_scp_const: .proc_search_all_arc_modifiers_with_quasybinary_operator6_4_params (*
@@ -99,19 +89,29 @@ scp_procedure -> proc_search_all_arc_modifiers_with_quasybinary (*
 				-> rrel_2: rrel_fixed: rrel_scp_var: _answer;;
 			*);;
 		  -> rrel_3: rrel_assign: rrel_scp_var: _descr;;
-		  -> rrel_goto: .proc_search_all_arc_modifiers_with_quasybinary_operator6_5;;
+		  -> rrel_goto: .proc_search_all_arc_modifiers_with_quasybinary_operator10;;
 		*);;
 
-		-> .proc_search_all_arc_modifiers_with_quasybinary_operator6_5 (*
+		-> .proc_search_all_arc_modifiers_with_quasybinary_operator10 (*
 		  <- genElStr3;;
 		  -> rrel_1: rrel_fixed: rrel_scp_var: _descr_set;;
 		  -> rrel_2: rrel_assign: rrel_pos_const_perm: rrel_scp_var: _arc1;;
 		  -> rrel_3: rrel_fixed: rrel_scp_var: _descr;;
 
-		  -> rrel_goto: .proc_search_all_arc_modifiers_with_quasybinary_operator7;;
+		  -> rrel_goto: .proc_search_all_arc_modifiers_with_quasybinary_operator11;;
 		*);;
 
-		-> .proc_search_all_arc_modifiers_with_quasybinary_operator7 (*
+		-> .proc_search_all_arc_modifiers_with_quasybinary_operator11 (*
+		  <- searchElStr3;;
+		  -> rrel_1: rrel_fixed: rrel_scp_var: _answer;;
+		  -> rrel_2: rrel_assign: rrel_pos_const_perm: rrel_scp_var: _arc1;;
+		  -> rrel_3: rrel_fixed: rrel_scp_var: _curr_elem;;
+
+		  -> rrel_then: .proc_search_all_arc_modifiers_with_quasybinary_operator4;;
+		  -> rrel_else: .proc_search_all_arc_modifiers_with_quasybinary_operator12;;
+		*);;
+
+		-> .proc_search_all_arc_modifiers_with_quasybinary_operator12 (*
 		  <- genElStr3;;
 		  -> rrel_1: rrel_fixed: rrel_scp_var: _answer;;
 		  -> rrel_2: rrel_assign: rrel_pos_const_perm: rrel_scp_var: _arc1;;
@@ -120,31 +120,24 @@ scp_procedure -> proc_search_all_arc_modifiers_with_quasybinary (*
 		  -> rrel_goto: .proc_search_all_arc_modifiers_with_quasybinary_operator4;;
 		*);;
 
-		-> .proc_search_all_arc_modifiers_with_quasybinary_operator7_5 (*
+		-> .proc_search_all_arc_modifiers_with_quasybinary_operator_loop_end (*
 		  <- genElStr3;;
 		  -> rrel_1: rrel_fixed: rrel_scp_var: _answer;;
 		  -> rrel_2: rrel_assign: rrel_pos_const_perm: rrel_scp_var: _arc1;;
 		  -> rrel_3: rrel_fixed: rrel_scp_var: _parameter;;
 
-		  -> rrel_goto: .proc_search_all_arc_modifiers_with_quasybinary_operator8;;
+		  -> rrel_goto: .proc_search_all_arc_modifiers_with_quasybinary_operator13;;
 		*);;
 
-		-> .proc_search_all_arc_modifiers_with_quasybinary_operator_print_result (*
-		  <- printEl;;
-		  -> rrel_1: rrel_fixed: rrel_scp_var: _answer;;
-
-		  -> rrel_goto: .proc_search_all_arc_modifiers_with_quasybinary_operator8;;
-		*);;
-
-		-> .proc_search_all_arc_modifiers_with_quasybinary_operator8 (*
+		-> .proc_search_all_arc_modifiers_with_quasybinary_operator13 (*
 		  <- waitReturnSet;;
 		  -> rrel_1: rrel_fixed: rrel_scp_var: _descr_set;;
 
-		  -> rrel_goto: .proc_search_all_arc_modifiers_with_quasybinary_operator9;;
+		  -> rrel_goto: .proc_search_all_arc_modifiers_with_quasybinary_operator_exit;;
 		*);;
 
 		/* Garbage cleaning */
-		-> .proc_search_all_arc_modifiers_with_quasybinary_operator9 (*
+		-> .proc_search_all_arc_modifiers_with_quasybinary_operator_exit (*
 		  <- eraseEl;;
 		  -> rrel_1: rrel_fixed: rrel_erase: rrel_scp_var: _set_elem;;
 

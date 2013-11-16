@@ -22,6 +22,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "sc_memory_headers.h"
 
+#include <stdio.h>
+
 #include "scp_searchSetStr5.h"
 
 scp_result searchSetStr5_f_a_a_a_a(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5, scp_operand *sets)

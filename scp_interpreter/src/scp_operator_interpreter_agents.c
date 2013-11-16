@@ -1837,6 +1837,8 @@ scp_result create_scp_event(scp_operand *operands)
     MAKE_DEFAULT_ARC_ASSIGN(arc1);
     MAKE_DEFAULT_ARC_ASSIGN(arc2);
 
+    //! TODO Add event description node
+
     genElStr5(operands + 3, &arc1, operands, &arc2, &rrel_scp_event_type);
     operands[3].param_type = SCP_FIXED;
     genElStr5(operands + 3, &arc1, operands + 1, &arc2, &rrel_scp_event_procedure);

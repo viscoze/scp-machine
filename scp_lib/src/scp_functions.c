@@ -449,7 +449,7 @@ scp_result searchSetStr5(scp_operand *param1, scp_operand *param2, scp_operand *
         {
             return print_error("searchSetStr5", "Parameter 5 has modifier FIXED, but has not value");
         }
-        fixed3 = 0x10000;
+        fixed5 = 0x10000;
     }
     fixed = (fixed1 | fixed2 | fixed3 | fixed4 | fixed5);
     switch (fixed)

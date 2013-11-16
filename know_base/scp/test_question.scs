@@ -1,20 +1,25 @@
-test_question -> c1;;
-test_question <- question_search_all_parents_in_quasybinary_relation;;
+test_question -> pasd1;;
+test_question <- question_search_decomposition;;
 test_question <- question;;
 
-/*test_node1 -> test_attr1: test_node2;;
+
+pasd1 <= nrel_decomposition: link1 (* -> const_1; const_2; const_3;; *);;
+pasd1 <= nrel_decomposition: link2 (* -> const_4; const_3; const_5;; *);;  
+
+test_node1 -> test_attr1: test_node2;;
 test_node1 <- test_attr2: test_node3;;
 test_node1 <= nrel_addition: summ1 (* -> const_1; const_2; const_3;; *);;
 summresult2 <= nrel_addition: summ2 (* -> const_3; test_node1; const_5;; *);;
-summresult3 <= nrel_addition: summ3 (* -> const_3; const_2; const_5;; *);;*/
 
+summresult3 <= nrel_addition: summ3 (* -> const_3; const_2; const_5;; *);;
 
-ss1 <= nrel_addition: ll1 (* -> c1; c2; c3;; *);;
+/*ss1 <= nrel_addition: ll1 (* -> c1; c2; c3;; *);;
 s1 <= nrel_addition: l1 (* -> c1; c2; c3;; *);;
 c4 <= nrel_addition: l2 (* -> s1; s2; s3;; *);;
-s5 <= nrel_addition: l3 (* -> c4; c5; c6;; *);;
+s5 <= nrel_addition: l3 (* -> c4; c5; c6;; *);;*/
 
 quasybinary_relation -> nrel_addition;; 
+quasybinary_relation -> nrel_decomposition;; 
 
 /*[*
 	o1 _-> _o2;;
