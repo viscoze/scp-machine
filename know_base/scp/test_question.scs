@@ -1,7 +1,8 @@
 test_question -> pasd1;;
-test_question <- question_search_decomposition;;
+test_question <- question_search_all_identifiers;;
 test_question <- question;;
 
+pasd1 => nrel_main_ru_idtf: text;;
 
 pasd1 <= nrel_decomposition: link1 (* -> const_1; const_2; const_3;; *);;
 pasd1 <= nrel_decomposition: link2 (* -> const_4; const_3; const_5;; *);;  

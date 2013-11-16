@@ -70,6 +70,8 @@ rrel_access => nrel_main_en_idtf:
 	[access'];;
 rrel_common => nrel_main_en_idtf:
 	[common'];;
+rrel_link => nrel_main_en_idtf:
+	[link'];;
 rrel_pos_const_perm => nrel_main_en_idtf:
 	[pos_const_perm'];;
 

@@ -8,7 +8,7 @@ scp_procedure -> proc_search_decomposition (*
 		
 		-> rrel_init: .proc_search_decomposition_operator1 (*
 		  <- searchSetStr5;;
-		  -> rrel_1: rrel_assign: rrel_scp_var: _temp_link;;
+		  -> rrel_1: rrel_assign: rrel_scp_var: _temp_tuple;;
 		  -> rrel_2: rrel_assign: rrel_common: rrel_const: rrel_scp_var: _arc1;;
 		  -> rrel_3: rrel_fixed: rrel_scp_var: _parameter;;
 		  -> rrel_4: rrel_assign: rrel_pos_const_perm: rrel_scp_var: _arc2;;

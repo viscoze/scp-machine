@@ -77,6 +77,7 @@ extern scp_operand rrel_var;
 extern scp_operand rrel_scp_const;
 extern scp_operand rrel_scp_var;
 extern scp_operand rrel_node;
+extern scp_operand rrel_link;
 extern scp_operand rrel_arc;
 extern scp_operand rrel_pos;
 extern scp_operand rrel_neg;

@@ -76,6 +76,7 @@ scp_operand rrel_scp_const;
 scp_operand rrel_scp_var;
 scp_operand rrel_node;
 scp_operand rrel_arc;
+scp_operand rrel_link;
 scp_operand rrel_pos;
 scp_operand rrel_neg;
 scp_operand rrel_fuz;
@@ -148,6 +149,7 @@ scp_result scp_keynodes_init()
     MAKE_DEFAULT_OPERAND_FIXED(rrel_scp_const);
     MAKE_DEFAULT_OPERAND_FIXED(rrel_scp_var);
     MAKE_DEFAULT_OPERAND_FIXED(rrel_node);
+    MAKE_DEFAULT_OPERAND_FIXED(rrel_link);
     MAKE_DEFAULT_OPERAND_FIXED(rrel_arc);
     MAKE_DEFAULT_OPERAND_FIXED(rrel_pos);
     MAKE_DEFAULT_OPERAND_FIXED(rrel_neg);
@@ -337,6 +339,10 @@ scp_result scp_keynodes_init()
     if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("rrel_arc", &rrel_arc))
     {
         return print_error("Keynode not found", "rrel_arc");
+    }
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("rrel_link", &rrel_link))
+    {
+        return print_error("Keynode not found", "rrel_link");
     }
     if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("rrel_pos", &rrel_pos))
     {

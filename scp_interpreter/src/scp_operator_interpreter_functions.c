@@ -113,6 +113,11 @@ scp_result resolve_operands_modifiers(scp_operand *scp_operator_node, scp_operan
                 operand.element_type = operand.element_type | scp_type_node;
                 continue;
             }
+            if (SCP_RESULT_TRUE == ifCoin(&modifier, &rrel_link))
+            {
+                operand.element_type = operand.element_type | scp_type_link;
+                continue;
+            }
             if (SCP_RESULT_TRUE == ifCoin(&modifier, &rrel_arc))
             {
                 operand.element_type = operand.element_type | scp_type_arc;
@@ -272,6 +277,11 @@ scp_result resolve_operands_modifiers_with_set(scp_operand *scp_operator_node, s
             if (SCP_RESULT_TRUE == ifCoin(&modifier, &rrel_node))
             {
                 operand.element_type = operand.element_type | scp_type_node;
+                continue;
+            }
+            if (SCP_RESULT_TRUE == ifCoin(&modifier, &rrel_link))
+            {
+                operand.element_type = operand.element_type | scp_type_link;
                 continue;
             }
             if (SCP_RESULT_TRUE == ifCoin(&modifier, &rrel_arc))
