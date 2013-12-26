@@ -1,5 +1,5 @@
-test_question -> pasd1;;
-test_question <- question_search_all_identifiers;;
+test_question -> test_node1;;
+test_question <- question_search_full_semantic_neighborhood;;
 test_question <- question;;
 
 pasd1 => nrel_main_ru_idtf: text;;
@@ -19,6 +19,7 @@ s1 <= nrel_addition: l1 (* -> c1; c2; c3;; *);;
 c4 <= nrel_addition: l2 (* -> s1; s2; s3;; *);;
 s5 <= nrel_addition: l3 (* -> c4; c5; c6;; *);;*/
 
+sc_node_norole_relation -> nrel_addition;;
 quasybinary_relation -> nrel_addition;; 
 quasybinary_relation -> nrel_decomposition;; 
 

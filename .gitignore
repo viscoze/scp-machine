@@ -1,6 +1,0 @@
-/release/
-/debug/
-*.o
-*.so
-*.user*
-Makefile
