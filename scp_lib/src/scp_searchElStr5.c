@@ -24,6 +24,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "scp_searchElStr5.h"
 
+#include <stdio.h>
+
 scp_result searchElStr5_f_a_a_a_a(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5)
 {
     sc_iterator5 *it = sc_iterator5_f_a_a_a_a_new(param1->addr, param2->element_type, param3->element_type, param4->element_type, param5->element_type);
@@ -81,7 +83,7 @@ scp_result searchElStr5_f_a_f_a_a(scp_operand *param1, scp_operand *param2, scp_
         param2->addr = sc_iterator5_value(it, 1);
         param4->addr = sc_iterator5_value(it, 3);
         param5->addr = sc_iterator5_value(it, 4);
-        sc_iterator5_free(it);
+        sc_iterator5_free(it);        
         return SCP_RESULT_TRUE;
     }
     sc_iterator5_free(it);

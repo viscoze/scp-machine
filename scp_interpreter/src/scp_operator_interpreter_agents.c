@@ -1811,8 +1811,10 @@ sc_result scp_event_procedure_processor(sc_event *event, sc_addr arg)
     searchElStr5(&event_node, &arc1, &procedure, &arc2, &rrel_scp_event_procedure);
     procedure.param_type = SCP_FIXED;
 
+    MAKE_DEFAULT_NODE_ASSIGN(quest);
     genElStr5(&quest, &arc1, &procedure, &arc2, ordinal_rrels + 1);
     quest.param_type = SCP_FIXED;
+    MAKE_DEFAULT_NODE_ASSIGN(params);
     genElStr5(&quest, &arc1, &params, &arc2, ordinal_rrels + 2);
     params.param_type = SCP_FIXED;
     genElStr5(&params, &arc1, &event_node, &arc2, ordinal_rrels + 1);

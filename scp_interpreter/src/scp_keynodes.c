@@ -235,9 +235,9 @@ scp_result scp_keynodes_init()
     {
         return print_error("Keynode not found", "nrel_init_program");
     }
-    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("hypermedia_nrel_system_identifier", &nrel_system_identifier))
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("nrel_system_identifier", &nrel_system_identifier))
     {
-        return print_error("Keynode not found", "hypermedia_nrel_system_identifier");
+        return print_error("Keynode not found", "nrel_system_identifier");
     }
     if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("active_scp_operator", &active_scp_operator))
     {
