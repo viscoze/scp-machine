@@ -24,7 +24,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #define SCP_UTILS_H
 #include "scp_types.h"
 
-extern sc_addr format_numeric;
+//extern sc_addr format_numeric;
 
 scp_result check_type(sc_addr element, sc_type input_type);
 scp_result print_error(const char *operator_name, const char *text);

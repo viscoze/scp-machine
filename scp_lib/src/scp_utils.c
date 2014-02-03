@@ -29,7 +29,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <stdlib.h>
 #include <string.h>
 
-sc_addr format_numeric;
+//sc_addr format_numeric;
 
 #define NUMBER_PRECISE 8
 
@@ -59,17 +59,8 @@ scp_result print_error(const char *operator_name, const char *text)
 
 scp_result check_numeric_type(sc_addr param)
 {
-    sc_iterator3 *it = sc_iterator3_a_a_f_new(sc_type_node | scp_type_const, sc_type_arc_pos_const_perm, param);
-    while (SC_TRUE == sc_iterator3_next(it))
-    {
-        if (SC_ADDR_IS_EQUAL(format_numeric, sc_iterator3_value(it, 0)))
-        {
-            sc_iterator3_free(it);
-            return SCP_RESULT_TRUE;
-        }
-    }
-    sc_iterator3_free(it);
-    return SCP_RESULT_FALSE;
+    //! TODO Add check for numeric type
+    return SCP_RESULT_TRUE;
 }
 
 scp_result resolve_numbers_1_2(const sc_char *operator_name, scp_operand *param1, scp_operand *param2, double *num1, double *num2)
@@ -212,7 +203,7 @@ scp_result check_link_parameter_1(const sc_char *operator_name, scp_operand *par
     if (SCP_ASSIGN == param1->param_type)
     {
         param1->addr = sc_memory_link_new();
-        sc_memory_arc_new(sc_type_arc_pos_const_perm, format_numeric, param1->addr);
+        //! TODO Add numeric class for link
     }
     else
     {

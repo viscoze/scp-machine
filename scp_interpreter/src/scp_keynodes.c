@@ -416,7 +416,7 @@ scp_result scp_keynodes_init()
 
     if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("ordinal_rrel", &ordinal_rrel))
     {
-        return print_error("Keynode not found", "ordinal_rrel");
+        return print_error("Keynode not found", "ordinal_role_relation");
     }
 
     for (i = 1; i <= ORDINAL_RRELS_COUNT; i++)

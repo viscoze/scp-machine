@@ -43,15 +43,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 scp_result scp_lib_init()
 {
-    /*if (sc_memory_initialize(repo_path, config_file) == SC_FALSE)
-    {
-        return SCP_RESULT_FALSE;
-    }
-    sc_helper_init();*/
-    if (SC_TRUE != sc_helper_resolve_system_identifier("FORMAT_NUMERIC", &format_numeric))
-    {
-        return print_error("Init", "FORMAT_NUMERIC element not found");
-    }
+    //! TODO Add keynodes loading
     return SCP_RESULT_TRUE;
 }
 
@@ -788,6 +780,7 @@ scp_result printEl(scp_operand *param)
     sc_addr addr2, addr3;
     sc_addr idtf;
     sc_iterator3 *it = nullptr;
+    sc_uint32 out_c = 0, in_c = 0;
     if (SC_FALSE == sc_memory_is_element(param->addr))
     {
         return print_error("printEl", "Parameter has not value");
@@ -819,6 +812,7 @@ scp_result printEl(scp_operand *param)
     printf("Input arcs:\n");
     while (SC_TRUE == sc_iterator3_next(it))
     {
+        in_c++;
         addr2 = sc_iterator3_value(it, 0);
         addr3 = sc_iterator3_value(it, 1);
 
@@ -874,6 +868,7 @@ scp_result printEl(scp_operand *param)
         }
     }
     sc_iterator3_free(it);
+    printf("Total input arcs: %d\n", in_c);
 
     it = sc_iterator3_f_a_a_new(element, 0, 0);
     if (it == 0)
@@ -883,6 +878,7 @@ scp_result printEl(scp_operand *param)
     printf("Output arcs:\n");
     while (SC_TRUE == sc_iterator3_next(it))
     {
+        out_c++;
         addr2 = sc_iterator3_value(it, 1);
         addr3 = sc_iterator3_value(it, 2);
 
@@ -939,6 +935,7 @@ scp_result printEl(scp_operand *param)
         }
     }
     sc_iterator3_free(it);
+    printf("Total output arcs: %d\n", out_c);
     return SCP_RESULT_TRUE;
 }
 
