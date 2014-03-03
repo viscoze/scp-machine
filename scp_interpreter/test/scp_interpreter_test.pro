@@ -37,7 +37,6 @@ win32 {
 
 unix {
     LIBS += -L "../../../sc-machine/bin" -lsc_memory
-    LIBS += -L "../../../sc-machine/bin" -lscp_lib
     CONFIG += link_pkgconfig
     PKGCONFIG += glib-2.0
     PKGCONFIG += gmodule-2.0
