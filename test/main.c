@@ -1,9 +1,7 @@
 
-//#include "scp_interpreter.h"
-//#include "scp_keynodes.h"
 #include "scp_lib.h"
 #include "sc_helper.h"
-#include "sc_memory_headers.h"
+//#include "sc_memory_headers.h"
 
 #include <stdio.h>
 
@@ -43,7 +41,7 @@ void temp()
     printEl(&op);
 
 }*/
-
+/*
 void create_process_test()
 {
     sc_addr quest, init, nrel_answer, rrel, A, o1,o2,o3;
@@ -82,23 +80,21 @@ void test_scp_process_creating(int value)
     {
         create_process_test();
     }
-}
+}*/
 
 int main(void)
 {
     sc_memory_initialize((sc_char *)"repo", (sc_char *)"sctp_config.ini", SC_FALSE);
     sc_helper_init();
     sc_memory_initialize_ext("extensions");
-    //scp_interpreter_init();
 
     GTimer *timer = 0;
     timer = g_timer_new();
     g_timer_start(timer);
 
-    test_scp_process_creating(1);
+    //test_scp_process_creating(1);
     //merge_test();
     //temp();
-
 
     g_timer_stop(timer);
     printf((sc_char *)"Time: %f s\n", g_timer_elapsed(timer, 0));

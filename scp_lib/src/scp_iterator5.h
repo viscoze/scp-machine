@@ -23,7 +23,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef SCP_ITERATOR5_H
 #define SCP_ITERATOR5_H
 #include "scp_types.h"
-#include "sc_iterator5.h"
+#include "sc_memory_headers.h"
 
 typedef sc_iterator5 scp_iterator5;
 
