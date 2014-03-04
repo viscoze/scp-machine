@@ -595,7 +595,7 @@ scp_result goto_unconditional(scp_operand *scp_operator_node)
     MAKE_DEFAULT_ARC_ASSIGN(arc1);
     MAKE_DEFAULT_ARC_ASSIGN(arc2);
     MAKE_DEFAULT_NODE_ASSIGN(next_operator);
-    if (SCP_RESULT_TRUE == searchElStr5(scp_operator_node, &arc1, &next_operator, &arc2, &rrel_goto))
+    if (SCP_RESULT_TRUE == searchElStr5(scp_operator_node, &arc1, &next_operator, &arc2, &nrel_goto))
     {
         next_operator.param_type = SCP_FIXED;
         set_active_operator(&next_operator);

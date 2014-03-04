@@ -29,8 +29,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scp_lib.h"
 #include "scp_operator_keynodes.h"
 
-extern scp_operand scp_procedure;
-extern scp_operand scp_agent;
+extern scp_operand scp_program;
+extern scp_operand agent_scp_program;
 extern scp_operand question_scp_interpretation_request;
 extern scp_operand question_scp_procedure_preprocessing_request;
 
@@ -39,10 +39,10 @@ extern scp_operand question_finished_successfully;
 extern scp_operand question_finished_unsuccessfully;
 
 extern scp_operand scp_process;
-extern scp_operand scp_interpreter;
+extern scp_operand abstract_scp_machine;
 extern scp_operand useless_scp_process;
 extern scp_operand nrel_scp_process;
-extern scp_operand nrel_parent_scp_operator;
+//extern scp_operand nrel_parent_scp_operator;
 extern scp_operand nrel_value;
 extern scp_operand nrel_authors;
 extern scp_operand nrel_init_program;
@@ -51,15 +51,15 @@ extern scp_operand nrel_system_identifier;
 extern scp_operand active_scp_operator;
 
 // rrels
-extern scp_operand rrel_then;
-extern scp_operand rrel_else;
-extern scp_operand rrel_goto;
-extern scp_operand rrel_error;
+extern scp_operand nrel_then;
+extern scp_operand nrel_else;
+extern scp_operand nrel_goto;
+extern scp_operand nrel_error;
 
-extern scp_operand rrel_vars;
-extern scp_operand rrel_consts;
-extern scp_operand rrel_copying_consts;
-extern scp_operand rrel_operators_copying_pattern;
+extern scp_operand nrel_scp_program_var;
+extern scp_operand nrel_scp_program_const;
+extern scp_operand nrel_scp_program_copied_const;
+extern scp_operand nrel_template_of_scp_process_creation;
 extern scp_operand rrel_params;
 extern scp_operand rrel_operators;
 extern scp_operand rrel_init;
@@ -90,20 +90,19 @@ extern scp_operand rrel_pos_const_perm;
 
 // Events
 
-extern scp_operand scp_event;
-extern scp_operand scp_event_add_output_arc;
-extern scp_operand scp_event_add_input_arc;
-extern scp_operand scp_event_remove_output_arc;
-extern scp_operand scp_event_remove_input_arc;
-extern scp_operand scp_event_change_link_content;
+extern scp_operand sc_event_elem;
+extern scp_operand sc_event_add_output_arc;
+extern scp_operand sc_event_add_input_arc;
+extern scp_operand sc_event_remove_output_arc;
+extern scp_operand sc_event_remove_input_arc;
+extern scp_operand sc_event_change_link_content;
 
-extern scp_operand rrel_scp_event_type;
-extern scp_operand rrel_scp_event_procedure;
-//extern scp_operand rrel_scp_event_delete_procedure;
-extern scp_operand rrel_scp_event_processing_element;
+extern scp_operand rrel_sc_event_type;
+extern scp_operand rrel_sc_event_procedure;
+extern scp_operand rrel_sc_event_processing_element;
 
 // Ordinals
-extern scp_operand ordinal_rrel;
+extern scp_operand order_role_relation;
 extern scp_operand ordinal_set_rrel;
 extern scp_operand ordinal_rrels[ORDINAL_RRELS_COUNT + 1]; // 0 element reserved
 extern scp_operand ordinal_set_rrels[ORDINAL_RRELS_COUNT + 1]; // 0 element reserved

@@ -423,16 +423,16 @@ sc_result preprocess_scp_procedure(sc_event *event, sc_addr arg)
     scp_procedure_params.param_type = SCP_FIXED;
 
     MAKE_DEFAULT_NODE_ASSIGN(scp_procedure_consts);
-    genElStr5(&scp_procedure_node, &arc1, &scp_procedure_consts, &arc2, &rrel_consts);
+    genElStr5(&scp_procedure_node, &arc1, &scp_procedure_consts, &arc2, &nrel_scp_program_const);
     scp_procedure_consts.param_type = SCP_FIXED;
     MAKE_DEFAULT_NODE_ASSIGN(scp_procedure_copying_consts);
-    genElStr5(&scp_procedure_node, &arc1, &scp_procedure_copying_consts, &arc2, &rrel_copying_consts);
+    genElStr5(&scp_procedure_node, &arc1, &scp_procedure_copying_consts, &arc2, &nrel_scp_program_copied_const);
     scp_procedure_copying_consts.param_type = SCP_FIXED;
     MAKE_DEFAULT_NODE_ASSIGN(scp_procedure_vars);
-    genElStr5(&scp_procedure_node, &arc1, &scp_procedure_vars, &arc2, &rrel_vars);
+    genElStr5(&scp_procedure_node, &arc1, &scp_procedure_vars, &arc2, &nrel_scp_program_var);
     scp_procedure_vars.param_type = SCP_FIXED;
     MAKE_DEFAULT_NODE_ASSIGN(scp_procedure_operators_copying_pattern);
-    genElStr5(&scp_procedure_node, &arc1, &scp_procedure_operators_copying_pattern, &arc2, &rrel_operators_copying_pattern);
+    genElStr5(&scp_procedure_node, &arc1, &scp_procedure_operators_copying_pattern, &arc2, &nrel_template_of_scp_process_creation);
     scp_procedure_operators_copying_pattern.param_type = SCP_FIXED;
     if (SCP_RESULT_TRUE == gen_system_structures(&scp_procedure_operators, &scp_procedure_params, &scp_procedure_vars, &scp_procedure_consts, &scp_procedure_copying_consts, &scp_procedure_operators_copying_pattern))
     {
@@ -456,15 +456,15 @@ scp_result preprocess_all_scp_procedures()
     MAKE_DEFAULT_OPERAND_ASSIGN(proc);
     MAKE_DEFAULT_NODE_ASSIGN(quest);
     scp_iterator3 *it;
-    it = scp_iterator3_new(&scp_procedure, &arc, &proc);
-    while (SCP_RESULT_TRUE == scp_iterator3_next(it, &scp_procedure, &arc, &proc))
+    it = scp_iterator3_new(&scp_program, &arc, &proc);
+    while (SCP_RESULT_TRUE == scp_iterator3_next(it, &scp_program, &arc, &proc))
     {
         proc.param_type = SCP_FIXED;
         quest.param_type = SCP_ASSIGN;
         genElStr3(&question_scp_procedure_preprocessing_request, &arc, &quest);
         quest.param_type = SCP_FIXED;
         genElStr3(&quest, &arc, &proc);
-        set_author(&quest, &scp_interpreter);
+        set_author(&quest, &abstract_scp_machine);
         genElStr3(&question_initiated, &arc, &quest);
         proc.param_type = SCP_ASSIGN;
     }

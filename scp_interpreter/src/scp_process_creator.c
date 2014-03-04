@@ -252,7 +252,7 @@ sc_result create_scp_process(sc_event *event, sc_addr arg)
     call_parameters.param_type = SCP_FIXED;
 
     //scp-procedure search
-    if (SCP_RESULT_TRUE != searchElStr3(&scp_procedure, &arc1, &scp_procedure_node))
+    if (SCP_RESULT_TRUE != searchElStr3(&scp_program, &arc1, &scp_procedure_node))
     {
         return SC_RESULT_ERROR;
     }
@@ -261,16 +261,16 @@ sc_result create_scp_process(sc_event *event, sc_addr arg)
     MAKE_DEFAULT_ARC_ASSIGN(arc2);
 
     MAKE_DEFAULT_OPERAND_ASSIGN(vars_set);
-    searchElStr5(&scp_procedure_node, &arc1, &vars_set, &arc2, &rrel_vars);
+    searchElStr5(&scp_procedure_node, &arc1, &vars_set, &arc2, &nrel_scp_program_var);
     vars_set.param_type = SCP_FIXED;
     MAKE_DEFAULT_OPERAND_ASSIGN(consts_set);
-    searchElStr5(&scp_procedure_node, &arc1, &consts_set, &arc2, &rrel_consts);
+    searchElStr5(&scp_procedure_node, &arc1, &consts_set, &arc2, &nrel_scp_program_const);
     consts_set.param_type = SCP_FIXED;
     MAKE_DEFAULT_OPERAND_ASSIGN(params_set);
     searchElStr5(&scp_procedure_node, &arc1, &params_set, &arc2, &rrel_params);
     params_set.param_type = SCP_FIXED;
     MAKE_DEFAULT_OPERAND_ASSIGN(copying_pattern);
-    searchElStr5(&scp_procedure_node, &arc1, &copying_pattern, &arc2, &rrel_operators_copying_pattern);
+    searchElStr5(&scp_procedure_node, &arc1, &copying_pattern, &arc2, &nrel_template_of_scp_process_creation);
     copying_pattern.param_type = SCP_FIXED;
 
     load_set_to_hash(&copying_pattern, pattern_hash);

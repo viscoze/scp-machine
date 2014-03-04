@@ -125,7 +125,7 @@ sc_result interpreter_agent_search_operators(sc_event *event, sc_addr arg)
             case SCP_RESULT_TRUE:
             {
                 set_operands_values(operands, operand_values, 3);
-                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &rrel_then))
+                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &nrel_then))
                 {
                     return SC_RESULT_ERROR;
                 }
@@ -133,7 +133,7 @@ sc_result interpreter_agent_search_operators(sc_event *event, sc_addr arg)
             }
             case SCP_RESULT_FALSE:
             {
-                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &rrel_else))
+                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &nrel_else))
                 {
                     return SC_RESULT_ERROR;
                 }
@@ -141,7 +141,7 @@ sc_result interpreter_agent_search_operators(sc_event *event, sc_addr arg)
             }
             case SCP_RESULT_ERROR:
             {
-                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &rrel_error))
+                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &nrel_error))
                 {
                     return SC_RESULT_ERROR;
                 }
@@ -173,7 +173,7 @@ sc_result interpreter_agent_search_operators(sc_event *event, sc_addr arg)
             case SCP_RESULT_TRUE:
             {
                 set_operands_values(operands, operand_values, 5);
-                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &rrel_then))
+                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &nrel_then))
                 {
                     return SC_RESULT_ERROR;
                 }
@@ -181,7 +181,7 @@ sc_result interpreter_agent_search_operators(sc_event *event, sc_addr arg)
             }
             case SCP_RESULT_FALSE:
             {
-                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &rrel_else))
+                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &nrel_else))
                 {
                     return SC_RESULT_ERROR;
                 }
@@ -189,7 +189,7 @@ sc_result interpreter_agent_search_operators(sc_event *event, sc_addr arg)
             }
             case SCP_RESULT_ERROR:
             {
-                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &rrel_error))
+                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &nrel_error))
                 {
                     return SC_RESULT_ERROR;
                 }
@@ -227,7 +227,7 @@ sc_result interpreter_agent_search_operators(sc_event *event, sc_addr arg)
             {
                 set_operands_values(operands, operand_values, 3);
                 set_set_operands_values(sets, sets_values, 3);
-                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &rrel_then))
+                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &nrel_then))
                 {
                     return SC_RESULT_ERROR;
                 }
@@ -235,7 +235,7 @@ sc_result interpreter_agent_search_operators(sc_event *event, sc_addr arg)
             }
             case SCP_RESULT_FALSE:
             {
-                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &rrel_else))
+                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &nrel_else))
                 {
                     return SC_RESULT_ERROR;
                 }
@@ -243,7 +243,7 @@ sc_result interpreter_agent_search_operators(sc_event *event, sc_addr arg)
             }
             case SCP_RESULT_ERROR:
             {
-                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &rrel_error))
+                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &nrel_error))
                 {
                     return SC_RESULT_ERROR;
                 }
@@ -281,7 +281,7 @@ sc_result interpreter_agent_search_operators(sc_event *event, sc_addr arg)
             {
                 set_operands_values(operands, operand_values, 5);
                 set_set_operands_values(sets, sets_values, 5);
-                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &rrel_then))
+                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &nrel_then))
                 {
                     return SC_RESULT_ERROR;
                 }
@@ -289,7 +289,7 @@ sc_result interpreter_agent_search_operators(sc_event *event, sc_addr arg)
             }
             case SCP_RESULT_FALSE:
             {
-                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &rrel_else))
+                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &nrel_else))
                 {
                     return SC_RESULT_ERROR;
                 }
@@ -297,7 +297,7 @@ sc_result interpreter_agent_search_operators(sc_event *event, sc_addr arg)
             }
             case SCP_RESULT_ERROR:
             {
-                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &rrel_error))
+                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &nrel_error))
                 {
                     return SC_RESULT_ERROR;
                 }
@@ -1027,7 +1027,7 @@ sc_result interpreter_agent_if_operators(sc_event *event, sc_addr arg)
         {
             case SCP_RESULT_TRUE:
             {
-                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &rrel_then))
+                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &nrel_then))
                 {
                     return SC_RESULT_ERROR;
                 }
@@ -1035,7 +1035,7 @@ sc_result interpreter_agent_if_operators(sc_event *event, sc_addr arg)
             }
             case SCP_RESULT_FALSE:
             {
-                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &rrel_else))
+                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &nrel_else))
                 {
                     return SC_RESULT_ERROR;
                 }
@@ -1043,7 +1043,7 @@ sc_result interpreter_agent_if_operators(sc_event *event, sc_addr arg)
             }
             case SCP_RESULT_ERROR:
             {
-                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &rrel_error))
+                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &nrel_error))
                 {
                     return SC_RESULT_ERROR;
                 }
@@ -1074,7 +1074,7 @@ sc_result interpreter_agent_if_operators(sc_event *event, sc_addr arg)
         {
             case SCP_RESULT_TRUE:
             {
-                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &rrel_then))
+                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &nrel_then))
                 {
                     return SC_RESULT_ERROR;
                 }
@@ -1082,7 +1082,7 @@ sc_result interpreter_agent_if_operators(sc_event *event, sc_addr arg)
             }
             case SCP_RESULT_FALSE:
             {
-                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &rrel_else))
+                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &nrel_else))
                 {
                     return SC_RESULT_ERROR;
                 }
@@ -1090,7 +1090,7 @@ sc_result interpreter_agent_if_operators(sc_event *event, sc_addr arg)
             }
             case SCP_RESULT_ERROR:
             {
-                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &rrel_error))
+                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &nrel_error))
                 {
                     return SC_RESULT_ERROR;
                 }
@@ -1122,7 +1122,7 @@ sc_result interpreter_agent_if_operators(sc_event *event, sc_addr arg)
         {
             case SCP_RESULT_TRUE:
             {
-                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &rrel_then))
+                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &nrel_then))
                 {
                     return SC_RESULT_ERROR;
                 }
@@ -1130,7 +1130,7 @@ sc_result interpreter_agent_if_operators(sc_event *event, sc_addr arg)
             }
             case SCP_RESULT_FALSE:
             {
-                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &rrel_else))
+                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &nrel_else))
                 {
                     return SC_RESULT_ERROR;
                 }
@@ -1138,7 +1138,7 @@ sc_result interpreter_agent_if_operators(sc_event *event, sc_addr arg)
             }
             case SCP_RESULT_ERROR:
             {
-                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &rrel_error))
+                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &nrel_error))
                 {
                     return SC_RESULT_ERROR;
                 }
@@ -1169,7 +1169,7 @@ sc_result interpreter_agent_if_operators(sc_event *event, sc_addr arg)
         {
             case SCP_RESULT_TRUE:
             {
-                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &rrel_then))
+                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &nrel_then))
                 {
                     return SC_RESULT_ERROR;
                 }
@@ -1177,7 +1177,7 @@ sc_result interpreter_agent_if_operators(sc_event *event, sc_addr arg)
             }
             case SCP_RESULT_FALSE:
             {
-                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &rrel_else))
+                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &nrel_else))
                 {
                     return SC_RESULT_ERROR;
                 }
@@ -1185,7 +1185,7 @@ sc_result interpreter_agent_if_operators(sc_event *event, sc_addr arg)
             }
             case SCP_RESULT_ERROR:
             {
-                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &rrel_error))
+                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &nrel_error))
                 {
                     return SC_RESULT_ERROR;
                 }
@@ -1216,7 +1216,7 @@ sc_result interpreter_agent_if_operators(sc_event *event, sc_addr arg)
         {
             case SCP_RESULT_TRUE:
             {
-                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &rrel_then))
+                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &nrel_then))
                 {
                     return SC_RESULT_ERROR;
                 }
@@ -1224,7 +1224,7 @@ sc_result interpreter_agent_if_operators(sc_event *event, sc_addr arg)
             }
             case SCP_RESULT_FALSE:
             {
-                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &rrel_else))
+                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &nrel_else))
                 {
                     return SC_RESULT_ERROR;
                 }
@@ -1232,7 +1232,7 @@ sc_result interpreter_agent_if_operators(sc_event *event, sc_addr arg)
             }
             case SCP_RESULT_ERROR:
             {
-                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &rrel_error))
+                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &nrel_error))
                 {
                     return SC_RESULT_ERROR;
                 }
@@ -1263,7 +1263,7 @@ sc_result interpreter_agent_if_operators(sc_event *event, sc_addr arg)
         {
             case SCP_RESULT_TRUE:
             {
-                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &rrel_then))
+                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &nrel_then))
                 {
                     return SC_RESULT_ERROR;
                 }
@@ -1271,7 +1271,7 @@ sc_result interpreter_agent_if_operators(sc_event *event, sc_addr arg)
             }
             case SCP_RESULT_FALSE:
             {
-                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &rrel_else))
+                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &nrel_else))
                 {
                     return SC_RESULT_ERROR;
                 }
@@ -1279,7 +1279,7 @@ sc_result interpreter_agent_if_operators(sc_event *event, sc_addr arg)
             }
             case SCP_RESULT_ERROR:
             {
-                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &rrel_error))
+                if (SCP_RESULT_TRUE != goto_conditional(&operator_node, &nrel_error))
                 {
                     return SC_RESULT_ERROR;
                 }
@@ -1598,7 +1598,7 @@ sc_result interpreter_agent_call_operator(sc_event *event, sc_addr arg)
                 }
 
                 // Ordinal
-                if (SCP_RESULT_TRUE == searchElStr3(&ordinal_rrel, &arc2, &modifier))
+                if (SCP_RESULT_TRUE == searchElStr3(&order_role_relation, &arc2, &modifier))
                 {
                     curr_ordinal.param_type = SCP_ASSIGN;
                     varAssign(&curr_ordinal, &modifier);
@@ -1660,10 +1660,10 @@ sc_result interpreter_agent_call_operator(sc_event *event, sc_addr arg)
         }
         scp_iterator3_free(it);
 
-        genElStr5(&quest, &arc3, &operator_node, &arc2, &nrel_parent_scp_operator);
+        //genElStr5(&quest, &arc3, &operator_node, &arc2, &nrel_parent_scp_operator);
 
         genElStr3(&question_scp_interpretation_request, &arc1, &quest);
-        set_author(&quest, &scp_interpreter);
+        set_author(&quest, &abstract_scp_machine);
         genElStr3(&question_initiated, &arc1, &quest);
         goto_unconditional(&operator_node);
     }
@@ -1808,7 +1808,7 @@ sc_result scp_event_procedure_processor(sc_event *event, sc_addr arg)
     }
     quest.param_type = SCP_ASSIGN;
     event_node.addr = resolve_sc_addr_from_int(event->id);
-    searchElStr5(&event_node, &arc1, &procedure, &arc2, &rrel_scp_event_procedure);
+    searchElStr5(&event_node, &arc1, &procedure, &arc2, &rrel_sc_event_procedure);
     procedure.param_type = SCP_FIXED;
 
     MAKE_DEFAULT_NODE_ASSIGN(quest);
@@ -1823,7 +1823,7 @@ sc_result scp_event_procedure_processor(sc_event *event, sc_addr arg)
     genElStr5(&params, &arc1, &second_param, &arc2, ordinal_rrels + 2);
 
     genElStr3(&question_scp_interpretation_request, &arc1, &quest);
-    set_author(&quest, &scp_interpreter);
+    set_author(&quest, &abstract_scp_machine);
     genElStr3(&question_initiated, &arc1, &quest);
 
     return SC_RESULT_OK;
@@ -1841,10 +1841,10 @@ scp_result create_scp_event(scp_operand *operands)
 
     //! TODO Add event description node
 
-    genElStr5(operands + 3, &arc1, operands, &arc2, &rrel_scp_event_type);
+    genElStr5(operands + 3, &arc1, operands, &arc2, &rrel_sc_event_type);
     operands[3].param_type = SCP_FIXED;
-    genElStr5(operands + 3, &arc1, operands + 1, &arc2, &rrel_scp_event_procedure);
-    genElStr5(operands + 3, &arc1, operands + 2, &arc2, &rrel_scp_event_processing_element);
+    genElStr5(operands + 3, &arc1, operands + 1, &arc2, &rrel_sc_event_procedure);
+    genElStr5(operands + 3, &arc1, operands + 2, &arc2, &rrel_sc_event_processing_element);
 
     if (SCP_RESULT_TRUE != resolve_scp_event_type(operands, &type))
     {
@@ -2276,7 +2276,7 @@ sc_result sys_search_agent_body(scp_operand *operator_node)
                         set_operands_values(pair_elems2[i], pair_values2[i], 2);
                     }
                     set_operands_values(&param4_node, &param4, 1);
-                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &rrel_then))
+                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &nrel_then))
                     {
                         fun_result = SC_RESULT_ERROR;
                         goto exit;
@@ -2286,7 +2286,7 @@ sc_result sys_search_agent_body(scp_operand *operator_node)
                 }
                 case SCP_RESULT_FALSE:
                 {
-                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &rrel_else))
+                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &nrel_else))
                     {
                         fun_result = SC_RESULT_ERROR;
                         goto exit;
@@ -2296,7 +2296,7 @@ sc_result sys_search_agent_body(scp_operand *operator_node)
                 }
                 case SCP_RESULT_ERROR:
                 {
-                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &rrel_error))
+                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &nrel_error))
                     {
                         fun_result = SC_RESULT_ERROR;
                         goto exit;
@@ -2317,7 +2317,7 @@ sc_result sys_search_agent_body(scp_operand *operator_node)
                     {
                         set_operands_values(pair_elems2[i], pair_values2[i], 2);
                     }
-                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &rrel_then))
+                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &nrel_then))
                     {
                         fun_result = SC_RESULT_ERROR;
                         goto exit;
@@ -2327,7 +2327,7 @@ sc_result sys_search_agent_body(scp_operand *operator_node)
                 }
                 case SCP_RESULT_FALSE:
                 {
-                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &rrel_else))
+                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &nrel_else))
                     {
                         fun_result = SC_RESULT_ERROR;
                         goto exit;
@@ -2337,7 +2337,7 @@ sc_result sys_search_agent_body(scp_operand *operator_node)
                 }
                 case SCP_RESULT_ERROR:
                 {
-                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &rrel_error))
+                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &nrel_error))
                     {
                         fun_result = SC_RESULT_ERROR;
                         goto exit;
@@ -2359,7 +2359,7 @@ sc_result sys_search_agent_body(scp_operand *operator_node)
                 {
                     set_operands_values(&param2_node, &param2, 1);
                     set_operands_values(&param4_node, &param4, 1);
-                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &rrel_then))
+                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &nrel_then))
                     {
                         fun_result = SC_RESULT_ERROR;
                         goto exit;
@@ -2369,7 +2369,7 @@ sc_result sys_search_agent_body(scp_operand *operator_node)
                 }
                 case SCP_RESULT_FALSE:
                 {
-                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &rrel_else))
+                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &nrel_else))
                     {
                         fun_result = SC_RESULT_ERROR;
                         goto exit;
@@ -2379,7 +2379,7 @@ sc_result sys_search_agent_body(scp_operand *operator_node)
                 }
                 case SCP_RESULT_ERROR:
                 {
-                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &rrel_error))
+                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &nrel_error))
                     {
                         fun_result = SC_RESULT_ERROR;
                         goto exit;
@@ -2397,7 +2397,7 @@ sc_result sys_search_agent_body(scp_operand *operator_node)
                 case SCP_RESULT_TRUE:
                 {
                     set_operands_values(&param2_node, &param2, 1);
-                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &rrel_then))
+                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &nrel_then))
                     {
                         fun_result = SC_RESULT_ERROR;
                         goto exit;
@@ -2407,7 +2407,7 @@ sc_result sys_search_agent_body(scp_operand *operator_node)
                 }
                 case SCP_RESULT_FALSE:
                 {
-                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &rrel_else))
+                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &nrel_else))
                     {
                         fun_result = SC_RESULT_ERROR;
                         goto exit;
@@ -2417,7 +2417,7 @@ sc_result sys_search_agent_body(scp_operand *operator_node)
                 }
                 case SCP_RESULT_ERROR:
                 {
-                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &rrel_error))
+                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &nrel_error))
                     {
                         fun_result = SC_RESULT_ERROR;
                         goto exit;
@@ -2638,7 +2638,7 @@ sc_result sys_gen_agent_body(scp_operand *operator_node)
                         set_operands_values(pair_elems2[i], pair_values2[i], 2);
                     }
                     set_operands_values(&param4_node, &param4, 1);
-                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &rrel_then))
+                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &nrel_then))
                     {
                         fun_result = SC_RESULT_ERROR;
                         goto exit;
@@ -2648,7 +2648,7 @@ sc_result sys_gen_agent_body(scp_operand *operator_node)
                 }
                 case SCP_RESULT_FALSE:
                 {
-                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &rrel_else))
+                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &nrel_else))
                     {
                         fun_result = SC_RESULT_ERROR;
                         goto exit;
@@ -2658,7 +2658,7 @@ sc_result sys_gen_agent_body(scp_operand *operator_node)
                 }
                 case SCP_RESULT_ERROR:
                 {
-                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &rrel_error))
+                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &nrel_error))
                     {
                         fun_result = SC_RESULT_ERROR;
                         goto exit;
@@ -2679,7 +2679,7 @@ sc_result sys_gen_agent_body(scp_operand *operator_node)
                     {
                         set_operands_values(pair_elems2[i], pair_values2[i], 2);
                     }
-                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &rrel_then))
+                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &nrel_then))
                     {
                         fun_result = SC_RESULT_ERROR;
                         goto exit;
@@ -2689,7 +2689,7 @@ sc_result sys_gen_agent_body(scp_operand *operator_node)
                 }
                 case SCP_RESULT_FALSE:
                 {
-                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &rrel_else))
+                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &nrel_else))
                     {
                         fun_result = SC_RESULT_ERROR;
                         goto exit;
@@ -2699,7 +2699,7 @@ sc_result sys_gen_agent_body(scp_operand *operator_node)
                 }
                 case SCP_RESULT_ERROR:
                 {
-                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &rrel_error))
+                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &nrel_error))
                     {
                         fun_result = SC_RESULT_ERROR;
                         goto exit;
@@ -2721,7 +2721,7 @@ sc_result sys_gen_agent_body(scp_operand *operator_node)
                 {
                     set_operands_values(&param2_node, &param2, 1);
                     set_operands_values(&param4_node, &param4, 1);
-                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &rrel_then))
+                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &nrel_then))
                     {
                         fun_result = SC_RESULT_ERROR;
                         goto exit;
@@ -2731,7 +2731,7 @@ sc_result sys_gen_agent_body(scp_operand *operator_node)
                 }
                 case SCP_RESULT_FALSE:
                 {
-                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &rrel_else))
+                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &nrel_else))
                     {
                         fun_result = SC_RESULT_ERROR;
                         goto exit;
@@ -2741,7 +2741,7 @@ sc_result sys_gen_agent_body(scp_operand *operator_node)
                 }
                 case SCP_RESULT_ERROR:
                 {
-                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &rrel_error))
+                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &nrel_error))
                     {
                         fun_result = SC_RESULT_ERROR;
                         goto exit;
@@ -2759,7 +2759,7 @@ sc_result sys_gen_agent_body(scp_operand *operator_node)
                 case SCP_RESULT_TRUE:
                 {
                     set_operands_values(&param2_node, &param2, 1);
-                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &rrel_then))
+                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &nrel_then))
                     {
                         fun_result = SC_RESULT_ERROR;
                         goto exit;
@@ -2769,7 +2769,7 @@ sc_result sys_gen_agent_body(scp_operand *operator_node)
                 }
                 case SCP_RESULT_FALSE:
                 {
-                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &rrel_else))
+                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &nrel_else))
                     {
                         fun_result = SC_RESULT_ERROR;
                         goto exit;
@@ -2779,7 +2779,7 @@ sc_result sys_gen_agent_body(scp_operand *operator_node)
                 }
                 case SCP_RESULT_ERROR:
                 {
-                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &rrel_error))
+                    if (SCP_RESULT_TRUE != goto_conditional(operator_node, &nrel_error))
                     {
                         fun_result = SC_RESULT_ERROR;
                         goto exit;

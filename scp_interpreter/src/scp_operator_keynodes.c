@@ -261,9 +261,9 @@ scp_result init_operator_keynodes()
     {
         return print_error("Keynode not found", "contTg");
     }
-    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("contAsin", &op_contASin))
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("contASin", &op_contASin))
     {
-        return print_error("Keynode not found", "contAsin");
+        return print_error("Keynode not found", "contASin");
     }
     if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("contACos", &op_contACos))
     {

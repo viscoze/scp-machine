@@ -42,7 +42,7 @@ scp_result check_scp_interpreter_question(scp_operand *quest)
         return SCP_RESULT_FALSE;
     }
     authors.param_type = SCP_FIXED;
-    if (SCP_RESULT_TRUE != searchElStr3(&authors, &arc1, &scp_interpreter))
+    if (SCP_RESULT_TRUE != searchElStr3(&authors, &arc1, &abstract_scp_machine))
     {
         return SCP_RESULT_FALSE;
     }
@@ -79,32 +79,32 @@ scp_result resolve_operator_type(scp_operand *oper, scp_operand *type)
 
 scp_result resolve_scp_event_type(scp_operand *element, sc_event_type *type)
 {
-    if (SCP_RESULT_TRUE == ifCoin(&scp_event_add_input_arc, element))
+    if (SCP_RESULT_TRUE == ifCoin(&sc_event_add_input_arc, element))
     {
         *type = SC_EVENT_ADD_INPUT_ARC;
         return SCP_RESULT_TRUE;
     }
-    if (SCP_RESULT_TRUE == ifCoin(&scp_event_add_output_arc, element))
+    if (SCP_RESULT_TRUE == ifCoin(&sc_event_add_output_arc, element))
     {
         *type = SC_EVENT_ADD_OUTPUT_ARC;
         return SCP_RESULT_TRUE;
     }
-    if (SCP_RESULT_TRUE == ifCoin(&scp_event_add_input_arc, element))
+    if (SCP_RESULT_TRUE == ifCoin(&sc_event_add_input_arc, element))
     {
         *type = SC_EVENT_ADD_INPUT_ARC;
         return SCP_RESULT_TRUE;
     }
-    if (SCP_RESULT_TRUE == ifCoin(&scp_event_remove_input_arc, element))
+    if (SCP_RESULT_TRUE == ifCoin(&sc_event_remove_input_arc, element))
     {
         *type = SC_EVENT_REMOVE_INPUT_ARC;
         return SCP_RESULT_TRUE;
     }
-    if (SCP_RESULT_TRUE == ifCoin(&scp_event_remove_output_arc, element))
+    if (SCP_RESULT_TRUE == ifCoin(&sc_event_remove_output_arc, element))
     {
         *type = SC_EVENT_REMOVE_OUTPUT_ARC;
         return SCP_RESULT_TRUE;
     }
-    if (SCP_RESULT_TRUE == ifCoin(&scp_event_change_link_content, element))
+    if (SCP_RESULT_TRUE == ifCoin(&sc_event_change_link_content, element))
     {
         *type = SC_EVENT_CHANGE_LINK_CONTENT;
         return SCP_RESULT_TRUE;
@@ -123,7 +123,7 @@ scp_result resolve_ordinal_rrel(scp_operand *arc_param, scp_operand *result)
     while (SCP_RESULT_TRUE == scp_iterator3_next(it, result, &arc, arc_param))
     {
         result->param_type = SCP_FIXED;
-        if (SCP_RESULT_TRUE == searchElStr3(&ordinal_rrel, &arc, result))
+        if (SCP_RESULT_TRUE == searchElStr3(&order_role_relation, &arc, result))
         {
             scp_iterator3_free(it);
             return SCP_RESULT_TRUE;
@@ -224,7 +224,7 @@ void run_scp_program(scp_operand *scp_program)
     quest.param_type = SCP_FIXED;
     MAKE_DEFAULT_NODE_ASSIGN(params);
     genElStr5(&quest, &arc1, &params, &arc2, ordinal_rrels + 2);
-    set_author(&quest, &scp_interpreter);
+    set_author(&quest, &abstract_scp_machine);
     genElStr3(&question_scp_interpretation_request, &arc1, &quest);
     genElStr3(&question_initiated, &arc1, &quest);
 }
