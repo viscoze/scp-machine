@@ -14,8 +14,6 @@ link_directories(${SC_MACHINE_ROOT}/bin)
 
 set(SC_MEMORY_SRC "${SC_MACHINE_ROOT}/sc-memory/src")
 
-#add_library(sc-memory STATIC IMPORTED sc-memory)
-
 add_subdirectory(scp_lib)
 add_subdirectory(scp_interpreter)
 add_subdirectory(test)

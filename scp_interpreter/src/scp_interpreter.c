@@ -34,7 +34,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 scp_result init_all_scp_agents()
 {
-    scp_operand proc, arc, com_arc, init_prog;
+    /*scp_operand proc, arc, com_arc, init_prog;
     MAKE_DEFAULT_ARC_ASSIGN(arc);
     MAKE_COMMON_ARC_ASSIGN(com_arc);
     MAKE_DEFAULT_OPERAND_ASSIGN(proc);
@@ -50,7 +50,7 @@ scp_result init_all_scp_agents()
         run_scp_program(&init_prog);
         proc.param_type = SCP_ASSIGN;
     }
-    scp_iterator3_free(it);
+    scp_iterator3_free(it);*/
     return SC_RESULT_OK;
 }
 
