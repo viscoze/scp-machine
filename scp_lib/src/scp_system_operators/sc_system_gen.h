@@ -26,7 +26,7 @@ extern "C"
 {
 #include "sc_memory_headers.h"
 }
-#include "sc_system_operators.hpp"
+#include "sc_system_operators.h"
 
 /*! Generates fully isomorfic construction to given
  * @param pattern Generation pattern

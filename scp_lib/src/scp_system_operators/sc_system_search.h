@@ -26,7 +26,7 @@ extern "C"
 {
 #include "sc_memory_headers.h"
 }
-#include "sc_system_operators.hpp"
+#include "sc_system_operators.h"
 
 /*! Search fully isomorfic construction, if impossible -
  *  the closest to fully isomorfic construction

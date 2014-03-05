@@ -20,7 +20,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-#include "sc_system_search.hpp"
+#include "sc_system_search.h"
 #include <glib.h>
 
 extern "C"

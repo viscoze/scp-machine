@@ -20,7 +20,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-#include "sc_system_gen.hpp"
+#include "sc_system_gen.h"
 
 extern "C"
 {

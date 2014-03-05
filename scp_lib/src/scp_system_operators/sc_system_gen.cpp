@@ -23,7 +23,7 @@ extern "C"
 {
 #include "sc_memory_headers.h"
 }
-#include "sc_system_gen.hpp"
+#include "sc_system_gen.h"
 
 #include <stdio.h>
 #include <iostream>
