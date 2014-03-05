@@ -1,4 +1,0 @@
-question_finished_unsuccessfully <- sc_node_not_relation;;
-
-question_finished_unsuccessfully => nrel_main_ru_idtf:
-	[безуспешно завершенный вопрос];;
