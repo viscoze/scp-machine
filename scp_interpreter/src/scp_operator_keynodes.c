@@ -24,7 +24,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scp_operator_keynodes.h"
 #include "scp_interpreter_utils.h"
 
-scp_operand scp_operator;
+scp_operand scp_operator_atomic_type;
 
 scp_operand op_searchElStr3;
 scp_operand op_searchElStr5;
@@ -89,7 +89,7 @@ scp_operand op_sys_wait;
 
 scp_result init_operator_keynodes()
 {
-    MAKE_DEFAULT_OPERAND_FIXED(scp_operator);
+    MAKE_DEFAULT_OPERAND_FIXED(scp_operator_atomic_type);
     MAKE_DEFAULT_OPERAND_FIXED(op_searchElStr3);
     MAKE_DEFAULT_OPERAND_FIXED(op_searchElStr5);
     MAKE_DEFAULT_OPERAND_FIXED(op_searchSetStr3);
@@ -137,9 +137,9 @@ scp_result init_operator_keynodes()
     MAKE_DEFAULT_OPERAND_FIXED(op_sys_set_event_handler);
     MAKE_DEFAULT_OPERAND_FIXED(op_sys_delete_event_handler);
     MAKE_DEFAULT_OPERAND_FIXED(op_sys_wait);
-    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("scp_operator", &scp_operator))
+    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("scp_operator_atomic_type", &scp_operator_atomic_type))
     {
-        return print_error("Keynode not found", "scp_operator");
+        return print_error("Keynode not found", "scp_operator_atomic_type");
     }
     if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("searchElStr3", &op_searchElStr3))
     {

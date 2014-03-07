@@ -66,7 +66,7 @@ scp_result resolve_operator_type(scp_operand *oper, scp_operand *type)
             continue;
         }
         type->param_type = SCP_FIXED;
-        if (SCP_RESULT_TRUE == searchElStr3(&scp_operator, &arc, type))
+        if (SCP_RESULT_TRUE == searchElStr3(&scp_operator_atomic_type, &arc, type))
         {
             scp_iterator3_free(it);
             return SCP_RESULT_TRUE;

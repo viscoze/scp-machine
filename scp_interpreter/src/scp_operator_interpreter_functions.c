@@ -574,7 +574,7 @@ scp_result set_set_operands_values(scp_operand *operands, scp_operand *operands_
 scp_result goto_conditional(scp_operand *scp_operator_node, scp_operand *rrel)
 {
     scp_operand arc1, arc2, next_operator;
-    MAKE_DEFAULT_ARC_ASSIGN(arc1);
+    MAKE_COMMON_ARC_ASSIGN(arc1);
     MAKE_DEFAULT_ARC_ASSIGN(arc2);
     MAKE_DEFAULT_NODE_ASSIGN(next_operator);
     if (SCP_RESULT_TRUE == searchElStr5(scp_operator_node, &arc1, &next_operator, &arc2, rrel))
@@ -592,7 +592,7 @@ scp_result goto_conditional(scp_operand *scp_operator_node, scp_operand *rrel)
 scp_result goto_unconditional(scp_operand *scp_operator_node)
 {
     scp_operand arc1, arc2, next_operator;
-    MAKE_DEFAULT_ARC_ASSIGN(arc1);
+    MAKE_COMMON_ARC_ASSIGN(arc1);
     MAKE_DEFAULT_ARC_ASSIGN(arc2);
     MAKE_DEFAULT_NODE_ASSIGN(next_operator);
     if (SCP_RESULT_TRUE == searchElStr5(scp_operator_node, &arc1, &next_operator, &arc2, &nrel_goto))

@@ -223,15 +223,16 @@ void append_all_set_elements_to_hash_with_modifiers(GHashTable *table, scp_opera
 
 scp_result gen_system_structures(scp_operand *operator_set, scp_operand *parameter_set, scp_operand *vars_set, scp_operand *const_set, scp_operand *copying_consts_set, scp_operand *operators_copying_pattern)
 {
-    scp_operand arc1, arc2, curr_operator, operator_arc, operator_type, curr_operand, operand_arc, modifier, modifier_arc;
+    scp_operand arc1, arc2, curr_operator, operator_arc, operator_type, curr_operand, operand_arc, modifier, modifier_arc,
+                operand_arc_pattern;
     scp_iterator3 *it, *it1, *it2;
     GHashTable *table = g_hash_table_new(NULL, NULL);
-    scp_bool cop_const = SCP_FALSE, is_const = SCP_FALSE;
+    scp_bool cop_const = SCP_FALSE, is_const = SCP_FALSE, order_rel = SCP_FALSE;
 
     MAKE_DEFAULT_ARC_ASSIGN(arc1);
     MAKE_DEFAULT_ARC_ASSIGN(arc2);
     MAKE_DEFAULT_ARC_ASSIGN(operator_arc);
-    MAKE_DEFAULT_ARC_ASSIGN(operand_arc);
+    MAKE_DEFAULT_OPERAND_ASSIGN(operand_arc);
     MAKE_DEFAULT_ARC_ASSIGN(modifier_arc);
     modifier_arc.erase = SCP_TRUE;
     MAKE_DEFAULT_OPERAND_ASSIGN(curr_operator);
@@ -239,6 +240,8 @@ scp_result gen_system_structures(scp_operand *operator_set, scp_operand *paramet
     MAKE_DEFAULT_OPERAND_ASSIGN(operator_arc);
     MAKE_DEFAULT_OPERAND_ASSIGN(operator_type);
     MAKE_DEFAULT_OPERAND_ASSIGN(modifier);
+    MAKE_DEFAULT_OPERAND_FIXED(operand_arc_pattern);
+    operand_arc_pattern.element_type = scp_type_arc_common | scp_type_const;
     append_to_hash(table, operator_set);
     it = scp_iterator3_new(operator_set, &operator_arc, &curr_operator);
     while (SCP_RESULT_TRUE == scp_iterator3_next(it, operator_set, &operator_arc, &curr_operator))
@@ -261,7 +264,7 @@ scp_result gen_system_structures(scp_operand *operator_set, scp_operand *paramet
         {
             operator_type.param_type = SCP_FIXED;
 
-            if (SCP_RESULT_TRUE == searchElStr3(&scp_operator, &arc2, &operator_type))
+            if (SCP_RESULT_TRUE == searchElStr3(&scp_operator_atomic_type, &arc2, &operator_type))
             {
                 append_to_hash(table, &arc1);
                 operator_type.param_type = SCP_ASSIGN;
@@ -281,6 +284,23 @@ scp_result gen_system_structures(scp_operand *operator_set, scp_operand *paramet
             operand_arc.param_type = SCP_FIXED;
             cop_const = SCP_FALSE;
             is_const = SCP_FALSE;
+            order_rel = SCP_FALSE;
+
+            //Order relation case
+            operand_arc_pattern.addr = operand_arc.addr;
+            if (SCP_TRUE == ifType(&operand_arc_pattern))
+            {
+                if (SCP_TRUE != searchElStr3(operator_set, &arc1, &curr_operand))
+                {
+                    operand_arc.param_type = SCP_ASSIGN;
+                    curr_operand.param_type = SCP_ASSIGN;
+                    continue;
+                }
+                else
+                {
+                    order_rel = SCP_TRUE;
+                }
+            }
 
             append_to_hash(table, &curr_operand);
             append_to_hash(table, &operand_arc);
@@ -291,6 +311,20 @@ scp_result gen_system_structures(scp_operand *operator_set, scp_operand *paramet
             {
                 modifier.param_type = SCP_FIXED;
                 modifier_arc.param_type = SCP_FIXED;
+
+                if (SCP_TRUE == order_rel)
+                {
+                    if (SCP_TRUE == ifCoin(&nrel_goto, &modifier)
+                        || SCP_TRUE == ifCoin(&nrel_else, &modifier)
+                        || SCP_TRUE == ifCoin(&nrel_then, &modifier)
+                        || SCP_TRUE == ifCoin(&nrel_error, &modifier))
+                    {
+                        append_to_hash(table, &modifier_arc);
+                    }
+                    modifier_arc.param_type = SCP_ASSIGN;
+                    modifier.param_type = SCP_ASSIGN;
+                    break;
+                }
 
                 if (SCP_RESULT_TRUE == ifCoin(&operator_type, &op_call)
                     && SCP_RESULT_TRUE == ifCoin(&modifier, ordinal_rrels + 2))
