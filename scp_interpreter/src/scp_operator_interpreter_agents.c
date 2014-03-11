@@ -45,6 +45,9 @@ sc_event *event_system_operators_interpreter;
 sc_event *event_event_operators_interpreter;
 sc_event *event_waitReturn_operators_interpreter;
 
+sc_event *event_register_sc_agent;
+sc_event *event_unregister_sc_agent;
+
 GHashTable *scp_event_table;
 GHashTable *scp_wait_event_table;
 
@@ -2954,6 +2957,7 @@ sc_result sc_agent_activator(sc_event *in_event, sc_addr arg)
     MAKE_DEFAULT_OPERAND_FIXED(input_arc);
     input_arc.addr = arg;
     MAKE_DEFAULT_OPERAND_ASSIGN(node1);
+    MAKE_DEFAULT_OPERAND_ASSIGN(scp_sc_agent);
     if (SCP_RESULT_TRUE != ifVarAssign(&input_arc))
     {
         return SC_RESULT_ERROR;
@@ -2988,11 +2992,14 @@ sc_result sc_agent_activator(sc_event *in_event, sc_addr arg)
 
 sc_result sc_agent_deactivator(sc_event *in_event, sc_addr arg)
 {
-    scp_operand scp_sc_agent, node1, input_arc;
+    scp_operand scp_sc_agent, node1, input_arc, arc,arc3;
+
+    //!TODO Solve deactivation problem
 
     MAKE_DEFAULT_OPERAND_FIXED(input_arc);
     input_arc.addr = arg;
     MAKE_DEFAULT_OPERAND_ASSIGN(node1);
+    MAKE_DEFAULT_OPERAND_ASSIGN(scp_sc_agent);
     if (SCP_RESULT_TRUE != ifVarAssign(&input_arc))
     {
         return SC_RESULT_ERROR;
@@ -3001,6 +3008,15 @@ sc_result sc_agent_deactivator(sc_event *in_event, sc_addr arg)
     scp_sc_agent.param_type = SCP_FIXED;
 
     g_hash_table_remove(scp_event_table, MAKE_HASH(scp_sc_agent));
+
+    printf("UNREGISTERING SCP AGENT PROGRAM: ");
+    MAKE_DEFAULT_ARC_ASSIGN(arc);
+    MAKE_COMMON_ARC_ASSIGN(arc3);
+    MAKE_DEFAULT_OPERAND_ASSIGN(node1);
+    if (SCP_TRUE == searchElStr5(&scp_sc_agent, &arc3, &node1, &arc, &nrel_system_identifier))
+    {
+        printNl(&node1);
+    }
 
     return SC_RESULT_OK;
 }
@@ -3089,6 +3105,13 @@ scp_result scp_operator_interpreter_agents_init()
     if (event_waitReturn_operators_interpreter == nullptr)
         return SCP_RESULT_ERROR;
 
+    event_register_sc_agent = sc_event_new(active_sc_agent.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, sc_agent_activator, 0);
+    if (event_register_sc_agent == nullptr)
+        return SCP_RESULT_ERROR;
+    event_unregister_sc_agent = sc_event_new(active_sc_agent.addr, SC_EVENT_REMOVE_OUTPUT_ARC, 0, sc_agent_deactivator, 0);
+    if (event_unregister_sc_agent == nullptr)
+        return SCP_RESULT_ERROR;
+
     scp_event_table = g_hash_table_new_full(NULL, NULL, NULL, destroy_sys_event_table_item);
     scp_wait_event_table = g_hash_table_new_full(NULL, NULL, NULL, destroy_sys_wait_event_table_item);
 
@@ -3114,6 +3137,8 @@ scp_result scp_operator_interpreter_agents_shutdown()
     sc_event_destroy(event_event_operators_interpreter);
     sc_event_destroy(event_call_operator_interpreter);
     sc_event_destroy(event_waitReturn_operators_interpreter);
+    sc_event_destroy(event_register_sc_agent);
+    sc_event_destroy(event_unregister_sc_agent);
 
     g_hash_table_destroy(scp_event_table);
     g_hash_table_destroy(scp_wait_event_table);

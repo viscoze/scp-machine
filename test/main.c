@@ -44,22 +44,25 @@ void temp()
 
 void create_process_test()
 {
-    sc_addr quest, init, nrel_answer;
+    sc_addr quest, init, nrel_answer, active_sc_agent, agent;
     scp_operand op;
 
     sc_helper_resolve_system_identifier("quest1", &quest);
     sc_helper_resolve_system_identifier("question_initiated", &init);
     sc_helper_resolve_system_identifier("nrel_answer", &nrel_answer);
 
+    sc_helper_resolve_system_identifier("active_sc_agent", &active_sc_agent);
+    sc_helper_resolve_system_identifier("sc_agent_of_search_of_all_output_arcs_agent_scp", &agent);
+
     sc_memory_arc_new(sc_type_arc_pos_const_perm, init, quest);
 
-    sc_iterator5 *it = sc_iterator5_f_a_a_a_f_new(quest, sc_type_arc_common, 0, sc_type_arc_pos_const_perm, nrel_answer);
-    while (SC_TRUE == sc_iterator5_next(it))
-    {
-        op.addr = sc_iterator5_value(it, 2);
-        printEl(&op);
-    }
-    sc_iterator5_free(it);
+    sc_addr arc = sc_memory_arc_new(sc_type_arc_pos_const_perm, active_sc_agent, agent);
+
+    sc_memory_arc_new(sc_type_arc_pos_const_perm, init, quest);
+
+    /*sc_memory_element_free(arc);
+
+    sc_memory_arc_new(sc_type_arc_pos_const_perm, init, quest);*/
 }
 
 void test_scp_process_creating(int value)
