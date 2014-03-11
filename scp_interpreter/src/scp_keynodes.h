@@ -31,6 +31,12 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 extern scp_operand scp_program;
 extern scp_operand agent_scp_program;
+extern scp_operand platform_independent_abstract_sc_agent;
+extern scp_operand abstract_sc_agent;
+extern scp_operand nrel_sc_agent_program;
+extern scp_operand nrel_inclusion;
+extern scp_operand nrel_primary_initiation_condition;
+
 extern scp_operand question_scp_interpretation_request;
 extern scp_operand question_scp_procedure_preprocessing_request;
 
@@ -42,14 +48,13 @@ extern scp_operand scp_process;
 extern scp_operand abstract_scp_machine;
 extern scp_operand useless_scp_process;
 extern scp_operand nrel_scp_process;
-//extern scp_operand nrel_parent_scp_operator;
 extern scp_operand nrel_value;
 extern scp_operand nrel_authors;
 extern scp_operand nrel_init_program;
 extern scp_operand nrel_system_identifier;
 
 extern scp_operand active_scp_operator;
-
+extern scp_operand active_sc_agent;
 // rrels
 extern scp_operand nrel_then;
 extern scp_operand nrel_else;

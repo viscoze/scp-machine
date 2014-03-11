@@ -72,6 +72,36 @@ void print_call_debug_info(scp_operand *proc)
     }
 }
 
+scp_result resolve_sc_agent_event_type(scp_operand *event_type, sc_event_type *result)
+{
+    if (SCP_TRUE == ifCoin(event_type, &sc_event_add_output_arc))
+    {
+        (*result) = SC_EVENT_ADD_OUTPUT_ARC;
+        return SCP_TRUE;
+    }
+    if (SCP_TRUE == ifCoin(event_type, &sc_event_add_input_arc))
+    {
+        (*result) = SC_EVENT_ADD_INPUT_ARC;
+        return SCP_TRUE;
+    }
+    if (SCP_TRUE == ifCoin(event_type, &sc_event_remove_output_arc))
+    {
+        (*result) = SC_EVENT_REMOVE_OUTPUT_ARC;
+        return SCP_TRUE;
+    }
+    if (SCP_TRUE == ifCoin(event_type, &sc_event_remove_input_arc))
+    {
+        (*result) = SC_EVENT_REMOVE_INPUT_ARC;
+        return SCP_TRUE;
+    }
+    if (SCP_TRUE == ifCoin(event_type, &sc_event_change_link_content))
+    {
+        (*result) = SC_EVENT_CHANGE_LINK_CONTENT;
+        return SCP_TRUE;
+    }
+    return SCP_FALSE;
+}
+
 sc_result interpreter_agent_search_operators(sc_event *event, sc_addr arg)
 {
     scp_operand input_arc, node1, operator_node, operator_type;
@@ -1786,12 +1816,11 @@ sc_result interpreter_agent_waitReturn_operators(sc_event *event, sc_addr arg)
 
 sc_result scp_event_procedure_processor(sc_event *event, sc_addr arg)
 {
-    scp_operand event_node, arc1, arc2, procedure, quest, params, second_param, node, input_arc;
-    MAKE_DEFAULT_OPERAND_FIXED(event_node);
+    scp_operand arc1, arc2, agent_scp_program, quest, params, second_param, node, input_arc;
     MAKE_DEFAULT_ARC_ASSIGN(arc1);
     MAKE_DEFAULT_ARC_ASSIGN(arc2);
     MAKE_DEFAULT_NODE_ASSIGN(quest);
-    MAKE_DEFAULT_OPERAND_ASSIGN(procedure);
+    MAKE_DEFAULT_OPERAND_ASSIGN(agent_scp_program);
 
     MAKE_DEFAULT_OPERAND_FIXED(input_arc);
     input_arc.addr = arg;
@@ -1807,17 +1836,16 @@ sc_result scp_event_procedure_processor(sc_event *event, sc_addr arg)
         return SC_RESULT_OK;
     }
     quest.param_type = SCP_ASSIGN;
-    event_node.addr = resolve_sc_addr_from_int(event->id);
-    searchElStr5(&event_node, &arc1, &procedure, &arc2, &rrel_sc_event_procedure);
-    procedure.param_type = SCP_FIXED;
+    agent_scp_program.addr = resolve_sc_addr_from_int(event->id);
+    agent_scp_program.param_type = SCP_FIXED;
 
     MAKE_DEFAULT_NODE_ASSIGN(quest);
-    genElStr5(&quest, &arc1, &procedure, &arc2, ordinal_rrels + 1);
+    genElStr5(&quest, &arc1, &agent_scp_program, &arc2, ordinal_rrels + 1);
     quest.param_type = SCP_FIXED;
     MAKE_DEFAULT_NODE_ASSIGN(params);
     genElStr5(&quest, &arc1, &params, &arc2, ordinal_rrels + 2);
     params.param_type = SCP_FIXED;
-    genElStr5(&params, &arc1, &event_node, &arc2, ordinal_rrels + 1);
+    genElStr5(&params, &arc1, &agent_scp_program, &arc2, ordinal_rrels + 1);
     MAKE_DEFAULT_OPERAND_FIXED(second_param);
     second_param.addr = arg;
     genElStr5(&params, &arc1, &second_param, &arc2, ordinal_rrels + 2);
@@ -1829,7 +1857,7 @@ sc_result scp_event_procedure_processor(sc_event *event, sc_addr arg)
     return SC_RESULT_OK;
 }
 
-scp_result create_scp_event(scp_operand *operands)
+/*scp_result create_scp_event(scp_operand *operands)
 {
     scp_operand arc1, arc2;
     sc_event_type type;
@@ -1854,14 +1882,14 @@ scp_result create_scp_event(scp_operand *operands)
     event = sc_event_new(operands[2].addr, type, SC_ADDR_LOCAL_TO_INT(operands[3].addr), scp_event_procedure_processor, NULL);
     g_hash_table_insert(scp_event_table, MAKE_HASH(operands[3]), (gpointer)event);
     return SC_RESULT_OK;
-}
+}*/
 
-scp_result delete_scp_event(scp_operand *operand)
+/*scp_result delete_scp_event(scp_operand *operand)
 {
     g_hash_table_remove(scp_event_table, MAKE_PHASH(operand));
     eraseEl(operand);
     return SCP_RESULT_TRUE;
-}
+}*/
 
 sc_result sys_wait_processor(sc_event *event, sc_addr arg)
 {
@@ -1919,7 +1947,7 @@ sc_result interpreter_agent_event_operators(sc_event *event, sc_addr arg)
         operator_interpreting_crash(&operator_node);
         return SC_RESULT_ERROR;
     }
-
+/*
     //sys_set_event_handler case
     if (SCP_RESULT_TRUE == ifCoin(&operator_type, &op_sys_set_event_handler))
     {
@@ -1957,7 +1985,7 @@ sc_result interpreter_agent_event_operators(sc_event *event, sc_addr arg)
         goto_unconditional(&operator_node);
         return SC_RESULT_OK;
     }
-
+*/
     //sys_wait case
     if (SCP_RESULT_TRUE == ifCoin(&operator_type, &op_sys_wait))
     {
@@ -2995,6 +3023,44 @@ void destroy_sys_wait_event_table_item(gpointer data)
     sc_event_destroy((sc_event *)data);
 }
 
+scp_result init_all_scp_agents()
+{
+    scp_operand scp_sc_agent, arc, event_type, event_elem, agent_program, node1, arc3;
+    scp_iterator3 *it;
+    sc_event *event;
+    sc_event_type type;
+
+    MAKE_DEFAULT_ARC_ASSIGN(arc);
+    MAKE_COMMON_ARC_ASSIGN(arc3);
+    MAKE_DEFAULT_OPERAND_ASSIGN(scp_sc_agent);
+    MAKE_DEFAULT_OPERAND_ASSIGN(agent_program);
+    MAKE_DEFAULT_OPERAND_ASSIGN(event_elem);
+    MAKE_DEFAULT_OPERAND_ASSIGN(event_type);
+    MAKE_DEFAULT_OPERAND_ASSIGN(node1);
+    it = scp_iterator3_new(&active_sc_agent, &arc, &scp_sc_agent);
+    while (SCP_RESULT_TRUE == scp_iterator3_next(it, &active_sc_agent, &arc, &scp_sc_agent))
+    {
+        scp_sc_agent.param_type = SCP_FIXED;
+        if (SCP_TRUE == register_scp_based_sc_agent(&scp_sc_agent, &agent_program, &event_type, &event_elem))
+        {
+            if (SCP_TRUE != resolve_sc_agent_event_type(&event_type, &type))
+                continue;
+            event = sc_event_new(event_elem.addr, type, SC_ADDR_LOCAL_TO_INT(agent_program.addr), scp_event_procedure_processor, NULL);
+            g_hash_table_insert(scp_event_table, MAKE_HASH(agent_program), (gpointer)event);
+
+            printf("REGISTERING SCP AGENT PROGRAM: ");
+            MAKE_DEFAULT_OPERAND_ASSIGN(node1);
+            if (SCP_TRUE == searchElStr5(&agent_program, &arc3, &node1, &arc, &nrel_system_identifier))
+            {
+                printNl(&node1);
+            }
+        }
+        scp_sc_agent.param_type = SCP_ASSIGN;
+    }
+    scp_iterator3_free(it);
+    return SC_RESULT_OK;
+}
+
 scp_result scp_operator_interpreter_agents_init()
 {
     event_interpreting_finished_succesfully = sc_event_new(question_finished_successfully.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, interpreting_question_finished_successfully, 0);
@@ -3043,6 +3109,8 @@ scp_result scp_operator_interpreter_agents_init()
 
     scp_event_table = g_hash_table_new_full(NULL, NULL, NULL, destroy_sys_event_table_item);
     scp_wait_event_table = g_hash_table_new_full(NULL, NULL, NULL, destroy_sys_wait_event_table_item);
+
+    init_all_scp_agents();
 
     return SCP_RESULT_TRUE;
 }

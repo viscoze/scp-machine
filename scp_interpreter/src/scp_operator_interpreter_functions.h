@@ -24,8 +24,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #define SCP_OPERATOR_INTERPRETER_FUNCTIONS_H
 
 #include "scp_lib.h"
+#include <glib.h>
 
-//scp_result resolve_operand_modifiers(scp_operand *scp_operator_node, scp_operand *operand, scp_operand *attr);
 scp_result resolve_operands_modifiers(scp_operand *scp_operator_node, scp_operand *operands, scp_uint32 count);
 scp_result resolve_operands_modifiers_with_set(scp_operand *scp_operator_node, scp_operand *operands, scp_operand *sets, scp_uint32 count);
 scp_result find_scp_process_for_scp_operator(scp_operand *scp_operator_node, scp_operand *scp_process_node);
@@ -34,11 +34,14 @@ scp_result get_operands_values(scp_operand *operands, scp_operand *operands_valu
 scp_result set_operands_values(scp_operand *operands, scp_operand *operands_values, scp_uint32 count);
 scp_result get_set_operands_values(scp_operand *operands, scp_operand *operands_values, scp_uint32 count);
 scp_result set_set_operands_values(scp_operand *operands, scp_operand *operands_values, scp_uint32 count);
+
+scp_result register_scp_based_sc_agent(scp_operand *agent, scp_operand *program, scp_operand *event_type, scp_operand *event_elem);
+scp_result unregister_scp_based_sc_agent(GHashTable *table, scp_operand *agent);
+
 scp_result goto_conditional(scp_operand *scp_operator_node, scp_operand *rrel);
 scp_result goto_unconditional(scp_operand *scp_operator_node);
 scp_uint32 check_ordinal_rrel(scp_operand *node, scp_uint32 count);
 void set_active_operator(scp_operand *scp_operator_node);
 void operator_interpreting_crash(scp_operand *operator_node);
-
 
 #endif // SCP_OPERATOR_INTERPRETER_FUNCTIONS_H

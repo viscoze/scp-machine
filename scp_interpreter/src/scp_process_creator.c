@@ -28,7 +28,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <stdio.h>
 #include <glib.h>
 
-sc_event *event_procedure_iterpretation;
+sc_event *event_program_iterpretation;
 
 scp_result copy_parameter_set(scp_operand *set, scp_operand *call_params, GHashTable *table, GHashTable *pattern_hash)
 {
@@ -334,14 +334,14 @@ sc_result create_scp_process(sc_event *event, sc_addr arg)
 
 scp_result scp_process_creator_init()
 {
-    event_procedure_iterpretation = sc_event_new(question_initiated.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, create_scp_process, 0);
-    if (event_procedure_iterpretation == nullptr)
+    event_program_iterpretation = sc_event_new(question_initiated.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, create_scp_process, 0);
+    if (event_program_iterpretation == nullptr)
         return SCP_RESULT_ERROR;
     return SCP_RESULT_TRUE;
 }
 
 scp_result scp_process_creator_shutdown()
 {
-    sc_event_destroy(event_procedure_iterpretation);
+    sc_event_destroy(event_program_iterpretation);
     return SCP_RESULT_TRUE;
 }

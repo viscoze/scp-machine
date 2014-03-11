@@ -571,6 +571,100 @@ scp_result set_set_operands_values(scp_operand *operands, scp_operand *operands_
     return SCP_RESULT_TRUE;
 }
 
+scp_result search_superset_relating_to_given_class(scp_operand *set, scp_operand *class_node, scp_operand *superset)
+{
+    scp_operand arc1, arc3, curr_superset;
+    scp_iterator5 *it1;
+
+    MAKE_DEFAULT_OPERAND_ASSIGN(curr_superset);
+    MAKE_DEFAULT_ARC_ASSIGN(arc1);
+    MAKE_COMMON_ARC_ASSIGN(arc3);
+
+    it1 = scp_iterator5_new(&curr_superset, &arc3, set, &arc1, &nrel_inclusion);
+    while (SCP_TRUE == scp_iterator5_next(it1, &curr_superset, &arc3, set, &arc1, &nrel_inclusion))
+    {
+        curr_superset.param_type = SCP_FIXED;
+        if (SCP_TRUE == searchElStr3(class_node, &arc1, &curr_superset))
+        {
+            superset->addr = curr_superset.addr;
+            scp_iterator5_free(it1);
+            return SCP_TRUE;
+        }
+        if (SCP_TRUE == search_superset_relating_to_given_class(&curr_superset, class_node, superset))
+        {
+            scp_iterator5_free(it1);
+            return SCP_TRUE;
+        }
+        curr_superset.param_type = SCP_ASSIGN;
+    }
+    scp_iterator5_free(it1);
+}
+
+scp_result register_scp_based_sc_agent(scp_operand *agent, scp_operand *program, scp_operand *event_type, scp_operand *event_elem)
+{
+    scp_operand abstract_agent1, abstract_agent2, arc1, arc2, arc3, program_set, init_cond, node1;
+    scp_iterator3 *it1;
+
+    MAKE_DEFAULT_NODE_ASSIGN(abstract_agent1);
+    MAKE_DEFAULT_NODE_ASSIGN(abstract_agent2);
+    MAKE_DEFAULT_NODE_ASSIGN(program_set);
+    MAKE_DEFAULT_NODE_ASSIGN((*program));
+    MAKE_DEFAULT_OPERAND_ASSIGN(init_cond);
+    MAKE_DEFAULT_OPERAND_ASSIGN((*event_elem));
+    MAKE_DEFAULT_OPERAND_ASSIGN((*event_type));
+    MAKE_DEFAULT_ARC_ASSIGN(arc1);
+    MAKE_DEFAULT_ARC_ASSIGN(arc2);
+    MAKE_COMMON_ARC_ASSIGN(arc3);
+
+    it1 = scp_iterator3_new(&abstract_agent1, &arc1, agent);
+    while (SCP_TRUE == scp_iterator3_next(it1, &abstract_agent1, &arc1, agent))
+    {
+        abstract_agent1.param_type = SCP_FIXED;
+        if (SCP_TRUE == searchElStr3(&platform_independent_abstract_sc_agent, &arc1, &abstract_agent1))
+            break;
+        abstract_agent1.param_type = SCP_ASSIGN;
+    }
+    scp_iterator3_free(it1);
+    if (abstract_agent1.param_type == SCP_ASSIGN)
+        return SCP_FALSE;
+
+    // Search agent program for given agent
+    if (SCP_TRUE != searchElStr5(&program_set, &arc3, &abstract_agent1, &arc2, &nrel_sc_agent_program))
+        return SCP_FALSE;
+    program_set.param_type = SCP_FIXED;
+    it1 = scp_iterator3_new(&program_set, &arc1, program);
+    while (SCP_TRUE == scp_iterator3_next(it1, &program_set, &arc1, program))
+    {
+        program->param_type = SCP_FIXED;
+        if (SCP_TRUE == searchElStr3(&agent_scp_program, &arc1, program))
+            break;
+        program->param_type = SCP_ASSIGN;
+    }
+    scp_iterator3_free(it1);
+    if (program->param_type == SCP_ASSIGN)
+        return SCP_FALSE;
+
+    // Search primary init condition for given agent
+    if (SCP_TRUE != search_superset_relating_to_given_class(&abstract_agent1, &abstract_sc_agent, &abstract_agent2))
+        return SCP_FALSE;
+    if (SCP_TRUE != searchElStr5(&abstract_agent2, &arc3, &init_cond, &arc2, &nrel_primary_initiation_condition))
+        return SCP_FALSE;
+
+    init_cond.param_type = SCP_TRUE;
+    if (SCP_TRUE != searchElStr3(event_type, &init_cond, event_elem))
+        return SCP_FALSE;
+    event_elem->param_type = SCP_FIXED;
+    event_type->param_type = SCP_FIXED;
+
+    return SCP_TRUE;
+}
+
+scp_result unregister_scp_based_sc_agent(GHashTable *table, scp_operand *agent)
+{
+
+}
+
+/* Goto */
 scp_result goto_conditional(scp_operand *scp_operator_node, scp_operand *rrel)
 {
     scp_operand arc1, arc2, next_operator;
