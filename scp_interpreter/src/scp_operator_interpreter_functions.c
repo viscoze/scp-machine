@@ -659,11 +659,6 @@ scp_result register_scp_based_sc_agent(scp_operand *agent, scp_operand *program,
     return SCP_TRUE;
 }
 
-scp_result unregister_scp_based_sc_agent(GHashTable *table, scp_operand *agent)
-{
-
-}
-
 /* Goto */
 scp_result goto_conditional(scp_operand *scp_operator_node, scp_operand *rrel)
 {
