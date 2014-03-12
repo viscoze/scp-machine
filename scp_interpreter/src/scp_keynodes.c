@@ -43,7 +43,6 @@ scp_operand scp_process;
 scp_operand abstract_scp_machine;
 scp_operand useless_scp_process;
 scp_operand nrel_scp_process;
-scp_operand nrel_init_program;
 scp_operand nrel_value;
 scp_operand nrel_authors;
 scp_operand nrel_system_identifier;
@@ -92,18 +91,12 @@ scp_operand rrel_common;
 scp_operand rrel_pos_const_perm;
 
 // Events
-
 scp_operand sc_event_elem;
 scp_operand sc_event_add_output_arc;
 scp_operand sc_event_add_input_arc;
 scp_operand sc_event_remove_output_arc;
 scp_operand sc_event_remove_input_arc;
 scp_operand sc_event_change_link_content;
-
-scp_operand rrel_sc_event_type;
-scp_operand rrel_sc_event_procedure;
-//scp_operand rrel_scp_event_delete_procedure;
-scp_operand rrel_sc_event_processing_element;
 
 // Ordinals
 scp_operand order_role_relation;
@@ -136,7 +129,6 @@ scp_result scp_keynodes_init()
     MAKE_DEFAULT_OPERAND_FIXED(nrel_system_identifier);
     MAKE_DEFAULT_OPERAND_FIXED(nrel_value);
     MAKE_DEFAULT_OPERAND_FIXED(nrel_authors);
-    MAKE_DEFAULT_OPERAND_FIXED(nrel_init_program);
     MAKE_DEFAULT_OPERAND_FIXED(active_scp_operator);
     MAKE_DEFAULT_OPERAND_FIXED(active_sc_agent);
     MAKE_DEFAULT_OPERAND_FIXED(nrel_then);
@@ -177,9 +169,6 @@ scp_result scp_keynodes_init()
     MAKE_DEFAULT_OPERAND_FIXED(sc_event_change_link_content);
     MAKE_DEFAULT_OPERAND_FIXED(sc_event_remove_input_arc);
     MAKE_DEFAULT_OPERAND_FIXED(sc_event_remove_output_arc);
-    MAKE_DEFAULT_OPERAND_FIXED(rrel_sc_event_type);
-    MAKE_DEFAULT_OPERAND_FIXED(rrel_sc_event_procedure);
-    MAKE_DEFAULT_OPERAND_FIXED(rrel_sc_event_processing_element);
     MAKE_DEFAULT_OPERAND_FIXED(order_role_relation);
     MAKE_DEFAULT_OPERAND_FIXED(ordinal_set_rrel);
     for (i = 1; i <= ORDINAL_RRELS_COUNT; i++)
@@ -258,14 +247,6 @@ scp_result scp_keynodes_init()
     if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("nrel_authors", &nrel_authors))
     {
         return print_error("Keynode not found", "nrel_authors");
-    }
-    /*if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("nrel_parent_scp_operator", &nrel_parent_scp_operator))
-    {
-        return print_error("Keynode not found", "nrel_parent_scp_operator");
-    }*/
-    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("nrel_init_program", &nrel_init_program))
-    {
-        return print_error("Keynode not found", "nrel_init_program");
     }
     if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("nrel_system_identifier", &nrel_system_identifier))
     {
@@ -435,18 +416,6 @@ scp_result scp_keynodes_init()
     if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("sc_event_change_link_content", &sc_event_change_link_content))
     {
         return print_error("Keynode not found", "sc_event_change_link_content");
-    }
-    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("rrel_sc_event_type", &rrel_sc_event_type))
-    {
-        return print_error("Keynode not found", "rrel_sc_event_type");
-    }
-    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("rrel_sc_event_procedure", &rrel_sc_event_procedure))
-    {
-        return print_error("Keynode not found", "rrel_sc_event_procedure");
-    }
-    if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("rrel_sc_event_processing_element", &rrel_sc_event_processing_element))
-    {
-        return print_error("Keynode not found", "rrel_sc_event_processing_element");
     }
 
     if (SCP_RESULT_TRUE != scp_lib_resolve_system_identifier("order_role_relation", &order_role_relation))

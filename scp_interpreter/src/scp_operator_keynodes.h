@@ -84,8 +84,6 @@ extern scp_operand op_waitReturn;
 extern scp_operand op_waitReturnSet;
 extern scp_operand op_return;
 
-extern scp_operand op_sys_set_event_handler;
-extern scp_operand op_sys_delete_event_handler;
 extern scp_operand op_sys_wait;
 
 scp_result init_operator_keynodes();

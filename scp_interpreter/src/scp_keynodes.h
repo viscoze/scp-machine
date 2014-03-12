@@ -50,7 +50,7 @@ extern scp_operand useless_scp_process;
 extern scp_operand nrel_scp_process;
 extern scp_operand nrel_value;
 extern scp_operand nrel_authors;
-extern scp_operand nrel_init_program;
+//extern scp_operand nrel_init_program;
 extern scp_operand nrel_system_identifier;
 
 extern scp_operand active_scp_operator;
@@ -101,10 +101,6 @@ extern scp_operand sc_event_add_input_arc;
 extern scp_operand sc_event_remove_output_arc;
 extern scp_operand sc_event_remove_input_arc;
 extern scp_operand sc_event_change_link_content;
-
-extern scp_operand rrel_sc_event_type;
-extern scp_operand rrel_sc_event_procedure;
-extern scp_operand rrel_sc_event_processing_element;
 
 // Ordinals
 extern scp_operand order_role_relation;
