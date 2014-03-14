@@ -71,6 +71,7 @@ scp_result resolve_operands_modifiers(scp_operand *scp_operator_node, scp_operan
         operand_node.param_type = SCP_FIXED;
         rrel_number = 0;
         MAKE_DEFAULT_OPERAND_ASSIGN(operand);
+        operand.param_type = SCP_FIXED;
         it = scp_iterator3_new(&modifier, &arc2, &arc1);
         while (SCP_RESULT_TRUE == scp_iterator3_next(it, &modifier, &arc2, &arc1))
         {
@@ -121,6 +122,11 @@ scp_result resolve_operands_modifiers(scp_operand *scp_operator_node, scp_operan
             if (SCP_RESULT_TRUE == ifCoin(&modifier, &rrel_arc))
             {
                 operand.element_type = operand.element_type | scp_type_arc;
+                continue;
+            }
+            if (SCP_RESULT_TRUE == ifCoin(&modifier, &rrel_edge))
+            {
+                operand.element_type = operand.element_type | scp_type_edge_common;
                 continue;
             }
             if (SCP_RESULT_TRUE == ifCoin(&modifier, &rrel_temp))
