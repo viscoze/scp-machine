@@ -408,7 +408,7 @@ scp_result gen_system_structures(scp_operand *operator_set, scp_operand *paramet
     return SCP_RESULT_TRUE;
 }
 
-sc_result preprocess_scp_procedure(sc_event *event, sc_addr arg)
+sc_result preprocess_scp_procedure(const sc_event *event, sc_addr arg)
 {
     scp_operand arc1, arc2, arc3, scp_procedure_node, node1, question_node, scp_procedure_params, authors,
                 scp_procedure_consts, scp_procedure_copying_consts, scp_procedure_vars, scp_procedure_operators, scp_procedure_operators_copying_pattern;
@@ -424,7 +424,6 @@ sc_result preprocess_scp_procedure(sc_event *event, sc_addr arg)
         return SC_RESULT_ERROR;
     }
     searchElStr3(&node1, &arc1, &question_node);
-
     question_node.param_type = SCP_FIXED;
     if (SCP_RESULT_TRUE != searchElStr3(&question_scp_procedure_preprocessing_request, &arc2, &question_node))
     {
@@ -508,7 +507,7 @@ scp_result preprocess_all_scp_procedures()
 
 scp_result scp_procedure_preprocessor_init()
 {
-    event_procedure_preprocessing = sc_event_new(question_initiated.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, preprocess_scp_procedure, 0);
+    event_procedure_preprocessing = sc_event_new(question_initiated.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)preprocess_scp_procedure, 0);
     if (event_procedure_preprocessing == nullptr)
         return SCP_RESULT_ERROR;
     preprocess_all_scp_procedures();

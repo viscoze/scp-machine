@@ -83,7 +83,7 @@ void delete_vars_from_relation(scp_operand *set, GHashTable *non_erasable_vars)
     scp_iterator3_free(it0);
 }
 
-sc_result destroy_scp_process(sc_event *event, sc_addr arg)
+sc_result destroy_scp_process(const sc_event *event, sc_addr arg)
 {
     scp_operand arc1, arc2, node1, curr_operator, node3, scp_process_node, operator_type, question_node, call_parameters;
     scp_iterator3 *it;

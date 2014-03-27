@@ -105,7 +105,7 @@ scp_result resolve_sc_agent_event_type(scp_operand *event_type, sc_event_type *r
     return SCP_FALSE;
 }
 
-sc_result interpreter_agent_search_operators(sc_event *event, sc_addr arg)
+sc_result interpreter_agent_search_operators(const sc_event *event, sc_addr arg)
 {
     scp_operand input_arc, node1, operator_node, operator_type;
     scp_result res;
@@ -343,7 +343,7 @@ sc_result interpreter_agent_search_operators(sc_event *event, sc_addr arg)
     return SC_RESULT_ERROR;
 }
 
-sc_result interpreter_agent_gen_operators(sc_event *event, sc_addr arg)
+sc_result interpreter_agent_gen_operators(const sc_event *event, sc_addr arg)
 {
     scp_operand input_arc, node1, operator_node, operator_type;
     scp_result res;
@@ -454,7 +454,7 @@ sc_result interpreter_agent_gen_operators(sc_event *event, sc_addr arg)
     return SC_RESULT_ERROR;
 }
 
-sc_result interpreter_agent_erase_operators(sc_event *event, sc_addr arg)
+sc_result interpreter_agent_erase_operators(const sc_event *event, sc_addr arg)
 {
     scp_operand input_arc, node1, operator_node, operator_type;
     scp_result res;
@@ -617,7 +617,7 @@ sc_result interpreter_agent_erase_operators(sc_event *event, sc_addr arg)
     return SC_RESULT_ERROR;
 }
 
-sc_result interpreter_agent_content_arithmetic_operators(sc_event *event, sc_addr arg)
+sc_result interpreter_agent_content_arithmetic_operators(const sc_event *event, sc_addr arg)
 {
     scp_operand input_arc, node1, operator_node, operator_type;
     scp_result res;
@@ -795,7 +795,7 @@ sc_result interpreter_agent_content_arithmetic_operators(sc_event *event, sc_add
     return SC_RESULT_ERROR;
 }
 
-sc_result interpreter_agent_content_trig_operators(sc_event *event, sc_addr arg)
+sc_result interpreter_agent_content_trig_operators(const sc_event *event, sc_addr arg)
 {
     scp_operand input_arc, node1, operator_node, operator_type;
     scp_result res;
@@ -973,7 +973,7 @@ sc_result interpreter_agent_content_trig_operators(sc_event *event, sc_addr arg)
     return SC_RESULT_ERROR;
 }
 
-sc_result interpreter_agent_if_operators(sc_event *event, sc_addr arg)
+sc_result interpreter_agent_if_operators(const sc_event *event, sc_addr arg)
 {
     scp_operand input_arc, node1, operator_node, operator_type;
     scp_result res;
@@ -1319,7 +1319,7 @@ sc_result interpreter_agent_if_operators(sc_event *event, sc_addr arg)
     return SC_RESULT_ERROR;
 }
 
-sc_result interpreter_agent_other_operators(sc_event *event, sc_addr arg)
+sc_result interpreter_agent_other_operators(const sc_event *event, sc_addr arg)
 {
     scp_operand input_arc, node1, operator_node, operator_type;
     scp_result res;
@@ -1425,7 +1425,7 @@ sc_result interpreter_agent_other_operators(sc_event *event, sc_addr arg)
     return SC_RESULT_ERROR;
 }
 
-sc_result interpreter_agent_return_operator(sc_event *event, sc_addr arg)
+sc_result interpreter_agent_return_operator(const sc_event *event, sc_addr arg)
 {
     scp_operand input_arc, node1, operator_node, operator_type;
 
@@ -1475,7 +1475,7 @@ sc_result interpreter_agent_return_operator(sc_event *event, sc_addr arg)
     return SC_RESULT_ERROR;
 }
 
-sc_result interpreter_agent_call_operator(sc_event *event, sc_addr arg)
+sc_result interpreter_agent_call_operator(const sc_event *event, sc_addr arg)
 {
     scp_operand input_arc, node1, operator_node, operator_type;
 
@@ -1698,7 +1698,7 @@ sc_result interpreter_agent_call_operator(sc_event *event, sc_addr arg)
     return SC_RESULT_OK;
 }
 
-sc_result interpreter_agent_waitReturn_operators(sc_event *event, sc_addr arg)
+sc_result interpreter_agent_waitReturn_operators(const sc_event *event, sc_addr arg)
 {
     scp_operand input_arc, node1, operator_node, operator_type;
 
@@ -1811,7 +1811,7 @@ sc_result interpreter_agent_waitReturn_operators(sc_event *event, sc_addr arg)
     return SC_RESULT_ERROR;
 }
 
-sc_result scp_event_procedure_processor(sc_event *event, sc_addr arg)
+sc_result scp_event_procedure_processor(const sc_event *event, sc_addr arg)
 {
     scp_operand arc1, arc2, agent_scp_program, quest, params, second_param, node, input_arc;
     MAKE_DEFAULT_ARC_ASSIGN(arc1);
@@ -1833,7 +1833,7 @@ sc_result scp_event_procedure_processor(sc_event *event, sc_addr arg)
         return SC_RESULT_OK;
     }
     quest.param_type = SCP_ASSIGN;
-    agent_scp_program.addr = resolve_sc_addr_from_int(event->id);
+    agent_scp_program.addr = resolve_sc_addr_from_int(sc_event_get_id(event));
     agent_scp_program.param_type = SCP_FIXED;
 
     MAKE_DEFAULT_NODE_ASSIGN(quest);
@@ -1854,11 +1854,11 @@ sc_result scp_event_procedure_processor(sc_event *event, sc_addr arg)
     return SC_RESULT_OK;
 }
 
-sc_result sys_wait_processor(sc_event *event, sc_addr arg)
+sc_result sys_wait_processor(const sc_event *event, sc_addr arg)
 {
     scp_operand operator_node, arc;
     MAKE_DEFAULT_ARC_ASSIGN(arc);
-    operator_node.addr = resolve_sc_addr_from_int(event->id);
+    operator_node.addr = resolve_sc_addr_from_int(sc_event_get_id(event));
     if (SCP_RESULT_TRUE == searchElStr3(&active_scp_operator, &arc, &operator_node))
     {
         g_hash_table_remove(scp_wait_event_table, MAKE_HASH(operator_node));
@@ -1877,12 +1877,12 @@ scp_result create_sys_wait_event(scp_operand *operands, scp_operand *operator_no
         return print_error("Event processing", "Can't resolve event type");
     }
 
-    event = sc_event_new(operands[1].addr, type, SC_ADDR_LOCAL_TO_INT(operator_node->addr), sys_wait_processor, NULL);
+    event = sc_event_new(operands[1].addr, type, SC_ADDR_LOCAL_TO_INT(operator_node->addr), (fEventCallback)sys_wait_processor, NULL);
     g_hash_table_insert(scp_wait_event_table, MAKE_PHASH(operator_node), (gpointer)event);
     return SC_RESULT_OK;
 }
 
-sc_result interpreter_agent_event_operators(sc_event *event, sc_addr arg)
+sc_result interpreter_agent_event_operators(const sc_event *event, sc_addr arg)
 {
     scp_operand input_arc, node1, operator_node, operator_type;
 
@@ -1933,7 +1933,7 @@ sc_result interpreter_agent_event_operators(sc_event *event, sc_addr arg)
     return SC_RESULT_ERROR;
 }
 
-sc_result interpreter_agent_print_operators(sc_event *event, sc_addr arg)
+sc_result interpreter_agent_print_operators(const sc_event *event, sc_addr arg)
 {
     scp_operand input_arc, node1, operator_node, operator_type;
 
@@ -2764,7 +2764,7 @@ exit:
     return fun_result;
 }
 
-sc_result interpreter_agent_system_operators(sc_event *event, sc_addr arg)
+sc_result interpreter_agent_system_operators(const sc_event *event, sc_addr arg)
 {
     scp_operand input_arc, node1, operator_node, operator_type;
 
@@ -2813,7 +2813,7 @@ sc_result interpreter_agent_system_operators(sc_event *event, sc_addr arg)
     return SC_RESULT_ERROR;
 }
 
-sc_result interpreting_question_finished_successfully(sc_event *event, sc_addr arg)
+sc_result interpreting_question_finished_successfully(const sc_event *event, sc_addr arg)
 {
     scp_operand input_arc, node1, quest;
 
@@ -2937,7 +2937,7 @@ void destroy_sys_event_table_item(gpointer data)
 {
     sc_event *event = (sc_event *)data;
     scp_operand event_node;
-    event_node.addr = resolve_sc_addr_from_int(event->id);
+    event_node.addr = resolve_sc_addr_from_int(sc_event_get_id(event));
     event_node.erase = SCP_TRUE;
     eraseEl(&event_node);
     sc_event_destroy(event);
@@ -2976,7 +2976,7 @@ sc_result sc_agent_activator(sc_event *in_event, sc_addr arg)
     {
         if (SCP_TRUE != resolve_sc_agent_event_type(&event_type, &type))
             return SC_RESULT_OK;
-        event = sc_event_new(event_elem.addr, type, SC_ADDR_LOCAL_TO_INT(agent_program.addr), scp_event_procedure_processor, NULL);
+        event = sc_event_new(event_elem.addr, type, SC_ADDR_LOCAL_TO_INT(agent_program.addr), (fEventCallback)scp_event_procedure_processor, NULL);
         g_hash_table_insert(scp_event_table, MAKE_HASH(agent_program), (gpointer)event);
 
         printf("REGISTERING SCP AGENT PROGRAM: ");
@@ -3043,7 +3043,7 @@ scp_result init_all_scp_agents()
         {
             if (SCP_TRUE != resolve_sc_agent_event_type(&event_type, &type))
                 continue;
-            event = sc_event_new(event_elem.addr, type, SC_ADDR_LOCAL_TO_INT(agent_program.addr), scp_event_procedure_processor, NULL);
+            event = sc_event_new(event_elem.addr, type, SC_ADDR_LOCAL_TO_INT(agent_program.addr), (fEventCallback)scp_event_procedure_processor, NULL);
             g_hash_table_insert(scp_event_table, MAKE_HASH(agent_program), (gpointer)event);
 
             printf("REGISTERING SCP AGENT PROGRAM: ");
@@ -3061,54 +3061,54 @@ scp_result init_all_scp_agents()
 
 scp_result scp_operator_interpreter_agents_init()
 {
-    event_interpreting_finished_succesfully = sc_event_new(question_finished_successfully.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, interpreting_question_finished_successfully, 0);
+    event_interpreting_finished_succesfully = sc_event_new(question_finished_successfully.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)interpreting_question_finished_successfully, 0);
     if (event_interpreting_finished_succesfully == nullptr)
         return SCP_RESULT_ERROR;
 
-    event_search_operators_interpreter = sc_event_new(active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, interpreter_agent_search_operators, 0);
+    event_search_operators_interpreter = sc_event_new(active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)interpreter_agent_search_operators, 0);
     if (event_search_operators_interpreter == nullptr)
         return SCP_RESULT_ERROR;
-    event_gen_operators_interpreter = sc_event_new(active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, interpreter_agent_gen_operators, 0);
+    event_gen_operators_interpreter = sc_event_new(active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)interpreter_agent_gen_operators, 0);
     if (event_gen_operators_interpreter == nullptr)
         return SCP_RESULT_ERROR;
-    event_erase_operators_interpreter = sc_event_new(active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, interpreter_agent_erase_operators, 0);
+    event_erase_operators_interpreter = sc_event_new(active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)interpreter_agent_erase_operators, 0);
     if (event_erase_operators_interpreter == nullptr)
         return SCP_RESULT_ERROR;
-    event_content_arithmetic_operators_interpreter = sc_event_new(active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, interpreter_agent_content_arithmetic_operators, 0);
+    event_content_arithmetic_operators_interpreter = sc_event_new(active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)interpreter_agent_content_arithmetic_operators, 0);
     if (event_content_arithmetic_operators_interpreter == nullptr)
         return SCP_RESULT_ERROR;
-    event_content_trig_operators_interpreter = sc_event_new(active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, interpreter_agent_content_trig_operators, 0);
+    event_content_trig_operators_interpreter = sc_event_new(active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)interpreter_agent_content_trig_operators, 0);
     if (event_content_trig_operators_interpreter == nullptr)
         return SCP_RESULT_ERROR;
-    event_if_operators_interpreter = sc_event_new(active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, interpreter_agent_if_operators, 0);
+    event_if_operators_interpreter = sc_event_new(active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)interpreter_agent_if_operators, 0);
     if (event_if_operators_interpreter == nullptr)
         return SCP_RESULT_ERROR;
-    event_other_operators_interpreter = sc_event_new(active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, interpreter_agent_other_operators, 0);
+    event_other_operators_interpreter = sc_event_new(active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)interpreter_agent_other_operators, 0);
     if (event_other_operators_interpreter == nullptr)
         return SCP_RESULT_ERROR;
-    event_system_operators_interpreter = sc_event_new(active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, interpreter_agent_system_operators, 0);
+    event_system_operators_interpreter = sc_event_new(active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)interpreter_agent_system_operators, 0);
     if (event_system_operators_interpreter == nullptr)
         return SCP_RESULT_ERROR;
-    event_event_operators_interpreter = sc_event_new(active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, interpreter_agent_event_operators, 0);
+    event_event_operators_interpreter = sc_event_new(active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)interpreter_agent_event_operators, 0);
     if (event_event_operators_interpreter == nullptr)
         return SCP_RESULT_ERROR;
-    event_print_operators_interpreter = sc_event_new(active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, interpreter_agent_print_operators, 0);
+    event_print_operators_interpreter = sc_event_new(active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)interpreter_agent_print_operators, 0);
     if (event_print_operators_interpreter == nullptr)
         return SCP_RESULT_ERROR;
-    event_return_operator_interpreter = sc_event_new(active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, interpreter_agent_return_operator, 0);
+    event_return_operator_interpreter = sc_event_new(active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)interpreter_agent_return_operator, 0);
     if (event_return_operator_interpreter == nullptr)
         return SCP_RESULT_ERROR;
-    event_call_operator_interpreter = sc_event_new(active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, interpreter_agent_call_operator, 0);
+    event_call_operator_interpreter = sc_event_new(active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)interpreter_agent_call_operator, 0);
     if (event_call_operator_interpreter == nullptr)
         return SCP_RESULT_ERROR;
-    event_waitReturn_operators_interpreter = sc_event_new(active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, interpreter_agent_waitReturn_operators, 0);
+    event_waitReturn_operators_interpreter = sc_event_new(active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)interpreter_agent_waitReturn_operators, 0);
     if (event_waitReturn_operators_interpreter == nullptr)
         return SCP_RESULT_ERROR;
 
-    event_register_sc_agent = sc_event_new(active_sc_agent.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, sc_agent_activator, 0);
+    event_register_sc_agent = sc_event_new(active_sc_agent.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)sc_agent_activator, 0);
     if (event_register_sc_agent == nullptr)
         return SCP_RESULT_ERROR;
-    event_unregister_sc_agent = sc_event_new(active_sc_agent.addr, SC_EVENT_REMOVE_OUTPUT_ARC, 0, sc_agent_deactivator, 0);
+    event_unregister_sc_agent = sc_event_new(active_sc_agent.addr, SC_EVENT_REMOVE_OUTPUT_ARC, 0, (fEventCallback)sc_agent_deactivator, 0);
     if (event_unregister_sc_agent == nullptr)
         return SCP_RESULT_ERROR;
 

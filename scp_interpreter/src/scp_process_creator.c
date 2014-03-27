@@ -200,7 +200,7 @@ sc_addr gen_copy(sc_addr elem, GHashTable *copies_hash, GHashTable *pattern_hash
     }
 }
 
-sc_result create_scp_process(sc_event *event, sc_addr arg)
+sc_result create_scp_process(const sc_event *event, sc_addr arg)
 {
     scp_operand arc1, arc2, scp_procedure_node, vars_set, consts_set, params_set, copying_pattern,
                 scp_process_node, node1, question_node, call_parameters, init_operator;

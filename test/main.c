@@ -54,11 +54,11 @@ void create_process_test()
     sc_helper_resolve_system_identifier("active_sc_agent", &active_sc_agent);
     sc_helper_resolve_system_identifier("sc_agent_of_search_of_all_output_arcs_agent_scp", &agent);
 
-    sc_memory_arc_new(sc_type_arc_pos_const_perm, init, quest);
+    //sc_memory_arc_new(sc_type_arc_pos_const_perm, init, quest);
 
-    sc_addr arc = sc_memory_arc_new(sc_type_arc_pos_const_perm, active_sc_agent, agent);
+    //sc_addr arc = sc_memory_arc_new(sc_type_arc_pos_const_perm, active_sc_agent, agent);
 
-    sc_memory_arc_new(sc_type_arc_pos_const_perm, init, quest);
+    //sc_memory_arc_new(sc_type_arc_pos_const_perm, init, quest);
 
     /*sc_memory_element_free(arc);
 
@@ -76,21 +76,29 @@ void test_scp_process_creating(int value)
 
 int main(void)
 {
-    sc_memory_initialize((sc_char *)"repo", (sc_char *)"sctp_config.ini", SC_FALSE);
-    sc_helper_init();
-    sc_memory_initialize_ext("extensions");
-
     GTimer *timer = 0;
+    sc_memory_params params;
+    sc_memory_params_clear(&params);
+
+    params.clear = SC_FALSE;
+    params.repo_path = "repo";
+    params.config_file = "sctp_config.ini";
+    params.ext_path = "extensions";
+
+    sc_memory_initialize(&params);
+
     timer = g_timer_new();
     g_timer_start(timer);
 
-    test_scp_process_creating(1);
+    //test_scp_process_creating(1);
     //merge_test();
     //temp();
 
     g_timer_stop(timer);
     printf((sc_char *)"Time: %f s\n", g_timer_elapsed(timer, 0));
     g_timer_destroy(timer);
+
+    sc_memory_shutdown();
 
     return 0;
 }
