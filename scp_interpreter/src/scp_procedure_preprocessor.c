@@ -111,7 +111,10 @@ void append_all_relation_elements_to_hash_with_modifiers(GHashTable *table, scp_
                 {
                     if (SCP_RESULT_TRUE == searchElStr5(parameter_set, &arc1, &operand_element, &arc2, &rrel_in))
                     {
-                        eraseEl(&operand_element_modifier_arc);
+                        if (SCP_RESULT_TRUE == ifVarAssign(&modifier_arc))
+                        {
+                            eraseEl(&operand_element_modifier_arc);
+                        }
                         genElStr3(&rrel_scp_const, &arc1, &operand_element_arc);
 
                         arc1.param_type = SCP_FIXED;
@@ -185,7 +188,10 @@ void append_all_set_elements_to_hash_with_modifiers(GHashTable *table, scp_opera
             {
                 if (SCP_RESULT_TRUE == searchElStr5(parameter_set, &arc1, &curr_operand, &arc2, &rrel_in))
                 {
-                    eraseEl(&modifier_arc);
+                    if (SCP_RESULT_TRUE == ifVarAssign(&modifier_arc))
+                    {
+                        eraseEl(&modifier_arc);
+                    }
                     genElStr3(&rrel_scp_const, &arc1, &operand_arc);
 
                     arc1.param_type = SCP_FIXED;
@@ -345,7 +351,10 @@ scp_result gen_system_structures(scp_operand *operator_set, scp_operand *paramet
                 {
                     if (SCP_RESULT_TRUE == searchElStr5(parameter_set, &arc1, &curr_operand, &arc2, &rrel_in))
                     {
-                        eraseEl(&modifier_arc);
+                        if (SCP_RESULT_TRUE == ifVarAssign(&modifier_arc))
+                        {
+                            eraseEl(&modifier_arc);
+                        }
                         genElStr3(&rrel_scp_const, &arc1, &operand_arc);
 
                         arc1.param_type = SCP_FIXED;
@@ -425,6 +434,10 @@ sc_result preprocess_scp_procedure(const sc_event *event, sc_addr arg)
     }
     searchElStr3(&node1, &arc1, &question_node);
     question_node.param_type = SCP_FIXED;
+    if (SCP_RESULT_TRUE != ifVarAssign(&question_node))
+    {
+        return SC_RESULT_ERROR;
+    }
     if (SCP_RESULT_TRUE != searchElStr3(&question_scp_procedure_preprocessing_request, &arc2, &question_node))
     {
         return SC_RESULT_ERROR;
@@ -437,10 +450,15 @@ sc_result preprocess_scp_procedure(const sc_event *event, sc_addr arg)
     MAKE_DEFAULT_OPERAND_ASSIGN(scp_procedure_node);
     if (SCP_RESULT_TRUE != searchElStr3(&question_node, &arc1, &scp_procedure_node))
     {
-        print_error("scp-procedure preprocessing", "Can't find question parameter");
+        //print_error("scp-procedure preprocessing", "Can't find question parameter");
         return SC_RESULT_ERROR;
     }
     scp_procedure_node.param_type = SCP_FIXED;
+
+    if (SCP_RESULT_TRUE == searchElStr3(&prepared_scp_program, &arc1, &scp_procedure_node))
+    {
+        return SC_RESULT_OK;
+    }
 
     //Debug info
     printf("PREPROCESSING: ");
@@ -472,13 +490,14 @@ sc_result preprocess_scp_procedure(const sc_event *event, sc_addr arg)
         finish_question_successfully(&question_node);
         MAKE_DEFAULT_OPERAND_ASSIGN(authors);
         eraseSetStr5(&authors, &arc3, &question_node, &arc1, &nrel_authors);
+        genElStr3(&prepared_scp_program, &arc1, &scp_procedure_node);
         //printf("PREPROCESSING FINISHED\n");
-        return SC_RESULT_ERROR;
+        return SC_RESULT_OK;
     }
     else
     {
         finish_question_unsuccessfully(&question_node);
-        return SC_RESULT_OK;
+        return SC_RESULT_ERROR;
     }
 }
 

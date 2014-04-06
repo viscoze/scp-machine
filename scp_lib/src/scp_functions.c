@@ -49,8 +49,8 @@ scp_result scp_lib_init()
 
 scp_result scp_lib_shutdown()
 {
-    sc_memory_shutdown();
-    sc_helper_shutdown();
+    //sc_memory_shutdown();
+    //sc_helper_shutdown();
     return SCP_RESULT_TRUE;
 }
 

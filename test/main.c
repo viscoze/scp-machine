@@ -6,6 +6,7 @@
 #include <stdio.h>
 
 #include <glib.h>
+#include <unistd.h>
 
 /*void merge_test()
 {
@@ -54,7 +55,7 @@ void create_process_test()
     sc_helper_resolve_system_identifier("active_sc_agent", &active_sc_agent);
     sc_helper_resolve_system_identifier("sc_agent_of_search_of_all_output_arcs_agent_scp", &agent);
 
-    //sc_memory_arc_new(sc_type_arc_pos_const_perm, init, quest);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm, init, quest);
 
     //sc_addr arc = sc_memory_arc_new(sc_type_arc_pos_const_perm, active_sc_agent, agent);
 
@@ -90,7 +91,9 @@ int main(void)
     timer = g_timer_new();
     g_timer_start(timer);
 
-    //test_scp_process_creating(1);
+    sleep(1);
+
+    test_scp_process_creating(1);
     //merge_test();
     //temp();
 

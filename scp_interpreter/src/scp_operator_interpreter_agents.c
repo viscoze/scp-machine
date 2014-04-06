@@ -121,7 +121,7 @@ sc_result interpreter_agent_search_operators(const sc_event *event, sc_addr arg)
     }
     if (SCP_RESULT_TRUE != searchElStr3(&node1, &input_arc, &operator_node))
     {
-        print_error("scp-operator interpreting", "Can't find operator node");
+        //print_error("scp-operator interpreting", "Can't find operator node");
         return SC_RESULT_ERROR;
     }
     operator_node.param_type = SCP_FIXED;
@@ -359,7 +359,7 @@ sc_result interpreter_agent_gen_operators(const sc_event *event, sc_addr arg)
     }
     if (SCP_RESULT_TRUE != searchElStr3(&node1, &input_arc, &operator_node))
     {
-        print_error("scp-operator interpreting", "Can't find operator node");
+        //print_error("scp-operator interpreting", "Can't find operator node");
         return SC_RESULT_ERROR;
     }
     operator_node.param_type = SCP_FIXED;
@@ -470,7 +470,7 @@ sc_result interpreter_agent_erase_operators(const sc_event *event, sc_addr arg)
     }
     if (SCP_RESULT_TRUE != searchElStr3(&node1, &input_arc, &operator_node))
     {
-        print_error("scp-operator interpreting", "Can't find operator node");
+        //print_error("scp-operator interpreting", "Can't find operator node");
         return SC_RESULT_ERROR;
     }
     operator_node.param_type = SCP_FIXED;
@@ -633,7 +633,7 @@ sc_result interpreter_agent_content_arithmetic_operators(const sc_event *event, 
     }
     if (SCP_RESULT_TRUE != searchElStr3(&node1, &input_arc, &operator_node))
     {
-        print_error("scp-operator interpreting", "Can't find operator node");
+        //print_error("scp-operator interpreting", "Can't find operator node");
         return SC_RESULT_ERROR;
     }
     operator_node.param_type = SCP_FIXED;
@@ -811,7 +811,7 @@ sc_result interpreter_agent_content_trig_operators(const sc_event *event, sc_add
     }
     if (SCP_RESULT_TRUE != searchElStr3(&node1, &input_arc, &operator_node))
     {
-        print_error("scp-operator interpreting", "Can't find operator node");
+        //print_error("scp-operator interpreting", "Can't find operator node");
         return SC_RESULT_ERROR;
     }
     operator_node.param_type = SCP_FIXED;
@@ -989,7 +989,7 @@ sc_result interpreter_agent_if_operators(const sc_event *event, sc_addr arg)
     }
     if (SCP_RESULT_TRUE != searchElStr3(&node1, &input_arc, &operator_node))
     {
-        print_error("scp-operator interpreting", "Can't find operator node");
+        //print_error("scp-operator interpreting", "Can't find operator node");
         return SC_RESULT_ERROR;
     }
     operator_node.param_type = SCP_FIXED;
@@ -1335,7 +1335,7 @@ sc_result interpreter_agent_other_operators(const sc_event *event, sc_addr arg)
     }
     if (SCP_RESULT_TRUE != searchElStr3(&node1, &input_arc, &operator_node))
     {
-        print_error("scp-operator interpreting", "Can't find operator node");
+        //print_error("scp-operator interpreting", "Can't find operator node");
         return SC_RESULT_ERROR;
     }
     operator_node.param_type = SCP_FIXED;
@@ -1440,7 +1440,7 @@ sc_result interpreter_agent_return_operator(const sc_event *event, sc_addr arg)
     }
     if (SCP_RESULT_TRUE != searchElStr3(&node1, &input_arc, &operator_node))
     {
-        print_error("scp-operator interpreting", "Can't find operator node");
+        //print_error("scp-operator interpreting", "Can't find operator node");
         return SC_RESULT_ERROR;
     }
     operator_node.param_type = SCP_FIXED;
@@ -1490,7 +1490,7 @@ sc_result interpreter_agent_call_operator(const sc_event *event, sc_addr arg)
     }
     if (SCP_RESULT_TRUE != searchElStr3(&node1, &input_arc, &operator_node))
     {
-        print_error("scp-operator interpreting", "Can't find operator node");
+        //print_error("scp-operator interpreting", "Can't find operator node");
         return SC_RESULT_ERROR;
     }
     operator_node.param_type = SCP_FIXED;
@@ -1713,7 +1713,7 @@ sc_result interpreter_agent_waitReturn_operators(const sc_event *event, sc_addr 
     }
     if (SCP_RESULT_TRUE != searchElStr3(&node1, &input_arc, &operator_node))
     {
-        print_error("scp-operator interpreting", "Can't find operator node");
+        //print_error("scp-operator interpreting", "Can't find operator node");
         return SC_RESULT_ERROR;
     }
     operator_node.param_type = SCP_FIXED;
@@ -1731,8 +1731,10 @@ sc_result interpreter_agent_waitReturn_operators(const sc_event *event, sc_addr 
     if (SCP_RESULT_TRUE == ifCoin(&operator_type, &op_waitReturn))
     {
         scp_operand arc1, arc2, quest, descr_node, params, authors;
-        input_arc.erase = SCP_TRUE;
-        eraseEl(&input_arc);
+
+        //!TODO Fix
+        //input_arc.erase = SCP_TRUE;
+        //eraseEl(&input_arc);
         print_debug_info("waitReturn");
 
         MAKE_DEFAULT_ARC_ASSIGN(arc1);
@@ -1767,8 +1769,9 @@ sc_result interpreter_agent_waitReturn_operators(const sc_event *event, sc_addr 
     {
         scp_operand arc1, arc2, quest, descr_set, params, authors;
         scp_iterator3 *it;
-        input_arc.erase = SCP_TRUE;
-        eraseEl(&input_arc);
+        //!TODO Fix
+        //input_arc.erase = SCP_TRUE;
+        //eraseEl(&input_arc);
         print_debug_info("waitReturnSet");
 
         MAKE_DEFAULT_ARC_ASSIGN(arc1);
@@ -1826,7 +1829,10 @@ sc_result scp_event_procedure_processor(const sc_event *event, sc_addr arg)
     {
         return SC_RESULT_ERROR;
     }
-    searchElStr3(&node, &input_arc, &quest);
+    if (SCP_RESULT_TRUE != searchElStr3(&node, &input_arc, &quest))
+    {
+        return SC_RESULT_ERROR;
+    }
     quest.param_type = SCP_FIXED;
     if (SCP_RESULT_TRUE == check_scp_interpreter_question(&quest))
     {
@@ -1897,7 +1903,7 @@ sc_result interpreter_agent_event_operators(const sc_event *event, sc_addr arg)
     }
     if (SCP_RESULT_TRUE != searchElStr3(&node1, &input_arc, &operator_node))
     {
-        print_error("scp-operator interpreting", "Can't find operator node");
+        //print_error("scp-operator interpreting", "Can't find operator node");
         return SC_RESULT_ERROR;
     }
     operator_node.param_type = SCP_FIXED;
@@ -1948,8 +1954,7 @@ sc_result interpreter_agent_print_operators(const sc_event *event, sc_addr arg)
     }
     if (SCP_RESULT_TRUE != searchElStr3(&node1, &input_arc, &operator_node))
     {
-        print_error("scp-operator interpreting", "Can't find operator node");
-        operator_interpreting_crash(&operator_node);
+        //print_error("scp-operator interpreting", "Can't find operator node");
         return SC_RESULT_ERROR;
     }
     operator_node.param_type = SCP_FIXED;
@@ -2779,8 +2784,7 @@ sc_result interpreter_agent_system_operators(const sc_event *event, sc_addr arg)
     }
     if (SCP_RESULT_TRUE != searchElStr3(&node1, &input_arc, &operator_node))
     {
-        print_error("scp-operator interpreting", "Can't find operator node");
-        operator_interpreting_crash(&operator_node);
+        //print_error("scp-operator interpreting", "Can't find operator node");
         return SC_RESULT_ERROR;
     }
     operator_node.param_type = SCP_FIXED;
@@ -2826,7 +2830,10 @@ sc_result interpreting_question_finished_successfully(const sc_event *event, sc_
     {
         return SC_RESULT_ERROR;
     }
-    searchElStr3(&node1, &input_arc, &quest);
+    if (SCP_RESULT_TRUE != searchElStr3(&node1, &input_arc, &quest))
+    {
+        return SC_RESULT_ERROR;
+    }
     quest.param_type = SCP_FIXED;
     MAKE_DEFAULT_ARC_ASSIGN(input_arc);
     if (SCP_RESULT_TRUE != ifVarAssign(&quest))
@@ -2850,7 +2857,7 @@ sc_result interpreting_question_finished_successfully(const sc_event *event, sc_
             MAKE_DEFAULT_OPERAND_ASSIGN(operator_node);
             if (SCP_RESULT_TRUE == searchElStr5(&operator_node, &arc1, &descr_node, &arc2, &ordinal_rrels[1]))
             {
-                if (SCP_RESULT_TRUE == resolve_operator_type(&operator_node, &operator_type))
+                if (SCP_RESULT_TRUE != resolve_operator_type(&operator_node, &operator_type))
                 {
                     return SC_RESULT_ERROR;
                 }
@@ -2936,10 +2943,6 @@ sc_result interpreting_question_finished_successfully(const sc_event *event, sc_
 void destroy_sys_event_table_item(gpointer data)
 {
     sc_event *event = (sc_event *)data;
-    scp_operand event_node;
-    event_node.addr = resolve_sc_addr_from_int(sc_event_get_id(event));
-    event_node.erase = SCP_TRUE;
-    eraseEl(&event_node);
     sc_event_destroy(event);
 }
 
@@ -2992,7 +2995,7 @@ sc_result sc_agent_activator(sc_event *in_event, sc_addr arg)
 
 sc_result sc_agent_deactivator(sc_event *in_event, sc_addr arg)
 {
-    scp_operand scp_sc_agent, node1, input_arc, arc,arc3;
+    scp_operand scp_sc_agent, node1, input_arc, arc, arc3;
 
     //!TODO Solve deactivation problem
 

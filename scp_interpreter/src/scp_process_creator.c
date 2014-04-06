@@ -225,7 +225,7 @@ sc_result create_scp_process(const sc_event *event, sc_addr arg)
     }
     if (SCP_RESULT_TRUE != searchElStr3(&node1, &arc1, &question_node))
     {
-        print_error("scp-process creating", "Can't find interpreting request node");
+        //print_error("scp-process creating", "Can't find interpreting request node");
         return SC_RESULT_ERROR;
     }
 
