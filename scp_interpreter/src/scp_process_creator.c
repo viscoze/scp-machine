@@ -215,6 +215,7 @@ sc_result create_scp_process(const sc_event *event, sc_addr arg)
     MAKE_DEFAULT_OPERAND_ASSIGN(scp_procedure_node);
     MAKE_DEFAULT_OPERAND_FIXED(scp_process_node);
     arc1.addr = arg;
+    arc1.element_type = scp_type_arc_pos_const_perm;
 
     MAKE_DEFAULT_NODE_ASSIGN(node1);
     MAKE_DEFAULT_NODE_ASSIGN(question_node);
@@ -223,6 +224,11 @@ sc_result create_scp_process(const sc_event *event, sc_addr arg)
     {
         return SC_RESULT_ERROR;
     }
+    if (SCP_RESULT_TRUE != ifType(&arc1))
+    {
+        return SC_RESULT_OK;
+    }
+
     if (SCP_RESULT_TRUE != searchElStr3(&node1, &arc1, &question_node))
     {
         //print_error("scp-process creating", "Can't find interpreting request node");

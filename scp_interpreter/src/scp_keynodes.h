@@ -38,7 +38,6 @@ extern scp_operand nrel_inclusion;
 extern scp_operand nrel_primary_initiation_condition;
 
 extern scp_operand question_scp_interpretation_request;
-extern scp_operand question_scp_procedure_preprocessing_request;
 
 extern scp_operand question_initiated;
 extern scp_operand question_finished_successfully;
@@ -51,11 +50,17 @@ extern scp_operand useless_scp_process;
 extern scp_operand nrel_scp_process;
 extern scp_operand nrel_value;
 extern scp_operand nrel_authors;
-//extern scp_operand nrel_init_program;
 extern scp_operand nrel_system_identifier;
 
 extern scp_operand active_scp_operator;
 extern scp_operand active_sc_agent;
+
+//scp-program sets
+extern scp_operand formed_scp_program;
+extern scp_operand correct_scp_program;
+extern scp_operand incorrect_scp_program;
+extern scp_operand prepared_scp_program;
+
 // rrels
 extern scp_operand nrel_then;
 extern scp_operand nrel_else;

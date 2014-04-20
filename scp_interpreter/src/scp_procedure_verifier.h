@@ -20,23 +20,10 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-#include "scp_types.h"
+#ifndef scp_program_VERIFIER_H
+#define scp_program_VERIFIER_H
 
-scp_type scp_type_node = sc_type_node;
-scp_type scp_type_arc = sc_type_arc_mask;
-scp_type scp_type_link = sc_type_link;
-scp_type scp_type_edge_common = sc_type_edge_common;
-scp_type scp_type_arc_common = sc_type_arc_common;
-scp_type scp_type_arc_access = sc_type_arc_access;
+scp_result scp_program_verifier_shutdown();
+scp_result scp_program_verifier_init();
 
-scp_type scp_type_const = sc_type_const;
-scp_type scp_type_var = sc_type_var;
-
-scp_type scp_type_arc_pos = sc_type_arc_pos;
-scp_type scp_type_arc_neg = sc_type_arc_neg;
-scp_type scp_type_arc_fuz = sc_type_arc_fuz;
-
-scp_type scp_type_arc_temp = sc_type_arc_temp;
-scp_type scp_type_arc_perm = sc_type_arc_perm;
-
-scp_type scp_type_arc_pos_const_perm = sc_type_arc_pos_const_perm;
+#endif // scp_program_PREPROCESSOR_H

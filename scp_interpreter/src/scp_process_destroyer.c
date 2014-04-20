@@ -92,6 +92,11 @@ sc_result destroy_scp_process(const sc_event *event, sc_addr arg)
     MAKE_DEFAULT_OPERAND_FIXED(arc1);
     MAKE_DEFAULT_NODE_ASSIGN(scp_process_node);
     arc1.addr = arg;
+    arc1.element_type = scp_type_arc_pos_const_perm;
+    if (SCP_RESULT_TRUE != ifType(&arc1))
+    {
+        return SC_RESULT_OK;
+    }
 
     MAKE_DEFAULT_OPERAND_ASSIGN(node1);
     if (SCP_RESULT_TRUE != searchElStr3(&node1, &arc1, &scp_process_node))

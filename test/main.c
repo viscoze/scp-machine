@@ -270,6 +270,8 @@ int main(void)
     //merge_test();
     //temp();
 
+    //sleep(1);
+
     g_timer_stop(timer);
     printf((sc_char *)"Time: %f s\n", g_timer_elapsed(timer, 0));
     g_timer_destroy(timer);

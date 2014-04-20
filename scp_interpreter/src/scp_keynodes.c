@@ -38,10 +38,8 @@ scp_operand question_finished_successfully;
 scp_operand question_finished_unsuccessfully;
 
 scp_operand question_scp_interpretation_request;
-scp_operand question_scp_procedure_preprocessing_request;
 scp_operand scp_process;
 scp_operand abstract_scp_machine;
-scp_operand prepared_scp_program;
 scp_operand useless_scp_process;
 scp_operand nrel_scp_process;
 scp_operand nrel_value;
@@ -50,6 +48,12 @@ scp_operand nrel_system_identifier;
 
 scp_operand active_scp_operator;
 scp_operand active_sc_agent;
+
+//scp-program sets
+scp_operand formed_scp_program;
+scp_operand correct_scp_program;
+scp_operand incorrect_scp_program;
+scp_operand prepared_scp_program;
 
 // rrels
 
@@ -130,13 +134,15 @@ scp_result scp_keynodes_init()
     MAKE_DEFAULT_OPERAND_FIXED(nrel_inclusion);
 
     MAKE_DEFAULT_OPERAND_FIXED(question_scp_interpretation_request);
-    MAKE_DEFAULT_OPERAND_FIXED(question_scp_procedure_preprocessing_request);
     MAKE_DEFAULT_OPERAND_FIXED(question_initiated);
     MAKE_DEFAULT_OPERAND_FIXED(question_finished_successfully);
     MAKE_DEFAULT_OPERAND_FIXED(question_finished_unsuccessfully);
     MAKE_DEFAULT_OPERAND_FIXED(useless_scp_process);
     MAKE_DEFAULT_OPERAND_FIXED(scp_process);
     MAKE_DEFAULT_OPERAND_FIXED(abstract_scp_machine);
+    MAKE_DEFAULT_OPERAND_FIXED(formed_scp_program);
+    MAKE_DEFAULT_OPERAND_FIXED(correct_scp_program);
+    MAKE_DEFAULT_OPERAND_FIXED(incorrect_scp_program);
     MAKE_DEFAULT_OPERAND_FIXED(prepared_scp_program);
     MAKE_DEFAULT_OPERAND_FIXED(nrel_scp_process);
     MAKE_DEFAULT_OPERAND_FIXED(nrel_system_identifier);
@@ -196,6 +202,9 @@ scp_result scp_keynodes_init()
 
     resolve_keynode(scp_program.addr,"scp_program");
     resolve_keynode(abstract_scp_machine.addr,"abstract_scp_machine");
+    resolve_keynode(formed_scp_program.addr,"formed_scp_program");
+    resolve_keynode(correct_scp_program.addr,"correct_scp_program");
+    resolve_keynode(incorrect_scp_program.addr,"incorrect_scp_program");
     resolve_keynode(prepared_scp_program.addr,"prepared_scp_program");
     resolve_keynode(agent_scp_program.addr,"agent_scp_program");
     resolve_keynode(platform_independent_abstract_sc_agent.addr,"platform_independent_abstract_sc_agent");
@@ -204,7 +213,6 @@ scp_result scp_keynodes_init()
     resolve_keynode(nrel_primary_initiation_condition.addr,"nrel_primary_initiation_condition");
     resolve_keynode(nrel_inclusion.addr,"nrel_inclusion");
     resolve_keynode(question_scp_interpretation_request.addr,"question_scp_interpretation_request");
-    resolve_keynode(question_scp_procedure_preprocessing_request.addr,"question_scp_procedure_preprocessing_request");
     resolve_keynode(question_initiated.addr,"question_initiated");
     resolve_keynode(question_finished_successfully.addr,"question_finished_successfully");
     resolve_keynode(question_finished_unsuccessfully.addr,"question_finished_unsuccessfully");

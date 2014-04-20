@@ -246,8 +246,6 @@ void load_set_to_hash(scp_operand *set, GHashTable *table)
 void cantorize_set(scp_operand *set)
 {
     GHashTable *table;
-    //GHashTableIter iter;
-    //gpointer key, value;
     scp_operand elem, arc;
     MAKE_DEFAULT_ARC_ASSIGN(arc);
     arc.erase = SCP_TRUE;
@@ -268,16 +266,6 @@ void cantorize_set(scp_operand *set)
         }
     }
     scp_iterator3_free(it);
-    /*load_set_to_hash(set, table);
-    g_hash_table_iter_init(&iter, table);
-    arc1.erase = SCP_TRUE;
-    eraseSetStr3(set, &arc1, &elem);
-    elem.param_type = SCP_FIXED;
-    while (TRUE == g_hash_table_iter_next(&iter, &key, &value))
-    {
-        elem.addr = resolve_sc_addr_from_pointer(key);
-        genElStr3(set, &arc1, &elem);
-    }*/
     g_hash_table_destroy(table);
 }
 
