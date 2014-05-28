@@ -97,11 +97,11 @@ scp_result resolve_sc_agent_event_type(scp_operand *event_type, sc_event_type *r
         (*result) = SC_EVENT_REMOVE_INPUT_ARC;
         return SCP_TRUE;
     }
-    if (SCP_TRUE == ifCoin(event_type, &sc_event_change_link_content))
+    /*if (SCP_TRUE == ifCoin(event_type, &sc_event_change_link_content))
     {
         (*result) = SC_EVENT_CHANGE_LINK_CONTENT;
         return SCP_TRUE;
-    }
+    }*/
     return SCP_FALSE;
 }
 

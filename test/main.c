@@ -218,7 +218,7 @@ sc_result printIdtf(sc_addr element)
 
 void create_process_test()
 {
-    sc_addr quest, init, nrel_answer, active_sc_agent, agent;
+    sc_addr quest, init, nrel_answer, active_sc_agent, agent, p;
     scp_operand op;
 
     sc_helper_resolve_system_identifier("quest1", &quest);
@@ -248,6 +248,15 @@ void test_scp_process_creating(int value)
     }
 }
 
+/*void testcont(){
+    scp_operand p;
+    sc_addr prog;
+    sc_helper_resolve_system_identifier("prog1", &prog);
+
+    p.addr=prog;
+    run_scp_program(&p);
+}*/
+
 int main(void)
 {
     GTimer *timer = 0;
@@ -266,7 +275,7 @@ int main(void)
 
     sleep(1);
 
-    test_scp_process_creating(1);
+    //test_scp_process_creating(1);
     //merge_test();
     //temp();
 

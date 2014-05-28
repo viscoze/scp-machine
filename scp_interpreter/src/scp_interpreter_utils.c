@@ -104,11 +104,11 @@ scp_result resolve_scp_event_type(scp_operand *element, sc_event_type *type)
         *type = SC_EVENT_REMOVE_OUTPUT_ARC;
         return SCP_RESULT_TRUE;
     }
-    if (SCP_RESULT_TRUE == ifCoin(&sc_event_change_link_content, element))
+    /*if (SCP_RESULT_TRUE == ifCoin(&sc_event_change_link_content, element))
     {
         *type = SC_EVENT_CHANGE_LINK_CONTENT;
         return SCP_RESULT_TRUE;
-    }
+    }*/
     return SCP_RESULT_FALSE;
 }
 
