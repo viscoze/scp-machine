@@ -55,6 +55,11 @@ scp_operand correct_scp_program;
 scp_operand incorrect_scp_program;
 scp_operand prepared_scp_program;
 
+//scp-operator sets
+scp_operand executed_scp_operator;
+scp_operand successfully_executed_scp_operator;
+scp_operand unsuccessfully_executed_scp_operator;
+
 // rrels
 
 scp_operand nrel_then;
@@ -144,6 +149,9 @@ scp_result scp_keynodes_init()
     MAKE_DEFAULT_OPERAND_FIXED(correct_scp_program);
     MAKE_DEFAULT_OPERAND_FIXED(incorrect_scp_program);
     MAKE_DEFAULT_OPERAND_FIXED(prepared_scp_program);
+    MAKE_DEFAULT_OPERAND_FIXED(executed_scp_operator);
+    MAKE_DEFAULT_OPERAND_FIXED(successfully_executed_scp_operator);
+    MAKE_DEFAULT_OPERAND_FIXED(unsuccessfully_executed_scp_operator);
     MAKE_DEFAULT_OPERAND_FIXED(nrel_scp_process);
     MAKE_DEFAULT_OPERAND_FIXED(nrel_system_identifier);
     MAKE_DEFAULT_OPERAND_FIXED(nrel_value);
@@ -206,6 +214,9 @@ scp_result scp_keynodes_init()
     resolve_keynode(correct_scp_program.addr,"correct_scp_program");
     resolve_keynode(incorrect_scp_program.addr,"incorrect_scp_program");
     resolve_keynode(prepared_scp_program.addr,"prepared_scp_program");
+    resolve_keynode(executed_scp_operator.addr,"executed_scp_operator");
+    resolve_keynode(successfully_executed_scp_operator.addr,"successfully_executed_scp_operator");
+    resolve_keynode(unsuccessfully_executed_scp_operator.addr,"unsuccessfully_executed_scp_operator");
     resolve_keynode(agent_scp_program.addr,"agent_scp_program");
     resolve_keynode(platform_independent_abstract_sc_agent.addr,"platform_independent_abstract_sc_agent");
     resolve_keynode(abstract_sc_agent.addr,"abstract_sc_agent");

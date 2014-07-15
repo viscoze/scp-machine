@@ -207,6 +207,8 @@ sc_result create_scp_process(const sc_event *event, sc_addr arg)
     GHashTable *copies_hash, *pattern_hash;
     GHashTableIter iter;
     gpointer key, value;
+    scp_iterator5 *it;
+    sc_char init_flag = SC_TRUE;
     copies_hash = g_hash_table_new(NULL, NULL);
     pattern_hash = g_hash_table_new(NULL, NULL);
 
@@ -324,12 +326,17 @@ sc_result create_scp_process(const sc_event *event, sc_addr arg)
     //printf("PROCESS CREATED. INTERPRETING...\n");
 
     MAKE_DEFAULT_OPERAND_ASSIGN(init_operator);
-    if (SCP_RESULT_TRUE == searchElStr5(&scp_process_node, &arc1, &init_operator, &arc2, &rrel_init))
+    it = scp_iterator5_new(&scp_process_node, &arc1, &init_operator, &arc2, &rrel_init);
+    while (SCP_RESULT_TRUE == scp_iterator5_next(it, &scp_process_node, &arc1, &init_operator, &arc2, &rrel_init))
     {
+        init_flag = SC_FALSE;
         init_operator.param_type = SCP_FIXED;
         set_active_operator(&init_operator);
+        init_operator.param_type = SCP_ASSIGN;
     }
-    else
+    scp_iterator5_free(it);
+
+    if (SC_TRUE == init_flag)
     {
         print_error("scp-process interpreting", "Can't find init operator");
         mark_scp_process_as_useless(&scp_process_node);

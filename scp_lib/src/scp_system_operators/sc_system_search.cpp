@@ -464,6 +464,8 @@ sc_result system_sys_search_only_full(sc_addr pattern, sc_type_result params, sc
     sort_result_vector(search_result);
     remove_result_vector_short_results(search_result, var_count);
 
+    //print_result_set(search_result);
+
     return SC_RESULT_OK;
 }
 

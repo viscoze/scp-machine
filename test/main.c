@@ -225,8 +225,8 @@ void create_process_test()
     sc_helper_resolve_system_identifier("question_initiated", &init);
     sc_helper_resolve_system_identifier("nrel_answer", &nrel_answer);
 
-    sc_helper_resolve_system_identifier("active_sc_agent", &active_sc_agent);
-    sc_helper_resolve_system_identifier("sc_agent_of_search_of_all_output_arcs_agent_scp", &agent);
+    //sc_helper_resolve_system_identifier("active_sc_agent", &active_sc_agent);
+    //sc_helper_resolve_system_identifier("sc_agent_of_search_of_all_output_arcs_agent_scp", &agent);
 
     sc_memory_arc_new(sc_type_arc_pos_const_perm, init, quest);
 
@@ -248,14 +248,18 @@ void test_scp_process_creating(int value)
     }
 }
 
-/*void testcont(){
-    scp_operand p;
-    sc_addr prog;
-    sc_helper_resolve_system_identifier("prog1", &prog);
+void test_pattern(){
+    sc_addr pattern;
+    sc_helper_resolve_system_identifier("pattern1", &pattern);
 
-    p.addr=prog;
-    run_scp_program(&p);
-}*/
+    scp_operand p, result;
+    MAKE_DEFAULT_OPERAND_FIXED(p);
+    p.addr=pattern;
+
+    MAKE_DEFAULT_OPERAND_ASSIGN(result);
+
+    scp_sys_search(&p,&result,nullptr,0,nullptr,SCP_TRUE);
+}
 
 int main(void)
 {
@@ -275,11 +279,10 @@ int main(void)
 
     sleep(1);
 
+    create_process_test();
     //test_scp_process_creating(1);
     //merge_test();
     //temp();
-
-    //sleep(1);
 
     g_timer_stop(timer);
     printf((sc_char *)"Time: %f s\n", g_timer_elapsed(timer, 0));

@@ -666,43 +666,33 @@ scp_result register_scp_based_sc_agent(scp_operand *agent, scp_operand *program,
 }
 
 /* Goto */
-scp_result goto_conditional(scp_operand *scp_operator_node, scp_operand *rrel)
+scp_result goto_conditional_success(scp_operand *scp_operator_node)
 {
-    scp_operand arc1, arc2, next_operator;
-    MAKE_COMMON_ARC_ASSIGN(arc1);
-    MAKE_DEFAULT_ARC_ASSIGN(arc2);
-    MAKE_DEFAULT_NODE_ASSIGN(next_operator);
-    if (SCP_RESULT_TRUE == searchElStr5(scp_operator_node, &arc1, &next_operator, &arc2, rrel))
-    {
-        next_operator.param_type = SCP_FIXED;
-        set_active_operator(&next_operator);
-        return SCP_RESULT_TRUE;
-    }
-    else
-    {
-        return goto_unconditional(scp_operator_node);
-    }
+    scp_operand arc1;
+    MAKE_DEFAULT_ARC_ASSIGN(arc1);
+    genElStr3(&successfully_executed_scp_operator, &arc1, scp_operator_node);
+    return SCP_RESULT_TRUE;
+}
+
+scp_result goto_conditional_unsuccess(scp_operand *scp_operator_node)
+{
+    scp_operand arc1;
+    MAKE_DEFAULT_ARC_ASSIGN(arc1);
+    genElStr3(&unsuccessfully_executed_scp_operator, &arc1, scp_operator_node);
+    return SCP_RESULT_TRUE;
+}
+
+scp_result goto_conditional_error(scp_operand *scp_operator_node)
+{
+    //!TODO Add error processing
+    return SCP_RESULT_TRUE;
 }
 
 scp_result goto_unconditional(scp_operand *scp_operator_node)
 {
-    scp_operand arc1, arc2, next_operator;
-    MAKE_COMMON_ARC_ASSIGN(arc1);
-    MAKE_DEFAULT_ARC_ASSIGN(arc2);
-    MAKE_DEFAULT_NODE_ASSIGN(next_operator);
-    if (SCP_RESULT_TRUE == searchElStr5(scp_operator_node, &arc1, &next_operator, &arc2, &nrel_goto))
-    {
-        next_operator.param_type = SCP_FIXED;
-        set_active_operator(&next_operator);
-        return SCP_RESULT_TRUE;
-    }
-    else
-    {
-        printEl(scp_operator_node);
-        print_error("scp-operator interpreting", "Can't find next operator for given");
-        operator_interpreting_crash(scp_operator_node);
-        return SCP_RESULT_ERROR;
-    }
+    scp_operand arc1;
+    MAKE_DEFAULT_ARC_ASSIGN(arc1);
+    genElStr3(&executed_scp_operator, &arc1, scp_operator_node);
 }
 
 void operator_interpreting_crash(scp_operand *operator_node)

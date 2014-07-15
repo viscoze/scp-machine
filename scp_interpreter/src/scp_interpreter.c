@@ -41,6 +41,7 @@ sc_result initialize()
         SCP_RESULT_TRUE == scp_operator_interpreter_agents_init() &&
         SCP_RESULT_TRUE == scp_procedure_preprocessor_init() &&
         SCP_RESULT_TRUE == scp_program_verifier_init() &&
+        SCP_RESULT_TRUE == scp_operator_syncronizer_init() &&
         SCP_RESULT_TRUE == scp_process_creator_init())
         return SCP_RESULT_TRUE;
     else
@@ -54,6 +55,7 @@ sc_result shutdown()
         SCP_RESULT_TRUE == scp_operator_interpreter_agents_shutdown() &&
         SCP_RESULT_TRUE == scp_procedure_preprocessor_shutdown() &&
         SCP_RESULT_TRUE == scp_program_verifier_shutdown() &&
+        SCP_RESULT_TRUE == scp_operator_syncronizer_shutdown() &&
         SCP_RESULT_TRUE == scp_process_creator_shutdown())
         return SCP_RESULT_TRUE;
     else

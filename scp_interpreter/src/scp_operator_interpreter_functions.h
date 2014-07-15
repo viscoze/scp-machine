@@ -38,7 +38,9 @@ scp_result set_set_operands_values(scp_operand *operands, scp_operand *operands_
 scp_result register_scp_based_sc_agent(scp_operand *agent, scp_operand *program, scp_operand *event_type, scp_operand *event_elem);
 scp_result unregister_scp_based_sc_agent(GHashTable *table, scp_operand *agent);
 
-scp_result goto_conditional(scp_operand *scp_operator_node, scp_operand *rrel);
+scp_result goto_conditional_success(scp_operand *scp_operator_node);
+scp_result goto_conditional_unsuccess(scp_operand *scp_operator_node);
+scp_result goto_conditional_error(scp_operand *scp_operator_node);
 scp_result goto_unconditional(scp_operand *scp_operator_node);
 scp_uint32 check_ordinal_rrel(scp_operand *node, scp_uint32 count);
 void set_active_operator(scp_operand *scp_operator_node);

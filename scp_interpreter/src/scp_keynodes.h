@@ -61,6 +61,11 @@ extern scp_operand correct_scp_program;
 extern scp_operand incorrect_scp_program;
 extern scp_operand prepared_scp_program;
 
+//scp-operator sets
+extern scp_operand executed_scp_operator;
+extern scp_operand successfully_executed_scp_operator;
+extern scp_operand unsuccessfully_executed_scp_operator;
+
 // rrels
 extern scp_operand nrel_then;
 extern scp_operand nrel_else;

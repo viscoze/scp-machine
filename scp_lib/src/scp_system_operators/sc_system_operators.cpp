@@ -61,10 +61,10 @@ void print_result(sc_type_result table)
 void print_result_set(sc_type_result_vector *table)
 {
     printf("RESULT COUNT:%d\n", table->size());
-    /*for (sc_uint i = 0; i < table->size(); i++)
+    for (sc_uint i = 0; i < table->size(); i++)
     {
         print_result(*((*table)[i]));
-    }*/
+    }
 }
 
 sc_bool copy_set_into_hash(sc_addr set, sc_type arc_type, sc_type end_type, sc_type_hash *table, sc_uint *var_count)
