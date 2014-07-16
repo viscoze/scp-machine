@@ -86,6 +86,8 @@ extern scp_operand op_return;
 
 extern scp_operand op_sys_wait;
 
+extern scp_operand op_syncronize;
+
 scp_result init_operator_keynodes();
 
 #endif // SCP_OPERATOR_KEYNODES_H

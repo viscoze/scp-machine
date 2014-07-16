@@ -83,6 +83,8 @@ scp_operand op_return;
 
 scp_operand op_sys_wait;
 
+scp_operand op_syncronize;
+
 #define resolve_keynode(keynode, keynode_str) \
     if (sc_helper_resolve_system_identifier(keynode_str, &(keynode)) == SC_FALSE) \
     {\
@@ -139,6 +141,7 @@ scp_result init_operator_keynodes()
     MAKE_DEFAULT_OPERAND_FIXED(op_waitReturnSet);
     MAKE_DEFAULT_OPERAND_FIXED(op_return);
     MAKE_DEFAULT_OPERAND_FIXED(op_sys_wait);
+    MAKE_DEFAULT_OPERAND_FIXED(op_syncronize);
     resolve_keynode(scp_operator_atomic_type.addr,"scp_operator_atomic_type");
     resolve_keynode(op_searchElStr3.addr,"searchElStr3");
     resolve_keynode(op_searchElStr5.addr,"searchElStr5");
@@ -183,6 +186,7 @@ scp_result init_operator_keynodes()
     resolve_keynode(op_waitReturnSet.addr,"waitReturnSet");
     resolve_keynode(op_return.addr,"return");
     resolve_keynode(op_sys_wait.addr,"sys_wait");
+    resolve_keynode(op_syncronize.addr,"syncronize");
 
     return SCP_RESULT_TRUE;
 }

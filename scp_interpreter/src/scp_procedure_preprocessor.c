@@ -274,7 +274,15 @@ scp_result gen_system_structures(scp_operand *operator_set, scp_operand *paramet
             {
                 append_to_hash(table, &arc1);
                 operator_type.param_type = SCP_ASSIGN;
-                break;
+                continue;
+            }
+
+            if (SCP_RESULT_TRUE == ifCoin(&scp_operator_executable_after_all_previous, &operator_type)
+                || SCP_RESULT_TRUE == ifCoin(&scp_operator_executable_after_one_of_previous, &operator_type))
+            {
+                append_to_hash(table, &arc1);
+                operator_type.param_type = SCP_ASSIGN;
+                continue;
             }
 
             operator_type.param_type = SCP_ASSIGN;

@@ -44,6 +44,7 @@ sc_event *event_other_operators_interpreter;
 sc_event *event_system_operators_interpreter;
 sc_event *event_event_operators_interpreter;
 sc_event *event_waitReturn_operators_interpreter;
+sc_event *event_syncronize_operators_interpreter;
 
 sc_event *event_register_sc_agent;
 sc_event *event_unregister_sc_agent;
@@ -2899,6 +2900,53 @@ sc_result interpreter_agent_system_operators(const sc_event *event, sc_addr arg)
     return SC_RESULT_ERROR;
 }
 
+sc_result interpreter_agent_syncronize_operators(const sc_event *event, sc_addr arg)
+{
+    scp_operand input_arc, node1, operator_node, operator_type;
+
+    MAKE_DEFAULT_OPERAND_FIXED(input_arc);
+    input_arc.addr = arg;
+    input_arc.element_type = scp_type_arc_pos_const_perm;
+
+    MAKE_DEFAULT_NODE_ASSIGN(node1);
+    MAKE_DEFAULT_NODE_ASSIGN(operator_node);
+    if (SCP_RESULT_TRUE != ifVarAssign(&input_arc))
+    {
+        return SC_RESULT_ERROR;
+    }
+    if (SCP_RESULT_TRUE != ifType(&input_arc))
+    {
+        return SC_RESULT_OK;
+    }
+
+    if (SCP_RESULT_TRUE != searchElStr3(&node1, &input_arc, &operator_node))
+    {
+        //print_error("scp-operator interpreting", "Can't find operator node");
+        return SC_RESULT_ERROR;
+    }
+    operator_node.param_type = SCP_FIXED;
+
+    MAKE_DEFAULT_NODE_ASSIGN(operator_type);
+    if (SCP_RESULT_TRUE != resolve_operator_type(&operator_node, &operator_type))
+    {
+        printEl(&operator_node);
+        print_error("scp-operator interpreting", "Can't resolve operator type");
+        return SC_RESULT_ERROR;
+    }
+
+    //syncronize case
+    if (SCP_RESULT_TRUE == ifCoin(&operator_type, &op_syncronize))
+    {
+        input_arc.erase = SCP_TRUE;
+        eraseEl(&input_arc);
+        print_debug_info("syncronize");
+        goto_unconditional(&operator_node);
+    }
+
+    return SC_RESULT_ERROR;
+}
+
+
 sc_result interpreting_question_finished_successfully(const sc_event *event, sc_addr arg)
 {
     scp_operand input_arc, node1, quest;
@@ -3202,7 +3250,9 @@ scp_result scp_operator_interpreter_agents_init()
     event_waitReturn_operators_interpreter = sc_event_new(active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)interpreter_agent_waitReturn_operators, 0);
     if (event_waitReturn_operators_interpreter == nullptr)
         return SCP_RESULT_ERROR;
-
+    event_syncronize_operators_interpreter = sc_event_new(active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)interpreter_agent_syncronize_operators, 0);
+    if (event_syncronize_operators_interpreter == nullptr)
+        return SCP_RESULT_ERROR;
     event_register_sc_agent = sc_event_new(active_sc_agent.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)sc_agent_activator, 0);
     if (event_register_sc_agent == nullptr)
         return SCP_RESULT_ERROR;
@@ -3235,6 +3285,7 @@ scp_result scp_operator_interpreter_agents_shutdown()
     sc_event_destroy(event_event_operators_interpreter);
     sc_event_destroy(event_call_operator_interpreter);
     sc_event_destroy(event_waitReturn_operators_interpreter);
+    sc_event_destroy(event_syncronize_operators_interpreter);
     sc_event_destroy(event_register_sc_agent);
     sc_event_destroy(event_unregister_sc_agent);
 

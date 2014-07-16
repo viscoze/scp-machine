@@ -132,6 +132,11 @@ scp_result start_next_operator(scp_operand *scp_operator, scp_operand *curr_arc)
     MAKE_DEFAULT_ARC_ASSIGN(arc2);
     MAKE_COMMON_ARC_ASSIGN(arc3);
     MAKE_DEFAULT_NODE_ASSIGN(prev_operator);
+    if (SCP_RESULT_TRUE != searchElStr3(&scp_operator_executable_after_all_previous, &arc1, scp_operator))
+    {
+        genElStr3(&active_scp_operator, &arc1, scp_operator);
+        return SCP_RESULT_TRUE;
+    }
     it = scp_iterator3_new(&prev_operator, &arc3, scp_operator);
     while (SCP_RESULT_TRUE == scp_iterator3_next(it, &prev_operator, &arc3, scp_operator))
     {
