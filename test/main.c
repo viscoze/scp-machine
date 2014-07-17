@@ -274,13 +274,12 @@ int main(void)
 
     sc_memory_initialize(&params);
 
+    sleep(1);
+
     timer = g_timer_new();
     g_timer_start(timer);
 
-    sleep(1);
-
     create_process_test();
-    //test_scp_process_creating(1);
     //merge_test();
     //temp();
 

@@ -34,6 +34,33 @@ sc_event *event_operator_syncronizer_else;
 
 scp_result start_next_operator(scp_operand *scp_operator, scp_operand *curr_arc);
 
+scp_result erase_executed_mark(scp_operand *scp_operator)
+{
+    scp_operand arc1, arc2, arc3, execute_result;
+    scp_iterator3 *it;
+    MAKE_DEFAULT_ARC_ASSIGN(arc1);
+    MAKE_DEFAULT_ARC_ASSIGN(arc2);
+    MAKE_DEFAULT_OPERAND_ASSIGN(execute_result);
+    it = scp_iterator3_new(&execute_result, &arc1, scp_operator);
+    while (SCP_RESULT_TRUE == scp_iterator3_next(it, &execute_result, &arc1, scp_operator))
+    {
+        execute_result.param_type = SCP_FIXED;
+        if (SCP_RESULT_TRUE == ifCoin(&execute_result, &executed_scp_operator)
+            || SCP_RESULT_TRUE == ifCoin(&execute_result, &successfully_executed_scp_operator)
+            || SCP_RESULT_TRUE == ifCoin(&execute_result, &unsuccessfully_executed_scp_operator))
+        {
+            arc1.param_type = SCP_FIXED;
+            arc1.erase = SCP_TRUE;
+            eraseEl(&arc1);
+            scp_iterator3_free(it);
+            return SCP_RESULT_TRUE;
+        }
+        execute_result.param_type = SCP_ASSIGN;
+    }
+    scp_iterator3_free(it);
+    return SCP_RESULT_FALSE;
+}
+
 sc_result syncronize_scp_operator(const sc_event *event, sc_addr arg)
 {
     scp_operand arc1, arc2, arc3, execute_result, operator_node, next_operator_node;
@@ -134,6 +161,7 @@ scp_result start_next_operator(scp_operand *scp_operator, scp_operand *curr_arc)
     MAKE_DEFAULT_NODE_ASSIGN(prev_operator);
     if (SCP_RESULT_TRUE != searchElStr3(&scp_operator_executable_after_all_previous, &arc1, scp_operator))
     {
+        erase_executed_mark(scp_operator);
         genElStr3(&active_scp_operator, &arc1, scp_operator);
         return SCP_RESULT_TRUE;
     }
@@ -228,6 +256,7 @@ scp_result start_next_operator(scp_operand *scp_operator, scp_operand *curr_arc)
     }
     scp_iterator3_free(it);
 
+    erase_executed_mark(scp_operator);
     genElStr3(&active_scp_operator, &arc1, scp_operator);
     return SCP_RESULT_TRUE;
 }
