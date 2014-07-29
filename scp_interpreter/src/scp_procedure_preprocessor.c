@@ -229,7 +229,7 @@ void append_all_set_elements_to_hash_with_modifiers(GHashTable *table, scp_opera
 
 scp_result gen_system_structures(scp_operand *operator_set, scp_operand *parameter_set, scp_operand *vars_set, scp_operand *const_set, scp_operand *copying_consts_set, scp_operand *operators_copying_pattern)
 {
-    scp_operand arc1, arc2, curr_operator, operator_arc, operator_type, curr_operand, operand_arc, modifier, modifier_arc,
+    scp_operand arc1, arc2, curr_operator, operator_arc, operator_type, operator_input, curr_operand, operand_arc, modifier, modifier_arc,
                 operand_arc_pattern;
     scp_iterator3 *it, *it1, *it2;
     GHashTable *table = g_hash_table_new(NULL, NULL);
@@ -245,6 +245,7 @@ scp_result gen_system_structures(scp_operand *operator_set, scp_operand *paramet
     MAKE_DEFAULT_OPERAND_ASSIGN(curr_operand);
     MAKE_DEFAULT_OPERAND_ASSIGN(operator_arc);
     MAKE_DEFAULT_OPERAND_ASSIGN(operator_type);
+    MAKE_DEFAULT_OPERAND_ASSIGN(operator_input);
     MAKE_DEFAULT_OPERAND_ASSIGN(modifier);
     MAKE_DEFAULT_OPERAND_FIXED(operand_arc_pattern);
     operand_arc_pattern.element_type = scp_type_arc_common | scp_type_const;
@@ -265,27 +266,29 @@ scp_result gen_system_structures(scp_operand *operator_set, scp_operand *paramet
 
         // Operator type loop
         operator_type.param_type = SCP_ASSIGN;
-        it1 = scp_iterator3_new(&operator_type, &arc1, &curr_operator);
-        while (SCP_RESULT_TRUE == scp_iterator3_next(it1, &operator_type, &arc1, &curr_operator))
+        operator_input.param_type = SCP_ASSIGN;
+        it1 = scp_iterator3_new(&operator_input, &arc1, &curr_operator);
+        while (SCP_RESULT_TRUE == scp_iterator3_next(it1, &operator_input, &arc1, &curr_operator))
         {
-            operator_type.param_type = SCP_FIXED;
+            operator_input.param_type = SCP_FIXED;
 
-            if (SCP_RESULT_TRUE == searchElStr3(&scp_operator_atomic_type, &arc2, &operator_type))
+            if (SCP_RESULT_TRUE == searchElStr3(&scp_operator_atomic_type, &arc2, &operator_input))
             {
                 append_to_hash(table, &arc1);
-                operator_type.param_type = SCP_ASSIGN;
+                operator_type.addr = operator_input.addr;
+                operator_input.param_type = SCP_ASSIGN;
                 continue;
             }
 
-            if (SCP_RESULT_TRUE == ifCoin(&scp_operator_executable_after_all_previous, &operator_type)
-                || SCP_RESULT_TRUE == ifCoin(&scp_operator_executable_after_one_of_previous, &operator_type))
+            if (SCP_RESULT_TRUE == ifCoin(&scp_operator_executable_after_all_previous, &operator_input)
+                || SCP_RESULT_TRUE == ifCoin(&scp_operator_executable_after_one_of_previous, &operator_input))
             {
                 append_to_hash(table, &arc1);
-                operator_type.param_type = SCP_ASSIGN;
+                operator_input.param_type = SCP_ASSIGN;
                 continue;
             }
 
-            operator_type.param_type = SCP_ASSIGN;
+            operator_input.param_type = SCP_ASSIGN;
         }
         scp_iterator3_free(it1);
         operator_type.param_type = SCP_FIXED;
@@ -334,10 +337,16 @@ scp_result gen_system_structures(scp_operand *operator_set, scp_operand *paramet
                         || SCP_TRUE == ifCoin(&nrel_error, &modifier))
                     {
                         append_to_hash(table, &modifier_arc);
+                        modifier_arc.param_type = SCP_ASSIGN;
+                        modifier.param_type = SCP_ASSIGN;
+                        break;
                     }
-                    modifier_arc.param_type = SCP_ASSIGN;
-                    modifier.param_type = SCP_ASSIGN;
-                    break;
+                    else
+                    {
+                        modifier_arc.param_type = SCP_ASSIGN;
+                        modifier.param_type = SCP_ASSIGN;
+                        continue;
+                    }
                 }
 
                 if (SCP_RESULT_TRUE == ifCoin(&operator_type, &op_call)
@@ -379,6 +388,7 @@ scp_result gen_system_structures(scp_operand *operator_set, scp_operand *paramet
                 }
                 else
                 {
+                    //!TODO Check unnesseccary arcs
                     append_to_hash(table, &modifier_arc);
                     // Constant case
                     if (SCP_RESULT_TRUE == ifCoin(&rrel_scp_const, &modifier))
@@ -391,6 +401,13 @@ scp_result gen_system_structures(scp_operand *operator_set, scp_operand *paramet
                 modifier.param_type = SCP_ASSIGN;
             }
             scp_iterator3_free(it2);
+
+            if (SCP_TRUE == order_rel)
+            {
+                operand_arc.param_type = SCP_ASSIGN;
+                curr_operand.param_type = SCP_ASSIGN;
+                continue;
+            }
 
             if (is_const == SCP_TRUE)
             {
@@ -418,6 +435,7 @@ scp_result gen_system_structures(scp_operand *operator_set, scp_operand *paramet
     cantorize_set(copying_consts_set);
     cantorize_set(vars_set);
     //printEl(copying_consts_set);
+    //printEl(vars_set);
     //printEl(const_set);
     //printf("SIZE: %d\n", g_hash_table_size(table));
     gen_set_from_hash(table, operators_copying_pattern);

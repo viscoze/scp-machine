@@ -1411,6 +1411,7 @@ sc_result interpreter_agent_other_operators(const sc_event *event, sc_addr arg)
         res = varAssign(operand_values, operand_values + 1);
         if (res == SCP_RESULT_TRUE)
         {
+            set_operands_values(operands, operand_values, 2);
             goto_unconditional(&operator_node);
         }
         return SC_RESULT_OK;
@@ -1435,6 +1436,7 @@ sc_result interpreter_agent_other_operators(const sc_event *event, sc_addr arg)
         res = contAssign(operand_values, operand_values + 1);
         if (res == SCP_RESULT_TRUE)
         {
+            set_operands_values(operands, operand_values, 2);
             goto_unconditional(&operator_node);
         }
         return SC_RESULT_OK;
