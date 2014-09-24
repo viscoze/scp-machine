@@ -56,10 +56,9 @@ scp_bool debug_mode = SCP_TRUE;
 
 void print_debug_info(const char *info)
 {
-    if (debug_mode == SCP_TRUE)
-    {
+#ifdef DEBUG
         printf(">>%s\n", info);
-    }
+#endif
 }
 
 void print_call_debug_info(scp_operand *proc)

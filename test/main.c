@@ -221,7 +221,7 @@ void create_process_test()
     sc_addr quest, init, nrel_answer, active_sc_agent, agent, p;
     scp_operand op;
 
-    sc_helper_resolve_system_identifier("quest1", &quest);
+    sc_helper_resolve_system_identifier("quest11", &quest);
     sc_helper_resolve_system_identifier("question_initiated", &init);
     sc_helper_resolve_system_identifier("nrel_answer", &nrel_answer);
 
@@ -280,8 +280,6 @@ int main(void)
     g_timer_start(timer);
 
     create_process_test();
-    //merge_test();
-    //temp();
 
     g_timer_stop(timer);
     printf((sc_char *)"Time: %f s\n", g_timer_elapsed(timer, 0));

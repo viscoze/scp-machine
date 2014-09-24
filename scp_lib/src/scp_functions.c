@@ -1016,6 +1016,7 @@ scp_result ifFormCont(scp_operand *param)
     sc_result res = sc_memory_get_link_content(param->addr, &stream);
     if (res == SC_RESULT_OK)
     {
+        sc_stream_free(stream);
         return SCP_RESULT_TRUE;
     }
     else
@@ -1028,6 +1029,8 @@ scp_result ifFormCont(scp_operand *param)
 scp_result contAssign(scp_operand *param1, scp_operand *param2)
 {
     sc_stream *stream;
+    sc_char *data;
+    sc_uint32 length, read_length;
     if (SCP_ASSIGN == param2->param_type)
     {
         return print_error("contAssign", "Parameter 2 must have FIXED modifier");
@@ -1048,6 +1051,12 @@ scp_result contAssign(scp_operand *param1, scp_operand *param2)
     {
         return SCP_RESULT_ERROR;
     }
+    sc_stream_get_length(stream, &length);
+    data = calloc(length, sizeof(sc_char));
+    sc_stream_read_data(stream, data, length, &read_length);
+    sc_stream_free(stream);
+
+    sc_stream_memory_new(data, length, SC_STREAM_READ, SC_FALSE);
     sc_memory_set_link_content(param1->addr, stream);
     sc_stream_free(stream);
     return SCP_RESULT_TRUE;
