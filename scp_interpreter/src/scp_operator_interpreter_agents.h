@@ -20,12 +20,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-#if defined( _DEBUG ) || defined( DEBUG ) || defined (__DEBUG__)
-#   ifndef DEBUG
-#       define DEBUG
-#   endif
-#endif
-
 #ifndef SCP_OPERATOR_INTERPRETOR_AGENTS_H
 #define SCP_OPERATOR_INTERPRETOR_AGENTS_H
 

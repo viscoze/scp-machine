@@ -221,7 +221,7 @@ scp_result resolve_operands_modifiers_with_set(scp_operand *scp_operator_node, s
     MAKE_DEFAULT_NODE_ASSIGN(modifier);
     for (set_number = 0; set_number < count; set_number++)
     {
-        sets[set_number].set = SC_FALSE;
+        sets[set_number].set = SCP_FALSE;
     }
     set_number = 0;
     scp_operator_node->param_type = SCP_FIXED;
@@ -250,7 +250,7 @@ scp_result resolve_operands_modifiers_with_set(scp_operand *scp_operator_node, s
                 set_number = check_ordinal_set_rrel(&modifier, count);
                 if (set_number > 0)
                 {
-                    operand.set = SC_TRUE;
+                    operand.set = SCP_TRUE;
                     continue;
                 }
             }
@@ -501,7 +501,10 @@ scp_result get_set_operands_values(scp_operand *operands, scp_operand *operands_
     for (i = 0; i < count; i++)
     {
         if (operands[i].set != SCP_TRUE)
+        {
+            operands_values[i].set = SCP_FALSE;
             continue;
+        }
         operands_values[i] = operands[i];
         operand_node.addr = operands[i].addr;
         if (operands[i].param_type == SCP_FIXED)

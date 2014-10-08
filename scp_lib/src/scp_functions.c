@@ -407,6 +407,7 @@ scp_result searchSetStr5(scp_operand *param1, scp_operand *param2, scp_operand *
     {
         return print_error("searchSetStr5", "Parameter 4 must have ASSIGN modifier");
     }
+
     if (param1->param_type == SCP_FIXED)
     {
         if (SCP_TRUE == sets[0].set)

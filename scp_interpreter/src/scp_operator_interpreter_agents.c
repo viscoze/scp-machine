@@ -52,27 +52,24 @@ sc_event *event_unregister_sc_agent;
 GHashTable *scp_event_table;
 GHashTable *scp_wait_event_table;
 
-scp_bool debug_mode = SCP_TRUE;
-
 void print_debug_info(const char *info)
 {
-#ifdef DEBUG
-        printf(">>%s\n", info);
+#ifdef SCP_DEBUG
+    printf(">>%s\n", info);
 #endif
 }
 
 void print_call_debug_info(scp_operand *proc)
 {
-    if (debug_mode == SCP_TRUE)
-    {
-        scp_operand arc1, arc2, name;
-        MAKE_COMMON_ARC_ASSIGN(arc1);
-        MAKE_DEFAULT_ARC_ASSIGN(arc2);
-        MAKE_DEFAULT_OPERAND_ASSIGN(name);
-        searchElStr5(proc, &arc1, &name, &arc2, &nrel_system_identifier);
-        printf("====called program: ");
-        printNl(&name);
-    }
+#ifdef SCP_DEBUG
+    scp_operand arc1, arc2, name;
+    MAKE_COMMON_ARC_ASSIGN(arc1);
+    MAKE_DEFAULT_ARC_ASSIGN(arc2);
+    MAKE_DEFAULT_OPERAND_ASSIGN(name);
+    searchElStr5(proc, &arc1, &name, &arc2, &nrel_system_identifier);
+    printf("====called program: ");
+    printNl(&name);
+#endif
 }
 
 scp_result resolve_sc_agent_event_type(scp_operand *event_type, sc_event_type *result)
