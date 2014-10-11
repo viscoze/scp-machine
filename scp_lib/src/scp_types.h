@@ -24,11 +24,11 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "sc_memory_headers.h"
 
-#define MAKE_DEFAULT_OPERAND_FIXED(operand) { operand.addr.seg = 0; operand.addr.offset = 0; operand.element_type = 0; operand.param_type = SCP_FIXED; operand.erase = SCP_FALSE; operand.set = SCP_FALSE; }
-#define MAKE_DEFAULT_OPERAND_ASSIGN(operand) { operand.addr.seg = 0; operand.addr.offset = 0; operand.element_type = 0; operand.param_type = SCP_ASSIGN; operand.erase = SCP_FALSE; operand.set = SCP_FALSE; }
-#define MAKE_DEFAULT_ARC_ASSIGN(operand) { operand.addr.seg = 0; operand.addr.offset = 0; operand.element_type = scp_type_arc_pos_const_perm; operand.param_type = SCP_ASSIGN; operand.erase = SCP_FALSE; operand.set = SCP_FALSE; }
-#define MAKE_COMMON_ARC_ASSIGN(operand) { operand.addr.seg = 0; operand.addr.offset = 0; operand.element_type = scp_type_arc_common | scp_type_const; operand.param_type = SCP_ASSIGN; operand.erase = SCP_FALSE; operand.set = SCP_FALSE; }
-#define MAKE_DEFAULT_NODE_ASSIGN(operand) { operand.addr.seg = 0; operand.addr.offset = 0; operand.element_type = scp_type_const | scp_type_node; operand.param_type = SCP_ASSIGN; operand.erase = SCP_FALSE; operand.set = SCP_FALSE; }
+#define MAKE_DEFAULT_OPERAND_FIXED(operand) { operand.addr.seg = 0; operand.addr.offset = 0; operand.element_type = 0; operand.param_type = SCP_FIXED; operand.erase = SCP_FALSE; operand.set = SCP_FALSE; operand.operand_type=SCP_CONST;}
+#define MAKE_DEFAULT_OPERAND_ASSIGN(operand) { operand.addr.seg = 0; operand.addr.offset = 0; operand.element_type = 0; operand.param_type = SCP_ASSIGN; operand.erase = SCP_FALSE; operand.set = SCP_FALSE; operand.operand_type=SCP_CONST;}
+#define MAKE_DEFAULT_ARC_ASSIGN(operand) { operand.addr.seg = 0; operand.addr.offset = 0; operand.element_type = scp_type_arc_pos_const_perm; operand.param_type = SCP_ASSIGN; operand.erase = SCP_FALSE; operand.set = SCP_FALSE; operand.operand_type=SCP_CONST;}
+#define MAKE_COMMON_ARC_ASSIGN(operand) { operand.addr.seg = 0; operand.addr.offset = 0; operand.element_type = scp_type_arc_common | scp_type_const; operand.param_type = SCP_ASSIGN; operand.erase = SCP_FALSE; operand.set = SCP_FALSE; operand.operand_type=SCP_CONST;}
+#define MAKE_DEFAULT_NODE_ASSIGN(operand) { operand.addr.seg = 0; operand.addr.offset = 0; operand.element_type = scp_type_const | scp_type_node; operand.param_type = SCP_ASSIGN; operand.erase = SCP_FALSE; operand.set = SCP_FALSE; operand.operand_type=SCP_CONST;}
 
 #define MAKE_SC_ADDR_HASH(elem) GINT_TO_POINTER(SC_ADDR_LOCAL_TO_INT(elem))
 #define MAKE_HASH(elem) GINT_TO_POINTER(SC_ADDR_LOCAL_TO_INT((elem).addr))
