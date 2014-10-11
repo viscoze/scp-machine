@@ -2114,7 +2114,7 @@ sc_result interpreter_agent_print_operators(const sc_event *event, sc_addr arg)
 
 sc_result sys_search_agent_body(scp_operand *operator_node)
 {
-    scp_operand param1, param2, param2_node, param4, param4_node, operand, modifier, arc1, arc2, operand_elem;
+    scp_operand param1, param2, param3, param2_node, param4, param4_node, operand, modifier, arc1, arc2, operand_elem;
     scp_operand **pair_elems2 = nullptr, **pair_values2 = nullptr, **pair_elems3 = nullptr, **pair_values3 = nullptr;
     scp_operand_pair *params = nullptr, *results = nullptr;
     scp_iterator3 *it0, *it, *it1;
@@ -2184,22 +2184,22 @@ sc_result sys_search_agent_body(scp_operand *operator_node)
         }
         if (rrel_number == 2)
         {
-            if (operand.param_type == SCP_ASSIGN)
+            param2_node = operand;
+            if (SCP_RESULT_TRUE != get_operand_value(&operand, &param2))
             {
-                param2_node = operand;
-                if (SCP_RESULT_TRUE != get_operand_value(&param2_node, &param2))
-                {
-                    operator_interpreting_crash(operator_node);
-                    fun_result = SC_RESULT_ERROR;
-                    goto exit;
-                }
+                operator_interpreting_crash(operator_node);
+                fun_result = SC_RESULT_ERROR;
+                goto exit;
+            }
+            if (param2.param_type == SCP_ASSIGN)
+            {
                 arc1.param_type = SCP_ASSIGN;
                 MAKE_DEFAULT_OPERAND_ASSIGN(operand);
                 continue;
             }
             isresult = SCP_TRUE;
             MAKE_DEFAULT_OPERAND_ASSIGN(operand_elem);
-            get_set_power(&operand, &size2);
+            get_set_power(&param2, &size2);
             if (size2 == 0)
             {
                 arc1.param_type = SCP_ASSIGN;
@@ -2215,8 +2215,8 @@ sc_result sys_search_agent_body(scp_operand *operator_node)
                 pair_values2[i] = (scp_operand *)calloc(sizeof(scp_operand), 2);
             }
             i = 0;
-            it1 = scp_iterator3_new(&operand, &arc2, &operand_elem);
-            while (SCP_RESULT_TRUE == scp_iterator3_next(it1, &operand, &arc2, &operand_elem))
+            it1 = scp_iterator3_new(&param2, &arc2, &operand_elem);
+            while (SCP_RESULT_TRUE == scp_iterator3_next(it1, &param2, &arc2, &operand_elem))
             {
                 operand_elem.param_type = SCP_FIXED;
                 resolve_operands_modifiers(&operand_elem, pair_elems2[i], 2);
@@ -2239,7 +2239,13 @@ sc_result sys_search_agent_body(scp_operand *operator_node)
         if (rrel_number == 3)
         {
             MAKE_DEFAULT_OPERAND_ASSIGN(operand_elem);
-            get_set_power(&operand, &size3);
+            if (SCP_RESULT_TRUE != get_operand_value(&operand, &param3))
+            {
+                operator_interpreting_crash(operator_node);
+                fun_result = SC_RESULT_ERROR;
+                goto exit;
+            }
+            get_set_power(&param3, &size3);
             if (size3 == 0)
             {
                 arc1.param_type = SCP_ASSIGN;
@@ -2255,8 +2261,8 @@ sc_result sys_search_agent_body(scp_operand *operator_node)
                 pair_values3[i] = (scp_operand *)calloc(sizeof(scp_operand), 2);
             }
             i = 0;
-            it1 = scp_iterator3_new(&operand, &arc2, &operand_elem);
-            while (SCP_RESULT_TRUE == scp_iterator3_next(it1, &operand, &arc2, &operand_elem))
+            it1 = scp_iterator3_new(&param3, &arc2, &operand_elem);
+            while (SCP_RESULT_TRUE == scp_iterator3_next(it1, &param3, &arc2, &operand_elem))
             {
                 operand_elem.param_type = SCP_FIXED;
                 resolve_operands_modifiers(&operand_elem, pair_elems3[i], 2);
