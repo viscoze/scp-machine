@@ -581,7 +581,7 @@ scp_result eraseElStr5(scp_operand *param1, scp_operand *param2, scp_operand *pa
         {
             return print_error("eraseElStr5", "Parameter 4 is not an arc");
         }
-        fixed2 = 0x1000;
+        fixed4 = 0x1000;
     }
     if (param5->param_type == SCP_FIXED)
     {
@@ -589,7 +589,7 @@ scp_result eraseElStr5(scp_operand *param1, scp_operand *param2, scp_operand *pa
         {
             return print_error("eraseElStr5", "Parameter 5 has modifier FIXED, but has not value");
         }
-        fixed3 = 0x10000;
+        fixed5 = 0x10000;
     }
     fixed = (fixed1 | fixed2 | fixed3 | fixed4 | fixed5);
     switch (fixed)
@@ -709,7 +709,7 @@ scp_result eraseSetStr5(scp_operand *param1, scp_operand *param2, scp_operand *p
         {
             return print_error("eraseSetStr5", "Parameter 4 is not an arc");
         }
-        fixed2 = 0x1000;
+        fixed4 = 0x1000;
     }
     if (param5->param_type == SCP_FIXED)
     {
@@ -717,7 +717,7 @@ scp_result eraseSetStr5(scp_operand *param1, scp_operand *param2, scp_operand *p
         {
             return print_error("eraseSetStr5", "Parameter 5 has modifier FIXED, but has not value");
         }
-        fixed3 = 0x10000;
+        fixed5 = 0x10000;
     }
     fixed = (fixed1 | fixed2 | fixed3 | fixed4 | fixed5);
     switch (fixed)
