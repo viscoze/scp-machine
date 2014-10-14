@@ -1927,10 +1927,14 @@ sc_result sys_wait_processor(const sc_event *event, sc_addr arg)
 {
     scp_operand operator_node, arc;
     MAKE_DEFAULT_ARC_ASSIGN(arc);
+    MAKE_DEFAULT_OPERAND_FIXED(operator_node);
     operator_node.addr = resolve_sc_addr_from_int(sc_event_get_id(event));
     if (SCP_RESULT_TRUE == searchElStr3(&active_scp_operator, &arc, &operator_node))
     {
         g_hash_table_remove(scp_wait_event_table, MAKE_HASH(operator_node));
+        arc.param_type=SCP_FIXED;
+        arc.erase=SCP_TRUE;
+        eraseEl(&arc);
         goto_unconditional(&operator_node);
     }
     return SC_RESULT_OK;
@@ -1990,8 +1994,6 @@ sc_result interpreter_agent_event_operators(const sc_event *event, sc_addr arg)
     if (SCP_RESULT_TRUE == ifCoin(&operator_type, &op_sys_wait))
     {
         scp_operand operands[2], operands_values[2];
-        input_arc.erase = SCP_TRUE;
-        eraseEl(&input_arc);
         print_debug_info("sys_wait");
 
         resolve_operands_modifiers(&operator_node, operands, 2);
@@ -2000,8 +2002,6 @@ sc_result interpreter_agent_event_operators(const sc_event *event, sc_addr arg)
         {
             return SC_RESULT_ERROR;
         }
-        set_operands_values(operands, operands_values, 2);
-        goto_unconditional(&operator_node);
         return SC_RESULT_OK;
     }
 
