@@ -27,55 +27,55 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 scp_result scp_lib_init();
 scp_result scp_lib_shutdown();
 
-scp_result genEl(scp_operand *param);
-scp_result genElStr3(scp_operand *param1, scp_operand *param2, scp_operand *param3);
-scp_result genElStr5(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5);
+scp_result genEl(sc_memory_context *context, scp_operand *param);
+scp_result genElStr3(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3);
+scp_result genElStr5(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5);
 
-scp_result searchElStr3(scp_operand *param1, scp_operand *param2, scp_operand *param3);
-scp_result searchElStr5(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5);
+scp_result searchElStr3(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3);
+scp_result searchElStr5(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5);
 
-scp_result searchSetStr3(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *sets);
-scp_result searchSetStr5(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5, scp_operand *sets);
+scp_result searchSetStr3(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *sets);
+scp_result searchSetStr5(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5, scp_operand *sets);
 
-scp_result eraseEl(scp_operand *param);
-scp_result eraseElStr3(scp_operand *param1, scp_operand *param2, scp_operand *param3);
-scp_result eraseElStr5(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5);
-scp_result eraseSetStr3(scp_operand *param1, scp_operand *param2, scp_operand *param3);
-scp_result eraseSetStr5(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5);
+scp_result eraseEl(sc_memory_context *context, scp_operand *param);
+scp_result eraseElStr3(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3);
+scp_result eraseElStr5(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5);
+scp_result eraseSetStr3(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3);
+scp_result eraseSetStr5(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5);
 
-scp_result ifVarAssign(scp_operand *param);
-scp_result ifFormCont(scp_operand *param);
-scp_result ifCoin(scp_operand *param1, scp_operand *param2);
-scp_result ifEq(scp_operand *param1, scp_operand *param2);
-scp_result ifGr(scp_operand *param1, scp_operand *param2);
-scp_result ifType(scp_operand *param);
+scp_result ifVarAssign(sc_memory_context *context, scp_operand *param);
+scp_result ifFormCont(sc_memory_context *context, scp_operand *param);
+scp_result ifCoin(sc_memory_context *context, scp_operand *param1, scp_operand *param2);
+scp_result ifEq(sc_memory_context *context, scp_operand *param1, scp_operand *param2);
+scp_result ifGr(sc_memory_context *context, scp_operand *param1, scp_operand *param2);
+scp_result ifType(sc_memory_context *context, scp_operand *param);
 
-scp_result varAssign(scp_operand *param1, scp_operand *param2);
+scp_result varAssign(sc_memory_context *context, scp_operand *param1, scp_operand *param2);
 
-scp_result contAdd(scp_operand *param1, scp_operand *param2, scp_operand *param3);
-scp_result contDiv(scp_operand *param1, scp_operand *param2, scp_operand *param3);
-scp_result contMult(scp_operand *param1, scp_operand *param2, scp_operand *param3);
-scp_result contSub(scp_operand *param1, scp_operand *param2, scp_operand *param3);
-scp_result contPow(scp_operand *param1, scp_operand *param2, scp_operand *param3);
+scp_result contAdd(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3);
+scp_result contDiv(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3);
+scp_result contMult(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3);
+scp_result contSub(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3);
+scp_result contPow(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3);
 
-scp_result contLn(scp_operand *param1, scp_operand *param2);
-scp_result contSin(scp_operand *param1, scp_operand *param2);
-scp_result contCos(scp_operand *param1, scp_operand *param2);
-scp_result contTg(scp_operand *param1, scp_operand *param2);
-scp_result contASin(scp_operand *param1, scp_operand *param2);
-scp_result contACos(scp_operand *param1, scp_operand *param2);
-scp_result contATg(scp_operand *param1, scp_operand *param2);
+scp_result contLn(sc_memory_context *context, scp_operand *param1, scp_operand *param2);
+scp_result contSin(sc_memory_context *context, scp_operand *param1, scp_operand *param2);
+scp_result contCos(sc_memory_context *context, scp_operand *param1, scp_operand *param2);
+scp_result contTg(sc_memory_context *context, scp_operand *param1, scp_operand *param2);
+scp_result contASin(sc_memory_context *context, scp_operand *param1, scp_operand *param2);
+scp_result contACos(sc_memory_context *context, scp_operand *param1, scp_operand *param2);
+scp_result contATg(sc_memory_context *context, scp_operand *param1, scp_operand *param2);
 
-scp_result contAssign(scp_operand *param1, scp_operand *param2);
-scp_result contErase(scp_operand *param);
+scp_result contAssign(sc_memory_context *context, scp_operand *param1, scp_operand *param2);
+scp_result contErase(sc_memory_context *context, scp_operand *param);
 
 //scp_result idtfSearch(scp_operand *param, const char *idtf);
 //scp_result idtfAssign(scp_operand *param, const char *idtf);
 
-scp_result print(scp_operand *param);
-scp_result printNl(scp_operand *param);
-scp_result printEl(scp_operand *param);
+scp_result print(sc_memory_context *context, scp_operand *param);
+scp_result printNl(sc_memory_context *context, scp_operand *param);
+scp_result printEl(sc_memory_context *context, scp_operand *param);
 
-scp_result scp_lib_resolve_system_identifier(const char *idtf, scp_operand *param);
+scp_result scp_lib_resolve_system_identifier(sc_memory_context *context, const char *idtf, scp_operand *param);
 
 #endif // SCP_FUNCTIONS_H

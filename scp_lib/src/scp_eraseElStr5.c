@@ -200,7 +200,7 @@ scp_result eraseElStr5_f_a_f_a_f(sc_memory_context *context, scp_operand *param1
     }
     if (param5->erase == SCP_TRUE)
     {
-        sc_memory_element_free(param5->addr);
+        sc_memory_element_free(context, param5->addr);
     }
     sc_iterator5_free(it);
     return SCP_RESULT_FALSE;

@@ -35,7 +35,7 @@ extern "C"
  * @return If input params are correct and generation completed without errors, then return SC_OK;
  * otherwise return SC_ERROR
  */
-sc_result system_sys_gen(sc_addr pattern, sc_type_result params, sc_type_result *result);
+sc_result system_sys_gen(sc_memory_context *context, sc_addr pattern, sc_type_result params, sc_type_result *result);
 
 /*! Generates fully isomorfic construction to given
  * @param pattern Generation pattern
@@ -44,6 +44,6 @@ sc_result system_sys_gen(sc_addr pattern, sc_type_result params, sc_type_result 
  * @return If input params are correct and generation completed without errors, then return SC_OK;
  * otherwise return SC_ERROR
  */
-sc_result system_sys_gen_for_variables(sc_addr pattern, sc_type_result params, sc_addr_vector requested_values, sc_type_result *result);
+sc_result system_sys_gen_for_variables(sc_memory_context *context, sc_addr pattern, sc_type_result params, sc_addr_vector requested_values, sc_type_result *result);
 
 #endif // SC_SYSTEM_GEN_H

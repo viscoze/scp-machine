@@ -30,7 +30,7 @@ extern "C"
 #include "../scp_types.h"
 }
 
-extern "C" scp_result sys_gen(scp_operand *param1, scp_operand *param2, scp_operand_pair *parameters, sc_uint32 param_count, scp_operand *param4)
+extern "C" scp_result sys_gen(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand_pair *parameters, sc_uint32 param_count, scp_operand *param4)
 {
     sc_type_result params;
     sc_addr addr1, addr2, arc;
@@ -42,24 +42,24 @@ extern "C" scp_result sys_gen(scp_operand *param1, scp_operand *param2, scp_oper
     {
         params.insert(sc_addr_pair(parameters[i].operand1->addr, parameters[i].operand2->addr));
     }
-    system_sys_gen(param1->addr, params, &result);
+    system_sys_gen(context, param1->addr, params, &result);
 
     for (it = result.begin() ; it != result.end(); it++)
     {
         addr1 = (*it).first;
         addr2 = (*it).second;
-        arc = sc_memory_arc_new(sc_type_arc_common | sc_type_const, addr1, addr2);
-        sc_memory_arc_new(sc_type_arc_pos_const_perm, param2->addr, arc);
+        arc = sc_memory_arc_new(context, sc_type_arc_common | sc_type_const, addr1, addr2);
+        sc_memory_arc_new(context, sc_type_arc_pos_const_perm, param2->addr, arc);
         if (param4 != nullptr)
         {
-            sc_memory_arc_new(sc_type_arc_pos_const_perm, param4->addr, addr2);
+            sc_memory_arc_new(context, sc_type_arc_pos_const_perm, param4->addr, addr2);
         }
     }
 
     return SCP_RESULT_TRUE;
 }
 
-extern "C" scp_result sys_gen_for_variables(scp_operand *param1, scp_operand_pair *variables, sc_uint32 var_count, scp_operand_pair *parameters, sc_uint32 param_count, scp_operand *param4)
+extern "C" scp_result sys_gen_for_variables(sc_memory_context *context, scp_operand *param1, scp_operand_pair *variables, sc_uint32 var_count, scp_operand_pair *parameters, sc_uint32 param_count, scp_operand *param4)
 {
     sc_type_result params;
     sc_type_result result;
@@ -76,7 +76,7 @@ extern "C" scp_result sys_gen_for_variables(scp_operand *param1, scp_operand_pai
         vars.push_back(variables[i].operand1->addr);
     }
 
-    system_sys_gen_for_variables(param1->addr, params, vars, &result);
+    system_sys_gen_for_variables(context, param1->addr, params, vars, &result);
 
     for (i = 0; i < var_count; i++)
     {
@@ -85,7 +85,7 @@ extern "C" scp_result sys_gen_for_variables(scp_operand *param1, scp_operand_pai
         find_result_pair_for_var(&result, op1->addr, &(op2->addr));
         if (param4 != nullptr)
         {
-            sc_memory_arc_new(sc_type_arc_pos_const_perm, param4->addr, op2->addr);
+            sc_memory_arc_new(context, sc_type_arc_pos_const_perm, param4->addr, op2->addr);
         }
     }
 

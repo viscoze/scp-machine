@@ -38,7 +38,7 @@ extern "C"
  * @return If input params are correct and search completed without errors, then return SC_OK;
  * otherwise return SC_ERROR
  */
-sc_result system_sys_search(sc_addr pattern, sc_type_result params, sc_type_result_vector *result);
+sc_result system_sys_search(sc_memory_context *context, sc_addr pattern, sc_type_result params, sc_type_result_vector *result);
 
 /*! Search fully isomorfic construction just to check such a construction existence
  * @param pattern Search pattern
@@ -47,7 +47,7 @@ sc_result system_sys_search(sc_addr pattern, sc_type_result params, sc_type_resu
  * @return If input params are correct and search completed without errors, then return SC_OK;
  * otherwise return SC_ERROR
  */
-sc_result system_sys_search_single(sc_addr pattern, sc_type_result params, sc_bool *result);
+sc_result system_sys_search_single(sc_memory_context *context, sc_addr pattern, sc_type_result params, sc_bool *result);
 
 /*! Search only fully isomorfic construction to given pattern
  * @param pattern Search pattern
@@ -56,7 +56,7 @@ sc_result system_sys_search_single(sc_addr pattern, sc_type_result params, sc_bo
  * @return If input params are correct and search completed without errors, then return SC_OK;
  * otherwise return SC_ERROR
  */
-sc_result system_sys_search_only_full(sc_addr pattern, sc_type_result params, sc_type_result_vector *result);
+sc_result system_sys_search_only_full(sc_memory_context *context, sc_addr pattern, sc_type_result params, sc_type_result_vector *result);
 
 /*! Search only fully isomorfic construction to given pattern, leaving correspondences only for requested elements
  * @param pattern Search pattern
@@ -67,7 +67,7 @@ sc_result system_sys_search_only_full(sc_addr pattern, sc_type_result params, sc
  * @return If input params are correct and search completed without errors, then return SC_OK;
  * otherwise return SC_ERROR
  */
-sc_result system_sys_search_for_variables(sc_addr pattern, sc_type_result params, sc_addr_vector requested_values, sc_type_result_vector *result);
+sc_result system_sys_search_for_variables(sc_memory_context *context, sc_addr pattern, sc_type_result params, sc_addr_vector requested_values, sc_type_result_vector *result);
 
 
 #endif // SC_SEARCH_SYSTEM_H

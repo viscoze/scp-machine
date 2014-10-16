@@ -27,7 +27,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scp_sys_search.h"
 #include "scp_sys_gen.h"
 
-scp_result scp_sys_search(scp_operand *param1, scp_operand *param2, scp_operand_pair *parameters, sc_uint32 param_count, scp_operand *param4, scp_bool full_only)
+scp_result scp_sys_search(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand_pair *parameters, sc_uint32 param_count, scp_operand *param4, scp_bool full_only)
 {
     scp_bool flag2;
     sc_uint32 i;
@@ -35,13 +35,13 @@ scp_result scp_sys_search(scp_operand *param1, scp_operand *param2, scp_operand_
     {
         return print_error("scp_sys_search", "Parameter 1 must have FIXED modifier");
     }
-    if (SC_FALSE == sc_memory_is_element(param1->addr))
+    if (SC_FALSE == sc_memory_is_element(context, param1->addr))
     {
         return print_error("scp_sys_search", "Parameter 1 has modifier FIXED, but has not value");
     }
     if (param2->param_type == SCP_FIXED)
     {
-        if (SC_FALSE == sc_memory_is_element(param1->addr))
+        if (SC_FALSE == sc_memory_is_element(context, param1->addr))
         {
             return print_error("scp_sys_search", "Parameter 2 has modifier FIXED, but has not value");
         }
@@ -57,7 +57,7 @@ scp_result scp_sys_search(scp_operand *param1, scp_operand *param2, scp_operand_
         {
             return print_error("scp_sys_search", "All elements of parameter set must have FIXED modifier");
         }
-        if (SC_FALSE == sc_memory_is_element(parameters[i].operand1->addr) || SC_FALSE == sc_memory_is_element(parameters[i].operand2->addr))
+        if (SC_FALSE == sc_memory_is_element(context, parameters[i].operand1->addr) || SC_FALSE == sc_memory_is_element(context, parameters[i].operand2->addr))
         {
             return print_error("scp_sys_search", "All elements of parameter set must have value");
         }
@@ -67,32 +67,32 @@ scp_result scp_sys_search(scp_operand *param1, scp_operand *param2, scp_operand_
     {
         if (param4->param_type == SCP_FIXED)
         {
-            if (SC_FALSE == sc_memory_is_element(param1->addr))
+            if (SC_FALSE == sc_memory_is_element(context, param1->addr))
             {
                 return print_error("scp_sys_search", "Parameter 4 has modifier FIXED, but has not value");
             }
         }
         else
         {
-            param4->addr = sc_memory_node_new(scp_type_const);
+            param4->addr = sc_memory_node_new(context, scp_type_const);
         }
     }
 
     if (flag2 == SCP_TRUE)
     {
-        param2->addr = sc_memory_node_new(scp_type_const);
+        param2->addr = sc_memory_node_new(context, scp_type_const);
     }
-    return sys_search(param1, param2, parameters, param_count, param4, full_only);
+    return sys_search(context, param1, param2, parameters, param_count, param4, full_only);
 }
 
-scp_result scp_sys_search_for_variables(scp_operand *param1, scp_operand_pair *variables, sc_uint32 var_count, scp_operand_pair *parameters, sc_uint32 param_count, scp_operand *param4)
+scp_result scp_sys_search_for_variables(sc_memory_context *context, scp_operand *param1, scp_operand_pair *variables, sc_uint32 var_count, scp_operand_pair *parameters, sc_uint32 param_count, scp_operand *param4)
 {
     sc_uint32 i;
     if (param1->param_type != SCP_FIXED)
     {
         return print_error("scp_sys_search_for_variables", "Parameter 1 must have FIXED modifier");
     }
-    if (SC_FALSE == sc_memory_is_element(param1->addr))
+    if (SC_FALSE == sc_memory_is_element(context, param1->addr))
     {
         return print_error("scp_sys_search_for_variables", "Parameter 1 has modifier FIXED, but has not value");
     }
@@ -102,7 +102,7 @@ scp_result scp_sys_search_for_variables(scp_operand *param1, scp_operand_pair *v
         {
             return print_error("scp_sys_search_for_variables", "All elements of parameter set must have FIXED modifier");
         }
-        if (SC_FALSE == sc_memory_is_element(parameters[i].operand1->addr) || SC_FALSE == sc_memory_is_element(parameters[i].operand2->addr))
+        if (SC_FALSE == sc_memory_is_element(context, parameters[i].operand1->addr) || SC_FALSE == sc_memory_is_element(context, parameters[i].operand2->addr))
         {
             return print_error("scp_sys_search_for_variables", "All elements of parameter set must have value");
         }
@@ -113,7 +113,7 @@ scp_result scp_sys_search_for_variables(scp_operand *param1, scp_operand_pair *v
         {
             return print_error("scp_sys_search_for_variables", "All variables of variable set must have FIXED modifier");
         }
-        if (SC_FALSE == sc_memory_is_element(variables[i].operand1->addr))
+        if (SC_FALSE == sc_memory_is_element(context, variables[i].operand1->addr))
         {
             return print_error("scp_sys_search_for_variables", "All variables of variable set must have value");
         }
@@ -121,7 +121,7 @@ scp_result scp_sys_search_for_variables(scp_operand *param1, scp_operand_pair *v
         {
             if (variables[i].operand2->set == SCP_TRUE)
             {
-                if (SC_FALSE == sc_memory_is_element(variables[i].operand2->addr))
+                if (SC_FALSE == sc_memory_is_element(context, variables[i].operand2->addr))
                 {
                     return print_error("scp_sys_search_for_variables", "Variable value of variables set marked as FIXED SET but has no value");
                 }
@@ -136,27 +136,27 @@ scp_result scp_sys_search_for_variables(scp_operand *param1, scp_operand_pair *v
     {
         if (param4->param_type == SCP_FIXED)
         {
-            if (SC_FALSE == sc_memory_is_element(param1->addr))
+            if (SC_FALSE == sc_memory_is_element(context, param1->addr))
             {
                 return print_error("scp_sys_search_for_variables", "Parameter 4 has modifier FIXED, but has not value");
             }
         }
         else
         {
-            param4->addr = sc_memory_node_new(scp_type_const);
+            param4->addr = sc_memory_node_new(context, scp_type_const);
         }
     }
     for (i = 0; i < var_count; i++)
     {
         if (variables[i].operand2->param_type == SCP_ASSIGN && variables[i].operand2->set == SCP_TRUE)
         {
-            variables[i].operand2->addr = sc_memory_node_new(scp_type_const);
+            variables[i].operand2->addr = sc_memory_node_new(context, scp_type_const);
         }
     }
-    return sys_search_for_variables(param1, variables, var_count, parameters, param_count, param4);
+    return sys_search_for_variables(context, param1, variables, var_count, parameters, param_count, param4);
 }
 
-scp_result scp_sys_gen(scp_operand *param1, scp_operand *param2, scp_operand_pair *parameters, sc_uint32 param_count, scp_operand *param4)
+scp_result scp_sys_gen(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand_pair *parameters, sc_uint32 param_count, scp_operand *param4)
 {
     scp_bool flag2;
     sc_uint32 i;
@@ -164,13 +164,13 @@ scp_result scp_sys_gen(scp_operand *param1, scp_operand *param2, scp_operand_pai
     {
         return print_error("sys_gen", "Parameter 1 must have FIXED modifier");
     }
-    if (SC_FALSE == sc_memory_is_element(param1->addr))
+    if (SC_FALSE == sc_memory_is_element(context, param1->addr))
     {
         return print_error("sys_gen", "Parameter 1 has modifier FIXED, but has not value");
     }
     if (param2->param_type == SCP_FIXED)
     {
-        if (SC_FALSE == sc_memory_is_element(param1->addr))
+        if (SC_FALSE == sc_memory_is_element(context, param1->addr))
         {
             return print_error("sys_gen", "Parameter 2 has modifier FIXED, but has not value");
         }
@@ -186,7 +186,7 @@ scp_result scp_sys_gen(scp_operand *param1, scp_operand *param2, scp_operand_pai
         {
             return print_error("sys_gen", "All elements of parameter set must have FIXED modifier");
         }
-        if (SC_FALSE == sc_memory_is_element(parameters[i].operand1->addr) || SC_FALSE == sc_memory_is_element(parameters[i].operand2->addr))
+        if (SC_FALSE == sc_memory_is_element(context, parameters[i].operand1->addr) || SC_FALSE == sc_memory_is_element(context, parameters[i].operand2->addr))
         {
             return print_error("sys_gen", "All elements of parameter set must have value");
         }
@@ -195,31 +195,31 @@ scp_result scp_sys_gen(scp_operand *param1, scp_operand *param2, scp_operand_pai
     {
         if (param4->param_type == SCP_FIXED)
         {
-            if (SC_FALSE == sc_memory_is_element(param1->addr))
+            if (SC_FALSE == sc_memory_is_element(context, param1->addr))
             {
                 return print_error("scp_sys_gen", "Parameter 4 has modifier FIXED, but has not value");
             }
         }
         else
         {
-            param4->addr = sc_memory_node_new(scp_type_const);
+            param4->addr = sc_memory_node_new(context, scp_type_const);
         }
     }
     if (flag2 == SCP_TRUE)
     {
-        param2->addr = sc_memory_node_new(scp_type_const);
+        param2->addr = sc_memory_node_new(context, scp_type_const);
     }
-    return sys_gen(param1, param2, parameters, param_count, param4);
+    return sys_gen(context, param1, param2, parameters, param_count, param4);
 }
 
-scp_result scp_sys_gen_for_variables(scp_operand *param1, scp_operand_pair *variables, sc_uint32 var_count, scp_operand_pair *parameters, sc_uint32 param_count, scp_operand *param4)
+scp_result scp_sys_gen_for_variables(sc_memory_context *context, scp_operand *param1, scp_operand_pair *variables, sc_uint32 var_count, scp_operand_pair *parameters, sc_uint32 param_count, scp_operand *param4)
 {
     sc_uint32 i;
     if (param1->param_type != SCP_FIXED)
     {
         return print_error("sys_gen_for_variables", "Parameter 1 must have FIXED modifier");
     }
-    if (SC_FALSE == sc_memory_is_element(param1->addr))
+    if (SC_FALSE == sc_memory_is_element(context, param1->addr))
     {
         return print_error("sys_gen_for_variables", "Parameter 1 has modifier FIXED, but has not value");
     }
@@ -229,7 +229,7 @@ scp_result scp_sys_gen_for_variables(scp_operand *param1, scp_operand_pair *vari
         {
             return print_error("sys_gen_for_variables", "All elements of parameter set must have FIXED modifier");
         }
-        if (SC_FALSE == sc_memory_is_element(parameters[i].operand1->addr) || SC_FALSE == sc_memory_is_element(parameters[i].operand2->addr))
+        if (SC_FALSE == sc_memory_is_element(context, parameters[i].operand1->addr) || SC_FALSE == sc_memory_is_element(context, parameters[i].operand2->addr))
         {
             return print_error("sys_gen_for_variables", "All elements of parameter set must have value");
         }
@@ -240,7 +240,7 @@ scp_result scp_sys_gen_for_variables(scp_operand *param1, scp_operand_pair *vari
         {
             return print_error("sys_gen_for_variables", "All variables of variable set must have FIXED modifier");
         }
-        if (SC_FALSE == sc_memory_is_element(variables[i].operand1->addr))
+        if (SC_FALSE == sc_memory_is_element(context, variables[i].operand1->addr))
         {
             return print_error("sys_gen_for_variables", "All variables of variable set must have value");
         }
@@ -253,22 +253,22 @@ scp_result scp_sys_gen_for_variables(scp_operand *param1, scp_operand_pair *vari
     {
         if (param4->param_type == SCP_FIXED)
         {
-            if (SC_FALSE == sc_memory_is_element(param1->addr))
+            if (SC_FALSE == sc_memory_is_element(context, param1->addr))
             {
                 return print_error("scp_sys_gen_for_variables", "Parameter 4 has modifier FIXED, but has not value");
             }
         }
         else
         {
-            param4->addr = sc_memory_node_new(scp_type_const);
+            param4->addr = sc_memory_node_new(context, scp_type_const);
         }
     }
     for (i = 0; i < var_count; i++)
     {
         if (variables[i].operand2->param_type == SCP_ASSIGN && variables[i].operand2->set == SCP_TRUE)
         {
-            variables[i].operand2->addr = sc_memory_node_new(scp_type_const);
+            variables[i].operand2->addr = sc_memory_node_new(context, scp_type_const);
         }
     }
-    return sys_gen_for_variables(param1, variables, var_count, parameters, param_count, param4);
+    return sys_gen_for_variables(context, param1, variables, var_count, parameters, param_count, param4);
 }

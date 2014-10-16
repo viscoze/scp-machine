@@ -25,7 +25,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "../scp_types.h"
 
-scp_result sys_gen(scp_operand *param1, scp_operand *param2, scp_operand_pair *parameters, sc_uint32 param_count, scp_operand *param4);
-scp_result sys_gen_for_variables(scp_operand *param1, scp_operand_pair *variables, sc_uint32 var_count, scp_operand_pair *parameters, sc_uint32 param_count, scp_operand *param4);
+scp_result sys_gen(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand_pair *parameters, sc_uint32 param_count, scp_operand *param4);
+scp_result sys_gen_for_variables(sc_memory_context *context, scp_operand *param1, scp_operand_pair *variables, sc_uint32 var_count, scp_operand_pair *parameters, sc_uint32 param_count, scp_operand *param4);
 
 #endif // SCP_SYS_GEN_H

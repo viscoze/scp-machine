@@ -31,7 +31,7 @@ extern "C"
 #include "../scp_types.h"
 }
 
-extern "C" scp_result sys_search_for_variables(scp_operand *param1, scp_operand_pair *variables, sc_uint32 var_count, scp_operand_pair *parameters, sc_uint32 param_count, scp_operand *param4)
+extern "C" scp_result sys_search_for_variables(sc_memory_context *context, scp_operand *param1, scp_operand_pair *variables, sc_uint32 var_count, scp_operand_pair *parameters, sc_uint32 param_count, scp_operand *param4)
 {
     sc_type_result params;
     sc_addr addr1;
@@ -50,7 +50,7 @@ extern "C" scp_result sys_search_for_variables(scp_operand *param1, scp_operand_
         vars.push_back(variables[i].operand1->addr);
     }
 
-    if (SC_RESULT_OK != system_sys_search_for_variables(param1->addr, params, vars, &result))
+    if (SC_RESULT_OK != system_sys_search_for_variables(context, param1->addr, params, vars, &result))
     {
         return SCP_RESULT_ERROR;
     }
@@ -71,7 +71,7 @@ extern "C" scp_result sys_search_for_variables(scp_operand *param1, scp_operand_
             for (j = 0; j < result.size(); j++)
             {
                 find_result_pair_for_var(result[j], op1->addr, &addr1);
-                sc_memory_arc_new(sc_type_arc_pos_const_perm, op2->addr, addr1);
+                sc_memory_arc_new(context, sc_type_arc_pos_const_perm, op2->addr, addr1);
             }
         }
         else
@@ -90,7 +90,7 @@ extern "C" scp_result sys_search_for_variables(scp_operand *param1, scp_operand_
                 addr1 = (*it).second;
                 if (FALSE == g_hash_table_contains(table, MAKE_SC_ADDR_HASH(addr1)))
                 {
-                    sc_memory_arc_new(sc_type_arc_pos_const_perm, param4->addr, addr1);
+                    sc_memory_arc_new(context, sc_type_arc_pos_const_perm, param4->addr, addr1);
                     g_hash_table_add(table, MAKE_SC_ADDR_HASH(addr1));
                 }
             }
@@ -101,7 +101,7 @@ extern "C" scp_result sys_search_for_variables(scp_operand *param1, scp_operand_
     return res;
 }
 
-extern "C" scp_result sys_search(scp_operand *param1, scp_operand *param2, scp_operand_pair *parameters, sc_uint32 param_count, scp_operand *param4, scp_bool full_only)
+extern "C" scp_result sys_search(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand_pair *parameters, sc_uint32 param_count, scp_operand *param4, scp_bool full_only)
 {
     sc_type_result params;
     sc_addr curr_result_node, addr1, addr2, arc;
@@ -117,14 +117,14 @@ extern "C" scp_result sys_search(scp_operand *param1, scp_operand *param2, scp_o
     }
     if (SCP_TRUE == full_only)
     {
-        if (SC_RESULT_OK != system_sys_search_only_full(param1->addr, params, &result))
+        if (SC_RESULT_OK != system_sys_search_only_full(context, param1->addr, params, &result))
         {
             return SCP_RESULT_ERROR;
         }
     }
     else
     {
-        if (SC_RESULT_OK != system_sys_search(param1->addr, params, &result))
+        if (SC_RESULT_OK != system_sys_search(context, param1->addr, params, &result))
         {
             return SCP_RESULT_ERROR;
         }
@@ -144,24 +144,24 @@ extern "C" scp_result sys_search(scp_operand *param1, scp_operand *param2, scp_o
     }
     for (i = 0; i < result.size(); i++)
     {
-        curr_result_node = sc_memory_node_new(sc_type_const);
+        curr_result_node = sc_memory_node_new(context, sc_type_const);
         for (it = result[i]->begin() ; it != result[i]->end(); it++)
         {
             addr1 = (*it).first;
             addr2 = (*it).second;
-            arc = sc_memory_arc_new(sc_type_arc_common | sc_type_const, addr1, addr2);
-            sc_memory_arc_new(sc_type_arc_pos_const_perm, curr_result_node, arc);
+            arc = sc_memory_arc_new(context, sc_type_arc_common | sc_type_const, addr1, addr2);
+            sc_memory_arc_new(context, sc_type_arc_pos_const_perm, curr_result_node, arc);
             if (param4 != nullptr)
             {
                 if (FALSE == g_hash_table_contains(table, MAKE_SC_ADDR_HASH(addr2)))
                 {
-                    sc_memory_arc_new(sc_type_arc_pos_const_perm, param4->addr, addr2);
+                    sc_memory_arc_new(context, sc_type_arc_pos_const_perm, param4->addr, addr2);
                     g_hash_table_add(table, MAKE_SC_ADDR_HASH(addr2));
                 }
 
             }
         }
-        sc_memory_arc_new(sc_type_arc_pos_const_perm, param2->addr, curr_result_node);
+        sc_memory_arc_new(context, sc_type_arc_pos_const_perm, param2->addr, curr_result_node);
     }
     free_result_vector(&result);
     if (param4 != nullptr)
