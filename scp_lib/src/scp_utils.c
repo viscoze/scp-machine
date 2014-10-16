@@ -33,10 +33,10 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #define NUMBER_PRECISE 8
 
-scp_result check_type(sc_addr element, sc_type input_type)
+scp_result check_type(sc_memory_context *context, sc_addr element, sc_type input_type)
 {
     sc_type type;
-    if (SC_RESULT_OK != sc_memory_get_element_type(element, &type))
+    if (SC_RESULT_OK != sc_memory_get_element_type(context, element, &type))
     {
         return SCP_RESULT_ERROR;
     }
@@ -57,13 +57,13 @@ scp_result print_error(const char *operator_name, const char *text)
     return SCP_RESULT_ERROR;
 }
 
-scp_result check_numeric_type(sc_addr param)
+scp_result check_numeric_type(sc_memory_context *context, sc_addr param)
 {
     //! TODO Add check for numeric type
     return SCP_RESULT_TRUE;
 }
 
-scp_result resolve_numbers_1_2(const sc_char *operator_name, scp_operand *param1, scp_operand *param2, double *num1, double *num2)
+scp_result resolve_numbers_1_2(sc_memory_context *context, const sc_char *operator_name, scp_operand *param1, scp_operand *param2, double *num1, double *num2)
 {
     sc_stream *stream;
     sc_uint32 length = 0, read_length = 0;
@@ -72,24 +72,24 @@ scp_result resolve_numbers_1_2(const sc_char *operator_name, scp_operand *param1
     {
         return print_error(operator_name, "Both parameters must have FIXED modifier");
     }
-    if (SC_FALSE == sc_memory_is_element(param1->addr))
+    if (SC_FALSE == sc_memory_is_element(context, param1->addr))
     {
         return print_error(operator_name, "Parameter 1 has not value");
     }
-    if (SC_FALSE == sc_memory_is_element(param2->addr))
+    if (SC_FALSE == sc_memory_is_element(context, param2->addr))
     {
         return print_error(operator_name, "Parameter 2 has not value");
     }
-    if (check_type(param1->addr, scp_type_link) == SCP_RESULT_FALSE || check_type(param2->addr, scp_type_link) == SCP_RESULT_FALSE)
+    if (check_type(context, param1->addr, scp_type_link) == SCP_RESULT_FALSE || check_type(context, param2->addr, scp_type_link) == SCP_RESULT_FALSE)
     {
         return print_error(operator_name, "Both parameters must have link type");
     }
-    if (SCP_RESULT_FALSE == check_numeric_type(param1->addr) || SCP_RESULT_FALSE == check_numeric_type(param2->addr))
+    if (SCP_RESULT_FALSE == check_numeric_type(context, param1->addr) || SCP_RESULT_FALSE == check_numeric_type(context, param2->addr))
     {
         return print_error(operator_name, "Both parameters must have numeric format");
     }
 
-    if (sc_memory_get_link_content(param1->addr, &stream) != SC_RESULT_OK)
+    if (sc_memory_get_link_content(context, param1->addr, &stream) != SC_RESULT_OK)
     {
         return print_error(operator_name, "Parameter 1 content reading error");
     }
@@ -97,7 +97,7 @@ scp_result resolve_numbers_1_2(const sc_char *operator_name, scp_operand *param1
     data1 = calloc(length, sizeof(sc_char));
     sc_stream_read_data(stream, data1, length, &read_length);
     sc_stream_free(stream);
-    if (sc_memory_get_link_content(param2->addr, &stream) != SC_RESULT_OK)
+    if (sc_memory_get_link_content(context, param2->addr, &stream) != SC_RESULT_OK)
     {
         return print_error(operator_name, "Parameter 2 content reading error");
     }
@@ -113,7 +113,7 @@ scp_result resolve_numbers_1_2(const sc_char *operator_name, scp_operand *param1
     return SCP_RESULT_TRUE;
 }
 
-scp_result resolve_numbers_2_3(const sc_char *operator_name, scp_operand *param1, scp_operand *param2, double *num1, double *num2)
+scp_result resolve_numbers_2_3(sc_memory_context *context, const sc_char *operator_name, scp_operand *param1, scp_operand *param2, double *num1, double *num2)
 {
     sc_stream *stream;
     sc_uint32 length = 0, read_length = 0;
@@ -122,24 +122,24 @@ scp_result resolve_numbers_2_3(const sc_char *operator_name, scp_operand *param1
     {
         return print_error(operator_name, "Parameters 2 and 3 must have FIXED modifier");
     }
-    if (SC_FALSE == sc_memory_is_element(param1->addr))
+    if (SC_FALSE == sc_memory_is_element(context, param1->addr))
     {
         return print_error(operator_name, "Parameter 2 has not value");
     }
-    if (SC_FALSE == sc_memory_is_element(param2->addr))
+    if (SC_FALSE == sc_memory_is_element(context, param2->addr))
     {
         return print_error(operator_name, "Parameter 3 has not value");
     }
-    if (check_type(param1->addr, scp_type_link) == SCP_RESULT_FALSE || check_type(param2->addr, scp_type_link) == SCP_RESULT_FALSE)
+    if (check_type(context, param1->addr, scp_type_link) == SCP_RESULT_FALSE || check_type(context, param2->addr, scp_type_link) == SCP_RESULT_FALSE)
     {
         return print_error(operator_name, "Parameters 2 and 3 must have link type");
     }
-    if (SCP_RESULT_FALSE == check_numeric_type(param1->addr) || SCP_RESULT_FALSE == check_numeric_type(param2->addr))
+    if (SCP_RESULT_FALSE == check_numeric_type(context, param1->addr) || SCP_RESULT_FALSE == check_numeric_type(context, param2->addr))
     {
         return print_error(operator_name, "Parameters 2 and 3 must have numeric format");
     }
 
-    if (sc_memory_get_link_content(param1->addr, &stream) != SC_RESULT_OK)
+    if (sc_memory_get_link_content(context, param1->addr, &stream) != SC_RESULT_OK)
     {
         return print_error(operator_name, "Parameter 2 content reading error");
     }
@@ -147,7 +147,7 @@ scp_result resolve_numbers_2_3(const sc_char *operator_name, scp_operand *param1
     data1 = calloc(length, sizeof(sc_char));
     sc_stream_read_data(stream, data1, length, &read_length);
     sc_stream_free(stream);
-    if (sc_memory_get_link_content(param2->addr, &stream) != SC_RESULT_OK)
+    if (sc_memory_get_link_content(context, param2->addr, &stream) != SC_RESULT_OK)
     {
         return print_error(operator_name, "Parameter 3 content reading error");
     }
@@ -163,7 +163,7 @@ scp_result resolve_numbers_2_3(const sc_char *operator_name, scp_operand *param1
     return SCP_RESULT_TRUE;
 }
 
-scp_result resolve_number_2(const sc_char *operator_name, scp_operand *param1, double *num1)
+scp_result resolve_number_2(sc_memory_context *context, const sc_char *operator_name, scp_operand *param1, double *num1)
 {
     sc_stream *stream;
     sc_uint32 length = 0, read_length = 0;
@@ -172,20 +172,20 @@ scp_result resolve_number_2(const sc_char *operator_name, scp_operand *param1, d
     {
         return print_error(operator_name, "Parameter 2 must have FIXED modifier");
     }
-    if (SC_FALSE == sc_memory_is_element(param1->addr))
+    if (SC_FALSE == sc_memory_is_element(context, param1->addr))
     {
         return print_error(operator_name, "Parameter 2 has not value");
     }
-    if (check_type(param1->addr, scp_type_link) == SCP_RESULT_FALSE)
+    if (check_type(context, param1->addr, scp_type_link) == SCP_RESULT_FALSE)
     {
         return print_error(operator_name, "Parameter 2 must have link type");
     }
-    if (SCP_RESULT_FALSE == check_numeric_type(param1->addr))
+    if (SCP_RESULT_FALSE == check_numeric_type(context, param1->addr))
     {
         return print_error(operator_name, "Parameter 2 must have numeric format");
     }
 
-    if (sc_memory_get_link_content(param1->addr, &stream) != SC_RESULT_OK)
+    if (sc_memory_get_link_content(context, param1->addr, &stream) != SC_RESULT_OK)
     {
         return print_error(operator_name, "Parameter 2 content reading error");
     }
@@ -198,20 +198,20 @@ scp_result resolve_number_2(const sc_char *operator_name, scp_operand *param1, d
     return SCP_RESULT_TRUE;
 }
 
-scp_result check_link_parameter_1(const sc_char *operator_name, scp_operand *param1)
+scp_result check_link_parameter_1(sc_memory_context *context, const sc_char *operator_name, scp_operand *param1)
 {
     if (SCP_ASSIGN == param1->param_type)
     {
-        param1->addr = sc_memory_link_new();
+        param1->addr = sc_memory_link_new(context);
         //! TODO Add numeric class for link
     }
     else
     {
-        if (SC_FALSE == sc_memory_is_element(param1->addr))
+        if (SC_FALSE == sc_memory_is_element(context, param1->addr))
         {
             return print_error(operator_name, "Parameter 1 has not value");
         }
-        if (check_type(param1->addr, scp_type_link) == SCP_RESULT_FALSE)
+        if (check_type(context, param1->addr, scp_type_link) == SCP_RESULT_FALSE)
         {
             return print_error(operator_name, "Parameter 1 must have link type");
         }
@@ -219,13 +219,13 @@ scp_result check_link_parameter_1(const sc_char *operator_name, scp_operand *par
     return SCP_RESULT_TRUE;
 }
 
-scp_result write_link_content_number(double data, sc_addr link)
+scp_result write_link_content_number(sc_memory_context *context, double data, sc_addr link)
 {
     sc_stream *stream;
     char *content = calloc(NUMBER_PRECISE, sizeof(sc_char));
     snprintf(content, NUMBER_PRECISE, "%lf", data);
     stream = sc_stream_memory_new(content, strlen(content), SC_STREAM_READ, SC_FALSE);
-    if (SC_RESULT_OK != sc_memory_set_link_content(link, stream))
+    if (SC_RESULT_OK != sc_memory_set_link_content(context, link, stream))
     {
         free(content);
         sc_stream_free(stream);
