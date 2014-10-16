@@ -27,8 +27,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 typedef sc_iterator5 scp_iterator5;
 
-scp_iterator5 *scp_iterator5_new(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5);
-scp_result scp_iterator5_next(scp_iterator5 *iter, scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5);
+scp_iterator5 *scp_iterator5_new(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5);
+scp_result scp_iterator5_next(sc_memory_context *context, scp_iterator5 *iter, scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5);
 void scp_iterator5_free(scp_iterator5 *iter);
 
 #endif // SCP_ITERATOR5_H

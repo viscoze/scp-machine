@@ -25,7 +25,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scp_iterator5.h"
 #include "scp_utils.h"
 
-scp_iterator5 *scp_iterator5_new(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5)
+scp_iterator5 *scp_iterator5_new(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5)
 {
     sc_uint32 fixed1 = 0;
     sc_uint32 fixed3 = 0;
@@ -43,7 +43,7 @@ scp_iterator5 *scp_iterator5_new(scp_operand *param1, scp_operand *param2, scp_o
     }
     if (param1->param_type == SCP_FIXED)
     {
-        if (SC_FALSE == sc_memory_is_element(param1->addr))
+        if (SC_FALSE == sc_memory_is_element(context, param1->addr))
         {
             print_error("SCP ITERATOR 5 NEW", "Parameter 1 has modifier FIXED, but has not value");
             return nullptr;
@@ -52,7 +52,7 @@ scp_iterator5 *scp_iterator5_new(scp_operand *param1, scp_operand *param2, scp_o
     }
     if (param3->param_type == SCP_FIXED)
     {
-        if (SC_FALSE == sc_memory_is_element(param3->addr))
+        if (SC_FALSE == sc_memory_is_element(context, param3->addr))
         {
             print_error("SCP ITERATOR 5 NEW", "Parameter 3 has modifier FIXED, but has not value");
             return nullptr;
@@ -61,7 +61,7 @@ scp_iterator5 *scp_iterator5_new(scp_operand *param1, scp_operand *param2, scp_o
     }
     if (param5->param_type == SCP_FIXED)
     {
-        if (SC_FALSE == sc_memory_is_element(param5->addr))
+        if (SC_FALSE == sc_memory_is_element(context, param5->addr))
         {
             print_error("SCP ITERATOR 5 NEW", "Parameter 5 has modifier FIXED, but has not value");
             return nullptr;
@@ -72,24 +72,24 @@ scp_iterator5 *scp_iterator5_new(scp_operand *param1, scp_operand *param2, scp_o
     switch (fixed)
     {
         case 0x00001:
-            return (scp_iterator5 *)sc_iterator5_f_a_a_a_a_new(param1->addr, param2->element_type, param3->element_type, param4->element_type, param5->element_type);
+            return (scp_iterator5 *)sc_iterator5_f_a_a_a_a_new(context, param1->addr, param2->element_type, param3->element_type, param4->element_type, param5->element_type);
         case 0x00100:
-            return (scp_iterator5 *)sc_iterator5_a_a_f_a_a_new(param1->element_type, param2->element_type, param3->addr, param4->element_type, param5->element_type);
+            return (scp_iterator5 *)sc_iterator5_a_a_f_a_a_new(context, param1->element_type, param2->element_type, param3->addr, param4->element_type, param5->element_type);
         case 0x10001:
-            return (scp_iterator5 *)sc_iterator5_f_a_a_a_f_new(param1->addr, param2->element_type, param3->element_type, param4->element_type, param5->addr);
+            return (scp_iterator5 *)sc_iterator5_f_a_a_a_f_new(context, param1->addr, param2->element_type, param3->element_type, param4->element_type, param5->addr);
         case 0x10100:
-            return (scp_iterator5 *)sc_iterator5_a_a_f_a_f_new(param1->element_type, param2->element_type, param3->addr, param4->element_type, param5->addr);
+            return (scp_iterator5 *)sc_iterator5_a_a_f_a_f_new(context, param1->element_type, param2->element_type, param3->addr, param4->element_type, param5->addr);
         case 0x00101:
-            return (scp_iterator5 *)sc_iterator5_f_a_f_a_a_new(param1->addr, param2->element_type, param3->addr, param4->element_type, param5->element_type);
+            return (scp_iterator5 *)sc_iterator5_f_a_f_a_a_new(context, param1->addr, param2->element_type, param3->addr, param4->element_type, param5->element_type);
         case 0x10101:
-            return (scp_iterator5 *)sc_iterator5_f_a_f_a_f_new(param1->addr, param2->element_type, param3->addr, param4->element_type, param5->addr);
+            return (scp_iterator5 *)sc_iterator5_f_a_f_a_f_new(context, param1->addr, param2->element_type, param3->addr, param4->element_type, param5->addr);
         default:
             print_error("SCP ITERATOR 5 NEW", "Unsupported parameter type combination");
             return nullptr;
     }
 }
 
-scp_result scp_iterator5_next(scp_iterator5 *iter, scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5)
+scp_result scp_iterator5_next(sc_memory_context *context, scp_iterator5 *iter, scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5)
 {
     sc_uint32 fixed1 = 0;
     sc_uint32 fixed3 = 0;
@@ -105,7 +105,7 @@ scp_result scp_iterator5_next(scp_iterator5 *iter, scp_operand *param1, scp_oper
     }
     if (param1->param_type == SCP_FIXED)
     {
-        if (SC_FALSE == sc_memory_is_element(param1->addr))
+        if (SC_FALSE == sc_memory_is_element(context, param1->addr))
         {
             return print_error("SCP ITERATOR 5 NEW", "Parameter 1 has modifier FIXED, but has not value");
         }
@@ -113,7 +113,7 @@ scp_result scp_iterator5_next(scp_iterator5 *iter, scp_operand *param1, scp_oper
     }
     if (param3->param_type == SCP_FIXED)
     {
-        if (SC_FALSE == sc_memory_is_element(param3->addr))
+        if (SC_FALSE == sc_memory_is_element(context, param3->addr))
         {
             return print_error("SCP ITERATOR 5 NEW", "Parameter 3 has modifier FIXED, but has not value");
         }
@@ -121,7 +121,7 @@ scp_result scp_iterator5_next(scp_iterator5 *iter, scp_operand *param1, scp_oper
     }
     if (param5->param_type == SCP_FIXED)
     {
-        if (SC_FALSE == sc_memory_is_element(param5->addr))
+        if (SC_FALSE == sc_memory_is_element(context, param5->addr))
         {
             return print_error("SCP ITERATOR 5 NEW", "Parameter 5 has modifier FIXED, but has not value");
         }

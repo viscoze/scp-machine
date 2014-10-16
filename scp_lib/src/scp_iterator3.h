@@ -26,8 +26,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 typedef sc_iterator3 scp_iterator3;
 
-scp_iterator3 *scp_iterator3_new(scp_operand *param1, scp_operand *param2, scp_operand *param3);
-scp_result scp_iterator3_next(scp_iterator3 *iter, scp_operand *param1, scp_operand *param2, scp_operand *param3);
+scp_iterator3 *scp_iterator3_new(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3);
+scp_result scp_iterator3_next(sc_memory_context *context, scp_iterator3 *iter, scp_operand *param1, scp_operand *param2, scp_operand *param3);
 void scp_iterator3_free(scp_iterator3 *iter);
 
 #endif // SCP_ITERATOR3_H
