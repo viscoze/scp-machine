@@ -25,12 +25,12 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #define SCP_ERASESETSTR5_H
 #include "scp_types.h"
 
-scp_result eraseSetStr5_f_a_a_a_a(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5);
-scp_result eraseSetStr5_a_a_f_a_a(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5);
-scp_result eraseSetStr5_a_a_a_a_f(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5);
-scp_result eraseSetStr5_f_a_f_a_a(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5);
-scp_result eraseSetStr5_f_a_a_a_f(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5);
-scp_result eraseSetStr5_a_a_f_a_f(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5);
-scp_result eraseSetStr5_f_a_f_a_f(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5);
+scp_result eraseSetStr5_f_a_a_a_a(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5);
+scp_result eraseSetStr5_a_a_f_a_a(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5);
+scp_result eraseSetStr5_a_a_a_a_f(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5);
+scp_result eraseSetStr5_f_a_f_a_a(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5);
+scp_result eraseSetStr5_f_a_a_a_f(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5);
+scp_result eraseSetStr5_a_a_f_a_f(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5);
+scp_result eraseSetStr5_f_a_f_a_f(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5);
 
 #endif // SCP_ERASESETSTR5_H
