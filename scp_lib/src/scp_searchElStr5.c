@@ -26,9 +26,9 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <stdio.h>
 
-scp_result searchElStr5_f_a_a_a_a(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5)
+scp_result searchElStr5_f_a_a_a_a(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5)
 {
-    sc_iterator5 *it = sc_iterator5_f_a_a_a_a_new(param1->addr, param2->element_type, param3->element_type, param4->element_type, param5->element_type);
+    sc_iterator5 *it = sc_iterator5_f_a_a_a_a_new(context, param1->addr, param2->element_type, param3->element_type, param4->element_type, param5->element_type);
     if (SC_TRUE == sc_iterator5_next(it))
     {
         param2->addr = sc_iterator5_value(it, 1);
@@ -42,9 +42,9 @@ scp_result searchElStr5_f_a_a_a_a(scp_operand *param1, scp_operand *param2, scp_
     return SCP_RESULT_FALSE;
 }
 //scp_result searchElStr5_a_f_a_a_a(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5){}
-scp_result searchElStr5_a_a_f_a_a(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5)
+scp_result searchElStr5_a_a_f_a_a(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5)
 {
-    sc_iterator5 *it = sc_iterator5_a_a_f_a_a_new(param1->element_type, param2->element_type, param3->addr, param4->element_type, param5->element_type);
+    sc_iterator5 *it = sc_iterator5_a_a_f_a_a_new(context, param1->element_type, param2->element_type, param3->addr, param4->element_type, param5->element_type);
     if (SC_TRUE == sc_iterator5_next(it))
     {
         param1->addr = sc_iterator5_value(it, 0);
@@ -58,15 +58,15 @@ scp_result searchElStr5_a_a_f_a_a(scp_operand *param1, scp_operand *param2, scp_
     return SCP_RESULT_FALSE;
 }
 //scp_result searchElStr5_a_a_a_f_a(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5){}
-scp_result searchElStr5_a_a_a_a_f(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5)
+scp_result searchElStr5_a_a_a_a_f(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5)
 {
-    sc_iterator3 *it = sc_iterator3_f_a_a_new(param5->addr, param4->element_type, param2->element_type);
+    sc_iterator3 *it = sc_iterator3_f_a_a_new(context, param5->addr, param4->element_type, param2->element_type);
     if (SC_TRUE == sc_iterator3_next(it))
     {
         param4->addr = sc_iterator3_value(it, 1);
         param2->addr = sc_iterator3_value(it, 2);
-        sc_memory_get_arc_begin(param2->addr, &(param1->addr));
-        sc_memory_get_arc_end(param2->addr, &(param3->addr));
+        sc_memory_get_arc_begin(context, param2->addr, &(param1->addr));
+        sc_memory_get_arc_end(context, param2->addr, &(param3->addr));
         sc_iterator3_free(it);
         return SCP_RESULT_TRUE;
     }
@@ -75,9 +75,9 @@ scp_result searchElStr5_a_a_a_a_f(scp_operand *param1, scp_operand *param2, scp_
 }
 
 //scp_result searchElStr5_f_f_a_a_a(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5){}
-scp_result searchElStr5_f_a_f_a_a(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5)
+scp_result searchElStr5_f_a_f_a_a(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5)
 {
-    sc_iterator5 *it = sc_iterator5_f_a_f_a_a_new(param1->addr, param2->element_type, param3->addr, param4->element_type, param5->element_type);
+    sc_iterator5 *it = sc_iterator5_f_a_f_a_a_new(context, param1->addr, param2->element_type, param3->addr, param4->element_type, param5->element_type);
     if (SC_TRUE == sc_iterator5_next(it))
     {
         param2->addr = sc_iterator5_value(it, 1);
@@ -90,9 +90,9 @@ scp_result searchElStr5_f_a_f_a_a(scp_operand *param1, scp_operand *param2, scp_
     return SCP_RESULT_FALSE;
 }
 //scp_result searchElStr5_f_a_a_f_a(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5){}
-scp_result searchElStr5_f_a_a_a_f(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5)
+scp_result searchElStr5_f_a_a_a_f(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5)
 {
-    sc_iterator5 *it = sc_iterator5_f_a_a_a_f_new(param1->addr, param2->element_type, param3->element_type, param4->element_type, param5->addr);
+    sc_iterator5 *it = sc_iterator5_f_a_a_a_f_new(context, param1->addr, param2->element_type, param3->element_type, param4->element_type, param5->addr);
     if (SC_TRUE == sc_iterator5_next(it))
     {
         param2->addr = sc_iterator5_value(it, 1);
@@ -108,9 +108,9 @@ scp_result searchElStr5_f_a_a_a_f(scp_operand *param1, scp_operand *param2, scp_
 //scp_result searchElStr5_a_f_a_f_a(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5){}
 //scp_result searchElStr5_a_f_a_a_f(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5){}
 //scp_result searchElStr5_a_a_f_f_a(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5){}
-scp_result searchElStr5_a_a_f_a_f(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5)
+scp_result searchElStr5_a_a_f_a_f(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5)
 {
-    sc_iterator5 *it = sc_iterator5_a_a_f_a_f_new(param1->element_type, param2->element_type, param3->addr, param4->element_type, param5->addr);
+    sc_iterator5 *it = sc_iterator5_a_a_f_a_f_new(context, param1->element_type, param2->element_type, param3->addr, param4->element_type, param5->addr);
     if (SC_TRUE == sc_iterator5_next(it))
     {
         param1->addr = sc_iterator5_value(it, 0);
@@ -128,9 +128,9 @@ scp_result searchElStr5_a_a_f_a_f(scp_operand *param1, scp_operand *param2, scp_
 //scp_result searchElStr5_f_f_a_f_a(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5){}
 //scp_result searchElStr5_f_f_a_a_f(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5){}
 //scp_result searchElStr5_f_a_f_f_a(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5){}
-scp_result searchElStr5_f_a_f_a_f(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5)
+scp_result searchElStr5_f_a_f_a_f(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5)
 {
-    sc_iterator5 *it = sc_iterator5_f_a_f_a_f_new(param1->addr, param2->element_type, param3->addr, param4->element_type, param5->addr);
+    sc_iterator5 *it = sc_iterator5_f_a_f_a_f_new(context, param1->addr, param2->element_type, param3->addr, param4->element_type, param5->addr);
     if (SC_TRUE == sc_iterator5_next(it))
     {
         param2->addr = sc_iterator5_value(it, 1);
@@ -153,7 +153,7 @@ scp_result searchElStr5_f_a_f_a_f(scp_operand *param1, scp_operand *param2, scp_
 //scp_result searchElStr5_f_a_f_f_f(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5){}
 //scp_result searchElStr5_a_f_f_f_f(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5){}
 
-scp_result searchElStr5_f_f_f_f_f(scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5)
+scp_result searchElStr5_f_f_f_f_f(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4, scp_operand *param5)
 {
     sc_addr arc1 = param2->addr;
     sc_addr arc2 = param4->addr;
@@ -161,19 +161,19 @@ scp_result searchElStr5_f_f_f_f_f(scp_operand *param1, scp_operand *param2, scp_
     sc_addr end1;
     sc_addr begin2;
     sc_addr end2;
-    if (SC_RESULT_OK != sc_memory_get_arc_begin(arc1, &begin1))
+    if (SC_RESULT_OK != sc_memory_get_arc_begin(context, arc1, &begin1))
     {
         return SCP_RESULT_ERROR;
     }
-    if (SC_RESULT_OK != sc_memory_get_arc_end(arc1, &end1))
+    if (SC_RESULT_OK != sc_memory_get_arc_end(context, arc1, &end1))
     {
         return SCP_RESULT_ERROR;
     }
-    if (SC_RESULT_OK != sc_memory_get_arc_begin(arc2, &begin2))
+    if (SC_RESULT_OK != sc_memory_get_arc_begin(context, arc2, &begin2))
     {
         return SCP_RESULT_ERROR;
     }
-    if (SC_RESULT_OK != sc_memory_get_arc_end(arc2, &end2))
+    if (SC_RESULT_OK != sc_memory_get_arc_end(context, arc2, &end2))
     {
         return SCP_RESULT_ERROR;
     }

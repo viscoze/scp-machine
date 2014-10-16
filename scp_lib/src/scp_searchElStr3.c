@@ -25,9 +25,9 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scp_searchElStr3.h"
 #include "scp_utils.h"
 
-scp_result searchElStr3_a_a_f(scp_operand *param1, scp_operand *param2, scp_operand *param3)
+scp_result searchElStr3_a_a_f(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3)
 {
-    sc_iterator3 *it = sc_iterator3_a_a_f_new(param1->element_type, param2->element_type, param3->addr);
+    sc_iterator3 *it = sc_iterator3_a_a_f_new(context, param1->element_type, param2->element_type, param3->addr);
     if (SC_TRUE == sc_iterator3_next(it))
     {
         param1->addr = sc_iterator3_value(it, 0);
@@ -38,9 +38,9 @@ scp_result searchElStr3_a_a_f(scp_operand *param1, scp_operand *param2, scp_oper
     sc_iterator3_free(it);
     return SCP_RESULT_FALSE;
 }
-scp_result searchElStr3_f_a_a(scp_operand *param1, scp_operand *param2, scp_operand *param3)
+scp_result searchElStr3_f_a_a(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3)
 {
-    sc_iterator3 *it = sc_iterator3_f_a_a_new(param1->addr, param2->element_type, param3->element_type);
+    sc_iterator3 *it = sc_iterator3_f_a_a_new(context, param1->addr, param2->element_type, param3->element_type);
     if (SC_TRUE == sc_iterator3_next(it))
     {
         param2->addr = sc_iterator3_value(it, 1);
@@ -52,9 +52,9 @@ scp_result searchElStr3_f_a_a(scp_operand *param1, scp_operand *param2, scp_oper
     return SCP_RESULT_FALSE;
 }
 
-scp_result searchElStr3_f_a_f(scp_operand *param1, scp_operand *param2, scp_operand *param3)
+scp_result searchElStr3_f_a_f(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3)
 {
-    sc_iterator3 *it = sc_iterator3_f_a_f_new(param1->addr, param2->element_type, param3->addr);
+    sc_iterator3 *it = sc_iterator3_f_a_f_new(context, param1->addr, param2->element_type, param3->addr);
     if (SC_TRUE == sc_iterator3_next(it))
     {
         param2->addr = sc_iterator3_value(it, 1);
@@ -65,20 +65,20 @@ scp_result searchElStr3_f_a_f(scp_operand *param1, scp_operand *param2, scp_oper
     return SCP_RESULT_FALSE;
 }
 
-scp_result searchElStr3_a_f_a(scp_operand *param1, scp_operand *param2, scp_operand *param3)
+scp_result searchElStr3_a_f_a(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3)
 {
     sc_addr arc = param2->addr;
     sc_addr begin;
     sc_addr end;
-    if (SC_RESULT_OK != sc_memory_get_arc_begin(arc, &begin))
+    if (SC_RESULT_OK != sc_memory_get_arc_begin(context, arc, &begin))
     {
         return SCP_RESULT_ERROR;
     }
-    if (SC_RESULT_OK != sc_memory_get_arc_end(arc, &end))
+    if (SC_RESULT_OK != sc_memory_get_arc_end(context, arc, &end))
     {
         return SCP_RESULT_ERROR;
     }
-    if (SCP_RESULT_TRUE == check_type(begin, param1->element_type) && SCP_RESULT_TRUE == check_type(end, param3->element_type))
+    if (SCP_RESULT_TRUE == check_type(context, begin, param1->element_type) && SCP_RESULT_TRUE == check_type(context, end, param3->element_type))
     {
         param1->addr = begin;
         param3->addr = end;
@@ -89,22 +89,22 @@ scp_result searchElStr3_a_f_a(scp_operand *param1, scp_operand *param2, scp_oper
         return SCP_RESULT_FALSE;
     }
 }
-scp_result searchElStr3_f_f_a(scp_operand *param1, scp_operand *param2, scp_operand *param3)
+scp_result searchElStr3_f_f_a(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3)
 {
     sc_addr arc = param2->addr;
     sc_addr begin;
-    if (SC_RESULT_OK != sc_memory_get_arc_begin(arc, &begin))
+    if (SC_RESULT_OK != sc_memory_get_arc_begin(context, arc, &begin))
     {
         return SCP_RESULT_ERROR;
     }
     if (SC_ADDR_IS_EQUAL(param1->addr, begin))
     {
         sc_addr end;
-        if (SC_RESULT_OK != sc_memory_get_arc_end(arc, &end))
+        if (SC_RESULT_OK != sc_memory_get_arc_end(context, arc, &end))
         {
             return SCP_RESULT_ERROR;
         }
-        if (SCP_RESULT_TRUE == check_type(end, param3->element_type))
+        if (SCP_RESULT_TRUE == check_type(context, end, param3->element_type))
         {
             return SCP_RESULT_FALSE;
         }
@@ -116,22 +116,22 @@ scp_result searchElStr3_f_f_a(scp_operand *param1, scp_operand *param2, scp_oper
         return SCP_RESULT_FALSE;
     }
 }
-scp_result searchElStr3_a_f_f(scp_operand *param1, scp_operand *param2, scp_operand *param3)
+scp_result searchElStr3_a_f_f(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3)
 {
     sc_addr arc = param2->addr;
     sc_addr end;
-    if (SC_RESULT_OK != sc_memory_get_arc_end(arc, &end))
+    if (SC_RESULT_OK != sc_memory_get_arc_end(context, arc, &end))
     {
         return SCP_RESULT_ERROR;
     }
     if (SC_ADDR_IS_EQUAL(param3->addr, end))
     {
         sc_addr begin;
-        if (SC_RESULT_OK != sc_memory_get_arc_begin(arc, &begin))
+        if (SC_RESULT_OK != sc_memory_get_arc_begin(context, arc, &begin))
         {
             return SCP_RESULT_ERROR;
         }
-        if (SCP_RESULT_TRUE == check_type(begin, param1->element_type))
+        if (SCP_RESULT_TRUE == check_type(context, begin, param1->element_type))
         {
             return SCP_RESULT_FALSE;
         }
@@ -144,16 +144,16 @@ scp_result searchElStr3_a_f_f(scp_operand *param1, scp_operand *param2, scp_oper
     }
 }
 
-scp_result searchElStr3_f_f_f(scp_operand *param1, scp_operand *param2, scp_operand *param3)
+scp_result searchElStr3_f_f_f(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3)
 {
     sc_addr arc = param2->addr;
     sc_addr begin;
     sc_addr end;
-    if (SC_RESULT_OK != sc_memory_get_arc_begin(arc, &begin))
+    if (SC_RESULT_OK != sc_memory_get_arc_begin(context, arc, &begin))
     {
         return SCP_RESULT_ERROR;
     }
-    if (SC_RESULT_OK != sc_memory_get_arc_end(arc, &end))
+    if (SC_RESULT_OK != sc_memory_get_arc_end(context, arc, &end))
     {
         return SCP_RESULT_ERROR;
     }
