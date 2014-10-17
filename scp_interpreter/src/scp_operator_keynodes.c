@@ -24,6 +24,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "sc_memory_headers.h"
 #include "scp_operator_keynodes.h"
 #include "scp_interpreter_utils.h"
+#include "scp_keynodes.h"
 
 scp_operand scp_operator_atomic_type;
 
@@ -86,11 +87,11 @@ scp_operand op_sys_wait;
 scp_operand op_syncronize;
 
 #define resolve_keynode(keynode, keynode_str) \
-    if (sc_helper_resolve_system_identifier(keynode_str, &(keynode)) == SC_FALSE) \
+    if (sc_helper_resolve_system_identifier(s_default_ctx, keynode_str, &(keynode)) == SC_FALSE) \
     {\
         g_warning("Can't find element with system identifier: %s", keynode_str); \
-        keynode = sc_memory_node_new(0); \
-        if (sc_helper_set_system_identifier(keynode, keynode_str, strlen(keynode_str)) != SC_RESULT_OK) \
+        keynode = sc_memory_node_new(s_default_ctx, 0); \
+        if (sc_helper_set_system_identifier(s_default_ctx, keynode, keynode_str, strlen(keynode_str)) != SC_RESULT_OK) \
             return SCP_RESULT_ERROR; \
         g_message("Created element with system identifier: %s", keynode_str); \
     }

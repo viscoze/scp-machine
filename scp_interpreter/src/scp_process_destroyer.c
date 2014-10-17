@@ -140,7 +140,7 @@ sc_result destroy_scp_process(const sc_event *event, sc_addr arg)
     while (SCP_RESULT_TRUE == scp_iterator3_next(s_default_ctx, it, &scp_process_node, &arc1, &curr_operator))
     {
         curr_operator.param_type = SCP_FIXED;
-        if (SCP_RESULT_TRUE != resolve_operator_type(&curr_operator, &operator_type))
+        if (SCP_RESULT_TRUE != resolve_operator_type(s_default_ctx, &curr_operator, &operator_type))
         {
             curr_operator.param_type = SCP_ASSIGN;
             delete_vars_from_set(s_default_ctx, &curr_operator, params);
@@ -214,7 +214,7 @@ sc_result destroy_scp_process(const sc_event *event, sc_addr arg)
 
 scp_result scp_process_destroyer_init()
 {
-    event_process_destroy = sc_event_new(useless_scp_process.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, destroy_scp_process, 0);
+    event_process_destroy = sc_event_new(s_default_ctx, useless_scp_process.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, destroy_scp_process, 0);
     if (event_process_destroy == nullptr)
         return SCP_RESULT_ERROR;
     return SCP_RESULT_TRUE;

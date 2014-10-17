@@ -120,11 +120,11 @@ scp_operand ordinal_set_rrels[ORDINAL_RRELS_COUNT + 1]; // 0 element reserved
 sc_memory_context * s_default_ctx;
 
 #define resolve_keynode(keynode, keynode_str) \
-    if (sc_helper_resolve_system_identifier(keynode_str, &(keynode)) == SC_FALSE) \
+    if (sc_helper_resolve_system_identifier(s_default_ctx, keynode_str, &(keynode)) == SC_FALSE) \
     {\
         g_warning("Can't find element with system identifier: %s", keynode_str); \
-        keynode = sc_memory_node_new(0); \
-        if (sc_helper_set_system_identifier(keynode, keynode_str, strlen(keynode_str)) != SC_RESULT_OK) \
+        keynode = sc_memory_node_new(s_default_ctx, 0); \
+        if (sc_helper_set_system_identifier(s_default_ctx, keynode, keynode_str, strlen(keynode_str)) != SC_RESULT_OK) \
             return SCP_RESULT_ERROR; \
         g_message("Created element with system identifier: %s", keynode_str); \
     }
@@ -133,6 +133,7 @@ scp_result scp_keynodes_init()
 {
     scp_uint32 i = 0;
     char name[12];
+
     MAKE_DEFAULT_OPERAND_FIXED(scp_program);
     MAKE_DEFAULT_OPERAND_FIXED(agent_scp_program);
 
@@ -294,8 +295,5 @@ scp_result scp_keynodes_init()
         snprintf(name, 12, "rrel_set_%d", i);
         resolve_keynode(ordinal_set_rrels[i].addr, name);
     }
-
-    s_default_ctx = sc_memory_context_new(sc_access_lvl_make_min);;
-
     return init_operator_keynodes();
 }

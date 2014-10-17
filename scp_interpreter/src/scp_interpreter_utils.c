@@ -42,7 +42,7 @@ scp_result check_scp_interpreter_question(sc_memory_context *context, scp_operan
         return SCP_RESULT_FALSE;
     }
     authors.param_type = SCP_FIXED;
-    if (SCP_RESULT_TRUE != searchElStr3(context, (&authors, &arc1, &abstract_scp_machine))
+    if (SCP_RESULT_TRUE != searchElStr3(context, &authors, &arc1, &abstract_scp_machine))
     {
         return SCP_RESULT_FALSE;
     }

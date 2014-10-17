@@ -243,7 +243,7 @@ sc_result create_scp_process(const sc_event *event, sc_addr arg)
         return SC_RESULT_ERROR;
     }
     arc1.erase = SCP_TRUE;
-    eraseEl(&arc1);
+    eraseEl(s_default_ctx, &arc1);
     MAKE_DEFAULT_ARC_ASSIGN(arc1);
 
     if (SCP_RESULT_TRUE != searchElStr5(s_default_ctx, &question_node, &arc1, &scp_procedure_node, &arc2, &(ordinal_rrels[1])))
@@ -316,7 +316,7 @@ sc_result create_scp_process(const sc_event *event, sc_addr arg)
     g_hash_table_iter_init(&iter, pattern_hash);
     while (TRUE == g_hash_table_iter_next(&iter, &key, &value))
     {
-        gen_copy(resolve_sc_addr_from_pointer(key), copies_hash, pattern_hash);
+        gen_copy(s_default_ctx, resolve_sc_addr_from_pointer(key), copies_hash, pattern_hash);
     }
 
     g_hash_table_destroy(copies_hash);
@@ -331,7 +331,7 @@ sc_result create_scp_process(const sc_event *event, sc_addr arg)
     {
         init_flag = SC_FALSE;
         init_operator.param_type = SCP_FIXED;
-        set_active_operator(&init_operator);
+        set_active_operator(s_default_ctx, &init_operator);
         init_operator.param_type = SCP_ASSIGN;
     }
     scp_iterator5_free(it);
@@ -339,7 +339,7 @@ sc_result create_scp_process(const sc_event *event, sc_addr arg)
     if (SC_TRUE == init_flag)
     {
         print_error("scp-process interpreting", "Can't find init operator");
-        mark_scp_process_as_useless(&scp_process_node);
+        mark_scp_process_as_useless(s_default_ctx, &scp_process_node);
     }
 
     return SC_RESULT_OK;
@@ -347,7 +347,7 @@ sc_result create_scp_process(const sc_event *event, sc_addr arg)
 
 scp_result scp_process_creator_init()
 {
-    event_program_iterpretation = sc_event_new(question_initiated.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, create_scp_process, 0);
+    event_program_iterpretation = sc_event_new(s_default_ctx, question_initiated.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, create_scp_process, 0);
     if (event_program_iterpretation == nullptr)
         return SCP_RESULT_ERROR;
     return SCP_RESULT_TRUE;

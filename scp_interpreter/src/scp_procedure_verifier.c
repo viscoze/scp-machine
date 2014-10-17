@@ -99,10 +99,10 @@ scp_result verify_all_scp_programs(sc_memory_context *context)
 
 scp_result scp_program_verifier_init()
 {
-    event_procedure_verifying = sc_event_new(formed_scp_program.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)verify_scp_program, 0);
+    event_procedure_verifying = sc_event_new(s_default_ctx, formed_scp_program.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)verify_scp_program, 0);
     if (event_procedure_verifying == nullptr)
         return SCP_RESULT_ERROR;
-    verify_all_scp_programs();
+    verify_all_scp_programs(s_default_ctx);
     return SCP_RESULT_TRUE;
 }
 

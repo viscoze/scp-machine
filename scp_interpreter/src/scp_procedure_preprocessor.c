@@ -45,7 +45,7 @@ void append_to_set(sc_memory_context *context, gpointer key, gpointer value, gpo
 
 void gen_set_from_hash(GHashTable *table, scp_operand *set)
 {
-    g_hash_table_foreach(table, append_to_set, set);
+    g_hash_table_foreach(table, (GHFunc)append_to_set, set);
 }
 
 void append_all_relation_elements_to_hash_with_modifiers(sc_memory_context *context, GHashTable *table, scp_operand *set, scp_operand *parameter_set, scp_operand *const_set, scp_operand *vars_set)
@@ -356,8 +356,8 @@ scp_result gen_system_structures(sc_memory_context *context, scp_operand *operat
                     append_all_set_elements_to_hash_with_modifiers(context, table, &curr_operand, parameter_set, const_set, vars_set);
                 }
 
-                if (((SCP_RESULT_TRUE == ifCoin(context, &operator_type, &op_sys_gen)) || (SCP_RESULT_TRUE == ifCoin(&operator_type, &op_sys_search))) &&
-                    ((SCP_RESULT_TRUE == ifCoin(context, &modifier, ordinal_rrels + 2)) || (SCP_RESULT_TRUE == ifCoin(&modifier, ordinal_rrels + 3))))
+                if (((SCP_RESULT_TRUE == ifCoin(context, &operator_type, &op_sys_gen)) || (SCP_RESULT_TRUE == ifCoin(context, &operator_type, &op_sys_search))) &&
+                    ((SCP_RESULT_TRUE == ifCoin(context, &modifier, ordinal_rrels + 2)) || (SCP_RESULT_TRUE == ifCoin(context, &modifier, ordinal_rrels + 3))))
                 {
                     cop_const = SCP_TRUE;
                     append_all_relation_elements_to_hash_with_modifiers(context, table, &curr_operand, parameter_set, const_set, vars_set);
@@ -431,9 +431,9 @@ scp_result gen_system_structures(sc_memory_context *context, scp_operand *operat
     }
     scp_iterator3_free(it);
 
-    cantorize_set(const_set);
-    cantorize_set(copying_consts_set);
-    cantorize_set(vars_set);
+    cantorize_set(context, const_set);
+    cantorize_set(context, copying_consts_set);
+    cantorize_set(context, vars_set);
     //printEl(copying_consts_set);
     //printEl(vars_set);
     //printEl(const_set);
@@ -474,7 +474,7 @@ sc_result preprocess_scp_procedure(const sc_event *event, sc_addr arg)
         return SC_RESULT_ERROR;
     }
     arc1.erase = SCP_TRUE;
-    eraseEl(&arc1);
+    eraseEl(s_default_ctx, &arc1);
 
     MAKE_DEFAULT_ARC_ASSIGN(arc1);
     MAKE_COMMON_ARC_ASSIGN(arc3);
@@ -523,7 +523,7 @@ sc_result preprocess_scp_procedure(const sc_event *event, sc_addr arg)
 
 scp_result scp_procedure_preprocessor_init()
 {
-    event_procedure_preprocessing = sc_event_new(correct_scp_program.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)preprocess_scp_procedure, 0);
+    event_procedure_preprocessing = sc_event_new(s_default_ctx, correct_scp_program.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)preprocess_scp_procedure, 0);
     if (event_procedure_preprocessing == nullptr)
         return SCP_RESULT_ERROR;
     return SCP_RESULT_TRUE;

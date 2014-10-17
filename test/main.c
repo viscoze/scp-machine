@@ -8,10 +8,10 @@
 #include <glib.h>
 #include <unistd.h>
 
-sc_bool check_type(sc_addr element, sc_type input_type)
+sc_bool check_type(sc_memory_context *context, sc_addr element, sc_type input_type)
 {
     sc_type type;
-    if (SC_RESULT_OK != sc_memory_get_element_type(element, &type))
+    if (SC_RESULT_OK != sc_memory_get_element_type(context, element, &type))
     {
         return SC_FALSE;
     }
@@ -26,21 +26,22 @@ sc_bool check_type(sc_addr element, sc_type input_type)
     return SC_FALSE;
 }
 
-sc_result printElem(sc_addr element)
+sc_result printElem(sc_memory_context *context, sc_addr element)
 {
     sc_addr addr2, addr3;
     sc_addr idtf;
     sc_iterator3 *it = nullptr;
     sc_uint32 out_c = 0, in_c = 0;
-    if (SC_FALSE == sc_memory_is_element(element)){
+    if (SC_FALSE == sc_memory_is_element(context, element))
+    {
         return SC_RESULT_ERROR;
     }
-    if (SC_RESULT_OK == sc_helper_get_system_identifier(element, &idtf))
+    if (SC_RESULT_OK == sc_helper_get_system_identifier(context, element, &idtf))
     {
         sc_stream *stream;
         sc_uint32 length = 0, read_length = 0;
         sc_char *data;
-        sc_memory_get_link_content(idtf, &stream);
+        sc_memory_get_link_content(context, idtf, &stream);
         sc_stream_get_length(stream, &length);
         data = calloc(length + 1, sizeof(sc_char));
         sc_stream_read_data(stream, data, length, &read_length);
@@ -54,7 +55,7 @@ sc_result printElem(sc_addr element)
         printf("\nPrint element: %u|%u =\n", element.seg, element.offset);
     }
 
-    it = sc_iterator3_a_a_f_new(0, 0, element);
+    it = sc_iterator3_a_a_f_new(context, 0, 0, element);
     if (it == 0)
     {
         return SC_RESULT_ERROR;
@@ -66,17 +67,17 @@ sc_result printElem(sc_addr element)
         addr2 = sc_iterator3_value(it, 0);
         addr3 = sc_iterator3_value(it, 1);
 
-        if (SC_RESULT_OK == sc_helper_get_system_identifier(addr3, &idtf))
+        if (SC_RESULT_OK == sc_helper_get_system_identifier(context, addr3, &idtf))
         {
             sc_stream *stream;
             sc_uint32 length = 0, read_length = 0;
             sc_char *data;
-            sc_memory_get_link_content(idtf, &stream);
+            sc_memory_get_link_content(context, idtf, &stream);
             sc_stream_get_length(stream, &length);
             data = calloc(length + 1, sizeof(sc_char));
             sc_stream_read_data(stream, data, length, &read_length);
             data[length] = '\0';
-            if (SC_TRUE == check_type(addr3, sc_type_arc_common))
+            if (SC_TRUE == check_type(context, addr3, sc_type_arc_common))
             {
                 printf("\t%s <= ", data);
             }
@@ -89,7 +90,7 @@ sc_result printElem(sc_addr element)
         }
         else
         {
-            if (SC_TRUE == check_type(addr3, sc_type_arc_common))
+            if (SC_TRUE == check_type(context, addr3, sc_type_arc_common))
             {
                 printf("\t%u|%u <= ", addr3.seg, addr3.offset);
             }
@@ -98,12 +99,12 @@ sc_result printElem(sc_addr element)
                 printf("\t%u|%u <- ", addr3.seg, addr3.offset);
             }
         }
-        if (SC_RESULT_OK == sc_helper_get_system_identifier(addr2, &idtf))
+        if (SC_RESULT_OK == sc_helper_get_system_identifier(context, addr2, &idtf))
         {
             sc_stream *stream;
             sc_uint32 length = 0, read_length = 0;
             sc_char *data;
-            sc_memory_get_link_content(idtf, &stream);
+            sc_memory_get_link_content(context, idtf, &stream);
             sc_stream_get_length(stream, &length);
             data = calloc(length + 1, sizeof(sc_char));
             sc_stream_read_data(stream, data, length, &read_length);
@@ -120,7 +121,7 @@ sc_result printElem(sc_addr element)
     sc_iterator3_free(it);
     printf("Total input arcs: %d\n", in_c);
 
-    it = sc_iterator3_f_a_a_new(element, 0, 0);
+    it = sc_iterator3_f_a_a_new(context, element, 0, 0);
     if (it == 0)
     {
         return SC_RESULT_ERROR;
@@ -132,17 +133,17 @@ sc_result printElem(sc_addr element)
         addr2 = sc_iterator3_value(it, 1);
         addr3 = sc_iterator3_value(it, 2);
 
-        if (SC_RESULT_OK == sc_helper_get_system_identifier(addr2, &idtf))
+        if (SC_RESULT_OK == sc_helper_get_system_identifier(context, addr2, &idtf))
         {
             sc_stream *stream;
             sc_uint32 length = 0, read_length = 0;
             sc_char *data;
-            sc_memory_get_link_content(idtf, &stream);
+            sc_memory_get_link_content(context, idtf, &stream);
             sc_stream_get_length(stream, &length);
             data = calloc(length + 1, sizeof(sc_char));
             sc_stream_read_data(stream, data, length, &read_length);
             data[length] = '\0';
-            if (SC_TRUE == check_type(addr2, sc_type_arc_access))
+            if (SC_TRUE == check_type(context, addr2, sc_type_arc_access))
             {
                 printf("\t%s -> ", data);
             }
@@ -155,7 +156,7 @@ sc_result printElem(sc_addr element)
         }
         else
         {
-            if (SC_TRUE == check_type(addr2, sc_type_arc_access))
+            if (SC_TRUE == check_type(context, addr2, sc_type_arc_access))
             {
                 printf("\t%u|%u -> ", addr2.seg, addr2.offset);
             }
@@ -165,12 +166,12 @@ sc_result printElem(sc_addr element)
             }
 
         }
-        if (SC_RESULT_OK == sc_helper_get_system_identifier(addr3, &idtf))
+        if (SC_RESULT_OK == sc_helper_get_system_identifier(context, addr3, &idtf))
         {
             sc_stream *stream;
             sc_uint32 length = 0, read_length = 0;
             sc_char *data;
-            sc_memory_get_link_content(idtf, &stream);
+            sc_memory_get_link_content(context, idtf, &stream);
             sc_stream_get_length(stream, &length);
             data = calloc(length + 1, sizeof(sc_char));
             sc_stream_read_data(stream, data, length, &read_length);
@@ -189,18 +190,19 @@ sc_result printElem(sc_addr element)
     return SC_RESULT_OK;
 }
 
-sc_result printIdtf(sc_addr element)
+sc_result printIdtf(sc_memory_context *context, sc_addr element)
 {
     sc_addr idtf;
-    if (SC_FALSE == sc_memory_is_element(element)){
+    if (SC_FALSE == sc_memory_is_element(context, element))
+    {
         return SC_RESULT_ERROR;
     }
-    if (SC_RESULT_OK == sc_helper_get_system_identifier(element, &idtf))
+    if (SC_RESULT_OK == sc_helper_get_system_identifier(context, element, &idtf))
     {
         sc_stream *stream;
         sc_uint32 length = 0, read_length = 0;
         sc_char *data;
-        sc_memory_get_link_content(idtf, &stream);
+        sc_memory_get_link_content(context, idtf, &stream);
         sc_stream_get_length(stream, &length);
         data = calloc(length + 1, sizeof(sc_char));
         sc_stream_read_data(stream, data, length, &read_length);
@@ -216,19 +218,19 @@ sc_result printIdtf(sc_addr element)
     return SC_RESULT_OK;
 }
 
-void create_process_test()
+void create_process_test(sc_memory_context *context)
 {
     sc_addr quest, init, nrel_answer, active_sc_agent, agent, p;
     scp_operand op;
 
-    sc_helper_resolve_system_identifier("quest11", &quest);
-    sc_helper_resolve_system_identifier("question_initiated", &init);
-    sc_helper_resolve_system_identifier("nrel_answer", &nrel_answer);
+    sc_helper_resolve_system_identifier(context, "quest11", &quest);
+    sc_helper_resolve_system_identifier(context, "question_initiated", &init);
+    sc_helper_resolve_system_identifier(context, "nrel_answer", &nrel_answer);
 
     //sc_helper_resolve_system_identifier("active_sc_agent", &active_sc_agent);
     //sc_helper_resolve_system_identifier("sc_agent_of_search_of_all_output_arcs_agent_scp", &agent);
 
-    sc_memory_arc_new(sc_type_arc_pos_const_perm, init, quest);
+    sc_memory_arc_new(context, sc_type_arc_pos_const_perm, init, quest);
 
     //sc_addr arc = sc_memory_arc_new(sc_type_arc_pos_const_perm, active_sc_agent, agent);
 
@@ -239,32 +241,34 @@ void create_process_test()
     sc_memory_arc_new(sc_type_arc_pos_const_perm, init, quest);*/
 }
 
-void test_scp_process_creating(int value)
+void test_scp_process_creating(sc_memory_context *context, int value)
 {
     int i = 0;
     for (i = 0; i < value; i++)
     {
-        create_process_test();
+        create_process_test(context);
     }
 }
 
-void test_pattern(){
+void test_pattern(sc_memory_context *context)
+{
     sc_addr pattern;
-    sc_helper_resolve_system_identifier("pattern1", &pattern);
+    sc_helper_resolve_system_identifier(context, "pattern1", &pattern);
 
     scp_operand p, result;
     MAKE_DEFAULT_OPERAND_FIXED(p);
-    p.addr=pattern;
+    p.addr = pattern;
 
     MAKE_DEFAULT_OPERAND_ASSIGN(result);
 
-    scp_sys_search(&p,&result,nullptr,0,nullptr,SCP_TRUE);
+    scp_sys_search(context, &p, &result, nullptr, 0, nullptr, SCP_TRUE);
 }
 
 int main(void)
 {
     GTimer *timer = 0;
     sc_memory_params params;
+    sc_memory_context *context = sc_memory_context_new(sc_access_lvl_make_min);
     sc_memory_params_clear(&params);
 
     params.clear = SC_FALSE;
@@ -274,18 +278,20 @@ int main(void)
 
     sc_memory_initialize(&params);
 
-    sleep(1);
+    //sleep(1);
 
     timer = g_timer_new();
     g_timer_start(timer);
 
-    create_process_test();
+    create_process_test(context);
 
     g_timer_stop(timer);
     printf((sc_char *)"Time: %f s\n", g_timer_elapsed(timer, 0));
     g_timer_destroy(timer);
 
-    sc_memory_shutdown();
+    sc_memory_context_free(context);
+
+    sc_memory_shutdown(SC_FALSE);
 
     return 0;
 }

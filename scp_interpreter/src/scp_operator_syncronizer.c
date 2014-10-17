@@ -134,7 +134,7 @@ sc_result syncronize_scp_operator(const sc_event *event, sc_addr arg)
     MAKE_DEFAULT_ARC_ASSIGN(arc2);
     MAKE_COMMON_ARC_ASSIGN(arc3);
     it = scp_iterator5_new(s_default_ctx, &operator_node, &arc3, &next_operator_node, &arc2, &nrel_goto);
-    while (SCP_RESULT_TRUE == scp_iterator5_next(context, it, &operator_node, &arc3, &next_operator_node, &arc2, &nrel_goto))
+    while (SCP_RESULT_TRUE == scp_iterator5_next(s_default_ctx, it, &operator_node, &arc3, &next_operator_node, &arc2, &nrel_goto))
     {
         arc3.param_type = SCP_FIXED;
         next_operator_node.param_type = SCP_FIXED;
@@ -263,13 +263,13 @@ scp_result start_next_operator(sc_memory_context *context, scp_operand *scp_oper
 
 scp_result scp_operator_syncronizer_init()
 {
-    event_operator_syncronizer_goto = sc_event_new(executed_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)syncronize_scp_operator, 0);
+    event_operator_syncronizer_goto = sc_event_new(s_default_ctx, executed_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)syncronize_scp_operator, 0);
     if (event_operator_syncronizer_goto == nullptr)
         return SCP_RESULT_ERROR;
-    event_operator_syncronizer_then  = sc_event_new(successfully_executed_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)syncronize_scp_operator, 0);
+    event_operator_syncronizer_then  = sc_event_new(s_default_ctx, successfully_executed_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)syncronize_scp_operator, 0);
     if (event_operator_syncronizer_then == nullptr)
         return SCP_RESULT_ERROR;
-    event_operator_syncronizer_else = sc_event_new(unsuccessfully_executed_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)syncronize_scp_operator, 0);
+    event_operator_syncronizer_else = sc_event_new(s_default_ctx, unsuccessfully_executed_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)syncronize_scp_operator, 0);
     if (event_operator_syncronizer_else == nullptr)
         return SCP_RESULT_ERROR;
     return SCP_RESULT_TRUE;

@@ -35,6 +35,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 sc_result initialize()
 {
+    s_default_ctx = sc_memory_context_new(sc_access_lvl_make_min);
     if (SCP_RESULT_TRUE == scp_lib_init() &&
         SCP_RESULT_TRUE == scp_keynodes_init() &&
         SCP_RESULT_TRUE == scp_process_destroyer_init() &&
@@ -50,6 +51,7 @@ sc_result initialize()
 
 sc_result shutdown()
 {
+    sc_memory_context_free(s_default_ctx);
     if (SCP_RESULT_TRUE == scp_lib_shutdown() &&
         SCP_RESULT_TRUE == scp_process_destroyer_shutdown() &&
         SCP_RESULT_TRUE == scp_operator_interpreter_agents_shutdown() &&
