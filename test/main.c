@@ -289,9 +289,8 @@ int main(void)
     printf((sc_char *)"Time: %f s\n", g_timer_elapsed(timer, 0));
     g_timer_destroy(timer);
 
-    sc_memory_context_free(context);
-
     sc_memory_shutdown(SC_FALSE);
+    context=0;
 
     return 0;
 }

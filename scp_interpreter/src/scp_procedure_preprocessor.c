@@ -35,17 +35,17 @@ void append_to_hash(GHashTable *table, scp_operand *elem)
     g_hash_table_add(table, MAKE_PHASH(elem));
 }
 
-void append_to_set(sc_memory_context *context, gpointer key, gpointer value, gpointer set)
+void append_to_set(gpointer key, gpointer value, gpointer set)
 {
     sc_addr elem;
     elem.offset = SC_ADDR_LOCAL_OFFSET_FROM_INT(GPOINTER_TO_INT(key));
     elem.seg = SC_ADDR_LOCAL_SEG_FROM_INT(GPOINTER_TO_INT(key));
-    sc_memory_arc_new(context, sc_type_arc_pos_const_perm, ((scp_operand *)set)->addr, elem);
+    sc_memory_arc_new(s_default_ctx, sc_type_arc_pos_const_perm, ((scp_operand *)set)->addr, elem);
 }
 
 void gen_set_from_hash(GHashTable *table, scp_operand *set)
 {
-    g_hash_table_foreach(table, (GHFunc)append_to_set, set);
+    g_hash_table_foreach(table, append_to_set, set);
 }
 
 void append_all_relation_elements_to_hash_with_modifiers(sc_memory_context *context, GHashTable *table, scp_operand *set, scp_operand *parameter_set, scp_operand *const_set, scp_operand *vars_set)
@@ -435,8 +435,8 @@ scp_result gen_system_structures(sc_memory_context *context, scp_operand *operat
     cantorize_set(context, copying_consts_set);
     cantorize_set(context, vars_set);
     //printEl(copying_consts_set);
-    //printEl(vars_set);
-    //printEl(const_set);
+    //printEl(context, vars_set);printEl(context, vars_set);
+    //printEl(context, const_set);
     //printf("SIZE: %d\n", g_hash_table_size(table));
     gen_set_from_hash(table, operators_copying_pattern);
     g_hash_table_destroy(table);
