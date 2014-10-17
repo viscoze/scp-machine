@@ -122,6 +122,8 @@ extern scp_operand ordinal_set_rrel;
 extern scp_operand ordinal_rrels[ORDINAL_RRELS_COUNT + 1]; // 0 element reserved
 extern scp_operand ordinal_set_rrels[ORDINAL_RRELS_COUNT + 1]; // 0 element reserved
 
+extern sc_memory_context * s_default_ctx;
+
 scp_result scp_keynodes_init();
 
 #endif // SCP_KEYNODES_H

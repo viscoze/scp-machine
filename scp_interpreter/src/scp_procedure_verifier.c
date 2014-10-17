@@ -39,24 +39,23 @@ sc_result verify_scp_program(const sc_event *event, sc_addr arg)
     arc1.addr = arg;
     arc1.element_type = scp_type_arc_pos_const_perm;
 
-
     MAKE_DEFAULT_NODE_ASSIGN(node1);
     MAKE_DEFAULT_NODE_ASSIGN(program_node);
-    if (SCP_RESULT_TRUE != ifVarAssign(&arc1))
+    if (SCP_RESULT_TRUE != ifVarAssign(s_default_ctx, &arc1))
     {
         return SC_RESULT_ERROR;
     }
-    if (SCP_RESULT_TRUE != ifType(&arc1))
+    if (SCP_RESULT_TRUE != ifType(s_default_ctx, &arc1))
     {
         return SC_RESULT_OK;
     }
 
-    if (SCP_RESULT_TRUE != searchElStr3(&node1, &arc1, &program_node))
+    if (SCP_RESULT_TRUE != searchElStr3(s_default_ctx, &node1, &arc1, &program_node))
     {
         return SCP_RESULT_ERROR;
     }
     program_node.param_type = SCP_FIXED;
-    if (SCP_RESULT_TRUE != ifVarAssign(&program_node))
+    if (SCP_RESULT_TRUE != ifVarAssign(s_default_ctx, &program_node))
     {
         return SC_RESULT_ERROR;
 
@@ -64,34 +63,34 @@ sc_result verify_scp_program(const sc_event *event, sc_addr arg)
     program_node.param_type = SCP_FIXED;
 
     //!TODO Add scp-program verifying
-    if (SCP_RESULT_TRUE == searchElStr3(&correct_scp_program, &arc2, &program_node))
+    if (SCP_RESULT_TRUE == searchElStr3(s_default_ctx, &correct_scp_program, &arc2, &program_node))
     {
         return SC_RESULT_OK;
     }
-    if (SCP_RESULT_TRUE == searchElStr3(&incorrect_scp_program, &arc2, &program_node))
+    if (SCP_RESULT_TRUE == searchElStr3(s_default_ctx, &incorrect_scp_program, &arc2, &program_node))
     {
         return SC_RESULT_OK;
     }
 
-    genElStr3(&correct_scp_program, &arc2, &program_node);
+    genElStr3(s_default_ctx, &correct_scp_program, &arc2, &program_node);
 }
 
-scp_result verify_all_scp_programs()
+scp_result verify_all_scp_programs(sc_memory_context *context)
 {
     scp_operand proc, arc;
     MAKE_DEFAULT_ARC_ASSIGN(arc);
     MAKE_DEFAULT_OPERAND_ASSIGN(proc);
     scp_iterator3 *it;
-    it = scp_iterator3_new(&scp_program, &arc, &proc);
-    while (SCP_RESULT_TRUE == scp_iterator3_next(it, &scp_program, &arc, &proc))
+    it = scp_iterator3_new(context, &scp_program, &arc, &proc);
+    while (SCP_RESULT_TRUE == scp_iterator3_next(context, it, &scp_program, &arc, &proc))
     {
         proc.param_type = SCP_FIXED;
-        if (SCP_RESULT_TRUE == searchElStr3(&formed_scp_program, &arc, &proc))
+        if (SCP_RESULT_TRUE == searchElStr3(context, &formed_scp_program, &arc, &proc))
         {
             proc.param_type = SCP_ASSIGN;
             continue;
         }
-        genElStr3(&formed_scp_program, &arc, &proc);
+        genElStr3(context, &formed_scp_program, &arc, &proc);
         proc.param_type = SCP_ASSIGN;
     }
     scp_iterator3_free(it);

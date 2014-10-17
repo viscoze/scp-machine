@@ -117,6 +117,8 @@ scp_operand ordinal_set_rrel;
 scp_operand ordinal_rrels[ORDINAL_RRELS_COUNT + 1]; // 0 element reserved
 scp_operand ordinal_set_rrels[ORDINAL_RRELS_COUNT + 1]; // 0 element reserved
 
+sc_memory_context * s_default_ctx;
+
 #define resolve_keynode(keynode, keynode_str) \
     if (sc_helper_resolve_system_identifier(keynode_str, &(keynode)) == SC_FALSE) \
     {\
@@ -292,6 +294,8 @@ scp_result scp_keynodes_init()
         snprintf(name, 12, "rrel_set_%d", i);
         resolve_keynode(ordinal_set_rrels[i].addr, name);
     }
+
+    s_default_ctx = sc_memory_context_new(sc_access_lvl_make_min);;
 
     return init_operator_keynodes();
 }

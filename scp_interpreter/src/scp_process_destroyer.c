@@ -29,7 +29,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 sc_event *event_process_destroy;
 
-void delete_vars_from_set(scp_operand *set, GHashTable *non_erasable_vars)
+void delete_vars_from_set(sc_memory_context *context, scp_operand *set, GHashTable *non_erasable_vars)
 {
     scp_operand arc1, arc2, elem;
     scp_iterator5 *it;
@@ -37,20 +37,20 @@ void delete_vars_from_set(scp_operand *set, GHashTable *non_erasable_vars)
     MAKE_DEFAULT_ARC_ASSIGN(arc2);
     MAKE_DEFAULT_OPERAND_ASSIGN(elem);
     elem.erase = SCP_TRUE;
-    it = scp_iterator5_new(set, &arc1, &elem, &arc2, &rrel_scp_var);
-    while (SCP_RESULT_TRUE == scp_iterator5_next(it, set, &arc1, &elem, &arc2, &rrel_scp_var))
+    it = scp_iterator5_new(context, set, &arc1, &elem, &arc2, &rrel_scp_var);
+    while (SCP_RESULT_TRUE == scp_iterator5_next(context, it, set, &arc1, &elem, &arc2, &rrel_scp_var))
     {
         elem.param_type = SCP_FIXED;
         if (non_erasable_vars != nullptr && FALSE == g_hash_table_contains(non_erasable_vars, MAKE_HASH(elem)))
         {
-            eraseEl(&elem);
+            eraseEl(context, &elem);
         }
         elem.param_type = SCP_ASSIGN;
     }
     scp_iterator5_free(it);
 }
 
-void delete_vars_from_relation(scp_operand *set, GHashTable *non_erasable_vars)
+void delete_vars_from_relation(sc_memory_context *context, scp_operand *set, GHashTable *non_erasable_vars)
 {
     scp_operand arc1, arc2, elem, rel_elem;
     scp_iterator5 *it;
@@ -62,22 +62,22 @@ void delete_vars_from_relation(scp_operand *set, GHashTable *non_erasable_vars)
     elem.erase = SCP_TRUE;
     rel_elem.erase = SCP_TRUE;
 
-    it0 = scp_iterator3_new(set, &arc1, &rel_elem);
-    while (SCP_RESULT_TRUE == scp_iterator3_next(it0, set, &arc1, &rel_elem))
+    it0 = scp_iterator3_new(context, set, &arc1, &rel_elem);
+    while (SCP_RESULT_TRUE == scp_iterator3_next(context, it0, set, &arc1, &rel_elem))
     {
         rel_elem.param_type = SCP_FIXED;
-        it = scp_iterator5_new(&rel_elem, &arc1, &elem, &arc2, &rrel_scp_var);
-        while (SCP_RESULT_TRUE == scp_iterator5_next(it, &rel_elem, &arc1, &elem, &arc2, &rrel_scp_var))
+        it = scp_iterator5_new(context, &rel_elem, &arc1, &elem, &arc2, &rrel_scp_var);
+        while (SCP_RESULT_TRUE == scp_iterator5_next(context, it, &rel_elem, &arc1, &elem, &arc2, &rrel_scp_var))
         {
             elem.param_type = SCP_FIXED;
             if (non_erasable_vars != nullptr && FALSE == g_hash_table_contains(non_erasable_vars, MAKE_HASH(elem)))
             {
-                eraseEl(&elem);
+                eraseEl(context, &elem);
             }
             elem.param_type = SCP_ASSIGN;
         }
         scp_iterator5_free(it);
-        eraseEl(&rel_elem);
+        eraseEl(context, &rel_elem);
         rel_elem.param_type = SCP_ASSIGN;
     }
     scp_iterator3_free(it0);
@@ -93,13 +93,13 @@ sc_result destroy_scp_process(const sc_event *event, sc_addr arg)
     MAKE_DEFAULT_NODE_ASSIGN(scp_process_node);
     arc1.addr = arg;
     arc1.element_type = scp_type_arc_pos_const_perm;
-    if (SCP_RESULT_TRUE != ifType(&arc1))
+    if (SCP_RESULT_TRUE != ifType(s_default_ctx, &arc1))
     {
         return SC_RESULT_OK;
     }
 
     MAKE_DEFAULT_OPERAND_ASSIGN(node1);
-    if (SCP_RESULT_TRUE != searchElStr3(&node1, &arc1, &scp_process_node))
+    if (SCP_RESULT_TRUE != searchElStr3(s_default_ctx, &node1, &arc1, &scp_process_node))
     {
         return SC_RESULT_ERROR;
     }
@@ -118,85 +118,85 @@ sc_result destroy_scp_process(const sc_event *event, sc_addr arg)
 
     MAKE_DEFAULT_OPERAND_ASSIGN(question_node);
     MAKE_COMMON_ARC_ASSIGN(arc1);
-    params_found = searchElStr5(&question_node, &arc1, &scp_process_node, &arc2, &nrel_scp_process);
+    params_found = searchElStr5(s_default_ctx, &question_node, &arc1, &scp_process_node, &arc2, &nrel_scp_process);
     question_node.param_type = SCP_FIXED;
 
     MAKE_DEFAULT_ARC_ASSIGN(arc1);
     if (params_found == SCP_RESULT_TRUE)
     {
         MAKE_DEFAULT_OPERAND_ASSIGN(call_parameters);
-        params_found = searchElStr5(&question_node, &arc1, &call_parameters, &arc2, &ordinal_rrels[2]);
+        params_found = searchElStr5(s_default_ctx, &question_node, &arc1, &call_parameters, &arc2, &ordinal_rrels[2]);
         call_parameters.param_type = SCP_FIXED;
         if (params_found == SCP_RESULT_TRUE)
         {
             params = g_hash_table_new(NULL, NULL);
-            load_set_to_hash(&call_parameters, params);
+            load_set_to_hash(s_default_ctx, &call_parameters, params);
         }
     }
 
     MAKE_DEFAULT_NODE_ASSIGN(operator_type);
 
-    it = scp_iterator3_new(&scp_process_node, &arc1, &curr_operator);
-    while (SCP_RESULT_TRUE == scp_iterator3_next(it, &scp_process_node, &arc1, &curr_operator))
+    it = scp_iterator3_new(s_default_ctx, &scp_process_node, &arc1, &curr_operator);
+    while (SCP_RESULT_TRUE == scp_iterator3_next(s_default_ctx, it, &scp_process_node, &arc1, &curr_operator))
     {
         curr_operator.param_type = SCP_FIXED;
         if (SCP_RESULT_TRUE != resolve_operator_type(&curr_operator, &operator_type))
         {
             curr_operator.param_type = SCP_ASSIGN;
-            delete_vars_from_set(&curr_operator, params);
-            eraseEl(&curr_operator);
+            delete_vars_from_set(s_default_ctx, &curr_operator, params);
+            eraseEl(s_default_ctx, &curr_operator);
             continue;
         }
         operator_type.param_type = SCP_FIXED;
 
-        if (SCP_RESULT_TRUE == ifCoin(&operator_type, &op_call))
+        if (SCP_RESULT_TRUE == ifCoin(s_default_ctx, &operator_type, &op_call))
         {
             //printf("OPERATOR CALL\n");
-            if (SCP_RESULT_TRUE == searchElStr5(&curr_operator, &arc1, &node3, &arc2, &(ordinal_rrels[2])))
+            if (SCP_RESULT_TRUE == searchElStr5(s_default_ctx, &curr_operator, &arc1, &node3, &arc2, &(ordinal_rrels[2])))
             {
                 node3.param_type = SCP_FIXED;
-                delete_vars_from_set(&node3, params);
-                eraseEl(&node3);
+                delete_vars_from_set(s_default_ctx, &node3, params);
+                eraseEl(s_default_ctx, &node3);
                 node3.param_type = SCP_ASSIGN;
             }
-            delete_vars_from_set(&curr_operator, params);
-            eraseEl(&curr_operator);
+            delete_vars_from_set(s_default_ctx, &curr_operator, params);
+            eraseEl(s_default_ctx, &curr_operator);
             operator_type.param_type = SCP_ASSIGN;
             curr_operator.param_type = SCP_ASSIGN;
             continue;
         }
 
-        if (SCP_RESULT_TRUE == ifCoin(&operator_type, &op_sys_gen) ||
-            SCP_RESULT_TRUE == ifCoin(&operator_type, &op_sys_search))
+        if (SCP_RESULT_TRUE == ifCoin(s_default_ctx, &operator_type, &op_sys_gen) ||
+            SCP_RESULT_TRUE == ifCoin(s_default_ctx, &operator_type, &op_sys_search))
         {
-            if (SCP_RESULT_TRUE == searchElStr5(&curr_operator, &arc1, &node3, &arc2, &(ordinal_rrels[2])))
+            if (SCP_RESULT_TRUE == searchElStr5(s_default_ctx, &curr_operator, &arc1, &node3, &arc2, &(ordinal_rrels[2])))
             {
                 node3.param_type = SCP_FIXED;
-                delete_vars_from_relation(&node3, params);
-                eraseEl(&node3);
+                delete_vars_from_relation(s_default_ctx, &node3, params);
+                eraseEl(s_default_ctx, &node3);
                 node3.param_type = SCP_ASSIGN;
             }
-            if (SCP_RESULT_TRUE == searchElStr5(&curr_operator, &arc1, &node3, &arc2, &(ordinal_rrels[3])))
+            if (SCP_RESULT_TRUE == searchElStr5(s_default_ctx, &curr_operator, &arc1, &node3, &arc2, &(ordinal_rrels[3])))
             {
                 node3.param_type = SCP_FIXED;
-                delete_vars_from_relation(&node3, params);
-                eraseEl(&node3);
+                delete_vars_from_relation(s_default_ctx, &node3, params);
+                eraseEl(s_default_ctx, &node3);
                 node3.param_type = SCP_ASSIGN;
             }
-            delete_vars_from_set(&curr_operator, params);
-            eraseEl(&curr_operator);
+            delete_vars_from_set(s_default_ctx, &curr_operator, params);
+            eraseEl(s_default_ctx, &curr_operator);
             operator_type.param_type = SCP_ASSIGN;
             curr_operator.param_type = SCP_ASSIGN;
             continue;
         }
-        delete_vars_from_set(&curr_operator, params);
-        eraseEl(&curr_operator);
+        delete_vars_from_set(s_default_ctx, &curr_operator, params);
+        eraseEl(s_default_ctx, &curr_operator);
         operator_type.param_type = SCP_ASSIGN;
         curr_operator.param_type = SCP_ASSIGN;
     }
     scp_iterator3_free(it);
     scp_process_node.erase = SCP_TRUE;
-    eraseEl(&scp_process_node);
+    eraseEl(s_default_ctx, &scp_process_node);
 
     /*if (SCP_RESULT_FALSE == params_found)
     {
