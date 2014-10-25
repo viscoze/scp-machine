@@ -22,6 +22,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 extern "C"
 {
 #include "sc_memory_headers.h"
+#include "sc_helper.h"
 }
 #include "sc_system_operators.h"
 
@@ -29,6 +30,47 @@ extern "C"
 #include <iostream>
 #include <set>
 #include <algorithm>
+
+void printIdtf(sc_addr element)
+{
+    sc_addr idtf;
+    sc_type type;
+    sc_memory_get_element_type(element, &type);
+
+    if ((sc_type_node & type) == sc_type_node)
+    {
+
+        if (SC_RESULT_OK == sc_helper_get_system_identifier(element, &idtf))
+        {
+            sc_stream *stream;
+            sc_uint32 length = 0, read_length = 0;
+            sc_char *data;
+            sc_memory_get_link_content(idtf, &stream);
+            sc_stream_get_length(stream, &length);
+            data = (sc_char *)calloc(length + 1, sizeof(sc_char));
+            sc_stream_read_data(stream, data, length, &read_length);
+            data[length] = '\0';
+            printf("%s", data);
+            sc_stream_free(stream);
+            free(data);
+        }
+        else
+        {
+            printf("%u|%u", element.seg, element.offset);
+        }
+    }
+    else
+    {
+        sc_addr elem1, elem2;
+        sc_memory_get_arc_begin(element, &elem1);
+        sc_memory_get_arc_end(element, &elem2);
+        printf("(");
+        printIdtf(elem1);
+        printf(" -> ");
+        printIdtf(elem2);
+        printf(")");
+    }
+}
 
 bool sc_result_comparator(sc_type_result *s1, sc_type_result *s2)
 {
@@ -54,7 +96,11 @@ void print_result(sc_type_result table)
     {
         sc_addr addr1 = (*it).first;
         sc_addr addr2 = (*it).second;
-        std::cout << addr1.seg << "|" << addr1.offset << "=>" << addr2.seg << "|" << addr2.offset << std::endl;
+        printIdtf(addr1);
+        std::cout << " => ";
+        printIdtf(addr2);
+        std::cout << std::endl;
+        //std::cout << addr1.seg << "|" << addr1.offset << "=>" << addr2.seg << "|" << addr2.offset << std::endl;
     }
 }
 

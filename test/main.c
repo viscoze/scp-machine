@@ -4,6 +4,7 @@
 //#include "sc_memory_headers.h"
 
 #include <stdio.h>
+#include <scp_lib.h>
 
 #include <glib.h>
 #include <unistd.h>
@@ -221,12 +222,12 @@ void create_process_test()
     sc_addr quest, init, nrel_answer, active_sc_agent, agent, p;
     scp_operand op;
 
-    sc_helper_resolve_system_identifier("quest11", &quest);
+    sc_helper_resolve_system_identifier("quest1", &quest);
     sc_helper_resolve_system_identifier("question_initiated", &init);
     sc_helper_resolve_system_identifier("nrel_answer", &nrel_answer);
 
-    //sc_helper_resolve_system_identifier("active_sc_agent", &active_sc_agent);
-    //sc_helper_resolve_system_identifier("sc_agent_of_search_of_all_output_arcs_agent_scp", &agent);
+    sc_helper_resolve_system_identifier("active_sc_agent", &active_sc_agent);
+    sc_helper_resolve_system_identifier("sc_agent_of_search_of_all_output_arcs_agent_scp", &agent);
 
     sc_memory_arc_new(sc_type_arc_pos_const_perm, init, quest);
 
@@ -248,17 +249,43 @@ void test_scp_process_creating(int value)
     }
 }
 
-void test_pattern(){
-    sc_addr pattern;
-    sc_helper_resolve_system_identifier("pattern1", &pattern);
+void run_testcase(){
+    sc_addr quest, init, program, question_scp_interpretation_request, nrel_authors,arc,rrel_1,rrel_2,params, authors, abstract_scp_machine;
+    sc_helper_resolve_system_identifier("question_initiated", &init);
+    sc_helper_resolve_system_identifier("proc_run_all_tests", &program);
+    sc_helper_resolve_system_identifier("rrel_1", &rrel_1);
+    sc_helper_resolve_system_identifier("rrel_2", &rrel_2);
+    sc_helper_resolve_system_identifier("question_scp_interpretation_request", &question_scp_interpretation_request);
+    sc_helper_resolve_system_identifier("abstract_scp_machine", &abstract_scp_machine);
+    sc_helper_resolve_system_identifier("nrel_authors", &nrel_authors);
 
-    scp_operand p, result;
-    MAKE_DEFAULT_OPERAND_FIXED(p);
-    p.addr=pattern;
+    quest=sc_memory_node_new(sc_type_const);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,question_scp_interpretation_request,quest);
+    arc=sc_memory_arc_new(sc_type_arc_pos_const_perm,quest,program);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,rrel_1,arc);
+    params=sc_memory_node_new(sc_type_const);
+    arc=sc_memory_arc_new(sc_type_arc_pos_const_perm,quest,params);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,rrel_2,arc);
 
-    MAKE_DEFAULT_OPERAND_ASSIGN(result);
+    authors=sc_memory_node_new(sc_type_const);
+    arc=sc_memory_arc_new(sc_type_arc_common|sc_type_const,authors,quest);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,nrel_authors,arc);
 
-    scp_sys_search(&p,&result,nullptr,0,nullptr,SCP_TRUE);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,authors,abstract_scp_machine);
+
+    sc_memory_arc_new(sc_type_arc_pos_const_perm,init,quest);
+}
+
+void test_sys_search(){
+    sc_addr pattern1;
+    scp_operand param1,param2,param3,param4;
+    MAKE_DEFAULT_OPERAND_FIXED(param1);
+    MAKE_DEFAULT_OPERAND_ASSIGN(param2);
+    MAKE_DEFAULT_OPERAND_FIXED(param3);
+    MAKE_DEFAULT_OPERAND_FIXED(param4);
+    sc_helper_resolve_system_identifier("Pattern", &pattern1);
+    param1.addr=pattern1;
+    scp_sys_search(&param1,&param2,nullptr,0,nullptr,SCP_TRUE);
 }
 
 int main(void)
@@ -268,24 +295,29 @@ int main(void)
     sc_memory_params_clear(&params);
 
     params.clear = SC_FALSE;
-    params.repo_path = "repo";
-    params.config_file = "sctp_config.ini";
-    params.ext_path = "extensions";
+    params.repo_path = "./repo";
+    params.config_file = "./sctp_config.ini";
+    params.ext_path = "./extensions";
 
     sc_memory_initialize(&params);
-
-    sleep(1);
 
     timer = g_timer_new();
     g_timer_start(timer);
 
-    create_process_test();
+    sleep(1);
+
+    test_sys_search();
+    //test_scp_process_creating(1);
+    //merge_test();
+    //temp();
+
+    //sleep(1);
 
     g_timer_stop(timer);
     printf((sc_char *)"Time: %f s\n", g_timer_elapsed(timer, 0));
     g_timer_destroy(timer);
 
-    sc_memory_shutdown();
+//    sc_memory_shutdown();
 
     return 0;
 }

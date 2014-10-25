@@ -60,4 +60,6 @@ sc_bool remove_result_vector_short_results(sc_type_result_vector *data, sc_uint 
 sc_bool sc_addr_vector_contains(sc_addr addr, sc_addr_vector *requested_values);
 void filter_result_vector_by_variables(sc_type_result_vector *data, sc_addr_vector *requested_values);
 void filter_result_by_variables(sc_type_result *data, sc_addr_vector *requested_values);
+
+void printIdtf(sc_addr element);
 #endif // SC_SYSTEM_OPERATORS_H

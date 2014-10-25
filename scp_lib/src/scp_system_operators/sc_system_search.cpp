@@ -22,73 +22,30 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 extern "C"
 {
 #include "sc_memory_headers.h"
+#include "sc_helper.h"
 }
 #include "sc_system_search.h"
 
 #include <stdio.h>
 #include <iostream>
 
-
-sc_bool system_sys_search_recurse(sc_addr sc_pattern, sc_type_hash pattern, sc_addr curr_const_element, sc_addr curr_pattern_element, sc_type_result *inp_result, sc_type_result_vector *out_common_result, int element_number)
+void print_tab(int level)
 {
-    sc_type input_element_type;
-    if (sc_memory_get_element_type(curr_pattern_element, &input_element_type) != SC_RESULT_OK) {return SC_FALSE;}
-    if (element_number == 2 && (sc_type_node & input_element_type) != sc_type_node)
+    printf("\n");
+    for (int i = 0; i < level; i++)
     {
-        //!Input element is arc
-        sc_addr const_element, pattern_element, temp, end_pattern_element, end_const_element;
-        sc_type pattern_element_type, end_pattern_element_type;
-        sc_memory_get_arc_begin(curr_const_element, &const_element);
-        sc_memory_get_arc_begin(curr_pattern_element, &pattern_element);
-        sc_memory_get_arc_end(curr_const_element, &end_const_element);
-        sc_memory_get_arc_end(curr_pattern_element, &end_pattern_element);
-
-        if (sc_memory_get_element_type(pattern_element, &pattern_element_type) != SC_RESULT_OK) {return SC_TRUE;}
-        if ((sc_type_const & pattern_element_type) == sc_type_const)
-        {
-            if (SC_ADDR_IS_NOT_EQUAL(const_element, pattern_element))
-            {
-                inp_result->erase(curr_pattern_element);
-                return SC_TRUE;
-            }
-        }
-        else if (SC_TRUE == find_result_pair_for_var(inp_result, pattern_element, &temp))
-        {
-            if (SC_ADDR_IS_NOT_EQUAL(const_element, temp))
-            {
-                inp_result->erase(curr_pattern_element);
-                return SC_TRUE;
-            }
-        }
-
-        if (sc_memory_get_element_type(end_pattern_element, &end_pattern_element_type) != SC_RESULT_OK) {return SC_TRUE;}
-        if ((sc_type_const & end_pattern_element_type) == sc_type_const)
-        {
-            if (SC_ADDR_IS_NOT_EQUAL(end_const_element, end_pattern_element))
-            {
-                inp_result->erase(curr_pattern_element);
-                return SC_TRUE;
-            }
-        }
-        else if (SC_TRUE == find_result_pair_for_var(inp_result, end_pattern_element, &temp))
-        {
-            if (SC_ADDR_IS_NOT_EQUAL(end_const_element, temp))
-            {
-                inp_result->erase(curr_pattern_element);
-                return SC_TRUE;
-            }
-        }
-        if (SC_ADDR_IS_NOT_EQUAL(const_element, pattern_element))
-        {
-            inp_result->insert(sc_addr_pair(pattern_element, const_element));
-        }
-        pattern.insert(sc_hash_pair(SC_ADDR_LOCAL_TO_INT(curr_pattern_element), curr_pattern_element));
-        system_sys_search_recurse(sc_pattern, pattern, const_element, pattern_element, inp_result, out_common_result, 2);
-        return SC_TRUE;
+        printf("\t");
     }
+}
 
+sc_bool system_sys_search_recurse(sc_addr sc_pattern, sc_type_hash pattern, sc_addr curr_const_element, sc_addr curr_pattern_element, sc_type_result *inp_result, sc_type_result_vector *out_common_result, int level)
+{
     sc_addr addr1, addr2, temp, temp1;
     int out_arc_count = 0;
+
+    print_tab(level);
+    printf("INPUT ELEMENT: ");
+    printIdtf(curr_pattern_element);
 
     sc_type_result_vector common_result;
     sc_type_result_vector del_result;
@@ -130,14 +87,25 @@ sc_bool system_sys_search_recurse(sc_addr sc_pattern, sc_type_hash pattern, sc_a
     sc_addr const_arc;
     sc_addr next_pattern_element;
     sc_addr next_const_element;
+    sc_addr next_pattern_element_begin, next_pattern_element_end;
+    sc_addr next_const_element_begin, next_const_element_end;
     sc_bool out_arc_flag = SC_TRUE;
     sc_type_result_vector new_common_result;
     sc_type_result_vector next_common_result;
     sc_type_result_vector next_common_result_arc;
-    sc_type_result_vector next_common_result1;
+    sc_type_result_vector next_common_result_begin;
+    sc_type_result_vector next_common_result_end;
+    sc_type_result_vector next_common_result_element;
+
+    sc_bool next_pattern_element_is_node = SC_FALSE;
+    sc_type next_pattern_element_type;
+    sc_type next_pattern_element_begin_type;
+    sc_type next_pattern_element_end_type;
 
     sc_bool pattern_arc_is_const_or_has_value = SC_FALSE;
     sc_bool pattern_is_const_or_has_value = SC_FALSE;
+    sc_bool pattern_begin_is_const_or_has_value = SC_FALSE;
+    sc_bool pattern_end_is_const_or_has_value = SC_FALSE;
 
     //Pattern arcs loop
     for (sc_uint i = 0; i < pattern_arc_set.size(); i++)
@@ -151,6 +119,10 @@ sc_bool system_sys_search_recurse(sc_addr sc_pattern, sc_type_hash pattern, sc_a
             continue;
         if ((sc_type_const & pattern_arc_type) == sc_type_const)
             continue;
+
+        print_tab(level);
+        printf("PATTERN ARC: ");
+        printIdtf(pattern_arc);
 
         pattern_arc_is_const_or_has_value = SC_FALSE;
         pattern_is_const_or_has_value = SC_FALSE;
@@ -168,14 +140,42 @@ sc_bool system_sys_search_recurse(sc_addr sc_pattern, sc_type_hash pattern, sc_a
             out_arc_flag = SC_FALSE;
         }
 
+        if (sc_memory_get_element_type(next_pattern_element, &next_pattern_element_type) != SC_RESULT_OK) {continue;}
+        if ((sc_type_node & next_pattern_element_type) == sc_type_node)
+        {
+            next_pattern_element_is_node = SC_TRUE;
+        }
+        else
+        {
+            next_pattern_element_is_node = SC_FALSE;
+            if (SC_RESULT_OK != sc_memory_get_arc_begin(next_pattern_element, &next_pattern_element_begin)) {continue;}
+            if (SC_RESULT_OK != sc_memory_get_arc_end(next_pattern_element, &next_pattern_element_end)) {continue;}
+        }
+
         if (pattern.find(SC_ADDR_LOCAL_TO_INT(next_pattern_element)) == pattern.end())
         {
             continue;
         }
+        if (next_pattern_element_is_node == SC_FALSE)
+        {
+            if (pattern.find(SC_ADDR_LOCAL_TO_INT(next_pattern_element_begin)) == pattern.end())
+            {
+                continue;
+            }
+            if (pattern.find(SC_ADDR_LOCAL_TO_INT(next_pattern_element_end)) == pattern.end())
+            {
+                continue;
+            }
+        }
+
+        print_tab(level);
+        printf("NEXT PATTERN ELEMENT: ");
+        printIdtf(next_pattern_element);
 
         sc_type_result::iterator arc_it = inp_result_copy.find(pattern_arc);
         if (arc_it != inp_result_copy.end())
         {
+            //printf("\nARC HAS VALUE");
             const_arc = (*arc_it).second;
             pattern_arc_is_const_or_has_value = SC_TRUE;
             if (out_arc_flag == SC_TRUE)
@@ -191,8 +191,6 @@ sc_bool system_sys_search_recurse(sc_addr sc_pattern, sc_type_hash pattern, sc_a
         }
 
         //!check next_pattern_element type
-        sc_type next_pattern_element_type;
-        if (sc_memory_get_element_type(next_pattern_element, &next_pattern_element_type) != SC_RESULT_OK) {continue;}
         if ((sc_type_const & next_pattern_element_type) == sc_type_const)
         {
             if (pattern_arc_is_const_or_has_value == SC_TRUE)
@@ -224,11 +222,97 @@ sc_bool system_sys_search_recurse(sc_addr sc_pattern, sc_type_hash pattern, sc_a
                 {
                     next_const_element = (*it).second;
                 }
+                print_tab(level);
+                printf("PATTERN IS CONST");
                 pattern_is_const_or_has_value = SC_TRUE;
             }
         }
 
-        pattern.erase(SC_ADDR_LOCAL_TO_INT(next_pattern_element));
+        if (next_pattern_element_is_node == SC_FALSE)
+        {
+            pattern_begin_is_const_or_has_value = SC_FALSE;
+            pattern_end_is_const_or_has_value = SC_FALSE;
+            if (sc_memory_get_element_type(next_pattern_element_begin, &next_pattern_element_begin_type) != SC_RESULT_OK) {continue;}
+            if (sc_memory_get_element_type(next_pattern_element_end, &next_pattern_element_end_type) != SC_RESULT_OK) {continue;}
+
+            if (SC_TRUE == pattern_arc_is_const_or_has_value || SC_TRUE == pattern_is_const_or_has_value)
+            {
+                if (SC_RESULT_OK != sc_memory_get_arc_begin(next_const_element, &next_const_element_begin)) {continue;}
+                if (SC_RESULT_OK != sc_memory_get_arc_end(next_const_element, &next_const_element_end)) {continue;}
+            }
+
+            //!check next_pattern_element_begin type
+            if ((sc_type_const & next_pattern_element_begin_type) == sc_type_const)
+            {
+                if (SC_TRUE == pattern_arc_is_const_or_has_value || SC_TRUE == pattern_is_const_or_has_value)
+                {
+                    if (!SC_ADDR_IS_EQUAL(next_const_element_begin, next_pattern_element_begin))
+                    {
+                        continue;
+                    }
+                }
+                else
+                {
+                    next_const_element_begin = next_pattern_element_begin;
+                }
+                pattern_begin_is_const_or_has_value = SC_TRUE;
+            }
+            else
+            {
+                sc_type_result::iterator it = inp_result_copy.find(next_pattern_element_begin);
+                if (it != inp_result_copy.end())
+                {
+                    if (SC_TRUE == pattern_arc_is_const_or_has_value || SC_TRUE == pattern_is_const_or_has_value)
+                    {
+                        if (!SC_ADDR_IS_EQUAL(next_const_element_begin, (*it).second))
+                        {
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        next_const_element_begin = (*it).second;
+                    }
+                    pattern_begin_is_const_or_has_value = SC_TRUE;
+                }
+            }
+
+            //!check next_pattern_element_end type
+            if ((sc_type_const & next_pattern_element_end_type) == sc_type_const)
+            {
+                if (SC_TRUE == pattern_arc_is_const_or_has_value || SC_TRUE == pattern_is_const_or_has_value)
+                {
+                    if (!SC_ADDR_IS_EQUAL(next_const_element_end, next_pattern_element_end))
+                    {
+                        continue;
+                    }
+                }
+                else
+                {
+                    next_const_element_end = next_pattern_element_end;
+                }
+                pattern_end_is_const_or_has_value = SC_TRUE;
+            }
+            else
+            {
+                sc_type_result::iterator it = inp_result_copy.find(next_pattern_element_end);
+                if (it != inp_result_copy.end())
+                {
+                    if (SC_TRUE == pattern_arc_is_const_or_has_value || SC_TRUE == pattern_is_const_or_has_value)
+                    {
+                        if (!SC_ADDR_IS_EQUAL(next_const_element_end, (*it).second))
+                        {
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        next_const_element_end = (*it).second;
+                    }
+                    pattern_end_is_const_or_has_value = SC_TRUE;
+                }
+            }
+        }
 
         //!const arc loop
         sc_addr_vector const_arc_set;
@@ -279,8 +363,6 @@ sc_bool system_sys_search_recurse(sc_addr sc_pattern, sc_type_hash pattern, sc_a
             const_arc_set.push_back(const_arc);
         }
 
-        //printf("ELEMENT %u|%u CONST ARCS COUNT:%d\n", curr_const_element.seg, curr_const_element.offset, const_arc_set.size());
-
         for (sc_uint j = 0; j < const_arc_set.size(); j++)
         {
             const_arc = const_arc_set[j];
@@ -299,16 +381,37 @@ sc_bool system_sys_search_recurse(sc_addr sc_pattern, sc_type_hash pattern, sc_a
                 }
             }
 
-            if (pattern_is_const_or_has_value == SC_FALSE && pattern.find(SC_ADDR_LOCAL_TO_INT(next_const_element)) != pattern.end())
+            //!TODO Optimize
+            if (SC_FALSE == next_pattern_element_is_node)
             {
-                continue;
+                sc_addr next_const_element_begin1, next_const_element_end1;
+                if (SC_RESULT_OK != sc_memory_get_arc_begin(next_const_element, &next_const_element_begin1)) {continue;}
+                if (SC_RESULT_OK != sc_memory_get_arc_end(next_const_element, &next_const_element_end1)) {continue;}
+                if (SC_TRUE == pattern_begin_is_const_or_has_value && SC_ADDR_IS_NOT_EQUAL(next_const_element_begin, next_const_element_begin1))
+                {
+                    continue;
+                }
+                if (SC_TRUE == pattern_end_is_const_or_has_value && SC_ADDR_IS_NOT_EQUAL(next_const_element_end, next_const_element_end1))
+                {
+                    continue;
+                }
+                next_const_element_begin = next_const_element_begin1;
+                next_const_element_end = next_const_element_end1;
             }
+
+            print_tab(level);
+            printf("NEXT CONST ARC: ");
+            printIdtf(const_arc);
+
+            print_tab(level);
+            printf("NEXT CONST ELEMENT: ");
+            printIdtf(next_const_element);
 
             //!Results loop
             for (sc_uint k = 0; k < common_result.size(); k++)
             {
                 sc_type_result *result = common_result[k];
-                sc_bool gen_arc = SC_FALSE;
+                //sc_bool gen_arc = SC_FALSE;
 
                 if (pattern_arc_is_const_or_has_value == SC_FALSE)
                 {
@@ -316,17 +419,38 @@ sc_bool system_sys_search_recurse(sc_addr sc_pattern, sc_type_hash pattern, sc_a
                         continue;
 
 
-                    if (SC_TRUE == find_result_pair_for_var(result, pattern_arc, &temp))
+
+                    if (SC_FALSE == pattern_is_const_or_has_value
+                        && SC_TRUE == find_result_pair_for_const(result, next_const_element, &temp1)
+                        && SC_ADDR_IS_NOT_EQUAL(temp1, next_pattern_element))
                     {
-                        //!Gen new result
-                        if (SC_FALSE == pattern_is_const_or_has_value
-                            && SC_TRUE == find_result_pair_for_const(result, next_const_element, &temp1)
-                            && SC_ADDR_IS_NOT_EQUAL(temp1, next_pattern_element))
+                        continue;
+                    }
+                    if (SC_FALSE == next_pattern_element_is_node)
+                    {
+                        if (SC_FALSE == pattern_begin_is_const_or_has_value
+                            && SC_TRUE == find_result_pair_for_const(result, next_const_element_begin, &temp1)
+                            && SC_ADDR_IS_NOT_EQUAL(temp1, next_pattern_element_begin))
                         {
                             continue;
                         }
+                        if (SC_FALSE == pattern_end_is_const_or_has_value
+                            && SC_TRUE == find_result_pair_for_const(result, next_const_element_end, &temp1)
+                            && SC_ADDR_IS_NOT_EQUAL(temp1, next_pattern_element_end))
+                        {
+                            continue;
+                        }
+                    }
+
+                    if (SC_TRUE == find_result_pair_for_var(result, pattern_arc, &temp))
+                    {
+                        //!Gen new result
                         sc_type_result *new_result = new sc_type_result();
                         //class_count++;
+
+                        print_tab(level+1);
+                        printf("NEW RESULT CREATED");
+
                         (*new_result) = (*result);
                         new_common_result.push_back(new_result);
                         result = new_result;
@@ -335,60 +459,129 @@ sc_bool system_sys_search_recurse(sc_addr sc_pattern, sc_type_hash pattern, sc_a
                         {
                             result->erase(next_pattern_element);
                         }
+                        if (SC_FALSE == next_pattern_element_is_node)
+                        {
+                            if (pattern_begin_is_const_or_has_value == SC_FALSE)
+                            {
+                                result->erase(next_pattern_element_begin);
+                            }
+                            if (pattern_end_is_const_or_has_value == SC_FALSE)
+                            {
+                                result->erase(next_pattern_element_end);
+                            }
+                        }
                     }
 
-                    gen_arc = SC_TRUE;
+                    //gen_arc = SC_TRUE;
+                    //!Genering pair for 2nd element
+                    print_tab(level+1);
+                    printf("PAIR ADDED: ");
+                    printIdtf(pattern_arc);
+                    printf(" => ");
+                    printIdtf(const_arc);
+                    result->insert(sc_addr_pair(pattern_arc, const_arc));
                 }
 
                 //!Genering pair for 3rd element
                 if (pattern_is_const_or_has_value == SC_FALSE
                     && SC_FALSE == find_result_pair_for_var(result, next_pattern_element, &temp))
                 {
-                    //!Genering pair for 2nd element
-                    if (gen_arc == SC_TRUE)
-                    {
-                        result->insert(sc_addr_pair(pattern_arc, const_arc));
-                        pattern.erase(SC_ADDR_LOCAL_TO_INT(pattern_arc));
-                    }
+                    print_tab(level+1);
+                    printf("PAIR ADDED: ");
+                    printIdtf(next_pattern_element);
+                    printf(" => ");
+                    printIdtf(next_const_element);
                     result->insert(sc_addr_pair(next_pattern_element, next_const_element));
-                    pattern.erase(SC_ADDR_LOCAL_TO_INT(next_pattern_element));
                 }
-                else
+
+                //! Generating pair for next pattern element begin and end
+                if (SC_FALSE == next_pattern_element_is_node)
                 {
-                    //!Genering pair for 2nd element
-                    if (gen_arc == SC_TRUE)
+                    if (pattern_begin_is_const_or_has_value == SC_FALSE
+                        && SC_FALSE == find_result_pair_for_var(result, next_pattern_element_begin, &temp))
                     {
-                        result->insert(sc_addr_pair(pattern_arc, const_arc));
-                        pattern.erase(SC_ADDR_LOCAL_TO_INT(pattern_arc));
+                        print_tab(level+1);
+                        printf("PAIR ADDED: ");
+                        printIdtf(next_pattern_element_begin);
+                        printf(" => ");
+                        printIdtf(next_const_element_begin);
+
+                        result->insert(sc_addr_pair(next_pattern_element_begin, next_const_element_begin));
+                    }
+                    if (pattern_end_is_const_or_has_value == SC_FALSE
+                        && SC_FALSE == find_result_pair_for_var(result, next_pattern_element_end, &temp))
+                    {
+                        print_tab(level+1);
+                        printf("PAIR ADDED: ");
+                        printIdtf(next_pattern_element_end);
+                        printf(" => ");
+                        printIdtf(next_const_element_end);
+
+                        result->insert(sc_addr_pair(next_pattern_element_end, next_const_element_end));
                     }
                 }
 
-                sc_type_result *recurse_result = new sc_type_result();
-                (*recurse_result) = (*result);
+                sc_type_result *arc_result = new sc_type_result();
+                (*arc_result) = (*result);
                 del_result.push_back(result);
 
+                pattern.erase(SC_ADDR_LOCAL_TO_INT(pattern_arc));
+                pattern.erase(SC_ADDR_LOCAL_TO_INT(next_pattern_element));
+                if (next_pattern_element_is_node == SC_FALSE)
+                {
+                    pattern.erase(SC_ADDR_LOCAL_TO_INT(next_pattern_element_begin));
+                    pattern.erase(SC_ADDR_LOCAL_TO_INT(next_pattern_element_end));
+                }
+
                 system_sys_search_recurse(sc_pattern, pattern, const_arc, pattern_arc,
-                                          recurse_result, &next_common_result_arc, 1);
+                                          arc_result, &next_common_result_arc, level + 1);
 
                 for (sc_uint kk = 0; kk < next_common_result_arc.size(); kk++)
                 {
                     sc_type_result *element_result = next_common_result_arc[kk];
                     system_sys_search_recurse(sc_pattern, pattern, next_const_element, next_pattern_element,
-                                              element_result, &next_common_result1, 2);
-                    if (!next_common_result1.empty())
+                                              element_result, &next_common_result_element, level + 1);
+
+                    if (SC_FALSE == next_pattern_element_is_node)
                     {
-                        next_common_result.insert(next_common_result.end(),
-                                                  next_common_result1.begin(), next_common_result1.end());
-                        next_common_result1.clear();
+                        //! Recurse for begin element
+                        for (sc_uint kk_begin = 0; kk_begin < next_common_result_element.size(); kk_begin++)
+                        {
+                            sc_type_result *begin_result = next_common_result_element[kk_begin];
+                            system_sys_search_recurse(sc_pattern, pattern, next_const_element_begin, next_pattern_element_begin,
+                                                      begin_result, &next_common_result_begin, level + 1);
+
+                            //! Recurse for end element
+                            for (sc_uint kk_end = 0; kk_end < next_common_result_begin.size(); kk_end++)
+                            {
+                                sc_type_result *end_result = next_common_result_begin[kk_end];
+                                system_sys_search_recurse(sc_pattern, pattern, next_const_element_end, next_pattern_element_end,
+                                                          end_result, &next_common_result_end, level + 1);
+
+                                next_common_result.insert(next_common_result.end(),
+                                                          next_common_result_end.begin(), next_common_result_end.end());
+                                next_common_result_end.clear();
+                            }
+
+                            next_common_result_begin.clear();
+                        }
+                        next_common_result_element.clear();
                     }
                     else
                     {
-                        next_common_result.push_back(element_result);
+                        next_common_result.insert(next_common_result.end(),
+                                                  next_common_result_element.begin(), next_common_result_element.end());
+                        next_common_result_element.clear();
                     }
                 }
 
                 pattern.insert(sc_hash_pair(SC_ADDR_LOCAL_TO_INT(pattern_arc), pattern_arc));
                 pattern.insert(sc_hash_pair(SC_ADDR_LOCAL_TO_INT(next_pattern_element), next_pattern_element));
+                if (next_pattern_element_is_node == SC_FALSE)
+                {
+                    pattern.insert(sc_hash_pair(SC_ADDR_LOCAL_TO_INT(next_pattern_element_begin), next_pattern_element_begin));
+                    pattern.insert(sc_hash_pair(SC_ADDR_LOCAL_TO_INT(next_pattern_element_end), next_pattern_element_end));
+                }
 
                 out_common_result->insert(out_common_result->end(), next_common_result.begin(), next_common_result.end());
                 new_common_result.insert(new_common_result.end(), next_common_result.begin(), next_common_result.end());
@@ -457,14 +650,20 @@ sc_result system_sys_search_only_full(sc_addr pattern, sc_type_result params, sc
     sc_uint var_count = 0;
     sc_type_hash pattern_hash;
 
+    sc_helper_resolve_system_identifier("rel1", &start_pattern_node);
+    sc_helper_resolve_system_identifier("rel1", &start_const_node);
+
+    printIdtf(start_const_node);
+    printf("\n");
+
     copy_set_into_hash(pattern, sc_type_arc_pos_const_perm, 0, &pattern_hash, &var_count);
     pattern_hash.erase(SC_ADDR_LOCAL_TO_INT(start_pattern_node));
-    system_sys_search_recurse(pattern, pattern_hash, start_const_node, start_pattern_node, result, search_result, 2);
+    system_sys_search_recurse(pattern, pattern_hash, start_const_node, start_pattern_node, result, search_result, 0);
 
     sort_result_vector(search_result);
     remove_result_vector_short_results(search_result, var_count);
 
-    //print_result_set(search_result);
+    print_result_set(search_result);
 
     return SC_RESULT_OK;
 }
