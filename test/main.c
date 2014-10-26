@@ -33,7 +33,8 @@ sc_result printElem(sc_addr element)
     sc_addr idtf;
     sc_iterator3 *it = nullptr;
     sc_uint32 out_c = 0, in_c = 0;
-    if (SC_FALSE == sc_memory_is_element(element)){
+    if (SC_FALSE == sc_memory_is_element(element))
+    {
         return SC_RESULT_ERROR;
     }
     if (SC_RESULT_OK == sc_helper_get_system_identifier(element, &idtf))
@@ -193,7 +194,8 @@ sc_result printElem(sc_addr element)
 sc_result printIdtf(sc_addr element)
 {
     sc_addr idtf;
-    if (SC_FALSE == sc_memory_is_element(element)){
+    if (SC_FALSE == sc_memory_is_element(element))
+    {
         return SC_RESULT_ERROR;
     }
     if (SC_RESULT_OK == sc_helper_get_system_identifier(element, &idtf))
@@ -249,8 +251,9 @@ void test_scp_process_creating(int value)
     }
 }
 
-void run_testcase(){
-    sc_addr quest, init, program, question_scp_interpretation_request, nrel_authors,arc,rrel_1,rrel_2,params, authors, abstract_scp_machine;
+void run_testcase()
+{
+    sc_addr quest, init, program, question_scp_interpretation_request, nrel_authors, arc, rrel_1, rrel_2, params, authors, abstract_scp_machine;
     sc_helper_resolve_system_identifier("question_initiated", &init);
     sc_helper_resolve_system_identifier("proc_run_all_tests", &program);
     sc_helper_resolve_system_identifier("rrel_1", &rrel_1);
@@ -259,33 +262,34 @@ void run_testcase(){
     sc_helper_resolve_system_identifier("abstract_scp_machine", &abstract_scp_machine);
     sc_helper_resolve_system_identifier("nrel_authors", &nrel_authors);
 
-    quest=sc_memory_node_new(sc_type_const);
-    sc_memory_arc_new(sc_type_arc_pos_const_perm,question_scp_interpretation_request,quest);
-    arc=sc_memory_arc_new(sc_type_arc_pos_const_perm,quest,program);
-    sc_memory_arc_new(sc_type_arc_pos_const_perm,rrel_1,arc);
-    params=sc_memory_node_new(sc_type_const);
-    arc=sc_memory_arc_new(sc_type_arc_pos_const_perm,quest,params);
-    sc_memory_arc_new(sc_type_arc_pos_const_perm,rrel_2,arc);
+    quest = sc_memory_node_new(sc_type_const);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm, question_scp_interpretation_request, quest);
+    arc = sc_memory_arc_new(sc_type_arc_pos_const_perm, quest, program);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm, rrel_1, arc);
+    params = sc_memory_node_new(sc_type_const);
+    arc = sc_memory_arc_new(sc_type_arc_pos_const_perm, quest, params);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm, rrel_2, arc);
 
-    authors=sc_memory_node_new(sc_type_const);
-    arc=sc_memory_arc_new(sc_type_arc_common|sc_type_const,authors,quest);
-    sc_memory_arc_new(sc_type_arc_pos_const_perm,nrel_authors,arc);
+    authors = sc_memory_node_new(sc_type_const);
+    arc = sc_memory_arc_new(sc_type_arc_common | sc_type_const, authors, quest);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm, nrel_authors, arc);
 
-    sc_memory_arc_new(sc_type_arc_pos_const_perm,authors,abstract_scp_machine);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm, authors, abstract_scp_machine);
 
-    sc_memory_arc_new(sc_type_arc_pos_const_perm,init,quest);
+    sc_memory_arc_new(sc_type_arc_pos_const_perm, init, quest);
 }
 
-void test_sys_search(){
+void test_sys_search()
+{
     sc_addr pattern1;
-    scp_operand param1,param2,param3,param4;
+    scp_operand param1, param2, param3, param4;
     MAKE_DEFAULT_OPERAND_FIXED(param1);
     MAKE_DEFAULT_OPERAND_ASSIGN(param2);
     MAKE_DEFAULT_OPERAND_FIXED(param3);
     MAKE_DEFAULT_OPERAND_FIXED(param4);
     sc_helper_resolve_system_identifier("Pattern", &pattern1);
-    param1.addr=pattern1;
-    scp_sys_search(&param1,&param2,nullptr,0,nullptr,SCP_TRUE);
+    param1.addr = pattern1;
+    scp_sys_search(&param1, &param2, nullptr, 0, nullptr, SCP_TRUE);
 }
 
 int main(void)
@@ -317,7 +321,7 @@ int main(void)
     printf((sc_char *)"Time: %f s\n", g_timer_elapsed(timer, 0));
     g_timer_destroy(timer);
 
-//    sc_memory_shutdown();
+    //    sc_memory_shutdown();
 
     return 0;
 }
