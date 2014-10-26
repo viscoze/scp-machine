@@ -490,7 +490,76 @@ sc_bool system_sys_search_recurse(sc_addr sc_pattern, sc_type_hash pattern, sc_a
                 }
                 else
                 {
-                    //!TODO Add generation if arc is known
+                    if (SC_TRUE == find_result_pair_for_const(result, const_arc, &temp1)
+                        && SC_ADDR_IS_NOT_EQUAL(temp1, pattern_arc))
+                    {
+                        continue;
+                    }
+                    if (SC_TRUE == find_result_pair_for_var(result, pattern_arc, &temp1)
+                        && SC_ADDR_IS_NOT_EQUAL(temp1, const_arc))
+                    {
+                        continue;
+                    }
+                    if (SC_FALSE == pattern_is_const_or_has_value
+                        && SC_TRUE == find_result_pair_for_const(result, next_const_element, &temp1)
+                        && SC_ADDR_IS_NOT_EQUAL(temp1, next_pattern_element))
+                    {
+                        continue;
+                    }
+                    if (SC_FALSE == next_pattern_element_is_node)
+                    {
+                        if (SC_FALSE == pattern_begin_is_const_or_has_value
+                            && SC_TRUE == find_result_pair_for_const(result, next_const_element_begin, &temp1)
+                            && SC_ADDR_IS_NOT_EQUAL(temp1, next_pattern_element_begin))
+                        {
+                            continue;
+                        }
+                        if (SC_FALSE == pattern_end_is_const_or_has_value
+                            && SC_TRUE == find_result_pair_for_const(result, next_const_element_end, &temp1)
+                            && SC_ADDR_IS_NOT_EQUAL(temp1, next_pattern_element_end))
+                        {
+                            continue;
+                        }
+                    }
+                    if (SC_FALSE == pattern_is_const_or_has_value
+                        && SC_TRUE == find_result_pair_for_var(result, next_pattern_element, &temp1)
+                        && SC_ADDR_IS_NOT_EQUAL(temp1, next_const_element))
+                    {
+                        continue;
+                    }
+                    if (SC_FALSE == next_pattern_element_is_node)
+                    {
+                        if (SC_FALSE == pattern_begin_is_const_or_has_value
+                            && SC_TRUE == find_result_pair_for_var(result, next_pattern_element_begin, &temp1)
+                            && SC_ADDR_IS_NOT_EQUAL(temp1, next_const_element_begin))
+                        {
+                            continue;
+                        }
+                        if (SC_FALSE == pattern_end_is_const_or_has_value
+                            && SC_TRUE == find_result_pair_for_var(result, next_pattern_element_end, &temp1)
+                            && SC_ADDR_IS_NOT_EQUAL(temp1, next_const_element_end))
+                        {
+                            continue;
+                        }
+                    }
+                    //!Genering pair for 3rd element
+                    if (pattern_is_const_or_has_value == SC_FALSE)
+                    {
+                        result->insert(sc_addr_pair(next_pattern_element, next_const_element));
+                    }
+
+                    //! Generating pair for next pattern element begin and end
+                    if (SC_FALSE == next_pattern_element_is_node)
+                    {
+                        if (pattern_begin_is_const_or_has_value == SC_FALSE)
+                        {
+                            result->insert(sc_addr_pair(next_pattern_element_begin, next_const_element_begin));
+                        }
+                        if (pattern_end_is_const_or_has_value == SC_FALSE)
+                        {
+                            result->insert(sc_addr_pair(next_pattern_element_end, next_const_element_end));
+                        }
+                    }
                 }
 
                 sc_type_result *arc_result = new sc_type_result();
@@ -621,6 +690,24 @@ sc_result system_sys_search_only_full(sc_addr pattern, sc_type_result params, sc
 
     sc_uint var_count = 0;
     sc_type_hash pattern_hash;
+
+    /*int mode = 0;
+
+    if (mode == 0)
+    {
+        sc_helper_resolve_system_identifier("t", &start_pattern_node);
+        sc_helper_resolve_system_identifier("t", &start_const_node);
+    }
+    else if (mode == 1)
+    {
+        sc_helper_resolve_system_identifier("seg", &start_pattern_node);
+        sc_helper_resolve_system_identifier("seg", &start_const_node);
+    }
+    else if (mode == 2)
+    {
+        sc_helper_resolve_system_identifier("rel1", &start_pattern_node);
+        sc_helper_resolve_system_identifier("rel1", &start_const_node);
+    }*/
 
     copy_set_into_hash(pattern, sc_type_arc_pos_const_perm, 0, &pattern_hash, &var_count);
     pattern_hash.erase(SC_ADDR_LOCAL_TO_INT(start_pattern_node));
