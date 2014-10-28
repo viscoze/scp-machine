@@ -22,6 +22,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 extern "C"
 {
 #include "sc_memory_headers.h"
+#include "sc_helper.h"
 }
 #include "sc_system_operators.h"
 
@@ -29,6 +30,47 @@ extern "C"
 #include <iostream>
 #include <set>
 #include <algorithm>
+
+void printIdtf(sc_memory_context *context, sc_addr element)
+{
+    sc_addr idtf;
+    sc_type type;
+    sc_memory_get_element_type(context, element, &type);
+
+    if ((sc_type_node & type) == sc_type_node)
+    {
+
+        if (SC_RESULT_OK == sc_helper_get_system_identifier(context, element, &idtf))
+        {
+            sc_stream *stream;
+            sc_uint32 length = 0, read_length = 0;
+            sc_char *data;
+            sc_memory_get_link_content(context, idtf, &stream);
+            sc_stream_get_length(stream, &length);
+            data = (sc_char *)calloc(length + 1, sizeof(sc_char));
+            sc_stream_read_data(stream, data, length, &read_length);
+            data[length] = '\0';
+            printf("%s", data);
+            sc_stream_free(stream);
+            free(data);
+        }
+        else
+        {
+            printf("%u|%u", element.seg, element.offset);
+        }
+    }
+    else
+    {
+        sc_addr elem1, elem2;
+        sc_memory_get_arc_begin(context, element, &elem1);
+        sc_memory_get_arc_end(context, element, &elem2);
+        printf("(");
+        printIdtf(context, elem1);
+        printf(" -> ");
+        printIdtf(context, elem2);
+        printf(")");
+    }
+}
 
 bool sc_result_comparator(sc_type_result *s1, sc_type_result *s2)
 {
@@ -46,7 +88,7 @@ void print_hash(sc_type_hash table)
     }
 }
 
-void print_result(sc_type_result table)
+void print_result(sc_memory_context *context, sc_type_result table)
 {
     sc_type_result::iterator it;
     printf("RESULT (%d):\n", table.size());
@@ -54,16 +96,20 @@ void print_result(sc_type_result table)
     {
         sc_addr addr1 = (*it).first;
         sc_addr addr2 = (*it).second;
-        std::cout << addr1.seg << "|" << addr1.offset << "=>" << addr2.seg << "|" << addr2.offset << std::endl;
+        printIdtf(context, addr1);
+        std::cout << " => ";
+        printIdtf(context, addr2);
+        std::cout << std::endl;
+        //std::cout << addr1.seg << "|" << addr1.offset << "=>" << addr2.seg << "|" << addr2.offset << std::endl;
     }
 }
 
-void print_result_set(sc_type_result_vector *table)
+void print_result_set(sc_memory_context *context, sc_type_result_vector *table)
 {
     printf("RESULT COUNT:%d\n", table->size());
     for (sc_uint i = 0; i < table->size(); i++)
     {
-        print_result(*((*table)[i]));
+        print_result(context, *((*table)[i]));
     }
 }
 

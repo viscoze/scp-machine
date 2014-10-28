@@ -45,8 +45,8 @@ typedef std::pair<sc_addr, sc_addr> sc_addr_pair;
 typedef std::pair<int, sc_addr> sc_hash_pair;
 
 void print_hash(sc_type_hash table);
-void print_result(sc_type_result table);
-void print_result_set(sc_type_result_vector *table);
+void print_result(sc_memory_context *context, sc_type_result table);
+void print_result_set(sc_memory_context *context, sc_type_result_vector *table);
 sc_bool copy_set_into_hash(sc_memory_context *context, sc_addr set, sc_type arc_type, sc_type end_type, sc_type_hash *table, sc_uint *var_count);
 sc_bool find_result_pair_for_var(sc_type_result *set, sc_addr var_element, sc_addr *result);
 sc_bool find_result_pair_for_const(sc_type_result *set, sc_addr const_element, sc_addr *result);
@@ -60,4 +60,6 @@ sc_bool remove_result_vector_short_results(sc_type_result_vector *data, sc_uint 
 sc_bool sc_addr_vector_contains(sc_addr addr, sc_addr_vector *requested_values);
 void filter_result_vector_by_variables(sc_type_result_vector *data, sc_addr_vector *requested_values);
 void filter_result_by_variables(sc_type_result *data, sc_addr_vector *requested_values);
+
+void printIdtf(sc_memory_context *context, sc_addr element);
 #endif // SC_SYSTEM_OPERATORS_H
