@@ -182,6 +182,74 @@ void remove_all_elements(sc_type_result_vector *pattern, sc_type_result_vector *
     }
 }
 
+sc_bool check_coherence(sc_memory_context *context, sc_addr element, sc_addr sc_pattern, sc_addr checked_arc, sc_bool output, sc_type_result *result, sc_type_result *inp_result)
+{
+    sc_addr addr1, addr2, temp;
+
+    sc_iterator3 *it_pattern_arc = sc_iterator3_f_a_a_new(context, element, 0, 0);
+    if (it_pattern_arc == nullptr) {return SC_FALSE;}
+    while (SC_TRUE == sc_iterator3_next(it_pattern_arc))
+    {
+        addr2 = sc_iterator3_value(it_pattern_arc, 1);
+        if (SC_TRUE == sc_helper_check_arc(context, sc_pattern, addr2, sc_type_arc_pos_const_perm))
+        {
+            if (SC_TRUE == output && SC_ADDR_IS_EQUAL(checked_arc, addr2))
+            {
+                continue;
+            }
+
+            if (SC_TRUE == find_result_pair_for_var(result, addr2, &temp) &&
+                SC_FALSE == find_result_pair_for_var(inp_result, addr2, &temp))
+            {
+                sc_iterator3_free(it_pattern_arc);
+                return SC_FALSE;
+            }
+        }
+    }
+    sc_iterator3_free(it_pattern_arc);
+
+    it_pattern_arc = sc_iterator3_a_a_f_new(context, 0, 0, element);
+    if (it_pattern_arc == nullptr) {return SC_FALSE;}
+    while (SC_TRUE == sc_iterator3_next(it_pattern_arc))
+    {
+        addr1 = sc_iterator3_value(it_pattern_arc, 0);
+        if (SC_ADDR_IS_EQUAL(addr1, sc_pattern)) continue;
+        addr2 = sc_iterator3_value(it_pattern_arc, 1);
+        if (SC_TRUE == sc_helper_check_arc(context, sc_pattern, addr2, sc_type_arc_pos_const_perm))
+        {
+            if (SC_FALSE == output && SC_ADDR_IS_EQUAL(checked_arc, addr2))
+            {
+                continue;
+            }
+
+            if (SC_TRUE == find_result_pair_for_var(result, addr2, &temp) &&
+                SC_FALSE == find_result_pair_for_var(inp_result, addr2, &temp))
+            {
+                sc_iterator3_free(it_pattern_arc);
+                return SC_FALSE;
+            }
+        }
+    }
+    sc_iterator3_free(it_pattern_arc);
+
+    sc_type element_type;
+
+    if (SC_RESULT_OK != sc_memory_get_element_type(context, element, &element_type)) {return SC_FALSE;}
+    if ((sc_type_node & element_type) != sc_type_node)
+    {
+        sc_addr end, begin;
+        if (SC_RESULT_OK != sc_memory_get_arc_begin(context, element, &begin)) {return SC_FALSE;}
+        if (SC_RESULT_OK != sc_memory_get_arc_end(context, element, &end)) {return SC_FALSE;}
+
+        if (SC_TRUE == check_coherence(context, begin, sc_pattern, element, SC_TRUE, result, inp_result) &&
+            SC_TRUE == check_coherence(context, end, sc_pattern, element, SC_FALSE, result, inp_result))
+            return SC_TRUE;
+        else
+            return SC_FALSE;
+    }
+    return SC_TRUE;
+}
+
 void free_single_result(sc_type_result *result)
 {
     delete result;

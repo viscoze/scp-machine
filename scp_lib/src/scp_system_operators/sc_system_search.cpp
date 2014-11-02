@@ -419,6 +419,12 @@ sc_bool system_sys_search_recurse(sc_memory_context *context, sc_addr sc_pattern
                     if (SC_TRUE == find_result_pair_for_var(result, pattern_arc, &temp))
                     {
                         //!Gen new result
+
+                        if (SC_FALSE == check_coherence(context, next_pattern_element, sc_pattern, pattern_arc, !out_arc_flag, result, &inp_result_copy))
+                        {
+                            continue;
+                        }
+
                         sc_type_result *new_result = new sc_type_result();
 
                         (*new_result) = (*result);
@@ -443,6 +449,7 @@ sc_bool system_sys_search_recurse(sc_memory_context *context, sc_addr sc_pattern
                     }
                     else
                     {
+                        //! TODO Add flags to not add already existing elements
                         if (SC_FALSE == pattern_is_const_or_has_value
                             && SC_TRUE == find_result_pair_for_var(result, next_pattern_element, &temp1)
                             && SC_ADDR_IS_NOT_EQUAL(temp1, next_const_element))
@@ -709,6 +716,13 @@ sc_result system_sys_search_only_full(sc_memory_context *context, sc_addr patter
         sc_helper_resolve_system_identifier("rel1", &start_const_node);
     }*/
 
+    /*sc_helper_resolve_system_identifier(context, "nrel_length", &start_pattern_node);
+    sc_helper_resolve_system_identifier(context, "nrel_length", &start_const_node);
+
+    printf("START ELEMENT\n");
+    printIdtf(context, start_pattern_node);
+    printf("\n");*/
+
     copy_set_into_hash(context, pattern, sc_type_arc_pos_const_perm, 0, &pattern_hash, &var_count);
     pattern_hash.erase(SC_ADDR_LOCAL_TO_INT(start_pattern_node));
     system_sys_search_recurse(context, pattern, pattern_hash, start_const_node, start_pattern_node, result, search_result, 0);
@@ -716,7 +730,7 @@ sc_result system_sys_search_only_full(sc_memory_context *context, sc_addr patter
     sort_result_vector(search_result);
     remove_result_vector_short_results(search_result, var_count);
 
-    //print_result_set(search_result);
+    print_result_set(context, search_result);
 
     return SC_RESULT_OK;
 }

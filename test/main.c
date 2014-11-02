@@ -253,7 +253,7 @@ void test_scp_process_creating(sc_memory_context *context, int value)
 void test_pattern(sc_memory_context *context)
 {
     sc_addr pattern;
-    sc_helper_resolve_system_identifier(context, "pattern1", &pattern);
+    sc_helper_resolve_system_identifier(context, "Pattern2", &pattern);
 
     scp_operand p, result;
     MAKE_DEFAULT_OPERAND_FIXED(p);
@@ -283,14 +283,15 @@ int main(void)
     timer = g_timer_new();
     g_timer_start(timer);
 
-    create_process_test(context);
+    test_pattern(context);
+    //create_process_test(context);
 
     g_timer_stop(timer);
     printf((sc_char *)"Time: %f s\n", g_timer_elapsed(timer, 0));
     g_timer_destroy(timer);
 
-    sc_memory_shutdown(SC_FALSE);
-    context=0;
+    //sc_memory_shutdown(SC_FALSE);
+    //context = 0;
 
     return 0;
 }
