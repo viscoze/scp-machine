@@ -52,6 +52,7 @@ sc_bool find_result_pair_for_var(sc_type_result *set, sc_addr var_element, sc_ad
 sc_bool find_result_pair_for_const(sc_type_result *set, sc_addr const_element, sc_addr *result);
 void cantorize_result_vector(sc_type_result_vector *result);
 void remove_all_elements(sc_type_result_vector *pattern, sc_type_result_vector *source);
+sc_bool check_coherence(sc_addr element, sc_addr sc_pattern, sc_addr checked_arc, sc_bool output, sc_type_result *result, sc_type_result *inp_result);
 void free_single_result(sc_type_result *result);
 void free_result_vector(sc_type_result_vector *result);
 void sort_result_vector(sc_type_result_vector *data);
