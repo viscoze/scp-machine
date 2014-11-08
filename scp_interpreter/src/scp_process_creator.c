@@ -202,7 +202,7 @@ sc_addr gen_copy(sc_memory_context *context, sc_addr elem, GHashTable *copies_ha
 
 sc_result create_scp_process(const sc_event *event, sc_addr arg)
 {
-    scp_operand arc1, arc2, scp_procedure_node, vars_set, consts_set, params_set, copying_pattern,
+    scp_operand arc1, arc2, arc3, scp_procedure_node, vars_set, consts_set, params_set, copying_pattern,
                 scp_process_node, node1, question_node, call_parameters, init_operator;
     GHashTable *copies_hash, *pattern_hash;
     GHashTableIter iter;
@@ -267,18 +267,19 @@ sc_result create_scp_process(const sc_event *event, sc_addr arg)
     scp_procedure_node.param_type = SCP_FIXED;
     MAKE_DEFAULT_ARC_ASSIGN(arc1);
     MAKE_DEFAULT_ARC_ASSIGN(arc2);
+    MAKE_COMMON_ARC_ASSIGN(arc3);
 
     MAKE_DEFAULT_OPERAND_ASSIGN(vars_set);
-    searchElStr5(s_default_ctx, &scp_procedure_node, &arc1, &vars_set, &arc2, &nrel_scp_program_var);
+    searchElStr5(s_default_ctx, &scp_procedure_node, &arc3, &vars_set, &arc2, &nrel_scp_program_var);
     vars_set.param_type = SCP_FIXED;
     MAKE_DEFAULT_OPERAND_ASSIGN(consts_set);
-    searchElStr5(s_default_ctx, &scp_procedure_node, &arc1, &consts_set, &arc2, &nrel_scp_program_const);
+    searchElStr5(s_default_ctx, &scp_procedure_node, &arc3, &consts_set, &arc2, &nrel_scp_program_const);
     consts_set.param_type = SCP_FIXED;
     MAKE_DEFAULT_OPERAND_ASSIGN(params_set);
-    searchElStr5(s_default_ctx, &scp_procedure_node, &arc1, &params_set, &arc2, &rrel_params);
+    searchElStr5(s_default_ctx, &scp_procedure_node, &arc3, &params_set, &arc2, &rrel_params);
     params_set.param_type = SCP_FIXED;
     MAKE_DEFAULT_OPERAND_ASSIGN(copying_pattern);
-    searchElStr5(s_default_ctx, &scp_procedure_node, &arc1, &copying_pattern, &arc2, &nrel_template_of_scp_process_creation);
+    searchElStr5(s_default_ctx, &scp_procedure_node, &arc3, &copying_pattern, &arc2, &nrel_template_of_scp_process_creation);
     copying_pattern.param_type = SCP_FIXED;
 
     load_set_to_hash(s_default_ctx, &copying_pattern, pattern_hash);

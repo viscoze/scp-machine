@@ -498,19 +498,21 @@ sc_result preprocess_scp_procedure(const sc_event *event, sc_addr arg)
     scp_procedure_params.param_type = SCP_FIXED;
 
     MAKE_DEFAULT_NODE_ASSIGN(scp_procedure_consts);
-    genElStr5(s_default_ctx, &scp_procedure_node, &arc1, &scp_procedure_consts, &arc2, &nrel_scp_program_const);
+    genElStr5(s_default_ctx, &scp_procedure_node, &arc3, &scp_procedure_consts, &arc2, &nrel_scp_program_const);
     scp_procedure_consts.param_type = SCP_FIXED;
     MAKE_DEFAULT_NODE_ASSIGN(scp_procedure_copying_consts);
-    genElStr5(s_default_ctx, &scp_procedure_node, &arc1, &scp_procedure_copying_consts, &arc2, &nrel_scp_program_copied_const);
+    genElStr5(s_default_ctx, &scp_procedure_node, &arc3, &scp_procedure_copying_consts, &arc2, &nrel_scp_program_copied_const);
     scp_procedure_copying_consts.param_type = SCP_FIXED;
     MAKE_DEFAULT_NODE_ASSIGN(scp_procedure_vars);
-    genElStr5(s_default_ctx, &scp_procedure_node, &arc1, &scp_procedure_vars, &arc2, &nrel_scp_program_var);
+    genElStr5(s_default_ctx, &scp_procedure_node, &arc3, &scp_procedure_vars, &arc2, &nrel_scp_program_var);
     scp_procedure_vars.param_type = SCP_FIXED;
     MAKE_DEFAULT_NODE_ASSIGN(scp_procedure_operators_copying_pattern);
-    genElStr5(s_default_ctx, &scp_procedure_node, &arc1, &scp_procedure_operators_copying_pattern, &arc2, &nrel_template_of_scp_process_creation);
+    genElStr5(s_default_ctx, &scp_procedure_node, &arc3, &scp_procedure_operators_copying_pattern, &arc2, &nrel_template_of_scp_process_creation);
     scp_procedure_operators_copying_pattern.param_type = SCP_FIXED;
     if (SCP_RESULT_TRUE == gen_system_structures(s_default_ctx, &scp_procedure_operators, &scp_procedure_params, &scp_procedure_vars, &scp_procedure_consts, &scp_procedure_copying_consts, &scp_procedure_operators_copying_pattern))
     {
+        printEl(s_default_ctx, &scp_procedure_node);
+        printEl(s_default_ctx, &nrel_scp_program_const);
         genElStr3(s_default_ctx, &prepared_scp_program, &arc1, &scp_procedure_node);
         //printf("PREPROCESSING FINISHED\n");
         return SC_RESULT_OK;
