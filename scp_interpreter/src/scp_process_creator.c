@@ -276,7 +276,7 @@ sc_result create_scp_process(const sc_event *event, sc_addr arg)
     searchElStr5(s_default_ctx, &scp_procedure_node, &arc3, &consts_set, &arc2, &nrel_scp_program_const);
     consts_set.param_type = SCP_FIXED;
     MAKE_DEFAULT_OPERAND_ASSIGN(params_set);
-    searchElStr5(s_default_ctx, &scp_procedure_node, &arc3, &params_set, &arc2, &rrel_params);
+    searchElStr5(s_default_ctx, &scp_procedure_node, &arc2, &params_set, &arc2, &rrel_params);
     params_set.param_type = SCP_FIXED;
     MAKE_DEFAULT_OPERAND_ASSIGN(copying_pattern);
     searchElStr5(s_default_ctx, &scp_procedure_node, &arc3, &copying_pattern, &arc2, &nrel_template_of_scp_process_creation);

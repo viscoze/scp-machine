@@ -511,8 +511,6 @@ sc_result preprocess_scp_procedure(const sc_event *event, sc_addr arg)
     scp_procedure_operators_copying_pattern.param_type = SCP_FIXED;
     if (SCP_RESULT_TRUE == gen_system_structures(s_default_ctx, &scp_procedure_operators, &scp_procedure_params, &scp_procedure_vars, &scp_procedure_consts, &scp_procedure_copying_consts, &scp_procedure_operators_copying_pattern))
     {
-        printEl(s_default_ctx, &scp_procedure_node);
-        printEl(s_default_ctx, &nrel_scp_program_const);
         genElStr3(s_default_ctx, &prepared_scp_program, &arc1, &scp_procedure_node);
         //printf("PREPROCESSING FINISHED\n");
         return SC_RESULT_OK;
