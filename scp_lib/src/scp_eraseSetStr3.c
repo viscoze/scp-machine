@@ -35,7 +35,7 @@ scp_result eraseSetStr3F(sc_memory_context *context, scp_operand *param1, scp_op
     {
         sc_memory_element_free(context, param3->addr);
     }
-    if (SC_FALSE == sc_memory_is_element(context, param2->addr) && param2->erase == SCP_TRUE)
+    if (SC_TRUE == sc_memory_is_element(context, param2->addr) && param2->erase == SCP_TRUE)
     {
         sc_memory_element_free(context, param2->addr);
     }
