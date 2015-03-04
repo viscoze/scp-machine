@@ -314,6 +314,10 @@ sc_bool system_sys_search_recurse(sc_memory_context *context, sc_addr sc_pattern
                 else
                 {
                     sc_type next_const_element_type = ((~sc_type_var & next_pattern_element_type) | sc_type_const);
+                    if ((sc_type_node & next_pattern_element_type) == sc_type_node)
+                    {
+                        next_const_element_type = next_const_element_type & sc_type_link;
+                    }
                     it_const_arc = sc_iterator3_f_a_a_new(context, curr_const_element, const_arc_type, next_const_element_type);
                 }
             }
@@ -326,6 +330,10 @@ sc_bool system_sys_search_recurse(sc_memory_context *context, sc_addr sc_pattern
                 else
                 {
                     sc_type next_const_element_type = ((~sc_type_var & next_pattern_element_type) | sc_type_const);
+                    if ((sc_type_node & next_pattern_element_type) == sc_type_node)
+                    {
+                        next_const_element_type = next_const_element_type & sc_type_link;
+                    }
                     it_const_arc = sc_iterator3_a_a_f_new(context, next_const_element_type, const_arc_type, curr_const_element);
                 }
             }
@@ -698,26 +706,8 @@ sc_result system_sys_search_only_full(sc_memory_context *context, sc_addr patter
     sc_uint var_count = 0;
     sc_type_hash pattern_hash;
 
-    /*int mode = 0;
-
-    if (mode == 0)
-    {
-        sc_helper_resolve_system_identifier("t", &start_pattern_node);
-        sc_helper_resolve_system_identifier("t", &start_const_node);
-    }
-    else if (mode == 1)
-    {
-        sc_helper_resolve_system_identifier("seg", &start_pattern_node);
-        sc_helper_resolve_system_identifier("seg", &start_const_node);
-    }
-    else if (mode == 2)
-    {
-        sc_helper_resolve_system_identifier("rel1", &start_pattern_node);
-        sc_helper_resolve_system_identifier("rel1", &start_const_node);
-    }*/
-
-    /*sc_helper_resolve_system_identifier(context, "nrel_length", &start_pattern_node);
-    sc_helper_resolve_system_identifier(context, "nrel_length", &start_const_node);
+    /*sc_helper_resolve_system_identifier(context, "aaa123", &start_pattern_node);
+    sc_helper_resolve_system_identifier(context, "aaa123", &start_const_node);
 
     printf("START ELEMENT\n");
     printIdtf(context, start_pattern_node);
@@ -730,7 +720,7 @@ sc_result system_sys_search_only_full(sc_memory_context *context, sc_addr patter
     sort_result_vector(search_result);
     remove_result_vector_short_results(search_result, var_count);
 
-    print_result_set(context, search_result);
+    //print_result_set(context, search_result);
 
     return SC_RESULT_OK;
 }
@@ -763,6 +753,10 @@ sc_result system_sys_search_for_variables(sc_memory_context *context, sc_addr pa
 
     sc_uint var_count = 0;
     sc_type_hash pattern_hash;
+
+    /*printf("START ELEMENT\n");
+    printIdtf(context, start_pattern_node);
+    printf("\n");*/
 
     copy_set_into_hash(context, pattern, sc_type_arc_pos_const_perm, 0, &pattern_hash, &var_count);
     pattern_hash.erase(SC_ADDR_LOCAL_TO_INT(start_pattern_node));

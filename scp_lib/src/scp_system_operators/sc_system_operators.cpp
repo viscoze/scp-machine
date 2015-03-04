@@ -37,7 +37,7 @@ void printIdtf(sc_memory_context *context, sc_addr element)
     sc_type type;
     sc_memory_get_element_type(context, element, &type);
 
-    if ((sc_type_node & type) == sc_type_node)
+    if ((sc_type_node & type) == sc_type_node || (sc_type_link & type) == sc_type_link )
     {
 
         if (SC_RESULT_OK == sc_helper_get_system_identifier(context, element, &idtf))
