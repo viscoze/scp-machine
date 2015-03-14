@@ -773,35 +773,59 @@ scp_result ifType(sc_memory_context *context, scp_operand *param)
     return check_type(context, param->addr, param->element_type);
 }
 
+void printIdentifier(sc_memory_context *context, sc_addr element)
+{
+    sc_addr idtf;
+    sc_type type;
+    sc_memory_get_element_type(context, element, &type);
+
+    if ((sc_type_node & type) == sc_type_node || (sc_type_link & type) == sc_type_link)
+    {
+
+        if (SC_RESULT_OK == sc_helper_get_system_identifier(context, element, &idtf))
+        {
+            sc_stream *stream;
+            sc_uint32 length = 0, read_length = 0;
+            sc_char *data;
+            sc_memory_get_link_content(context, idtf, &stream);
+            sc_stream_get_length(stream, &length);
+            data = (sc_char *)calloc(length + 1, sizeof(sc_char));
+            sc_stream_read_data(stream, data, length, &read_length);
+            data[length] = '\0';
+            printf("%s", data);
+            sc_stream_free(stream);
+            free(data);
+        }
+        else
+        {
+            printf("%u|%u", element.seg, element.offset);
+        }
+    }
+    else
+    {
+        sc_addr elem1, elem2;
+        sc_memory_get_arc_begin(context, element, &elem1);
+        sc_memory_get_arc_end(context, element, &elem2);
+        printf("(");
+        printIdentifier(context, elem1);
+        printf(" -> ");
+        printIdentifier(context, elem2);
+        printf(")");
+    }
+}
+
 scp_result printEl(sc_memory_context *context, scp_operand *param)
 {
     sc_addr element = param->addr;
     sc_addr addr2, addr3;
-    sc_addr idtf;
     sc_iterator3 *it = nullptr;
     sc_uint32 out_c = 0, in_c = 0;
     if (SC_FALSE == sc_memory_is_element(context, param->addr))
     {
         return print_error("printEl", "Parameter has not value");
     }
-    if (SC_RESULT_OK == sc_helper_get_system_identifier(context, element, &idtf))
-    {
-        sc_stream *stream;
-        sc_uint32 length = 0, read_length = 0;
-        sc_char *data;
-        sc_memory_get_link_content(context, idtf, &stream);
-        sc_stream_get_length(stream, &length);
-        data = calloc(length + 1, sizeof(sc_char));
-        sc_stream_read_data(stream, data, length, &read_length);
-        data[length] = '\0';
-        printf("\nPrint element: %s =\n", data);
-        sc_stream_free(stream);
-        free(data);
-    }
-    else
-    {
-        printf("\nPrint element: %u|%u =\n", element.seg, element.offset);
-    }
+    printIdentifier(context, element);
+    printf("\n");
 
     it = sc_iterator3_a_a_f_new(context, 0, 0, element);
     if (it == 0)
@@ -815,56 +839,17 @@ scp_result printEl(sc_memory_context *context, scp_operand *param)
         addr2 = sc_iterator3_value(it, 0);
         addr3 = sc_iterator3_value(it, 1);
 
-        if (SC_RESULT_OK == sc_helper_get_system_identifier(context, addr3, &idtf))
+
+        if (SCP_RESULT_TRUE == check_type(context, addr3, scp_type_arc_access))
         {
-            sc_stream *stream;
-            sc_uint32 length = 0, read_length = 0;
-            sc_char *data;
-            sc_memory_get_link_content(context, idtf, &stream);
-            sc_stream_get_length(stream, &length);
-            data = calloc(length + 1, sizeof(sc_char));
-            sc_stream_read_data(stream, data, length, &read_length);
-            data[length] = '\0';
-            if (SCP_RESULT_TRUE == check_type(context, addr3, scp_type_arc_access))
-            {
-                printf("\t%s <- ", data);
-            }
-            else
-            {
-                printf("\t%s <= ", data);
-            }
-            sc_stream_free(stream);
-            free(data);
+            printf("\t%u|%u <- ", addr3.seg, addr3.offset);
         }
         else
         {
-            if (SCP_RESULT_TRUE == check_type(context, addr3, scp_type_arc_access))
-            {
-                printf("\t%u|%u <- ", addr3.seg, addr3.offset);
-            }
-            else
-            {
-                printf("\t%u|%u <= ", addr3.seg, addr3.offset);
-            }
+            printf("\t%u|%u <= ", addr3.seg, addr3.offset);
         }
-        if (SC_RESULT_OK == sc_helper_get_system_identifier(context, addr2, &idtf))
-        {
-            sc_stream *stream;
-            sc_uint32 length = 0, read_length = 0;
-            sc_char *data;
-            sc_memory_get_link_content(context, idtf, &stream);
-            sc_stream_get_length(stream, &length);
-            data = calloc(length + 1, sizeof(sc_char));
-            sc_stream_read_data(stream, data, length, &read_length);
-            data[length] = '\0';
-            printf("%s;\n", data);
-            sc_stream_free(stream);
-            free(data);
-        }
-        else
-        {
-            printf("%u|%u;\n", addr2.seg, addr2.offset);
-        }
+        printIdentifier(context, addr2);
+        printf("\n");
     }
     sc_iterator3_free(it);
     printf("Total input arcs: %d\n", in_c);
@@ -881,57 +866,17 @@ scp_result printEl(sc_memory_context *context, scp_operand *param)
         addr2 = sc_iterator3_value(it, 1);
         addr3 = sc_iterator3_value(it, 2);
 
-        if (SC_RESULT_OK == sc_helper_get_system_identifier(context, addr2, &idtf))
+        if (SCP_RESULT_TRUE == check_type(context, addr2, scp_type_arc_access))
         {
-            sc_stream *stream;
-            sc_uint32 length = 0, read_length = 0;
-            sc_char *data;
-            sc_memory_get_link_content(context, idtf, &stream);
-            sc_stream_get_length(stream, &length);
-            data = calloc(length + 1, sizeof(sc_char));
-            sc_stream_read_data(stream, data, length, &read_length);
-            data[length] = '\0';
-            if (SCP_RESULT_TRUE == check_type(context, addr2, scp_type_arc_access))
-            {
-                printf("\t%s -> ", data);
-            }
-            else
-            {
-                printf("\t%s => ", data);
-            }
-            sc_stream_free(stream);
-            free(data);
+            printf("\t%u|%u -> ", addr2.seg, addr2.offset);
         }
         else
         {
-            if (SCP_RESULT_TRUE == check_type(context, addr2, scp_type_arc_access))
-            {
-                printf("\t%u|%u -> ", addr2.seg, addr2.offset);
-            }
-            else
-            {
-                printf("\t%u|%u => ", addr2.seg, addr2.offset);
-            }
+            printf("\t%u|%u => ", addr2.seg, addr2.offset);
+        }
 
-        }
-        if (SC_RESULT_OK == sc_helper_get_system_identifier(context, addr3, &idtf))
-        {
-            sc_stream *stream;
-            sc_uint32 length = 0, read_length = 0;
-            sc_char *data;
-            sc_memory_get_link_content(context, idtf, &stream);
-            sc_stream_get_length(stream, &length);
-            data = calloc(length + 1, sizeof(sc_char));
-            sc_stream_read_data(stream, data, length, &read_length);
-            data[length] = '\0';
-            printf("%s;\n", data);
-            sc_stream_free(stream);
-            free(data);
-        }
-        else
-        {
-            printf("%u|%u;\n", addr3.seg, addr3.offset);
-        }
+        printIdentifier(context, addr3);
+        printf("\n");
     }
     sc_iterator3_free(it);
     printf("Total output arcs: %d\n", out_c);
