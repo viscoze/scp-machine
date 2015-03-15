@@ -38,7 +38,7 @@ void print_tab(int level)
     }
 }
 
-sc_bool system_sys_search_recurse(sc_memory_context *context, sc_addr sc_pattern, sc_type_hash pattern, sc_addr curr_const_element, sc_addr curr_pattern_element, sc_type_result *inp_result, sc_type_result_vector *out_common_result, int level)
+sc_bool system_sys_search_recurse(sc_memory_context *context, sc_addr sc_pattern, sc_type_hash *pattern, sc_addr curr_const_element, sc_addr curr_pattern_element, sc_type_result *inp_result, sc_type_result_vector *out_common_result, int level)
 {
     sc_addr addr1, addr2, temp, temp1;
     int out_arc_count = 0;
@@ -56,7 +56,7 @@ sc_bool system_sys_search_recurse(sc_memory_context *context, sc_addr sc_pattern
     while (SC_TRUE == sc_iterator3_next(it_pattern_arc))
     {
         addr2 = sc_iterator3_value(it_pattern_arc, 1);
-        if (pattern.find(SC_ADDR_LOCAL_TO_INT(addr2)) != pattern.end())
+        if (pattern->find(SC_ADDR_LOCAL_TO_INT(addr2)) != pattern->end())
         {
             out_arc_count++;
             pattern_arc_set.push_back(addr2);
@@ -71,7 +71,7 @@ sc_bool system_sys_search_recurse(sc_memory_context *context, sc_addr sc_pattern
         addr1 = sc_iterator3_value(it_pattern_arc, 0);
         if (SC_ADDR_IS_EQUAL(addr1, sc_pattern)) continue;
         addr2 = sc_iterator3_value(it_pattern_arc, 1);
-        if (pattern.find(SC_ADDR_LOCAL_TO_INT(addr2)) != pattern.end())
+        if (pattern->find(SC_ADDR_LOCAL_TO_INT(addr2)) != pattern->end())
         {
             pattern_arc_set.push_back(addr2);
         }
@@ -143,17 +143,17 @@ sc_bool system_sys_search_recurse(sc_memory_context *context, sc_addr sc_pattern
             if (SC_RESULT_OK != sc_memory_get_arc_end(context, next_pattern_element, &next_pattern_element_end)) {continue;}
         }
 
-        if (pattern.find(SC_ADDR_LOCAL_TO_INT(next_pattern_element)) == pattern.end())
+        if (pattern->find(SC_ADDR_LOCAL_TO_INT(next_pattern_element)) == pattern->end())
         {
             continue;
         }
         if (next_pattern_element_is_node == SC_FALSE)
         {
-            if (pattern.find(SC_ADDR_LOCAL_TO_INT(next_pattern_element_begin)) == pattern.end())
+            if (pattern->find(SC_ADDR_LOCAL_TO_INT(next_pattern_element_begin)) == pattern->end())
             {
                 continue;
             }
-            if (pattern.find(SC_ADDR_LOCAL_TO_INT(next_pattern_element_end)) == pattern.end())
+            if (pattern->find(SC_ADDR_LOCAL_TO_INT(next_pattern_element_end)) == pattern->end())
             {
                 continue;
             }
@@ -581,12 +581,12 @@ sc_bool system_sys_search_recurse(sc_memory_context *context, sc_addr sc_pattern
                 (*arc_result) = (*result);
                 del_result.push_back(result);
 
-                pattern.erase(SC_ADDR_LOCAL_TO_INT(pattern_arc));
-                pattern.erase(SC_ADDR_LOCAL_TO_INT(next_pattern_element));
+                pattern->erase(SC_ADDR_LOCAL_TO_INT(pattern_arc));
+                pattern->erase(SC_ADDR_LOCAL_TO_INT(next_pattern_element));
                 if (next_pattern_element_is_node == SC_FALSE)
                 {
-                    pattern.erase(SC_ADDR_LOCAL_TO_INT(next_pattern_element_begin));
-                    pattern.erase(SC_ADDR_LOCAL_TO_INT(next_pattern_element_end));
+                    pattern->erase(SC_ADDR_LOCAL_TO_INT(next_pattern_element_begin));
+                    pattern->erase(SC_ADDR_LOCAL_TO_INT(next_pattern_element_end));
                 }
 
                 system_sys_search_recurse(context, sc_pattern, pattern, const_arc, pattern_arc,
@@ -631,12 +631,12 @@ sc_bool system_sys_search_recurse(sc_memory_context *context, sc_addr sc_pattern
                     }
                 }
 
-                pattern.insert(sc_hash_pair(SC_ADDR_LOCAL_TO_INT(pattern_arc), pattern_arc));
-                pattern.insert(sc_hash_pair(SC_ADDR_LOCAL_TO_INT(next_pattern_element), next_pattern_element));
+                pattern->insert(sc_hash_pair(SC_ADDR_LOCAL_TO_INT(pattern_arc), pattern_arc));
+                pattern->insert(sc_hash_pair(SC_ADDR_LOCAL_TO_INT(next_pattern_element), next_pattern_element));
                 if (next_pattern_element_is_node == SC_FALSE)
                 {
-                    pattern.insert(sc_hash_pair(SC_ADDR_LOCAL_TO_INT(next_pattern_element_begin), next_pattern_element_begin));
-                    pattern.insert(sc_hash_pair(SC_ADDR_LOCAL_TO_INT(next_pattern_element_end), next_pattern_element_end));
+                    pattern->insert(sc_hash_pair(SC_ADDR_LOCAL_TO_INT(next_pattern_element_begin), next_pattern_element_begin));
+                    pattern->insert(sc_hash_pair(SC_ADDR_LOCAL_TO_INT(next_pattern_element_end), next_pattern_element_end));
                 }
 
                 out_common_result->insert(out_common_result->end(), next_common_result.begin(), next_common_result.end());
@@ -715,7 +715,7 @@ sc_result system_sys_search_only_full(sc_memory_context *context, sc_addr patter
 
     copy_set_into_hash(context, pattern, sc_type_arc_pos_const_perm, 0, &pattern_hash, &var_count);
     pattern_hash.erase(SC_ADDR_LOCAL_TO_INT(start_pattern_node));
-    system_sys_search_recurse(context, pattern, pattern_hash, start_const_node, start_pattern_node, result, search_result, 0);
+    system_sys_search_recurse(context, pattern, &pattern_hash, start_const_node, start_pattern_node, result, search_result, 0);
 
     sort_result_vector(search_result);
     remove_result_vector_short_results(search_result, var_count);
@@ -760,7 +760,7 @@ sc_result system_sys_search_for_variables(sc_memory_context *context, sc_addr pa
 
     copy_set_into_hash(context, pattern, sc_type_arc_pos_const_perm, 0, &pattern_hash, &var_count);
     pattern_hash.erase(SC_ADDR_LOCAL_TO_INT(start_pattern_node));
-    system_sys_search_recurse(context, pattern, pattern_hash, start_const_node, start_pattern_node, result, search_result, 2);
+    system_sys_search_recurse(context, pattern, &pattern_hash, start_const_node, start_pattern_node, result, search_result, 2);
 
     sort_result_vector(search_result);
     remove_result_vector_short_results(search_result, var_count);
@@ -802,7 +802,7 @@ sc_result system_sys_search(sc_memory_context *context, sc_addr pattern, sc_type
 
     copy_set_into_hash(context, pattern, sc_type_arc_pos_const_perm, 0, &pattern_hash, &var_count);
     pattern_hash.erase(SC_ADDR_LOCAL_TO_INT(start_pattern_node));
-    system_sys_search_recurse(context, pattern, pattern_hash, start_const_node, start_pattern_node, result, search_result, 2);
+    system_sys_search_recurse(context, pattern, &pattern_hash, start_const_node, start_pattern_node, result, search_result, 2);
 
     sort_result_vector(search_result);
     remove_result_vector_short_results(search_result);
