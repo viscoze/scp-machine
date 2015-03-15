@@ -198,11 +198,6 @@ sc_result destroy_scp_process(const sc_event *event, sc_addr arg)
     scp_process_node.erase = SCP_TRUE;
     eraseEl(s_default_ctx, &scp_process_node);
 
-    /*if (SCP_RESULT_FALSE == params_found)
-    {
-        question_node.erase = SCP_TRUE;
-        eraseEl(&question_node);
-    }*/
     if (SCP_RESULT_TRUE == params_found)
     {
         g_hash_table_destroy(params);
