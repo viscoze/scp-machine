@@ -641,7 +641,6 @@ sc_bool system_sys_search_recurse(sc_memory_context *context, sc_addr sc_pattern
 
                 out_common_result->insert(out_common_result->end(), next_common_result.begin(), next_common_result.end());
                 new_common_result.insert(new_common_result.end(), next_common_result.begin(), next_common_result.end());
-                cantorize_result_vector(&new_common_result);
                 next_common_result.clear();
                 next_common_result_arc.clear();
             }
