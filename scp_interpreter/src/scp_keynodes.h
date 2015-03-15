@@ -107,6 +107,15 @@ extern scp_operand rrel_access;
 extern scp_operand rrel_common;
 extern scp_operand rrel_pos_const_perm;
 
+//Node types
+extern scp_operand rrel_not_binary_tuple;
+extern scp_operand rrel_struct;
+extern scp_operand rrel_role_relation;
+extern scp_operand rrel_norole_relation;
+extern scp_operand rrel_not_relation;
+extern scp_operand rrel_abstract;
+extern scp_operand rrel_material;
+
 // Events
 
 extern scp_operand sc_event_elem;

@@ -40,3 +40,12 @@ scp_type scp_type_arc_temp = sc_type_arc_temp;
 scp_type scp_type_arc_perm = sc_type_arc_perm;
 
 scp_type scp_type_arc_pos_const_perm = sc_type_arc_pos_const_perm;
+
+scp_type scp_type_node_not_binary_tuple = sc_type_node_tuple;
+scp_type scp_type_node_struct = sc_type_node_struct;
+scp_type scp_type_node_role_relation = sc_type_node_role;
+scp_type scp_type_node_norole_relation = sc_type_node_norole;
+scp_type scp_type_node_not_relation = sc_type_node_class;
+scp_type scp_type_node_abstract = sc_type_node_abstract;
+scp_type scp_type_node_material = sc_type_node_material;
+

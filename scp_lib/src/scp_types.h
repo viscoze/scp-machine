@@ -96,6 +96,14 @@ extern scp_type scp_type_arc_perm;
 
 extern scp_type scp_type_arc_pos_const_perm;
 
+extern scp_type scp_type_node_not_binary_tuple;
+extern scp_type scp_type_node_struct;
+extern scp_type scp_type_node_role_relation;
+extern scp_type scp_type_node_norole_relation;
+extern scp_type scp_type_node_not_relation;
+extern scp_type scp_type_node_abstract;
+extern scp_type scp_type_node_material;
+
 //! Structure to store scp-operand
 struct _scp_operand
 {

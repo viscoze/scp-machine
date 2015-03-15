@@ -155,6 +155,44 @@ scp_result resolve_operands_modifiers(sc_memory_context *context, scp_operand *s
                 continue;
             }
 
+
+            if (SCP_RESULT_TRUE == ifCoin(context, &modifier, &rrel_not_binary_tuple))
+            {
+                operand.element_type = (operand.element_type | scp_type_node_not_binary_tuple);
+                continue;
+            }
+            if (SCP_RESULT_TRUE == ifCoin(context, &modifier, &rrel_struct))
+            {
+                operand.element_type = (operand.element_type | scp_type_node_struct);
+                continue;
+            }
+            if (SCP_RESULT_TRUE == ifCoin(context, &modifier, &rrel_role_relation))
+            {
+                operand.element_type = (operand.element_type | scp_type_node_role_relation);
+                continue;
+            }
+            if (SCP_RESULT_TRUE == ifCoin(context, &modifier, &rrel_norole_relation))
+            {
+                operand.element_type = (operand.element_type | scp_type_node_norole_relation);
+                continue;
+            }
+            if (SCP_RESULT_TRUE == ifCoin(context, &modifier, &rrel_not_relation))
+            {
+                operand.element_type = (operand.element_type | scp_type_node_not_relation);
+                continue;
+            }
+            if (SCP_RESULT_TRUE == ifCoin(context, &modifier, &rrel_abstract))
+            {
+                operand.element_type = (operand.element_type | scp_type_node_abstract);
+                continue;
+            }
+            if (SCP_RESULT_TRUE == ifCoin(context, &modifier, &rrel_material))
+            {
+                operand.element_type = (operand.element_type | scp_type_node_material);
+                continue;
+            }
+
+
             if (SCP_RESULT_TRUE == ifCoin(context, &modifier, &rrel_pos))
             {
                 operand.element_type = operand.element_type | scp_type_arc_pos;
@@ -338,6 +376,42 @@ scp_result resolve_operands_modifiers_with_set(sc_memory_context *context, scp_o
             if (SCP_RESULT_TRUE == ifCoin(context, &modifier, &rrel_pos_const_perm))
             {
                 operand.element_type = (operand.element_type | scp_type_arc_access | scp_type_arc_pos | scp_type_arc_perm | scp_type_const);
+                continue;
+            }
+
+            if (SCP_RESULT_TRUE == ifCoin(context, &modifier, &rrel_not_binary_tuple))
+            {
+                operand.element_type = (operand.element_type | scp_type_node_not_binary_tuple);
+                continue;
+            }
+            if (SCP_RESULT_TRUE == ifCoin(context, &modifier, &rrel_struct))
+            {
+                operand.element_type = (operand.element_type | scp_type_node_struct);
+                continue;
+            }
+            if (SCP_RESULT_TRUE == ifCoin(context, &modifier, &rrel_role_relation))
+            {
+                operand.element_type = (operand.element_type | scp_type_node_role_relation);
+                continue;
+            }
+            if (SCP_RESULT_TRUE == ifCoin(context, &modifier, &rrel_norole_relation))
+            {
+                operand.element_type = (operand.element_type | scp_type_node_norole_relation);
+                continue;
+            }
+            if (SCP_RESULT_TRUE == ifCoin(context, &modifier, &rrel_not_relation))
+            {
+                operand.element_type = (operand.element_type | scp_type_node_not_relation);
+                continue;
+            }
+            if (SCP_RESULT_TRUE == ifCoin(context, &modifier, &rrel_abstract))
+            {
+                operand.element_type = (operand.element_type | scp_type_node_abstract);
+                continue;
+            }
+            if (SCP_RESULT_TRUE == ifCoin(context, &modifier, &rrel_material))
+            {
+                operand.element_type = (operand.element_type | scp_type_node_material);
                 continue;
             }
 
