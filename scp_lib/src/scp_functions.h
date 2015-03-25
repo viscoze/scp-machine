@@ -46,11 +46,13 @@ scp_result eraseSetStr5(sc_memory_context *context, scp_operand *param1, scp_ope
 scp_result ifVarAssign(sc_memory_context *context, scp_operand *param);
 scp_result ifFormCont(sc_memory_context *context, scp_operand *param);
 scp_result ifCoin(sc_memory_context *context, scp_operand *param1, scp_operand *param2);
-scp_result ifEq(sc_memory_context *context, scp_operand *param1, scp_operand *param2);
-scp_result ifGr(sc_memory_context *context, scp_operand *param1, scp_operand *param2);
 scp_result ifType(sc_memory_context *context, scp_operand *param);
 
 scp_result varAssign(sc_memory_context *context, scp_operand *param1, scp_operand *param2);
+
+#ifdef SCP_MATH
+scp_result ifEq(sc_memory_context *context, scp_operand *param1, scp_operand *param2);
+scp_result ifGr(sc_memory_context *context, scp_operand *param1, scp_operand *param2);
 
 scp_result contAdd(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3);
 scp_result contDiv(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3);
@@ -65,6 +67,7 @@ scp_result contTg(sc_memory_context *context, scp_operand *param1, scp_operand *
 scp_result contASin(sc_memory_context *context, scp_operand *param1, scp_operand *param2);
 scp_result contACos(sc_memory_context *context, scp_operand *param1, scp_operand *param2);
 scp_result contATg(sc_memory_context *context, scp_operand *param1, scp_operand *param2);
+#endif
 
 scp_result contAssign(sc_memory_context *context, scp_operand *param1, scp_operand *param2);
 scp_result contErase(sc_memory_context *context, scp_operand *param);

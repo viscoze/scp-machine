@@ -49,12 +49,11 @@ extern scp_operand op_eraseSetStr5;
 extern scp_operand op_ifVarAssign;
 extern scp_operand op_ifFormCont;
 extern scp_operand op_ifCoin;
-extern scp_operand op_ifEq;
-extern scp_operand op_ifGr;
 extern scp_operand op_ifType;
 
 extern scp_operand op_varAssign;
 
+#ifdef SCP_MATH
 extern scp_operand op_contAdd;
 extern scp_operand op_contDiv;
 extern scp_operand op_contMult;
@@ -68,6 +67,10 @@ extern scp_operand op_contTg;
 extern scp_operand op_contASin;
 extern scp_operand op_contACos;
 extern scp_operand op_contATg;
+
+extern scp_operand op_ifEq;
+extern scp_operand op_ifGr;
+#endif
 
 extern scp_operand op_contAssign;
 extern scp_operand op_contErase;

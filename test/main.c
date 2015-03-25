@@ -250,10 +250,10 @@ void test_scp_process_creating(sc_memory_context *context, int value)
     }
 }
 
-void test_pattern(sc_memory_context *context)
+void test_pattern(sc_memory_context *context, const char* name)
 {
     sc_addr pattern;
-    sc_helper_resolve_system_identifier(context, "Pattern2", &pattern);
+    sc_helper_resolve_system_identifier(context, name, &pattern);
 
     scp_operand p, result;
     MAKE_DEFAULT_OPERAND_FIXED(p);
@@ -283,7 +283,7 @@ int main(void)
     timer = g_timer_new();
     g_timer_start(timer);
 
-    test_pattern(context);
+    //test_pattern(context,"pattern2");
     //create_process_test(context);
 
     g_timer_stop(timer);

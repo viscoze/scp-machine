@@ -1011,6 +1011,7 @@ scp_result contErase(sc_memory_context *context, scp_operand *param1)
     return SCP_RESULT_TRUE;
 }
 
+#ifdef SCP_MATH
 scp_result ifEq(sc_memory_context *context, scp_operand *param1, scp_operand *param2)
 {
     double num1, num2;
@@ -1028,7 +1029,9 @@ scp_result ifEq(sc_memory_context *context, scp_operand *param1, scp_operand *pa
     }
     return SCP_RESULT_ERROR;
 }
+#endif
 
+#ifdef SCP_MATH
 scp_result ifGr(sc_memory_context *context, scp_operand *param1, scp_operand *param2)
 {
     double num1, num2;
@@ -1046,7 +1049,9 @@ scp_result ifGr(sc_memory_context *context, scp_operand *param1, scp_operand *pa
     }
     return SCP_RESULT_ERROR;
 }
+#endif
 
+#ifdef SCP_MATH
 scp_result contLn(sc_memory_context *context, scp_operand *param1, scp_operand *param2)
 {
     double num;
@@ -1061,7 +1066,9 @@ scp_result contLn(sc_memory_context *context, scp_operand *param1, scp_operand *
     write_link_content_number(context, log(num), param1->addr);
     return SCP_RESULT_TRUE;
 }
+#endif
 
+#ifdef SCP_MATH
 scp_result contCos(sc_memory_context *context, scp_operand *param1, scp_operand *param2)
 {
     double num;
@@ -1076,7 +1083,9 @@ scp_result contCos(sc_memory_context *context, scp_operand *param1, scp_operand 
     write_link_content_number(context, cos(num), param1->addr);
     return SCP_RESULT_TRUE;
 }
+#endif
 
+#ifdef SCP_MATH
 scp_result contSin(sc_memory_context *context, scp_operand *param1, scp_operand *param2)
 {
     double num;
@@ -1091,7 +1100,9 @@ scp_result contSin(sc_memory_context *context, scp_operand *param1, scp_operand 
     write_link_content_number(context, sin(num), param1->addr);
     return SCP_RESULT_TRUE;
 }
+#endif
 
+#ifdef SCP_MATH
 scp_result contTg(sc_memory_context *context, scp_operand *param1, scp_operand *param2)
 {
     double num;
@@ -1107,7 +1118,9 @@ scp_result contTg(sc_memory_context *context, scp_operand *param1, scp_operand *
     write_link_content_number(context, tan(num), param1->addr);
     return SCP_RESULT_TRUE;
 }
+#endif
 
+#ifdef SCP_MATH
 scp_result contACos(sc_memory_context *context, scp_operand *param1, scp_operand *param2)
 {
     double num;
@@ -1123,7 +1136,9 @@ scp_result contACos(sc_memory_context *context, scp_operand *param1, scp_operand
     write_link_content_number(context, acos(num), param1->addr);
     return SCP_RESULT_TRUE;
 }
+#endif
 
+#ifdef SCP_MATH
 scp_result contASin(sc_memory_context *context, scp_operand *param1, scp_operand *param2)
 {
     double num;
@@ -1138,7 +1153,9 @@ scp_result contASin(sc_memory_context *context, scp_operand *param1, scp_operand
     write_link_content_number(context, asin(num), param1->addr);
     return SCP_RESULT_TRUE;
 }
+#endif
 
+#ifdef SCP_MATH
 scp_result contATg(sc_memory_context *context, scp_operand *param1, scp_operand *param2)
 {
     double num;
@@ -1154,7 +1171,9 @@ scp_result contATg(sc_memory_context *context, scp_operand *param1, scp_operand 
     write_link_content_number(context, atan(num), param1->addr);
     return SCP_RESULT_TRUE;
 }
+#endif
 
+#ifdef SCP_MATH
 scp_result contAdd(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3)
 {
     double num1, num2;
@@ -1169,7 +1188,9 @@ scp_result contAdd(sc_memory_context *context, scp_operand *param1, scp_operand 
     write_link_content_number(context, num1 + num2, param1->addr);
     return SCP_RESULT_TRUE;
 }
+#endif
 
+#ifdef SCP_MATH
 scp_result contSub(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3)
 {
     double num1, num2;
@@ -1185,7 +1206,9 @@ scp_result contSub(sc_memory_context *context, scp_operand *param1, scp_operand 
     write_link_content_number(context, num1 - num2, param1->addr);
     return SCP_RESULT_TRUE;
 }
+#endif
 
+#ifdef SCP_MATH
 scp_result contMult(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3)
 {
     double num1, num2;
@@ -1201,7 +1224,9 @@ scp_result contMult(sc_memory_context *context, scp_operand *param1, scp_operand
     write_link_content_number(context, num1 * num2, param1->addr);
     return SCP_RESULT_TRUE;
 }
+#endif
 
+#ifdef SCP_MATH
 scp_result contDiv(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3)
 {
     double num1, num2;
@@ -1217,7 +1242,9 @@ scp_result contDiv(sc_memory_context *context, scp_operand *param1, scp_operand 
     write_link_content_number(context, num1 / num2, param1->addr);
     return SCP_RESULT_TRUE;
 }
+#endif
 
+#ifdef SCP_MATH
 scp_result contPow(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3)
 {
     double num1, num2;
@@ -1233,3 +1260,4 @@ scp_result contPow(sc_memory_context *context, scp_operand *param1, scp_operand 
     write_link_content_number(context, pow(num1, num2), param1->addr);
     return SCP_RESULT_TRUE;
 }
+#endif

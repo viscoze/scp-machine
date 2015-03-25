@@ -47,11 +47,13 @@ scp_operand op_eraseSetStr5;
 scp_operand op_ifVarAssign;
 scp_operand op_ifFormCont;
 scp_operand op_ifCoin;
-scp_operand op_ifEq;
-scp_operand op_ifGr;
 scp_operand op_ifType;
 
 scp_operand op_varAssign;
+
+#ifdef SCP_MATH
+scp_operand op_ifEq;
+scp_operand op_ifGr;
 
 scp_operand op_contAdd;
 scp_operand op_contDiv;
@@ -66,6 +68,7 @@ scp_operand op_contTg;
 scp_operand op_contASin;
 scp_operand op_contACos;
 scp_operand op_contATg;
+#endif
 
 scp_operand op_contAssign;
 scp_operand op_contErase;
@@ -114,10 +117,12 @@ scp_result init_operator_keynodes()
     MAKE_DEFAULT_OPERAND_FIXED(op_ifVarAssign);
     MAKE_DEFAULT_OPERAND_FIXED(op_ifFormCont);
     MAKE_DEFAULT_OPERAND_FIXED(op_ifCoin);
-    MAKE_DEFAULT_OPERAND_FIXED(op_ifEq);
-    MAKE_DEFAULT_OPERAND_FIXED(op_ifGr);
     MAKE_DEFAULT_OPERAND_FIXED(op_ifType);
     MAKE_DEFAULT_OPERAND_FIXED(op_varAssign);
+
+#ifdef SCP_MATH
+    MAKE_DEFAULT_OPERAND_FIXED(op_ifEq);
+    MAKE_DEFAULT_OPERAND_FIXED(op_ifGr);
     MAKE_DEFAULT_OPERAND_FIXED(op_contAdd);
     MAKE_DEFAULT_OPERAND_FIXED(op_contDiv);
     MAKE_DEFAULT_OPERAND_FIXED(op_contMult);
@@ -130,6 +135,8 @@ scp_result init_operator_keynodes()
     MAKE_DEFAULT_OPERAND_FIXED(op_contASin);
     MAKE_DEFAULT_OPERAND_FIXED(op_contACos);
     MAKE_DEFAULT_OPERAND_FIXED(op_contATg);
+#endif
+
     MAKE_DEFAULT_OPERAND_FIXED(op_contAssign);
     MAKE_DEFAULT_OPERAND_FIXED(op_contErase);
     MAKE_DEFAULT_OPERAND_FIXED(op_print);
@@ -143,51 +150,55 @@ scp_result init_operator_keynodes()
     MAKE_DEFAULT_OPERAND_FIXED(op_return);
     MAKE_DEFAULT_OPERAND_FIXED(op_sys_wait);
     MAKE_DEFAULT_OPERAND_FIXED(op_syncronize);
-    resolve_keynode(scp_operator_atomic_type.addr,"scp_operator_atomic_type");
-    resolve_keynode(op_searchElStr3.addr,"searchElStr3");
-    resolve_keynode(op_searchElStr5.addr,"searchElStr5");
-    resolve_keynode(op_searchSetStr3.addr,"searchSetStr3");
-    resolve_keynode(op_searchSetStr5.addr,"searchSetStr5");
-    resolve_keynode(op_genEl.addr,"genEl");
-    resolve_keynode(op_genElStr3.addr,"genElStr3");
-    resolve_keynode(op_genElStr5.addr,"genElStr5");
-    resolve_keynode(op_eraseEl.addr,"eraseEl");
-    resolve_keynode(op_eraseElStr3.addr,"eraseElStr3");
-    resolve_keynode(op_eraseElStr5.addr,"eraseElStr5");
-    resolve_keynode(op_eraseSetStr3.addr,"eraseSetStr3");
-    resolve_keynode(op_eraseSetStr5.addr,"eraseSetStr5");
-    resolve_keynode(op_ifVarAssign.addr,"ifVarAssign");
-    resolve_keynode(op_ifFormCont.addr,"ifFormCont");
-    resolve_keynode(op_ifCoin.addr,"ifCoin");
-    resolve_keynode(op_ifEq.addr,"ifEq");
-    resolve_keynode(op_ifGr.addr,"ifGr");
-    resolve_keynode(op_ifType.addr,"ifType");
-    resolve_keynode(op_varAssign.addr,"varAssign");
-    resolve_keynode(op_contAdd.addr,"contAdd");
-    resolve_keynode(op_contDiv.addr,"contDiv");
-    resolve_keynode(op_contMult.addr,"contMult");
-    resolve_keynode(op_contSub.addr,"contSub");
-    resolve_keynode(op_contPow.addr,"contPow");
-    resolve_keynode(op_contLn.addr,"contLn");
-    resolve_keynode(op_contSin.addr,"contSin");
-    resolve_keynode(op_contCos.addr,"contCos");
-    resolve_keynode(op_contTg.addr,"contTg");
-    resolve_keynode(op_contASin.addr,"contASin");
-    resolve_keynode(op_contACos.addr,"contACos");
-    resolve_keynode(op_contATg.addr,"contATg");
-    resolve_keynode(op_contAssign.addr,"contAssign");
-    resolve_keynode(op_contErase.addr,"contErase");
-    resolve_keynode(op_print.addr,"print");
-    resolve_keynode(op_printNl.addr,"printNl");
-    resolve_keynode(op_printEl.addr,"printEl");
-    resolve_keynode(op_sys_search.addr,"sys_search");
-    resolve_keynode(op_sys_gen.addr,"sys_gen");
-    resolve_keynode(op_call.addr,"call");
-    resolve_keynode(op_waitReturn.addr,"waitReturn");
-    resolve_keynode(op_waitReturnSet.addr,"waitReturnSet");
-    resolve_keynode(op_return.addr,"return");
-    resolve_keynode(op_sys_wait.addr,"sys_wait");
-    resolve_keynode(op_syncronize.addr,"syncronize");
+    resolve_keynode(scp_operator_atomic_type.addr, "scp_operator_atomic_type");
+    resolve_keynode(op_searchElStr3.addr, "searchElStr3");
+    resolve_keynode(op_searchElStr5.addr, "searchElStr5");
+    resolve_keynode(op_searchSetStr3.addr, "searchSetStr3");
+    resolve_keynode(op_searchSetStr5.addr, "searchSetStr5");
+    resolve_keynode(op_genEl.addr, "genEl");
+    resolve_keynode(op_genElStr3.addr, "genElStr3");
+    resolve_keynode(op_genElStr5.addr, "genElStr5");
+    resolve_keynode(op_eraseEl.addr, "eraseEl");
+    resolve_keynode(op_eraseElStr3.addr, "eraseElStr3");
+    resolve_keynode(op_eraseElStr5.addr, "eraseElStr5");
+    resolve_keynode(op_eraseSetStr3.addr, "eraseSetStr3");
+    resolve_keynode(op_eraseSetStr5.addr, "eraseSetStr5");
+    resolve_keynode(op_ifVarAssign.addr, "ifVarAssign");
+    resolve_keynode(op_ifFormCont.addr, "ifFormCont");
+    resolve_keynode(op_ifCoin.addr, "ifCoin");
+    resolve_keynode(op_ifType.addr, "ifType");
+    resolve_keynode(op_varAssign.addr, "varAssign");
+
+#ifdef SCP_MATH
+    resolve_keynode(op_contAdd.addr, "contAdd");
+    resolve_keynode(op_contDiv.addr, "contDiv");
+    resolve_keynode(op_contMult.addr, "contMult");
+    resolve_keynode(op_contSub.addr, "contSub");
+    resolve_keynode(op_contPow.addr, "contPow");
+    resolve_keynode(op_contLn.addr, "contLn");
+    resolve_keynode(op_contSin.addr, "contSin");
+    resolve_keynode(op_contCos.addr, "contCos");
+    resolve_keynode(op_contTg.addr, "contTg");
+    resolve_keynode(op_contASin.addr, "contASin");
+    resolve_keynode(op_contACos.addr, "contACos");
+    resolve_keynode(op_contATg.addr, "contATg");
+    resolve_keynode(op_ifEq.addr, "ifEq");
+    resolve_keynode(op_ifGr.addr, "ifGr");
+#endif
+
+    resolve_keynode(op_contAssign.addr, "contAssign");
+    resolve_keynode(op_contErase.addr, "contErase");
+    resolve_keynode(op_print.addr, "print");
+    resolve_keynode(op_printNl.addr, "printNl");
+    resolve_keynode(op_printEl.addr, "printEl");
+    resolve_keynode(op_sys_search.addr, "sys_search");
+    resolve_keynode(op_sys_gen.addr, "sys_gen");
+    resolve_keynode(op_call.addr, "call");
+    resolve_keynode(op_waitReturn.addr, "waitReturn");
+    resolve_keynode(op_waitReturnSet.addr, "waitReturnSet");
+    resolve_keynode(op_return.addr, "return");
+    resolve_keynode(op_sys_wait.addr, "sys_wait");
+    resolve_keynode(op_syncronize.addr, "syncronize");
 
     return SCP_RESULT_TRUE;
 }

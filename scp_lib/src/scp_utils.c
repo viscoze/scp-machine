@@ -57,12 +57,15 @@ scp_result print_error(const char *operator_name, const char *text)
     return SCP_RESULT_ERROR;
 }
 
+#ifdef SCP_MATH
 scp_result check_numeric_type(sc_memory_context *context, sc_addr param)
 {
     //! TODO Add check for numeric type
     return SCP_RESULT_TRUE;
 }
+#endif
 
+#ifdef SCP_MATH
 scp_result resolve_numbers_1_2(sc_memory_context *context, const sc_char *operator_name, scp_operand *param1, scp_operand *param2, double *num1, double *num2)
 {
     sc_stream *stream;
@@ -112,7 +115,9 @@ scp_result resolve_numbers_1_2(sc_memory_context *context, const sc_char *operat
     free(data2);
     return SCP_RESULT_TRUE;
 }
+#endif
 
+#ifdef SCP_MATH
 scp_result resolve_numbers_2_3(sc_memory_context *context, const sc_char *operator_name, scp_operand *param1, scp_operand *param2, double *num1, double *num2)
 {
     sc_stream *stream;
@@ -162,7 +167,9 @@ scp_result resolve_numbers_2_3(sc_memory_context *context, const sc_char *operat
     free(data2);
     return SCP_RESULT_TRUE;
 }
+#endif
 
+#ifdef SCP_MATH
 scp_result resolve_number_2(sc_memory_context *context, const sc_char *operator_name, scp_operand *param1, double *num1)
 {
     sc_stream *stream;
@@ -197,6 +204,26 @@ scp_result resolve_number_2(sc_memory_context *context, const sc_char *operator_
     free(data1);
     return SCP_RESULT_TRUE;
 }
+#endif
+
+#ifdef SCP_MATH
+scp_result write_link_content_number(sc_memory_context *context, double data, sc_addr link)
+{
+    sc_stream *stream;
+    char *content = calloc(NUMBER_PRECISE, sizeof(sc_char));
+    snprintf(content, NUMBER_PRECISE, "%lf", data);
+    stream = sc_stream_memory_new(content, strlen(content), SC_STREAM_READ, SC_FALSE);
+    if (SC_RESULT_OK != sc_memory_set_link_content(context, link, stream))
+    {
+        free(content);
+        sc_stream_free(stream);
+        return SCP_RESULT_ERROR;
+    }
+    free(content);
+    sc_stream_free(stream);
+    return SCP_RESULT_TRUE;
+}
+#endif
 
 scp_result check_link_parameter_1(sc_memory_context *context, const sc_char *operator_name, scp_operand *param1)
 {
@@ -216,22 +243,5 @@ scp_result check_link_parameter_1(sc_memory_context *context, const sc_char *ope
             return print_error(operator_name, "Parameter 1 must have link type");
         }
     }
-    return SCP_RESULT_TRUE;
-}
-
-scp_result write_link_content_number(sc_memory_context *context, double data, sc_addr link)
-{
-    sc_stream *stream;
-    char *content = calloc(NUMBER_PRECISE, sizeof(sc_char));
-    snprintf(content, NUMBER_PRECISE, "%lf", data);
-    stream = sc_stream_memory_new(content, strlen(content), SC_STREAM_READ, SC_FALSE);
-    if (SC_RESULT_OK != sc_memory_set_link_content(context, link, stream))
-    {
-        free(content);
-        sc_stream_free(stream);
-        return SCP_RESULT_ERROR;
-    }
-    free(content);
-    sc_stream_free(stream);
     return SCP_RESULT_TRUE;
 }
