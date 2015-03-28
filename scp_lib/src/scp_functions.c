@@ -1245,6 +1245,49 @@ scp_result contDiv(sc_memory_context *context, scp_operand *param1, scp_operand 
 #endif
 
 #ifdef SCP_MATH
+scp_result contDivInt(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3)
+{
+    double num1, num2;
+    int num1int, num2int;
+
+    if (SCP_RESULT_ERROR == resolve_numbers_2_3(context, "contDivInt", param2, param3, &num1, &num2))
+    {
+        return SCP_RESULT_ERROR;
+    }
+    if (SCP_RESULT_ERROR == check_link_parameter_1(context, "contDivInt", param1))
+    {
+        return SCP_RESULT_ERROR;
+    }
+    num1int = (int)num1;
+    num2int = (int)num2;
+    write_link_content_number(context, num1int / num2int, param1->addr);
+    return SCP_RESULT_TRUE;
+}
+#endif
+
+#ifdef SCP_MATH
+scp_result contDivRem(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3)
+{
+    double num1, num2;
+    int num1int, num2int;
+
+    if (SCP_RESULT_ERROR == resolve_numbers_2_3(context, "contDivRem", param2, param3, &num1, &num2))
+    {
+        return SCP_RESULT_ERROR;
+    }
+    if (SCP_RESULT_ERROR == check_link_parameter_1(context, "contDivRem", param1))
+    {
+        return SCP_RESULT_ERROR;
+    }
+    num1int = (int)num1;
+    num2int = (int)num2;
+    write_link_content_number(context, num1int % num2int, param1->addr);
+    return SCP_RESULT_TRUE;
+}
+#endif
+
+
+#ifdef SCP_MATH
 scp_result contPow(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3)
 {
     double num1, num2;

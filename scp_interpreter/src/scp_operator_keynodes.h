@@ -70,6 +70,9 @@ extern scp_operand op_contATg;
 
 extern scp_operand op_ifEq;
 extern scp_operand op_ifGr;
+
+extern scp_operand op_contDivInt;
+extern scp_operand op_contDivRem;
 #endif
 
 extern scp_operand op_contAssign;

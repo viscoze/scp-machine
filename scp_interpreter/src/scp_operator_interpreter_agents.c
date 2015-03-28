@@ -766,6 +766,54 @@ sc_result interpreter_agent_content_arithmetic_operators(const sc_event *event, 
         }
         return SC_RESULT_OK;
     }
+    //contDivInt case
+    if (SCP_RESULT_TRUE == ifCoin(s_default_ctx, &operator_type, &op_contDivInt))
+    {
+        scp_operand operands[3], operand_values[3];
+        input_arc.erase = SCP_TRUE;
+        eraseEl(s_default_ctx, &input_arc);
+        print_debug_info("contDivInt");
+
+        resolve_operands_modifiers(s_default_ctx, &operator_node, operands, 3);
+
+        if (SCP_RESULT_TRUE != get_operands_values(s_default_ctx, operands, operand_values, 3))
+        {
+            operator_interpreting_crash(s_default_ctx, &operator_node);
+            return SC_RESULT_ERROR;
+        }
+
+        //Operator body
+        res = contDivInt(s_default_ctx, operand_values, operand_values + 1, operand_values + 2);
+        if (res == SCP_RESULT_TRUE)
+        {
+            goto_unconditional(s_default_ctx, &operator_node);
+        }
+        return SC_RESULT_OK;
+    }
+    //contDivRem case
+    if (SCP_RESULT_TRUE == ifCoin(s_default_ctx, &operator_type, &op_contDivInt))
+    {
+        scp_operand operands[3], operand_values[3];
+        input_arc.erase = SCP_TRUE;
+        eraseEl(s_default_ctx, &input_arc);
+        print_debug_info("contDivRem");
+
+        resolve_operands_modifiers(s_default_ctx, &operator_node, operands, 3);
+
+        if (SCP_RESULT_TRUE != get_operands_values(s_default_ctx, operands, operand_values, 3))
+        {
+            operator_interpreting_crash(s_default_ctx, &operator_node);
+            return SC_RESULT_ERROR;
+        }
+
+        //Operator body
+        res = contDivRem(s_default_ctx, operand_values, operand_values + 1, operand_values + 2);
+        if (res == SCP_RESULT_TRUE)
+        {
+            goto_unconditional(s_default_ctx, &operator_node);
+        }
+        return SC_RESULT_OK;
+    }
     //contPow case
     if (SCP_RESULT_TRUE == ifCoin(s_default_ctx, &operator_type, &op_contPow))
     {

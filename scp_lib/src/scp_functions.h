@@ -56,6 +56,8 @@ scp_result ifGr(sc_memory_context *context, scp_operand *param1, scp_operand *pa
 
 scp_result contAdd(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3);
 scp_result contDiv(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3);
+scp_result contDivInt(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3);
+scp_result contDivRem(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3);
 scp_result contMult(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3);
 scp_result contSub(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3);
 scp_result contPow(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3);
