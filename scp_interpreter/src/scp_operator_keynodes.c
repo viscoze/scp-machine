@@ -189,8 +189,8 @@ scp_result init_operator_keynodes()
     resolve_keynode(op_contATg.addr, "contATg");
     resolve_keynode(op_ifEq.addr, "ifEq");
     resolve_keynode(op_ifGr.addr, "ifGr");
-    resolve_keynode(op_ifEq.addr, "contDivInt");
-    resolve_keynode(op_ifGr.addr, "contDivRem");
+    resolve_keynode(op_contDivInt.addr, "contDivInt");
+    resolve_keynode(op_contDivRem.addr, "contDivRem");
 #endif
 
     resolve_keynode(op_contAssign.addr, "contAssign");
