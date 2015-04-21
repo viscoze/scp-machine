@@ -38,4 +38,10 @@ scp_result resolve_number_2(sc_memory_context *context, const sc_char *operator_
 scp_result write_link_content_number(sc_memory_context *context, double data, sc_addr link);
 #endif
 
+#ifdef SCP_STRING
+scp_result check_string_type(sc_memory_context *context, sc_addr param);
+scp_result resolve_strings_2_3(sc_memory_context *context, const sc_char *operator_name, scp_operand *param1, scp_operand *param2, char *num1, char *num2);
+scp_result write_link_content_string(sc_memory_context *context, char* data, sc_addr link);
+#endif
+
 #endif // SCP_UTILS_H

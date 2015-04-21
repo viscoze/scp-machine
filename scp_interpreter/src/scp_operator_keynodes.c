@@ -72,6 +72,9 @@ scp_operand op_contATg;
 scp_operand op_contDivInt;
 scp_operand op_contDivRem;
 #endif
+#ifdef SCP_STRING
+scp_operand op_contConcat;
+#endif
 
 scp_operand op_contAssign;
 scp_operand op_contErase;
@@ -142,6 +145,10 @@ scp_result init_operator_keynodes()
     MAKE_DEFAULT_OPERAND_FIXED(op_contDivRem);
 #endif
 
+#ifdef SCP_STRING
+    MAKE_DEFAULT_OPERAND_FIXED(op_contConcat);
+#endif
+
     MAKE_DEFAULT_OPERAND_FIXED(op_contAssign);
     MAKE_DEFAULT_OPERAND_FIXED(op_contErase);
     MAKE_DEFAULT_OPERAND_FIXED(op_print);
@@ -191,6 +198,10 @@ scp_result init_operator_keynodes()
     resolve_keynode(op_ifGr.addr, "ifGr");
     resolve_keynode(op_contDivInt.addr, "contDivInt");
     resolve_keynode(op_contDivRem.addr, "contDivRem");
+#endif
+
+#ifdef SCP_STRING
+    resolve_keynode(op_contConcat.addr, "contConcat");
 #endif
 
     resolve_keynode(op_contAssign.addr, "contAssign");

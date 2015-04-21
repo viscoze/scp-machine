@@ -75,6 +75,10 @@ extern scp_operand op_contDivInt;
 extern scp_operand op_contDivRem;
 #endif
 
+#ifdef SCP_STRING
+extern scp_operand op_contConcat;
+#endif
+
 extern scp_operand op_contAssign;
 extern scp_operand op_contErase;
 

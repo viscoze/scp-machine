@@ -225,6 +225,81 @@ scp_result write_link_content_number(sc_memory_context *context, double data, sc
 }
 #endif
 
+#ifdef SCP_STRING
+scp_result write_link_content_string(sc_memory_context *context, char* data, sc_addr link)
+{
+    sc_stream *stream;
+    size_t data_len = strlen(data);
+    char *content = calloc(data_len, sizeof(sc_char));
+    snprintf(content, data_len, "%s", data);
+    stream = sc_stream_memory_new(content, strlen(content), SC_STREAM_READ, SC_FALSE);
+    if (SC_RESULT_OK != sc_memory_set_link_content(context, link, stream))
+    {
+        free(content);
+        sc_stream_free(stream);
+        return SCP_RESULT_ERROR;
+    }
+    free(content);
+    sc_stream_free(stream);
+    return SCP_RESULT_TRUE;
+}
+#endif
+
+#ifdef SCP_STRING
+scp_result resolve_strings_2_3(sc_memory_context *context, const sc_char *operator_name, scp_operand *param1, scp_operand *param2, char *num1, char *num2)
+{
+    sc_stream *stream;
+    sc_uint32 length = 0, read_length = 0;
+    sc_char *data1, *data2;
+    if (SCP_ASSIGN == param1->param_type || SCP_ASSIGN == param2->param_type)
+    {
+        return print_error(operator_name, "Parameters 2 and 3 must have FIXED modifier");
+    }
+    if (SC_FALSE == sc_memory_is_element(context, param1->addr))
+    {
+        return print_error(operator_name, "Parameter 2 has not value");
+    }
+    if (SC_FALSE == sc_memory_is_element(context, param2->addr))
+    {
+        return print_error(operator_name, "Parameter 3 has not value");
+    }
+    if (check_type(context, param1->addr, scp_type_link) == SCP_RESULT_FALSE || check_type(context, param2->addr, scp_type_link) == SCP_RESULT_FALSE)
+    {
+        return print_error(operator_name, "Parameters 2 and 3 must have link type");
+    }
+    if (SCP_RESULT_FALSE == check_numeric_type(context, param1->addr) || SCP_RESULT_FALSE == check_numeric_type(context, param2->addr))
+    {
+        return print_error(operator_name, "Parameters 2 and 3 must have numeric format");
+    }
+
+    if (sc_memory_get_link_content(context, param1->addr, &stream) != SC_RESULT_OK)
+    {
+        return print_error(operator_name, "Parameter 2 content reading error");
+    }
+    sc_stream_get_length(stream, &length);
+    data1 = calloc(length, sizeof(sc_char));
+    sc_stream_read_data(stream, data1, length, &read_length);
+    sc_stream_free(stream);
+    if (sc_memory_get_link_content(context, param2->addr, &stream) != SC_RESULT_OK)
+    {
+        return print_error(operator_name, "Parameter 3 content reading error");
+    }
+    sc_stream_get_length(stream, &length);
+    data2 = calloc(length, sizeof(sc_char));
+    sc_stream_read_data(stream, data2, length, &read_length);
+    sc_stream_free(stream);
+
+    size_t data1_len = strlen(data1) + 1, data2_len = strlen(data2) + 1;
+    num1 = realloc(num1, data1_len);
+    memcpy(num1, data1, data1_len);
+    num2 = realloc(num2, data2_len);
+    memcpy(num2, data2, data2_len);
+    free(data1);
+    free(data2);
+    return SCP_RESULT_TRUE;
+}
+#endif
+
 scp_result check_link_parameter_1(sc_memory_context *context, const sc_char *operator_name, scp_operand *param1)
 {
     if (SCP_ASSIGN == param1->param_type)

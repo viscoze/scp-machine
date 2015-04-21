@@ -71,6 +71,11 @@ scp_result contACos(sc_memory_context *context, scp_operand *param1, scp_operand
 scp_result contATg(sc_memory_context *context, scp_operand *param1, scp_operand *param2);
 #endif
 
+#ifdef SCP_STRING
+
+scp_result contConcat(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3);
+#endif
+
 scp_result contAssign(sc_memory_context *context, scp_operand *param1, scp_operand *param2);
 scp_result contErase(sc_memory_context *context, scp_operand *param);
 
