@@ -1306,15 +1306,15 @@ scp_result contPow(sc_memory_context *context, scp_operand *param1, scp_operand 
 #endif
 
 #ifdef SCP_STRING
-scp_result contConcat(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3)
+scp_result contStringConcat(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3)
 {
     char *str1 = (char*)malloc(1), *str2 = (char*)malloc(1);
-    if (SCP_RESULT_ERROR == resolve_strings_2_3(context, "contConcat", param2, param3, str1, str2))
+    if (SCP_RESULT_ERROR == resolve_strings_2_3(context, "contStringConcat", param2, param3, str1, str2))
     {
         return SCP_RESULT_ERROR;
     }
 
-    if (SCP_RESULT_ERROR == check_link_parameter_1(context, "contConcat", param1))
+    if (SCP_RESULT_ERROR == check_link_parameter_1(context, "contStringConcat", param1))
     {
         return SCP_RESULT_ERROR;
     }
@@ -1325,7 +1325,7 @@ scp_result contConcat(sc_memory_context *context, scp_operand *param1, scp_opera
     char * result = (char*)malloc(len1 + len2 + 1);
     if (result==NULL)
     {
-        print_error("contConcat", "can't allocate memmory");
+        print_error("contStringConcat", "can't allocate memmory");
         return SCP_RESULT_ERROR;
     }
     memcpy(result, str1, len1);

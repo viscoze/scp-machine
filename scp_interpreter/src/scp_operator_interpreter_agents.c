@@ -1200,13 +1200,13 @@ sc_result interpreter_agent_content_string_operators(const sc_event *event, sc_a
         return SC_RESULT_ERROR;
     }
 
-    //contConcat case
-    if (SCP_RESULT_TRUE == ifCoin(s_default_ctx, &operator_type, &op_contConcat))
+    //contStringConcat case
+    if (SCP_RESULT_TRUE == ifCoin(s_default_ctx, &operator_type, &op_contStringConcat))
     {
         scp_operand operands[3], operand_values[3];
         input_arc.erase = SCP_TRUE;
         eraseEl(s_default_ctx, &input_arc);
-        print_debug_info("contConcat");
+        print_debug_info("contStringConcat");
 
         resolve_operands_modifiers(s_default_ctx, &operator_node, operands, 3);
 
@@ -1217,7 +1217,7 @@ sc_result interpreter_agent_content_string_operators(const sc_event *event, sc_a
         }
 
         //Operator body
-        res = contConcat(s_default_ctx, operand_values, operand_values + 1, operand_values + 2);
+        res = contStringConcat(s_default_ctx, operand_values, operand_values + 1, operand_values + 2);
         if (res == SCP_RESULT_TRUE)
         {
             set_operands_values(s_default_ctx, operands, operand_values, 3);

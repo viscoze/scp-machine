@@ -237,7 +237,7 @@ scp_result check_string_type(sc_memory_context *context, sc_addr param)
 scp_result write_link_content_string(sc_memory_context *context, char* data, sc_addr link)
 {
     sc_stream *stream;
-    size_t data_len = strlen(data);
+    size_t data_len = strlen(data) + 1;
     char *content = calloc(data_len, sizeof(sc_char));
     snprintf(content, data_len, "%s", data);
     stream = sc_stream_memory_new(content, strlen(content), SC_STREAM_READ, SC_FALSE);
