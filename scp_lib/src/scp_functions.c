@@ -1306,23 +1306,10 @@ scp_result contPow(sc_memory_context *context, scp_operand *param1, scp_operand 
 #endif
 
 #ifdef SCP_STRING
-
-char* concat(char *s1, char *s2)
-{
-    size_t len1 = strlen(s1);
-    size_t len2 = strlen(s2);
-    char *result = (char*)malloc(len1+len2+1);//+1 for the zero-terminator
-    //check for errors in malloc here
-    memcpy(result, s1, len1);
-    memcpy(result+len1, s2, len2+1);//+1 to copy the null-terminator
-    return result;
-}
-
-// change everything
 scp_result contConcat(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3)
 {
-    char *num1 = (char*)malloc(1), *num2 = (char*)malloc(1);
-    if (SCP_RESULT_ERROR == resolve_strings_2_3(context, "contConcat", param2, param3, num1, num2))
+    char *str1 = (char*)malloc(1), *str2 = (char*)malloc(1);
+    if (SCP_RESULT_ERROR == resolve_strings_2_3(context, "contConcat", param2, param3, str1, str2))
     {
         return SCP_RESULT_ERROR;
     }
@@ -1332,10 +1319,18 @@ scp_result contConcat(sc_memory_context *context, scp_operand *param1, scp_opera
         return SCP_RESULT_ERROR;
     }
 
-    char * result = concat(num1, num2);
-    if (result==NULL) {
+    size_t len1 = strlen(str1);
+    size_t len2 = strlen(str2);
+
+    char * result = (char*)malloc(len1 + len2 + 1);
+    if (result==NULL)
+    {
+        print_error("contConcat", "can't allocate memmory");
         return SCP_RESULT_ERROR;
     }
+    memcpy(result, str1, len1);
+    memcpy(result+len1, str2, len2 + 1);
+
     write_link_content_string(context, result, param1->addr);
     return SCP_RESULT_TRUE;
 }

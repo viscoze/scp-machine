@@ -225,6 +225,14 @@ scp_result write_link_content_number(sc_memory_context *context, double data, sc
 }
 #endif
 
+#ifdef SCP_MATH
+scp_result check_string_type(sc_memory_context *context, sc_addr param)
+{
+    //! TODO Add check for string type
+    return SCP_RESULT_TRUE;
+}
+#endif
+
 #ifdef SCP_STRING
 scp_result write_link_content_string(sc_memory_context *context, char* data, sc_addr link)
 {
@@ -246,7 +254,7 @@ scp_result write_link_content_string(sc_memory_context *context, char* data, sc_
 #endif
 
 #ifdef SCP_STRING
-scp_result resolve_strings_2_3(sc_memory_context *context, const sc_char *operator_name, scp_operand *param1, scp_operand *param2, char *num1, char *num2)
+scp_result resolve_strings_2_3(sc_memory_context *context, const sc_char *operator_name, scp_operand *param1, scp_operand *param2, char *str1, char *str2)
 {
     sc_stream *stream;
     sc_uint32 length = 0, read_length = 0;
@@ -289,11 +297,11 @@ scp_result resolve_strings_2_3(sc_memory_context *context, const sc_char *operat
     sc_stream_read_data(stream, data2, length, &read_length);
     sc_stream_free(stream);
 
-    size_t data1_len = strlen(data1) + 1, data2_len = strlen(data2) + 1;
-    num1 = realloc(num1, data1_len);
-    memcpy(num1, data1, data1_len);
-    num2 = realloc(num2, data2_len);
-    memcpy(num2, data2, data2_len);
+    size_t len_data1 = strlen(data1) + 1, len_data2 = strlen(data2) + 1;
+    str1 = realloc(str1, len_data1);
+    memcpy(str1, data1, len_data1);
+    str2 = realloc(str2, len_data2);
+    memcpy(str2, data2, len_data2);
     free(data1);
     free(data2);
     return SCP_RESULT_TRUE;

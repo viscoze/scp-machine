@@ -72,7 +72,6 @@ scp_result contATg(sc_memory_context *context, scp_operand *param1, scp_operand 
 #endif
 
 #ifdef SCP_STRING
-
 scp_result contConcat(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3);
 #endif
 
