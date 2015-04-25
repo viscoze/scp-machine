@@ -78,6 +78,7 @@ extern scp_operand op_contDivRem;
 #ifdef SCP_STRING
 extern scp_operand op_contStringConcat;
 extern scp_operand op_stringIfEq;
+extern scp_operand op_stringIfGr;
 #endif
 
 extern scp_operand op_contAssign;

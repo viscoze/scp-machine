@@ -75,6 +75,7 @@ scp_operand op_contDivRem;
 #ifdef SCP_STRING
 scp_operand op_contStringConcat;
 scp_operand op_stringIfEq;
+scp_operand op_stringIfGr;
 #endif
 
 scp_operand op_contAssign;
@@ -149,6 +150,7 @@ scp_result init_operator_keynodes()
 #ifdef SCP_STRING
     MAKE_DEFAULT_OPERAND_FIXED(op_contStringConcat);
     MAKE_DEFAULT_OPERAND_FIXED(op_stringIfEq);
+    MAKE_DEFAULT_OPERAND_FIXED(op_stringIfGr);
 #endif
 
     MAKE_DEFAULT_OPERAND_FIXED(op_contAssign);
@@ -205,6 +207,7 @@ scp_result init_operator_keynodes()
 #ifdef SCP_STRING
     resolve_keynode(op_contStringConcat.addr, "contStringConcat");
     resolve_keynode(op_stringIfEq.addr, "stringIfEq");
+    resolve_keynode(op_stringIfGr.addr, "stringIfGr");
 #endif
 
     resolve_keynode(op_contAssign.addr, "contAssign");
