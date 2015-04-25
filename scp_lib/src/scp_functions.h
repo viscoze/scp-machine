@@ -73,6 +73,7 @@ scp_result contATg(sc_memory_context *context, scp_operand *param1, scp_operand 
 
 #ifdef SCP_STRING
 scp_result contStringConcat(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3);
+scp_result stringIfEq(sc_memory_context *context, scp_operand *param1, scp_operand *param2);
 #endif
 
 scp_result contAssign(sc_memory_context *context, scp_operand *param1, scp_operand *param2);

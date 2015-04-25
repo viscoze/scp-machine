@@ -1335,3 +1335,22 @@ scp_result contStringConcat(sc_memory_context *context, scp_operand *param1, scp
     return SCP_RESULT_TRUE;
 }
 #endif
+
+#ifdef SCP_STRING
+scp_result stringIfEq(sc_memory_context *context, scp_operand *param1, scp_operand *param2) {
+    char *str1 = (char*)malloc(1), *str2 = (char*)malloc(1);
+    if (SCP_RESULT_ERROR == resolve_strings_1_2(context, "stringIfEq", param1, param2, str1, str2))
+    {
+        return SCP_RESULT_ERROR;
+    }
+    if (strcmp(str1, str2) == 0)
+    {
+        return SCP_RESULT_TRUE;
+    }
+    else
+    {
+        return SCP_RESULT_FALSE;
+    }
+    return SCP_RESULT_ERROR;
+}
+#endif
