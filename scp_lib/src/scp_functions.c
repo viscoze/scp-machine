@@ -1310,12 +1310,13 @@ scp_result contPow(sc_memory_context *context, scp_operand *param1, scp_operand 
 scp_result contStringConcat(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3)
 {
     char *str1 = (char*)malloc(1), *str2 = (char*)malloc(1);
-    if (SCP_RESULT_ERROR == resolve_strings_2_3(context, "contStringConcat", param2, param3, str1, str2))
+
+    if (SCP_RESULT_ERROR == check_link_parameter_1(context, "contStringConcat", param1))
     {
         return SCP_RESULT_ERROR;
     }
 
-    if (SCP_RESULT_ERROR == check_link_parameter_1(context, "contStringConcat", param1))
+    if (SCP_RESULT_ERROR == resolve_strings_2_3(context, "contStringConcat", param2, param3, str1, str2))
     {
         return SCP_RESULT_ERROR;
     }
@@ -1324,15 +1325,15 @@ scp_result contStringConcat(sc_memory_context *context, scp_operand *param1, scp
     size_t len2 = strlen(str2);
 
     char * result = (char*)malloc(len1 + len2 + 1);
-    if (result==NULL)
-    {
-        print_error("contStringConcat", "can't allocate memmory");
-        return SCP_RESULT_ERROR;
-    }
     memcpy(result, str1, len1);
     memcpy(result+len1, str2, len2 + 1);
 
     write_link_content_string(context, result, param1->addr);
+
+    free(str1);
+    free(str2);
+    free(result);
+
     return SCP_RESULT_TRUE;
 }
 #endif
@@ -1340,45 +1341,55 @@ scp_result contStringConcat(sc_memory_context *context, scp_operand *param1, scp
 #ifdef SCP_STRING
 scp_result stringIfEq(sc_memory_context *context, scp_operand *param1, scp_operand *param2) {
     char *str1 = (char*)malloc(1), *str2 = (char*)malloc(1);
+    scp_result result;
+
     if (SCP_RESULT_ERROR == resolve_strings_1_2(context, "stringIfEq", param1, param2, str1, str2))
     {
         return SCP_RESULT_ERROR;
     }
     if (strcmp(str1, str2) == 0)
     {
-        return SCP_RESULT_TRUE;
+        result = SCP_RESULT_TRUE;
     }
     else
     {
-        return SCP_RESULT_FALSE;
+        result = SCP_RESULT_FALSE;
     }
-    return SCP_RESULT_ERROR;
+
+    free(str1);
+    free(str2);
+    return result;
 }
 #endif
 
 #ifdef SCP_STRING
 scp_result stringIfGr(sc_memory_context *context, scp_operand *param1, scp_operand *param2) {
     char *str1 = (char*)malloc(1), *str2 = (char*)malloc(1);
+    scp_result result;
+
     if (SCP_RESULT_ERROR == resolve_strings_1_2(context, "stringIfGr", param1, param2, str1, str2))
     {
         return SCP_RESULT_ERROR;
     }
     if (strcmp(str1, str2) > 0)
     {
-        return SCP_RESULT_TRUE;
+        result = SCP_RESULT_TRUE;
     }
     else
     {
-        return SCP_RESULT_FALSE;
+        result = SCP_RESULT_FALSE;
     }
-    return SCP_RESULT_ERROR;
+
+    free(str1);
+    free(str2);
+    return result;
 }
 #endif
 
 #ifdef SCP_STRING
 scp_result stringSplit(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3) {
     sc_addr rrel_1, nrel_substring_base_order, prev_link, link, arc;
-    char *str = (char*)malloc(1), *delimiter = (char*)malloc(1);
+    char *str = (char*)malloc(1), *delimiter_str = (char*)malloc(1);
     char **result_set;
     int i, result_set_length;
 
@@ -1397,12 +1408,12 @@ scp_result stringSplit(sc_memory_context *context, scp_operand *param1, scp_oper
         return SCP_RESULT_ERROR;
     }
 
-    if (SCP_RESULT_ERROR == resolve_strings_2_3(context, "stringSplit", param2, param3, str, delimiter))
+    if (SCP_RESULT_ERROR == resolve_strings_2_3(context, "stringSplit", param2, param3, str, delimiter_str))
     {
         return SCP_RESULT_ERROR;
     }
 
-    result_set = g_strsplit(str, delimiter, -1);
+    result_set = g_strsplit(str, delimiter_str, -1);
     result_set_length = g_strv_length(result_set);
 
     for (i = 0; i < result_set_length; ++i)
@@ -1423,6 +1434,8 @@ scp_result stringSplit(sc_memory_context *context, scp_operand *param1, scp_oper
     }
 
     g_strfreev(result_set);
+    free(str);
+    free(delimiter_str);
 
     return SCP_RESULT_TRUE;
 }

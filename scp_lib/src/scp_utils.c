@@ -298,10 +298,11 @@ scp_result resolve_strings_2_3(sc_memory_context *context, const sc_char *operat
     sc_stream_free(stream);
 
     size_t len_data1 = strlen(data1) + 1, len_data2 = strlen(data2) + 1;
-    str1 = realloc(str1, len_data1);
+    str1 = realloc(str1, len_data1 * sizeof(sc_char));
     memcpy(str1, data1, len_data1);
-    str2 = realloc(str2, len_data2);
+    str2 = realloc(str2, len_data2 * sizeof(sc_char));
     memcpy(str2, data2, len_data2);
+
     free(data1);
     free(data2);
     return SCP_RESULT_TRUE;
@@ -394,9 +395,9 @@ scp_result resolve_strings_1_2(sc_memory_context *context, const sc_char *operat
     sc_stream_free(stream);
 
     size_t len_data1 = strlen(data1) + 1, len_data2 = strlen(data2) + 1;
-    str1 = realloc(str1, len_data1);
+    str1 = realloc(str1, len_data1 * sizeof(sc_char));
     memcpy(str1, data1, len_data1);
-    str2 = realloc(str2, len_data2);
+    str2 = realloc(str2, len_data2 * sizeof(sc_char));
     memcpy(str2, data2, len_data2);
 
     free(data1);
