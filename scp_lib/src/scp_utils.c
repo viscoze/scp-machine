@@ -329,6 +329,26 @@ scp_result check_link_parameter_1(sc_memory_context *context, const sc_char *ope
     return SCP_RESULT_TRUE;
 }
 
+scp_result check_node_parameter_1(sc_memory_context *context, const sc_char *operator_name, scp_operand *param1)
+{
+    if (SCP_ASSIGN == param1->param_type)
+    {
+        param1->addr = sc_memory_node_new(context, scp_type_node);
+    }
+    else
+    {
+        if (SC_FALSE == sc_memory_is_element(context, param1->addr))
+        {
+            return print_error(operator_name, "Parameter 1 has not value");
+        }
+        if (check_type(context, param1->addr, scp_type_node) == SCP_RESULT_FALSE)
+        {
+            return print_error(operator_name, "Parameter 1 isn't node");
+        }
+    }
+    return SCP_RESULT_TRUE;
+}
+
 #ifdef SCP_STRING
 scp_result resolve_strings_1_2(sc_memory_context *context, const sc_char *operator_name, scp_operand *param1,
                                scp_operand *param2, char *str1, char *str2) {

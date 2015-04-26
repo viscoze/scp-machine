@@ -40,6 +40,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <malloc.h>
 #include <stdlib.h>
 #include <math.h>
+#include <glib.h>
 
 scp_result scp_lib_init()
 {
@@ -1374,3 +1375,55 @@ scp_result stringIfGr(sc_memory_context *context, scp_operand *param1, scp_opera
 }
 #endif
 
+#ifdef SCP_STRING
+scp_result stringSplit(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3) {
+    sc_addr rrel_1, nrel_substring_base_order, prev_link, link, arc;
+    char *str = (char*)malloc(1), *delimiter = (char*)malloc(1);
+    char **result_set;
+    int i, result_set_length;
+
+    if (SC_RESULT_ERROR == sc_helper_resolve_system_identifier(context, "rrel_1", &rrel_1))
+    {
+        return SCP_RESULT_ERROR;
+    }
+
+    if (SC_RESULT_ERROR == sc_helper_resolve_system_identifier(context, "nrel_substring_base_order", &nrel_substring_base_order))
+    {
+        return SCP_RESULT_ERROR;
+    }
+
+    if (SCP_RESULT_ERROR == check_node_parameter_1(context, "stringSplit", param1))
+    {
+        return SCP_RESULT_ERROR;
+    }
+
+    if (SCP_RESULT_ERROR == resolve_strings_2_3(context, "stringSplit", param2, param3, str, delimiter))
+    {
+        return SCP_RESULT_ERROR;
+    }
+
+    result_set = g_strsplit(str, delimiter, -1);
+    result_set_length = g_strv_length(result_set);
+
+    for (i = 0; i < result_set_length; ++i)
+    {
+        link = sc_memory_link_new(context);
+        write_link_content_string(context, result_set[i], link);
+        arc = sc_memory_arc_new(context, sc_type_arc_pos_const_perm, param1->addr, link);
+        if (i == 0)
+        {
+            sc_memory_arc_new(context, sc_type_arc_pos_const_perm, rrel_1, arc);
+        }
+        else
+        {
+            arc = sc_memory_arc_new(context, sc_type_arc_common|sc_type_const, prev_link, link);
+            sc_memory_arc_new(context, sc_type_arc_pos_const_perm, nrel_substring_base_order, arc);
+        }
+        prev_link = link;
+    }
+
+    g_strfreev(result_set);
+
+    return SCP_RESULT_TRUE;
+}
+#endif
