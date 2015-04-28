@@ -1325,6 +1325,10 @@ scp_result contStringConcat(sc_memory_context *context, scp_operand *param1, scp
     size_t len2 = strlen(str2);
 
     char * result = (char*)malloc(len1 + len2 + 1);
+    if (result == NULL) {
+        print_error("contStringConcat", "unable to allocate memory");
+        return SCP_RESULT_ERROR;
+    }
     memcpy(result, str1, len1);
     memcpy(result+len1, str2, len2 + 1);
 
@@ -1545,6 +1549,7 @@ scp_result stringSlice(sc_memory_context *context, scp_operand *param1, scp_oper
     sub_string = (char*)malloc(sub_string_length);
     if (sub_string == NULL)
     {
+        print_error("stringSplice", "unable to allocate memory");
         return SCP_RESULT_ERROR;
     }
     strncpy(sub_string, str + start_index, sub_string_length);
