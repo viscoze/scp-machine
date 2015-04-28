@@ -1462,3 +1462,36 @@ scp_result stringLen(sc_memory_context *context, scp_operand *param1, scp_operan
     return SCP_RESULT_TRUE;
 }
 #endif
+
+#ifdef SCP_STRING
+scp_result stringSub(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3)
+{
+    char *str1, *str2;
+
+    if (SCP_RESULT_ERROR == check_link_parameter_1(context, "stringSub", param1))
+    {
+        return SCP_RESULT_ERROR;
+    }
+    if (SCP_RESULT_ERROR == resolve_strings_2_3(context, "stringSub", param2, param3, &str1, &str2))
+    {
+        return SCP_RESULT_ERROR;
+    }
+
+    int position = -1;
+    scp_result result = SCP_RESULT_FALSE;
+
+    char *sub_string = strstr(str1, str2);
+
+    if (sub_string != NULL) {
+        position = sub_string - str1;
+        result = SCP_RESULT_TRUE;
+    }
+
+    write_link_content_number(context, position, param1->addr);
+
+    free(str1);
+    free(str2);
+
+    return result;
+}
+#endif
