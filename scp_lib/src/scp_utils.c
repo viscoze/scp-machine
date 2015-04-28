@@ -72,7 +72,7 @@ scp_result check_numeric_type(sc_memory_context *context, sc_addr param)
 #endif
 
 #ifdef SCP_MATH
-static scp_result resolve_number(sc_memory_context *context, const sc_char *operator_name, const sc_char *parameter_name, scp_operand *param, double *num)
+scp_result resolve_number(sc_memory_context *context, const sc_char *operator_name, const sc_char *parameter_name, scp_operand *param, double *num)
 {
     sc_stream *stream;
     sc_uint32 length = 0, read_length = 0;

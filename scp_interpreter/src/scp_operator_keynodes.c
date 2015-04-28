@@ -79,6 +79,7 @@ scp_operand op_stringIfGr;
 scp_operand op_stringSplit;
 scp_operand op_stringLen;
 scp_operand op_stringSub;
+scp_operand op_stringSlice;
 #endif
 
 scp_operand op_contAssign;
@@ -157,6 +158,7 @@ scp_result init_operator_keynodes()
     MAKE_DEFAULT_OPERAND_FIXED(op_stringSplit);
     MAKE_DEFAULT_OPERAND_FIXED(op_stringLen);
     MAKE_DEFAULT_OPERAND_FIXED(op_stringSub);
+    MAKE_DEFAULT_OPERAND_FIXED(op_stringSlice);
 #endif
 
     MAKE_DEFAULT_OPERAND_FIXED(op_contAssign);
@@ -217,6 +219,7 @@ scp_result init_operator_keynodes()
     resolve_keynode(op_stringSplit.addr, "stringSplit");
     resolve_keynode(op_stringLen.addr, "stringLen");
     resolve_keynode(op_stringSub.addr, "stringSub");
+    resolve_keynode(op_stringSlice.addr, "stringSlice");
 #endif
 
     resolve_keynode(op_contAssign.addr, "contAssign");

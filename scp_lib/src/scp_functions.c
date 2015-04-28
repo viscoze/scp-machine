@@ -1495,3 +1495,65 @@ scp_result stringSub(sc_memory_context *context, scp_operand *param1, scp_operan
     return result;
 }
 #endif
+
+#ifdef SCP_STRING
+scp_result stringSlice(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4)
+{
+    char *str, *sub_string;
+    double num3, num4;
+    int start_index, end_index;
+
+    if (SCP_RESULT_ERROR == check_link_parameter_1(context, "stringSlice", param1))
+    {
+        return SCP_RESULT_ERROR;
+    }
+
+    if (SCP_RESULT_ERROR == resolve_string_2(context, "stringSlice", param2, &str))
+    {
+        return SCP_RESULT_ERROR;
+    }
+
+
+    if (SCP_RESULT_ERROR == resolve_number(context, "stringSlice", "Parameter 3", param3, &num3))
+    {
+        return SCP_RESULT_ERROR;
+    }
+
+    if (SCP_RESULT_ERROR == resolve_number(context, "stringSlice", "Parameter 4", param4, &num4))
+    {
+        return SCP_RESULT_ERROR;
+    }
+
+    size_t length = strlen(str);
+    start_index = (int)num3;
+    end_index = (int)num4;
+
+    if (start_index >= end_index)
+    {
+        print_error("stringSplice", "invalid range");
+        return SCP_RESULT_ERROR;
+    }
+
+    if (length <= end_index)
+    {
+        print_error("stringSplice", "end index out of range");
+        return SCP_RESULT_ERROR;
+    }
+
+    int sub_string_length = end_index - start_index + 1;
+
+    sub_string = (char*)malloc(sub_string_length);
+    if (sub_string == NULL)
+    {
+        return SCP_RESULT_ERROR;
+    }
+    strncpy(sub_string, str + start_index, sub_string_length);
+
+    write_link_content_string(context, sub_string, param1->addr);
+
+    free(str);
+    free(sub_string);
+
+    return SCP_RESULT_TRUE;
+}
+#endif
