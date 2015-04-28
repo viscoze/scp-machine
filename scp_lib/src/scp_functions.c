@@ -1327,6 +1327,8 @@ scp_result contStringConcat(sc_memory_context *context, scp_operand *param1, scp
     char * result = (char*)malloc(len1 + len2 + 1);
     if (result == NULL) {
         print_error("contStringConcat", "unable to allocate memory");
+        free(str1);
+        free(str2);
         return SCP_RESULT_ERROR;
     }
     memcpy(result, str1, len1);
@@ -1520,11 +1522,13 @@ scp_result stringSlice(sc_memory_context *context, scp_operand *param1, scp_oper
 
     if (SCP_RESULT_ERROR == resolve_number(context, "stringSlice", "Parameter 3", param3, &num3))
     {
+        free(str);
         return SCP_RESULT_ERROR;
     }
 
     if (SCP_RESULT_ERROR == resolve_number(context, "stringSlice", "Parameter 4", param4, &num4))
     {
+        free(str);
         return SCP_RESULT_ERROR;
     }
 
@@ -1535,12 +1539,14 @@ scp_result stringSlice(sc_memory_context *context, scp_operand *param1, scp_oper
     if (start_index >= end_index)
     {
         print_error("stringSplice", "invalid range");
+        free(str);
         return SCP_RESULT_ERROR;
     }
 
     if (length <= end_index)
     {
         print_error("stringSplice", "end index out of range");
+        free(str);
         return SCP_RESULT_ERROR;
     }
 
@@ -1550,6 +1556,7 @@ scp_result stringSlice(sc_memory_context *context, scp_operand *param1, scp_oper
     if (sub_string == NULL)
     {
         print_error("stringSplice", "unable to allocate memory");
+        free(str);
         return SCP_RESULT_ERROR;
     }
     strncpy(sub_string, str + start_index, sub_string_length);
