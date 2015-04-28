@@ -254,7 +254,8 @@ scp_result write_link_content_string(sc_memory_context *context, char* data, sc_
 #endif
 
 #ifdef SCP_STRING
-scp_result resolve_strings_2_3(sc_memory_context *context, const sc_char *operator_name, scp_operand *param1, scp_operand *param2, char *str1, char *str2)
+scp_result resolve_strings_2_3(sc_memory_context *context, const sc_char *operator_name, scp_operand *param1,
+                               scp_operand *param2, char **str1, char **str2)
 {
     sc_stream *stream;
     sc_uint32 length = 0, read_length = 0;
@@ -298,10 +299,10 @@ scp_result resolve_strings_2_3(sc_memory_context *context, const sc_char *operat
     sc_stream_free(stream);
 
     size_t len_data1 = strlen(data1) + 1, len_data2 = strlen(data2) + 1;
-    str1 = realloc(str1, len_data1 * sizeof(sc_char));
-    memcpy(str1, data1, len_data1);
-    str2 = realloc(str2, len_data2 * sizeof(sc_char));
-    memcpy(str2, data2, len_data2);
+    *str1 = malloc(len_data1);
+    memcpy(*str1, data1, len_data1);
+    *str2 = malloc(len_data2);
+    memcpy(*str2, data2, len_data2);
 
     free(data1);
     free(data2);
@@ -352,7 +353,7 @@ scp_result check_node_parameter_1(sc_memory_context *context, const sc_char *ope
 
 #ifdef SCP_STRING
 scp_result resolve_strings_1_2(sc_memory_context *context, const sc_char *operator_name, scp_operand *param1,
-                               scp_operand *param2, char *str1, char *str2) {
+                               scp_operand *param2, char **str1, char **str2) {
     sc_stream *stream;
     sc_uint32 length = 0, read_length = 0;
     sc_char *data1, *data2;
@@ -395,10 +396,10 @@ scp_result resolve_strings_1_2(sc_memory_context *context, const sc_char *operat
     sc_stream_free(stream);
 
     size_t len_data1 = strlen(data1) + 1, len_data2 = strlen(data2) + 1;
-    str1 = realloc(str1, len_data1 * sizeof(sc_char));
-    memcpy(str1, data1, len_data1);
-    str2 = realloc(str2, len_data2 * sizeof(sc_char));
-    memcpy(str2, data2, len_data2);
+    *str1 = calloc(len_data1, sizeof(sc_char));
+    memcpy(*str1, data1, len_data1);
+    *str2 = calloc(len_data2, sizeof(sc_char));
+    memcpy(*str2, data2, len_data2);
 
     free(data1);
     free(data2);
@@ -408,7 +409,7 @@ scp_result resolve_strings_1_2(sc_memory_context *context, const sc_char *operat
 #endif
 
 #ifdef SCP_STRING
-scp_result resolve_string_2(sc_memory_context *context, const sc_char *operator_name, scp_operand *param2, char *str2) {
+scp_result resolve_string_2(sc_memory_context *context, const sc_char *operator_name, scp_operand *param2, char **str2) {
     sc_stream *stream;
     sc_uint32 length = 0, read_length = 0;
     sc_char *data2;
@@ -439,8 +440,8 @@ scp_result resolve_string_2(sc_memory_context *context, const sc_char *operator_
     sc_stream_free(stream);
 
     size_t len_data2 = strlen(data2) + 1;
-    str2 = realloc(str2, len_data2 * sizeof(sc_char));
-    memcpy(str2, data2, len_data2);
+    *str2 = calloc(len_data2, sizeof(sc_char));
+    memcpy(*str2, data2, len_data2);
 
     free(data2);
     return SCP_RESULT_TRUE;
