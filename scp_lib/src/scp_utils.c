@@ -307,6 +307,7 @@ scp_result resolve_strings_1_2(sc_memory_context *context, const sc_char *operat
 
     if (SCP_RESULT_ERROR == resolve_string(context, operator_name, "Parameter 2", param2, str2))
     {
+        free(*str1);
         return SCP_RESULT_ERROR;
     }
 
@@ -325,6 +326,7 @@ scp_result resolve_strings_2_3(sc_memory_context *context, const sc_char *operat
 
     if (SCP_RESULT_ERROR == resolve_string(context, operator_name, "Parameter 3", param3, str3))
     {
+        free(*str2);
         return SCP_RESULT_ERROR;
     }
 
