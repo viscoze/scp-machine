@@ -28,6 +28,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 scp_result check_type(sc_memory_context *context, sc_addr element, sc_type input_type);
 scp_result print_error(const char *operator_name, const char *text);
+scp_result print_parameter_error(const char *operator_name, const char *parameter_name, const char *text);
 scp_result check_link_parameter_1(sc_memory_context *context, const sc_char *operator_name, scp_operand *param1);
 scp_result check_node_parameter_1(sc_memory_context *context, const sc_char *operator_name, scp_operand *param1);
 
@@ -41,10 +42,8 @@ scp_result write_link_content_number(sc_memory_context *context, double data, sc
 
 #ifdef SCP_STRING
 scp_result check_string_type(sc_memory_context *context, sc_addr param);
-scp_result resolve_strings_1_2(sc_memory_context *context, const sc_char *operator_name, scp_operand *param1,
-                               scp_operand *param2, char **str1, char **str2);
-scp_result resolve_strings_2_3(sc_memory_context *context, const sc_char *operator_name, scp_operand *param1,
-                               scp_operand *param2, char **str1, char **str2);
+scp_result resolve_strings_1_2(sc_memory_context *context, const sc_char *operator_name, scp_operand *param1, scp_operand *param2, char **str1, char **str2);
+scp_result resolve_strings_2_3(sc_memory_context *context, const sc_char *operator_name, scp_operand *param1, scp_operand *param2, char **str1, char **str2);
 scp_result resolve_string_2(sc_memory_context *context, const sc_char *operator_name, scp_operand *param2, char **str2);
 scp_result write_link_content_string(sc_memory_context *context, char* data, sc_addr link);
 #endif
