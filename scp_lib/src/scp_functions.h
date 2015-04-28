@@ -76,6 +76,7 @@ scp_result contStringConcat(sc_memory_context *context, scp_operand *param1, scp
 scp_result stringIfEq(sc_memory_context *context, scp_operand *param1, scp_operand *param2);
 scp_result stringIfGr(sc_memory_context *context, scp_operand *param1, scp_operand *param2);
 scp_result stringSplit(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3);
+scp_result stringLen(sc_memory_context *context, scp_operand *param1, scp_operand *param2);
 #endif
 
 scp_result contAssign(sc_memory_context *context, scp_operand *param1, scp_operand *param2);

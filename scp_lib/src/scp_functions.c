@@ -1440,3 +1440,25 @@ scp_result stringSplit(sc_memory_context *context, scp_operand *param1, scp_oper
     return SCP_RESULT_TRUE;
 }
 #endif
+
+#ifdef SCP_STRING
+scp_result stringLen(sc_memory_context *context, scp_operand *param1, scp_operand *param2) {
+    char *str = (char *)malloc(1);
+
+    if (SCP_RESULT_ERROR == check_link_parameter_1(context, "stringLen", param1))
+    {
+        return SCP_RESULT_ERROR;
+    }
+
+    if (SCP_RESULT_ERROR == resolve_string_2(context, "stringLen", param2, str))
+    {
+        return SCP_RESULT_ERROR;
+    }
+
+    write_link_content_number(context, strlen(str), param1->addr);
+
+    free(str);
+
+    return SCP_RESULT_TRUE;
+}
+#endif

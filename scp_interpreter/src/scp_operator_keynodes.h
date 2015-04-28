@@ -80,6 +80,7 @@ extern scp_operand op_contStringConcat;
 extern scp_operand op_stringIfEq;
 extern scp_operand op_stringIfGr;
 extern scp_operand op_stringSplit;
+extern scp_operand op_stringLen;
 #endif
 
 extern scp_operand op_contAssign;

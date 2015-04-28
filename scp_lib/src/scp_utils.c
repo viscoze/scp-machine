@@ -406,3 +406,43 @@ scp_result resolve_strings_1_2(sc_memory_context *context, const sc_char *operat
 }
 
 #endif
+
+#ifdef SCP_STRING
+scp_result resolve_string_2(sc_memory_context *context, const sc_char *operator_name, scp_operand *param2, char *str2) {
+    sc_stream *stream;
+    sc_uint32 length = 0, read_length = 0;
+    sc_char *data2;
+    if (SCP_ASSIGN == param2->param_type)
+    {
+        return print_error(operator_name, "Parameter 2 must have FIXED modifier");
+    }
+    if (SC_FALSE == sc_memory_is_element(context, param2->addr))
+    {
+        return print_error(operator_name, "Parameter 2 has not value");
+    }
+    if (check_type(context, param2->addr, scp_type_link) == SCP_RESULT_FALSE)
+    {
+        return print_error(operator_name, "Parameter 2 must have link type");
+    }
+    if (SCP_RESULT_FALSE == check_string_type(context, param2->addr))
+    {
+        return print_error(operator_name, "Parameter 2 must have string format");
+    }
+
+    if (sc_memory_get_link_content(context, param2->addr, &stream) != SC_RESULT_OK)
+    {
+        return print_error(operator_name, "Parameter 2 content reading error");
+    }
+    sc_stream_get_length(stream, &length);
+    data2 = calloc(length, sizeof(sc_char));
+    sc_stream_read_data(stream, data2, length, &read_length);
+    sc_stream_free(stream);
+
+    size_t len_data2 = strlen(data2) + 1;
+    str2 = realloc(str2, len_data2 * sizeof(sc_char));
+    memcpy(str2, data2, len_data2);
+
+    free(data2);
+    return SCP_RESULT_TRUE;
+}
+#endif
