@@ -79,6 +79,7 @@ scp_result stringSplit(sc_memory_context *context, scp_operand *param1, scp_oper
 scp_result stringLen(sc_memory_context *context, scp_operand *param1, scp_operand *param2);
 scp_result stringSub(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3);
 scp_result stringSlice(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4);
+scp_result stringStartsWith(sc_memory_context *context, scp_operand *param1, scp_operand *param2);
 #endif
 
 scp_result contAssign(sc_memory_context *context, scp_operand *param1, scp_operand *param2);
