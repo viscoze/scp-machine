@@ -1454,7 +1454,7 @@ sc_result interpreter_agent_content_string_operators(const sc_event *event, sc_a
     //stringStartsWith case
     if (SCP_RESULT_TRUE == ifCoin(s_default_ctx, &operator_type, &op_stringStartsWith))
     {
-        scp_operand operands[3], operand_values[3];
+        scp_operand operands[2], operand_values[2];
         input_arc.erase = SCP_TRUE;
         eraseEl(s_default_ctx, &input_arc);
         print_debug_info("stringStartsWith");
@@ -1505,7 +1505,7 @@ sc_result interpreter_agent_content_string_operators(const sc_event *event, sc_a
     //stringEndsWith case
     if (SCP_RESULT_TRUE == ifCoin(s_default_ctx, &operator_type, &op_stringEndsWith))
     {
-        scp_operand operands[3], operand_values[3];
+        scp_operand operands[2], operand_values[2];
         input_arc.erase = SCP_TRUE;
         eraseEl(s_default_ctx, &input_arc);
         print_debug_info("stringEndsWith");
@@ -1550,6 +1550,32 @@ sc_result interpreter_agent_content_string_operators(const sc_event *event, sc_a
             }
         }
 
+        return SC_RESULT_OK;
+    }
+
+    //stringReplace case
+    if (SC_RESULT_OK == ifCoin(s_default_ctx, &operator_type, &op_stringReplace))
+    {
+        scp_operand operands[4], operand_values[4];
+        input_arc.erase = SCP_TRUE;
+        eraseEl(s_default_ctx, &input_arc);
+        print_debug_info("stringReplace");
+
+        resolve_operands_modifiers(s_default_ctx, &operator_node, operands, 4);
+
+        if (SCP_RESULT_TRUE != get_operands_values(s_default_ctx, operands, operand_values, 4))
+        {
+            operator_interpreting_crash(s_default_ctx, &operator_node);
+            return SC_RESULT_ERROR;
+        }
+
+        //Operator body
+        res = stringReplace(s_default_ctx, operand_values, operand_values + 1, operand_values + 2, operand_values + 3);
+        if (res == SCP_RESULT_TRUE)
+        {
+            set_operands_values(s_default_ctx, operands, operand_values, 4);
+            goto_unconditional(s_default_ctx, &operator_node);
+        }
         return SC_RESULT_OK;
     }
 

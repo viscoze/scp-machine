@@ -316,6 +316,32 @@ scp_result resolve_strings_1_2(sc_memory_context *context, const sc_char *operat
 #endif
 
 #ifdef SCP_STRING
+scp_result resolve_strings_2_3_4(sc_memory_context *context, const sc_char *operator_name, scp_operand *param2,
+                               scp_operand *param3, scp_operand *param4, char **str1, char **str2, char **str3)
+{
+    if (SCP_RESULT_ERROR == resolve_string(context, operator_name, "Parameter 2", param2, str1))
+    {
+        return SCP_RESULT_ERROR;
+    }
+
+    if (SCP_RESULT_ERROR == resolve_string(context, operator_name, "Parameter 3", param3, str2))
+    {
+        free(*str1);
+        return SCP_RESULT_ERROR;
+    }
+
+    if (SCP_RESULT_ERROR == resolve_string(context, operator_name, "Parameter 4", param4, str3))
+    {
+        free(*str1);
+        free(*str2);
+        return SCP_RESULT_ERROR;
+    }
+
+    return SCP_RESULT_TRUE;
+}
+#endif
+
+#ifdef SCP_STRING
 scp_result resolve_strings_2_3(sc_memory_context *context, const sc_char *operator_name, scp_operand *param2,
                                scp_operand *param3, char **str2, char **str3)
 {

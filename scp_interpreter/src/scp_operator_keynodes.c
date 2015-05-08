@@ -82,6 +82,7 @@ scp_operand op_stringSub;
 scp_operand op_stringSlice;
 scp_operand op_stringStartsWith;
 scp_operand op_stringEndsWith;
+scp_operand op_stringReplace;
 #endif
 
 scp_operand op_contAssign;
@@ -163,6 +164,7 @@ scp_result init_operator_keynodes()
     MAKE_DEFAULT_OPERAND_FIXED(op_stringSlice);
     MAKE_DEFAULT_OPERAND_FIXED(op_stringStartsWith);
     MAKE_DEFAULT_OPERAND_FIXED(op_stringEndsWith);
+    MAKE_DEFAULT_OPERAND_FIXED(op_stringReplace);
 #endif
 
     MAKE_DEFAULT_OPERAND_FIXED(op_contAssign);
@@ -226,6 +228,7 @@ scp_result init_operator_keynodes()
     resolve_keynode(op_stringSlice.addr, "stringSlice");
     resolve_keynode(op_stringStartsWith.addr, "stringStartsWith");
     resolve_keynode(op_stringEndsWith.addr, "stringEndsWith");
+    resolve_keynode(op_stringReplace.addr, "stringReplace");
 #endif
 
     resolve_keynode(op_contAssign.addr, "contAssign");

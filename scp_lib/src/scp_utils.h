@@ -44,6 +44,7 @@ scp_result write_link_content_number(sc_memory_context *context, double data, sc
 #ifdef SCP_STRING
 scp_result check_string_type(sc_memory_context *context, sc_addr param);
 scp_result resolve_strings_1_2(sc_memory_context *context, const sc_char *operator_name, scp_operand *param1, scp_operand *param2, char **str1, char **str2);
+scp_result resolve_strings_2_3_4(sc_memory_context *context, const sc_char *operator_name, scp_operand *param1, scp_operand *param2, scp_operand *param3, char **str1, char **str2, char **str3);
 scp_result resolve_strings_2_3(sc_memory_context *context, const sc_char *operator_name, scp_operand *param1, scp_operand *param2, char **str1, char **str2);
 scp_result resolve_string_2(sc_memory_context *context, const sc_char *operator_name, scp_operand *param2, char **str2);
 scp_result write_link_content_string(sc_memory_context *context, char* data, sc_addr link);

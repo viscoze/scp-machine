@@ -1635,3 +1635,59 @@ scp_result stringEndsWith(sc_memory_context *context, scp_operand *param1, scp_o
     return result;
 }
 #endif
+
+#ifdef SCP_STRING
+scp_result stringReplace(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4)
+{
+    char *str1, *str2, *str3;
+
+    if (SCP_RESULT_ERROR == check_link_parameter_1(context, "stringReplace", param1))
+    {
+        return SCP_RESULT_ERROR;
+    }
+    if (SCP_RESULT_ERROR == resolve_strings_2_3_4(context, "stringReplace", param2, param3, param4, &str1, &str2, &str3))
+    {
+        return SCP_RESULT_ERROR;
+    }
+
+    char *result, *ins, *tmp, *source_string = str1;
+    size_t len_str2, len_str3, len_front;
+    int count;  // number of replacements
+
+    len_str2 = strlen(str2);
+    len_str3 = strlen(str3);
+
+    ins = source_string;
+    for (count = 0; tmp = strstr(ins, str2); ++count) {
+        ins = tmp + len_str2;
+    }
+
+    tmp = result = malloc(strlen(source_string) + (len_str3 - len_str2) * count + 1);
+
+    if (!result)
+    {
+        print_error("stringReplace", "Unable to allocate memeory");
+        free(str1);
+        free(str2);
+        free(str3);
+        return SCP_RESULT_ERROR;
+    }
+    while (count--) {
+        ins = strstr(source_string, str2);
+        len_front = ins - source_string;
+        tmp = strncpy(tmp, source_string, len_front) + len_front;
+        tmp = strcpy(tmp, str3) + len_str3;
+        source_string += len_front + len_str2; // move to next "end of str2"
+    }
+    strcpy(tmp, source_string);
+    write_link_content_string(context, result, param1->addr);
+
+    free(str1);
+    free(str2);
+    free(str3);
+    free(result);
+
+    return SCP_RESULT_TRUE;
+}
+#endif
+
