@@ -1602,3 +1602,36 @@ scp_result stringStartsWith(sc_memory_context *context, scp_operand *param1, scp
     return result;
 }
 #endif
+
+#ifdef SCP_STRING
+scp_result stringEndsWith(sc_memory_context *context, scp_operand *param1, scp_operand *param2)
+{
+    char *str1, *str2;
+
+    if (SCP_RESULT_ERROR == check_link_parameter_1(context, "stringEndsWith", param1))
+    {
+        return SCP_RESULT_ERROR;
+    }
+    if (SCP_RESULT_ERROR == resolve_strings_1_2(context, "stringEndsWith", param1, param2, &str1, &str2))
+    {
+        return SCP_RESULT_ERROR;
+    }
+
+    scp_result result = SCP_RESULT_FALSE;
+
+    size_t len_sub = strlen(str2), len_source = strlen(str1);
+    if (len_source < len_sub) {
+        print_error("stringEndsWith", "Length of parameter 1 should be greater than length of parameter 2");
+        result = SCP_RESULT_ERROR;
+    }
+
+    if (0 == strcmp(str1 + len_source - len_sub, str2)) {
+        result = SCP_TRUE;
+    }
+
+    free(str1);
+    free(str2);
+
+    return result;
+}
+#endif

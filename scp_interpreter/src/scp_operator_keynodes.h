@@ -84,6 +84,7 @@ extern scp_operand op_stringLen;
 extern scp_operand op_stringSub;
 extern scp_operand op_stringSlice;
 extern scp_operand op_stringStartsWith;
+extern scp_operand op_stringEndsWith;
 #endif
 
 extern scp_operand op_contAssign;
