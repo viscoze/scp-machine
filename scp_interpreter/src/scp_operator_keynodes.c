@@ -84,6 +84,7 @@ scp_operand op_stringStartsWith;
 scp_operand op_stringEndsWith;
 scp_operand op_stringReplace;
 scp_operand op_stringToUpperCase;
+scp_operand op_stringToLowerCase;
 #endif
 
 scp_operand op_contAssign;
@@ -167,6 +168,7 @@ scp_result init_operator_keynodes()
     MAKE_DEFAULT_OPERAND_FIXED(op_stringEndsWith);
     MAKE_DEFAULT_OPERAND_FIXED(op_stringReplace);
     MAKE_DEFAULT_OPERAND_FIXED(op_stringToUpperCase);
+    MAKE_DEFAULT_OPERAND_FIXED(op_stringToLowerCase);
 #endif
 
     MAKE_DEFAULT_OPERAND_FIXED(op_contAssign);
@@ -232,6 +234,7 @@ scp_result init_operator_keynodes()
     resolve_keynode(op_stringEndsWith.addr, "stringEndsWith");
     resolve_keynode(op_stringReplace.addr, "stringReplace");
     resolve_keynode(op_stringToUpperCase.addr, "stringToUpperCase");
+    resolve_keynode(op_stringToLowerCase.addr, "stringToLowerCase");
 #endif
 
     resolve_keynode(op_contAssign.addr, "contAssign");

@@ -1714,3 +1714,27 @@ scp_result stringToUpperCase(sc_memory_context *context, scp_operand *param1, sc
     return SCP_RESULT_TRUE;
 }
 #endif
+
+#ifdef SCP_STRING
+scp_result stringToLowerCase(sc_memory_context *context, scp_operand *param1, scp_operand *param2) {
+    char *str, *result;
+
+    if (SCP_RESULT_ERROR == check_link_parameter_1(context, "stringToUpperCase", param1))
+    {
+        return SCP_RESULT_ERROR;
+    }
+
+    if (SCP_RESULT_ERROR == resolve_string_2(context, "stringToUpperCase", param2, &str))
+    {
+        return SCP_RESULT_ERROR;
+    }
+
+    result = g_ascii_strdown(str, -1);
+    write_link_content_string(context, result, param1->addr);
+
+    free(str);
+    free(result);
+
+    return SCP_RESULT_TRUE;
+}
+#endif

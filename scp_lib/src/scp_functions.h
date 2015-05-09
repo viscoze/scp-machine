@@ -83,6 +83,7 @@ scp_result stringStartsWith(sc_memory_context *context, scp_operand *param1, scp
 scp_result stringEndsWith(sc_memory_context *context, scp_operand *param1, scp_operand *param2);
 scp_result stringReplace(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4);
 scp_result stringToUpperCase(sc_memory_context *context, scp_operand *param1, scp_operand *param2);
+scp_result stringToLowerCase(sc_memory_context *context, scp_operand *param1, scp_operand *param2);
 #endif
 
 scp_result contAssign(sc_memory_context *context, scp_operand *param1, scp_operand *param2);
