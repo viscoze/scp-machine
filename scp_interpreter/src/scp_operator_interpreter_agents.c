@@ -1579,6 +1579,32 @@ sc_result interpreter_agent_content_string_operators(const sc_event *event, sc_a
         return SC_RESULT_OK;
     }
 
+    //stringToUpperCase case
+    if (SC_RESULT_OK == ifCoin(s_default_ctx, &operator_type, &op_stringToUpperCase)) {
+        scp_operand operands[2], operand_values[2];
+        input_arc.erase = SCP_TRUE;
+        eraseEl(s_default_ctx, &input_arc);
+        print_debug_info("stringToUpperCase");
+
+        resolve_operands_modifiers(s_default_ctx, &operator_node, operands, 2);
+
+        if (SCP_RESULT_TRUE != get_operands_values(s_default_ctx, operands, operand_values, 2)) {
+            operator_interpreting_crash(s_default_ctx, &operator_node);
+            return SC_RESULT_ERROR;
+        }
+
+        //Operator body
+        res = stringToUpperCase(s_default_ctx, operand_values, operand_values + 1);
+        if (res == SCP_RESULT_TRUE) {
+            set_operands_values(s_default_ctx, operands, operand_values, 2);
+            goto_unconditional(s_default_ctx, &operator_node);
+        }
+
+        return SC_RESULT_OK;
+    }
+
+
+
     return SC_RESULT_ERROR;
 }
 #endif

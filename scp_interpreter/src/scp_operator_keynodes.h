@@ -86,6 +86,7 @@ extern scp_operand op_stringSlice;
 extern scp_operand op_stringStartsWith;
 extern scp_operand op_stringEndsWith;
 extern scp_operand op_stringReplace;
+extern scp_operand op_stringToUpperCase;
 #endif
 
 extern scp_operand op_contAssign;
