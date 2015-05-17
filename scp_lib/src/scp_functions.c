@@ -40,6 +40,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <malloc.h>
 #include <stdlib.h>
 #include <math.h>
+#include <glib.h>
 
 scp_result scp_lib_init()
 {
@@ -1301,6 +1302,439 @@ scp_result contPow(sc_memory_context *context, scp_operand *param1, scp_operand 
         return SCP_RESULT_ERROR;
     }
     write_link_content_number(context, pow(num1, num2), param1->addr);
+    return SCP_RESULT_TRUE;
+}
+#endif
+
+#ifdef SCP_STRING
+scp_result contStringConcat(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3)
+{
+    char *str1, *str2;
+
+    if (SCP_RESULT_ERROR == check_link_parameter_1(context, "contStringConcat", param1))
+    {
+        return SCP_RESULT_ERROR;
+    }
+
+    if (SCP_RESULT_ERROR == resolve_strings_2_3(context, "contStringConcat", param2, param3, &str1, &str2))
+    {
+        return SCP_RESULT_ERROR;
+    }
+
+    size_t len1 = strlen(str1);
+    size_t len2 = strlen(str2);
+
+    char * result = (char*)malloc(len1 + len2 + 1);
+    if (result == NULL) {
+        print_error("contStringConcat", "unable to allocate memory");
+        free(str1);
+        free(str2);
+        return SCP_RESULT_ERROR;
+    }
+    memcpy(result, str1, len1);
+    memcpy(result+len1, str2, len2 + 1);
+
+    write_link_content_string(context, result, param1->addr);
+
+    free(str1);
+    free(str2);
+    free(result);
+
+    return SCP_RESULT_TRUE;
+}
+#endif
+
+#ifdef SCP_STRING
+scp_result stringIfEq(sc_memory_context *context, scp_operand *param1, scp_operand *param2) {
+    char *str1, *str2;
+    scp_result result;
+
+    if (SCP_RESULT_ERROR == resolve_strings_1_2(context, "stringIfEq", param1, param2, &str1, &str2))
+    {
+        return SCP_RESULT_ERROR;
+    }
+    if (strcmp(str1, str2) == 0)
+    {
+        result = SCP_RESULT_TRUE;
+    }
+    else
+    {
+        result = SCP_RESULT_FALSE;
+    }
+
+    free(str1);
+    free(str2);
+    return result;
+}
+#endif
+
+#ifdef SCP_STRING
+scp_result stringIfGr(sc_memory_context *context, scp_operand *param1, scp_operand *param2) {
+    char *str1, *str2;
+    scp_result result;
+
+    if (SCP_RESULT_ERROR == resolve_strings_1_2(context, "stringIfGr", param1, param2, &str1, &str2))
+    {
+        return SCP_RESULT_ERROR;
+    }
+    if (strcmp(str1, str2) > 0)
+    {
+        result = SCP_RESULT_TRUE;
+    }
+    else
+    {
+        result = SCP_RESULT_FALSE;
+    }
+
+    free(str1);
+    free(str2);
+    return result;
+}
+#endif
+
+#ifdef SCP_STRING
+scp_result stringSplit(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3) {
+    sc_addr rrel_1, nrel_substring_base_order, prev_link, link, arc;
+    char *str, *delimiter_str;
+    char **result_set;
+    int i, result_set_length;
+
+    if (SC_RESULT_ERROR == sc_helper_resolve_system_identifier(context, "rrel_1", &rrel_1))
+    {
+        return SCP_RESULT_ERROR;
+    }
+
+    if (SC_RESULT_ERROR == sc_helper_resolve_system_identifier(context, "nrel_substring_base_order", &nrel_substring_base_order))
+    {
+        return SCP_RESULT_ERROR;
+    }
+
+    if (SCP_RESULT_ERROR == check_node_parameter_1(context, "stringSplit", param1))
+    {
+        return SCP_RESULT_ERROR;
+    }
+
+    if (SCP_RESULT_ERROR == resolve_strings_2_3(context, "stringSplit", param2, param3, &str, &delimiter_str))
+    {
+        return SCP_RESULT_ERROR;
+    }
+
+    result_set = g_strsplit(str, delimiter_str, -1);
+    result_set_length = g_strv_length(result_set);
+
+    for (i = 0; i < result_set_length; ++i)
+    {
+        link = sc_memory_link_new(context);
+        write_link_content_string(context, result_set[i], link);
+        arc = sc_memory_arc_new(context, sc_type_arc_pos_const_perm, param1->addr, link);
+        if (i == 0)
+        {
+            sc_memory_arc_new(context, sc_type_arc_pos_const_perm, rrel_1, arc);
+        }
+        else
+        {
+            arc = sc_memory_arc_new(context, sc_type_arc_common|sc_type_const, prev_link, link);
+            sc_memory_arc_new(context, sc_type_arc_pos_const_perm, nrel_substring_base_order, arc);
+        }
+        prev_link = link;
+    }
+
+    g_strfreev(result_set);
+    free(str);
+    free(delimiter_str);
+
+    return SCP_RESULT_TRUE;
+}
+#endif
+
+#ifdef SCP_STRING
+scp_result stringLen(sc_memory_context *context, scp_operand *param1, scp_operand *param2) {
+    char *str;
+
+    if (SCP_RESULT_ERROR == check_link_parameter_1(context, "stringLen", param1))
+    {
+        return SCP_RESULT_ERROR;
+    }
+
+    if (SCP_RESULT_ERROR == resolve_string_2(context, "stringLen", param2, &str))
+    {
+        return SCP_RESULT_ERROR;
+    }
+
+    write_link_content_number(context, strlen(str), param1->addr);
+
+    free(str);
+
+    return SCP_RESULT_TRUE;
+}
+#endif
+
+#ifdef SCP_STRING
+scp_result stringSub(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3)
+{
+    char *str1, *str2;
+
+    if (SCP_RESULT_ERROR == check_link_parameter_1(context, "stringSub", param1))
+    {
+        return SCP_RESULT_ERROR;
+    }
+    if (SCP_RESULT_ERROR == resolve_strings_2_3(context, "stringSub", param2, param3, &str1, &str2))
+    {
+        return SCP_RESULT_ERROR;
+    }
+
+    int position = -1;
+    scp_result result = SCP_RESULT_FALSE;
+
+    char *sub_string = strstr(str1, str2);
+
+    if (sub_string != NULL) {
+        position = sub_string - str1;
+        result = SCP_RESULT_TRUE;
+    }
+
+    write_link_content_number(context, position, param1->addr);
+
+    free(str1);
+    free(str2);
+
+    return result;
+}
+#endif
+
+#ifdef SCP_STRING
+scp_result stringSlice(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4)
+{
+    char *str, *sub_string;
+    double num3, num4;
+    int start_index, end_index;
+
+    if (SCP_RESULT_ERROR == check_link_parameter_1(context, "stringSlice", param1))
+    {
+        return SCP_RESULT_ERROR;
+    }
+
+    if (SCP_RESULT_ERROR == resolve_string_2(context, "stringSlice", param2, &str))
+    {
+        return SCP_RESULT_ERROR;
+    }
+
+
+    if (SCP_RESULT_ERROR == resolve_number(context, "stringSlice", "Parameter 3", param3, &num3))
+    {
+        free(str);
+        return SCP_RESULT_ERROR;
+    }
+
+    if (SCP_RESULT_ERROR == resolve_number(context, "stringSlice", "Parameter 4", param4, &num4))
+    {
+        free(str);
+        return SCP_RESULT_ERROR;
+    }
+
+    size_t length = strlen(str);
+    start_index = (int)num3;
+    end_index = (int)num4;
+
+    if (start_index >= end_index)
+    {
+        print_error("stringSplice", "invalid range");
+        free(str);
+        return SCP_RESULT_ERROR;
+    }
+
+    if (length <= end_index)
+    {
+        print_error("stringSplice", "end index out of range");
+        free(str);
+        return SCP_RESULT_ERROR;
+    }
+
+    int sub_string_length = end_index - start_index + 1;
+
+    sub_string = (char*)malloc(sub_string_length);
+    if (sub_string == NULL)
+    {
+        print_error("stringSplice", "unable to allocate memory");
+        free(str);
+        return SCP_RESULT_ERROR;
+    }
+    strncpy(sub_string, str + start_index, sub_string_length);
+
+    write_link_content_string(context, sub_string, param1->addr);
+
+    free(str);
+    free(sub_string);
+
+    return SCP_RESULT_TRUE;
+}
+#endif
+
+#ifdef SCP_STRING
+scp_result stringStartsWith(sc_memory_context *context, scp_operand *param1, scp_operand *param2)
+{
+    char *str1, *str2;
+
+    if (SCP_RESULT_ERROR == check_link_parameter_1(context, "stringStartsWith", param1))
+    {
+        return SCP_RESULT_ERROR;
+    }
+    if (SCP_RESULT_ERROR == resolve_strings_1_2(context, "stringStartsWith", param1, param2, &str1, &str2))
+    {
+        return SCP_RESULT_ERROR;
+    }
+
+    scp_result result = SCP_RESULT_FALSE;
+
+    size_t len_sub = strlen(str2), len_source = strlen(str1);
+    if (len_source < len_sub) {
+        print_error("stringStartsWith", "Length of parameter 1 should be greater than length of parameter 2");
+        result = SCP_RESULT_ERROR;
+    }
+
+    if (strncmp(str1, str2, len_sub) == 0) {
+        result = SCP_TRUE;
+    }
+
+    free(str1);
+    free(str2);
+
+    return result;
+}
+#endif
+
+#ifdef SCP_STRING
+scp_result stringEndsWith(sc_memory_context *context, scp_operand *param1, scp_operand *param2)
+{
+    char *str1, *str2;
+
+    if (SCP_RESULT_ERROR == check_link_parameter_1(context, "stringEndsWith", param1))
+    {
+        return SCP_RESULT_ERROR;
+    }
+    if (SCP_RESULT_ERROR == resolve_strings_1_2(context, "stringEndsWith", param1, param2, &str1, &str2))
+    {
+        return SCP_RESULT_ERROR;
+    }
+
+    scp_result result = SCP_RESULT_FALSE;
+
+    size_t len_sub = strlen(str2), len_source = strlen(str1);
+    if (len_source < len_sub) {
+        print_error("stringEndsWith", "Length of parameter 1 should be greater than length of parameter 2");
+        result = SCP_RESULT_ERROR;
+    }
+
+    if (0 == strcmp(str1 + len_source - len_sub, str2)) {
+        result = SCP_TRUE;
+    }
+
+    free(str1);
+    free(str2);
+
+    return result;
+}
+#endif
+
+#ifdef SCP_STRING
+scp_result stringReplace(sc_memory_context *context, scp_operand *param1, scp_operand *param2, scp_operand *param3, scp_operand *param4)
+{
+    char *str1, *str2, *str3;
+
+    if (SCP_RESULT_ERROR == check_link_parameter_1(context, "stringReplace", param1))
+    {
+        return SCP_RESULT_ERROR;
+    }
+    if (SCP_RESULT_ERROR == resolve_strings_2_3_4(context, "stringReplace", param2, param3, param4, &str1, &str2, &str3))
+    {
+        return SCP_RESULT_ERROR;
+    }
+
+    char *result, *ins, *tmp, *source_string = str1;
+    size_t len_str2, len_str3, len_front;
+    int count;  // number of replacements
+
+    len_str2 = strlen(str2);
+    len_str3 = strlen(str3);
+
+    ins = source_string;
+    for (count = 0; tmp = strstr(ins, str2); ++count) {
+        ins = tmp + len_str2;
+    }
+
+    tmp = result = malloc(strlen(source_string) + (len_str3 - len_str2) * count + 1);
+
+    if (!result)
+    {
+        print_error("stringReplace", "Unable to allocate memeory");
+        free(str1);
+        free(str2);
+        free(str3);
+        return SCP_RESULT_ERROR;
+    }
+    while (count--) {
+        ins = strstr(source_string, str2);
+        len_front = ins - source_string;
+        tmp = strncpy(tmp, source_string, len_front) + len_front;
+        tmp = strcpy(tmp, str3) + len_str3;
+        source_string += len_front + len_str2; // move to next "end of str2"
+    }
+    strcpy(tmp, source_string);
+    write_link_content_string(context, result, param1->addr);
+
+    free(str1);
+    free(str2);
+    free(str3);
+    free(result);
+
+    return SCP_RESULT_TRUE;
+}
+#endif
+
+#ifdef SCP_STRING
+scp_result stringToUpperCase(sc_memory_context *context, scp_operand *param1, scp_operand *param2) {
+    char *str, *result;
+
+    if (SCP_RESULT_ERROR == check_link_parameter_1(context, "stringToUpperCase", param1))
+    {
+        return SCP_RESULT_ERROR;
+    }
+
+    if (SCP_RESULT_ERROR == resolve_string_2(context, "stringToUpperCase", param2, &str))
+    {
+        return SCP_RESULT_ERROR;
+    }
+
+    result = g_ascii_strup(str, -1);
+    write_link_content_string(context, result, param1->addr);
+
+    free(str);
+    free(result);
+
+    return SCP_RESULT_TRUE;
+}
+#endif
+
+#ifdef SCP_STRING
+scp_result stringToLowerCase(sc_memory_context *context, scp_operand *param1, scp_operand *param2) {
+    char *str, *result;
+
+    if (SCP_RESULT_ERROR == check_link_parameter_1(context, "stringToUpperCase", param1))
+    {
+        return SCP_RESULT_ERROR;
+    }
+
+    if (SCP_RESULT_ERROR == resolve_string_2(context, "stringToUpperCase", param2, &str))
+    {
+        return SCP_RESULT_ERROR;
+    }
+
+    result = g_ascii_strdown(str, -1);
+    write_link_content_string(context, result, param1->addr);
+
+    free(str);
+    free(result);
+
     return SCP_RESULT_TRUE;
 }
 #endif

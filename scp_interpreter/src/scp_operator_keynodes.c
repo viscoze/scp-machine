@@ -72,6 +72,20 @@ scp_operand op_contATg;
 scp_operand op_contDivInt;
 scp_operand op_contDivRem;
 #endif
+#ifdef SCP_STRING
+scp_operand op_contStringConcat;
+scp_operand op_stringIfEq;
+scp_operand op_stringIfGr;
+scp_operand op_stringSplit;
+scp_operand op_stringLen;
+scp_operand op_stringSub;
+scp_operand op_stringSlice;
+scp_operand op_stringStartsWith;
+scp_operand op_stringEndsWith;
+scp_operand op_stringReplace;
+scp_operand op_stringToUpperCase;
+scp_operand op_stringToLowerCase;
+#endif
 
 scp_operand op_contAssign;
 scp_operand op_contErase;
@@ -142,6 +156,21 @@ scp_result init_operator_keynodes()
     MAKE_DEFAULT_OPERAND_FIXED(op_contDivRem);
 #endif
 
+#ifdef SCP_STRING
+    MAKE_DEFAULT_OPERAND_FIXED(op_contStringConcat);
+    MAKE_DEFAULT_OPERAND_FIXED(op_stringIfEq);
+    MAKE_DEFAULT_OPERAND_FIXED(op_stringIfGr);
+    MAKE_DEFAULT_OPERAND_FIXED(op_stringSplit);
+    MAKE_DEFAULT_OPERAND_FIXED(op_stringLen);
+    MAKE_DEFAULT_OPERAND_FIXED(op_stringSub);
+    MAKE_DEFAULT_OPERAND_FIXED(op_stringSlice);
+    MAKE_DEFAULT_OPERAND_FIXED(op_stringStartsWith);
+    MAKE_DEFAULT_OPERAND_FIXED(op_stringEndsWith);
+    MAKE_DEFAULT_OPERAND_FIXED(op_stringReplace);
+    MAKE_DEFAULT_OPERAND_FIXED(op_stringToUpperCase);
+    MAKE_DEFAULT_OPERAND_FIXED(op_stringToLowerCase);
+#endif
+
     MAKE_DEFAULT_OPERAND_FIXED(op_contAssign);
     MAKE_DEFAULT_OPERAND_FIXED(op_contErase);
     MAKE_DEFAULT_OPERAND_FIXED(op_print);
@@ -191,6 +220,21 @@ scp_result init_operator_keynodes()
     resolve_keynode(op_ifGr.addr, "ifGr");
     resolve_keynode(op_contDivInt.addr, "contDivInt");
     resolve_keynode(op_contDivRem.addr, "contDivRem");
+#endif
+
+#ifdef SCP_STRING
+    resolve_keynode(op_contStringConcat.addr, "contStringConcat");
+    resolve_keynode(op_stringIfEq.addr, "stringIfEq");
+    resolve_keynode(op_stringIfGr.addr, "stringIfGr");
+    resolve_keynode(op_stringSplit.addr, "stringSplit");
+    resolve_keynode(op_stringLen.addr, "stringLen");
+    resolve_keynode(op_stringSub.addr, "stringSub");
+    resolve_keynode(op_stringSlice.addr, "stringSlice");
+    resolve_keynode(op_stringStartsWith.addr, "stringStartsWith");
+    resolve_keynode(op_stringEndsWith.addr, "stringEndsWith");
+    resolve_keynode(op_stringReplace.addr, "stringReplace");
+    resolve_keynode(op_stringToUpperCase.addr, "stringToUpperCase");
+    resolve_keynode(op_stringToLowerCase.addr, "stringToLowerCase");
 #endif
 
     resolve_keynode(op_contAssign.addr, "contAssign");

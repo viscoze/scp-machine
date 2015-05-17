@@ -75,6 +75,21 @@ extern scp_operand op_contDivInt;
 extern scp_operand op_contDivRem;
 #endif
 
+#ifdef SCP_STRING
+extern scp_operand op_contStringConcat;
+extern scp_operand op_stringIfEq;
+extern scp_operand op_stringIfGr;
+extern scp_operand op_stringSplit;
+extern scp_operand op_stringLen;
+extern scp_operand op_stringSub;
+extern scp_operand op_stringSlice;
+extern scp_operand op_stringStartsWith;
+extern scp_operand op_stringEndsWith;
+extern scp_operand op_stringReplace;
+extern scp_operand op_stringToUpperCase;
+extern scp_operand op_stringToLowerCase;
+#endif
+
 extern scp_operand op_contAssign;
 extern scp_operand op_contErase;
 
