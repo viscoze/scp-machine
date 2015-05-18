@@ -162,7 +162,7 @@ scp_result write_link_content_number(sc_memory_context *context, double data, sc
     sc_stream *stream;
     char *content = calloc(NUMBER_PRECISE, sizeof(sc_char));
     snprintf(content, NUMBER_PRECISE, "%lf", data);
-    stream = sc_stream_memory_new(content, strlen(content), SC_STREAM_READ, SC_FALSE);
+    stream = sc_stream_memory_new(content, strlen(content), SC_STREAM_FLAG_READ, SC_FALSE);
     if (SC_RESULT_OK != sc_memory_set_link_content(context, link, stream))
     {
         free(content);
@@ -190,7 +190,7 @@ scp_result write_link_content_string(sc_memory_context *context, char* data, sc_
     size_t data_len = strlen(data) + 1;
     char *content = calloc(data_len, sizeof(sc_char));
     snprintf(content, data_len, "%s", data);
-    stream = sc_stream_memory_new(content, strlen(content), SC_STREAM_READ, SC_FALSE);
+    stream = sc_stream_memory_new(content, strlen(content), SC_STREAM_FLAG_READ, SC_FALSE);
     if (SC_RESULT_OK != sc_memory_set_link_content(context, link, stream))
     {
         free(content);

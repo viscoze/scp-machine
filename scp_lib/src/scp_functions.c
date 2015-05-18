@@ -1001,7 +1001,7 @@ scp_result contAssign(sc_memory_context *context, scp_operand *param1, scp_opera
     sc_stream_read_data(stream, data, length, &read_length);
     sc_stream_free(stream);
 
-    sc_stream_memory_new(data, length, SC_STREAM_READ, SC_FALSE);
+    sc_stream_memory_new(data, length, SC_STREAM_FLAG_READ, SC_FALSE);
     sc_memory_set_link_content(context, param1->addr, stream);
     sc_stream_free(stream);
     return SCP_RESULT_TRUE;
