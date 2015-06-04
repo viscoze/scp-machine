@@ -277,7 +277,8 @@ static scp_result resolve_string(sc_memory_context *context, const sc_char *oper
     }
 
     sc_stream_get_length(stream, &length);
-    data = calloc(length, sizeof(sc_char));
+    // extra byte needed for string terminator, which is neither counted nor read from an sc_stream
+    data = calloc(length + 1, sizeof(sc_char));
     sc_stream_read_data(stream, data, length, &read_length);
     sc_stream_free(stream);
 
