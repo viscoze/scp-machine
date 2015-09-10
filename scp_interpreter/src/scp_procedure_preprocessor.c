@@ -524,7 +524,7 @@ sc_result preprocess_scp_procedure(const sc_event *event, sc_addr arg)
 scp_result scp_procedure_preprocessor_init()
 {
     event_procedure_preprocessing = sc_event_new(s_default_ctx, correct_scp_program.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)preprocess_scp_procedure, 0);
-    if (event_procedure_preprocessing == nullptr)
+    if (event_procedure_preprocessing == null_ptr)
         return SCP_RESULT_ERROR;
     return SCP_RESULT_TRUE;
 }

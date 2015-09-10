@@ -63,7 +63,7 @@ scp_result scp_sys_search(sc_memory_context *context, scp_operand *param1, scp_o
         }
     }
 
-    if (param4 != nullptr)
+    if (param4 != null_ptr)
     {
         if (param4->param_type == SCP_FIXED)
         {
@@ -132,7 +132,7 @@ scp_result scp_sys_search_for_variables(sc_memory_context *context, scp_operand 
             }
         }
     }
-    if (param4 != nullptr)
+    if (param4 != null_ptr)
     {
         if (param4->param_type == SCP_FIXED)
         {
@@ -191,7 +191,7 @@ scp_result scp_sys_gen(sc_memory_context *context, scp_operand *param1, scp_oper
             return print_error("sys_gen", "All elements of parameter set must have value");
         }
     }
-    if (param4 != nullptr)
+    if (param4 != null_ptr)
     {
         if (param4->param_type == SCP_FIXED)
         {
@@ -249,7 +249,7 @@ scp_result scp_sys_gen_for_variables(sc_memory_context *context, scp_operand *pa
             return print_error("sys_gen_for_variables", "All variables values must have ASSIGN modifier");
         }
     }
-    if (param4 != nullptr)
+    if (param4 != null_ptr)
     {
         if (param4->param_type == SCP_FIXED)
         {

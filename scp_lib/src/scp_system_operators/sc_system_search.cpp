@@ -52,7 +52,7 @@ sc_bool system_sys_search_recurse(sc_memory_context *context, sc_addr sc_pattern
     sc_addr_vector pattern_arc_set;
 
     sc_iterator3 *it_pattern_arc = sc_iterator3_f_a_a_new(context, curr_pattern_element, 0, 0);
-    if (it_pattern_arc == nullptr) {return SC_FALSE;}
+    if (it_pattern_arc == null_ptr) {return SC_FALSE;}
     while (SC_TRUE == sc_iterator3_next(it_pattern_arc))
     {
         addr2 = sc_iterator3_value(it_pattern_arc, 1);
@@ -65,7 +65,7 @@ sc_bool system_sys_search_recurse(sc_memory_context *context, sc_addr sc_pattern
     sc_iterator3_free(it_pattern_arc);
 
     it_pattern_arc = sc_iterator3_a_a_f_new(context, 0, 0, curr_pattern_element);
-    if (it_pattern_arc == nullptr) {return SC_FALSE;}
+    if (it_pattern_arc == null_ptr) {return SC_FALSE;}
     while (SC_TRUE == sc_iterator3_next(it_pattern_arc))
     {
         addr1 = sc_iterator3_value(it_pattern_arc, 0);

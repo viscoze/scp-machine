@@ -187,7 +187,7 @@ sc_bool check_coherence(sc_memory_context *context, sc_addr element, sc_addr sc_
     sc_addr addr1, addr2, temp;
 
     sc_iterator3 *it_pattern_arc = sc_iterator3_f_a_a_new(context, element, 0, 0);
-    if (it_pattern_arc == nullptr) {return SC_FALSE;}
+    if (it_pattern_arc == null_ptr) {return SC_FALSE;}
     while (SC_TRUE == sc_iterator3_next(it_pattern_arc))
     {
         addr2 = sc_iterator3_value(it_pattern_arc, 1);
@@ -209,7 +209,7 @@ sc_bool check_coherence(sc_memory_context *context, sc_addr element, sc_addr sc_
     sc_iterator3_free(it_pattern_arc);
 
     it_pattern_arc = sc_iterator3_a_a_f_new(context, 0, 0, element);
-    if (it_pattern_arc == nullptr) {return SC_FALSE;}
+    if (it_pattern_arc == null_ptr) {return SC_FALSE;}
     while (SC_TRUE == sc_iterator3_next(it_pattern_arc))
     {
         addr1 = sc_iterator3_value(it_pattern_arc, 0);

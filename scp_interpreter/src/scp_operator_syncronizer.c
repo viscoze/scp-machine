@@ -264,13 +264,13 @@ scp_result start_next_operator(sc_memory_context *context, scp_operand *scp_oper
 scp_result scp_operator_syncronizer_init()
 {
     event_operator_syncronizer_goto = sc_event_new(s_default_ctx, executed_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)syncronize_scp_operator, 0);
-    if (event_operator_syncronizer_goto == nullptr)
+    if (event_operator_syncronizer_goto == null_ptr)
         return SCP_RESULT_ERROR;
     event_operator_syncronizer_then  = sc_event_new(s_default_ctx, successfully_executed_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)syncronize_scp_operator, 0);
-    if (event_operator_syncronizer_then == nullptr)
+    if (event_operator_syncronizer_then == null_ptr)
         return SCP_RESULT_ERROR;
     event_operator_syncronizer_else = sc_event_new(s_default_ctx, unsuccessfully_executed_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)syncronize_scp_operator, 0);
-    if (event_operator_syncronizer_else == nullptr)
+    if (event_operator_syncronizer_else == null_ptr)
         return SCP_RESULT_ERROR;
     return SCP_RESULT_TRUE;
 }

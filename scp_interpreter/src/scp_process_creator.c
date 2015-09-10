@@ -349,7 +349,7 @@ sc_result create_scp_process(const sc_event *event, sc_addr arg)
 scp_result scp_process_creator_init()
 {
     event_program_iterpretation = sc_event_new(s_default_ctx, question_initiated.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, create_scp_process, 0);
-    if (event_program_iterpretation == nullptr)
+    if (event_program_iterpretation == null_ptr)
         return SCP_RESULT_ERROR;
     return SCP_RESULT_TRUE;
 }

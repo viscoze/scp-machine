@@ -41,7 +41,7 @@ void delete_vars_from_set(sc_memory_context *context, scp_operand *set, GHashTab
     while (SCP_RESULT_TRUE == scp_iterator5_next(context, it, set, &arc1, &elem, &arc2, &rrel_scp_var))
     {
         elem.param_type = SCP_FIXED;
-        if (non_erasable_vars != nullptr && FALSE == g_hash_table_contains(non_erasable_vars, MAKE_HASH(elem)))
+        if (non_erasable_vars != null_ptr && FALSE == g_hash_table_contains(non_erasable_vars, MAKE_HASH(elem)))
         {
             eraseEl(context, &elem);
         }
@@ -70,7 +70,7 @@ void delete_vars_from_relation(sc_memory_context *context, scp_operand *set, GHa
         while (SCP_RESULT_TRUE == scp_iterator5_next(context, it, &rel_elem, &arc1, &elem, &arc2, &rrel_scp_var))
         {
             elem.param_type = SCP_FIXED;
-            if (non_erasable_vars != nullptr && FALSE == g_hash_table_contains(non_erasable_vars, MAKE_HASH(elem)))
+            if (non_erasable_vars != null_ptr && FALSE == g_hash_table_contains(non_erasable_vars, MAKE_HASH(elem)))
             {
                 eraseEl(context, &elem);
             }
@@ -87,7 +87,7 @@ sc_result destroy_scp_process(const sc_event *event, sc_addr arg)
 {
     scp_operand arc1, arc2, node1, curr_operator, node3, scp_process_node, operator_type, question_node, call_parameters;
     scp_iterator3 *it;
-    GHashTable *params = nullptr;
+    GHashTable *params = null_ptr;
     scp_result params_found;
     MAKE_DEFAULT_OPERAND_FIXED(arc1);
     MAKE_DEFAULT_NODE_ASSIGN(scp_process_node);
@@ -210,7 +210,7 @@ sc_result destroy_scp_process(const sc_event *event, sc_addr arg)
 scp_result scp_process_destroyer_init()
 {
     event_process_destroy = sc_event_new(s_default_ctx, useless_scp_process.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, destroy_scp_process, 0);
-    if (event_process_destroy == nullptr)
+    if (event_process_destroy == null_ptr)
         return SCP_RESULT_ERROR;
     return SCP_RESULT_TRUE;
 }

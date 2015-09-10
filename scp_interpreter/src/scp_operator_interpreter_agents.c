@@ -2653,8 +2653,8 @@ sc_result interpreter_agent_print_operators(const sc_event *event, sc_addr arg)
 sc_result sys_search_agent_body(sc_memory_context *context, scp_operand *operator_node)
 {
     scp_operand param1, param2, param3, param2_node, param4, param4_node, operand, modifier, arc1, arc2, operand_elem;
-    scp_operand **pair_elems2 = nullptr, **pair_values2 = nullptr, **pair_elems3 = nullptr, **pair_values3 = nullptr;
-    scp_operand_pair *params = nullptr, *results = nullptr;
+    scp_operand **pair_elems2 = null_ptr, **pair_values2 = null_ptr, **pair_elems3 = null_ptr, **pair_values3 = null_ptr;
+    scp_operand_pair *params = null_ptr, *results = null_ptr;
     scp_iterator3 *it0, *it, *it1;
     scp_uint32 rrel_number = 0, size2 = 0, size3 = 0, i = 0;
     scp_bool is4 = SCP_FALSE, isresult = SCP_FALSE;
@@ -2885,7 +2885,7 @@ sc_result sys_search_agent_body(sc_memory_context *context, scp_operand *operato
         }
         else
         {
-            res = scp_sys_search_for_variables(context, &param1, results, size2, params, size3, nullptr);
+            res = scp_sys_search_for_variables(context, &param1, results, size2, params, size3, null_ptr);
             switch (res)
             {
                 case SCP_RESULT_TRUE:
@@ -2968,7 +2968,7 @@ sc_result sys_search_agent_body(sc_memory_context *context, scp_operand *operato
         }
         else
         {
-            res = scp_sys_search(context, &param1, &param2, params, size3, nullptr, SCP_TRUE);
+            res = scp_sys_search(context, &param1, &param2, params, size3, null_ptr, SCP_TRUE);
             switch (res)
             {
                 case SCP_RESULT_TRUE:
@@ -3029,8 +3029,8 @@ exit:
 sc_result sys_gen_agent_body(sc_memory_context *context, scp_operand *operator_node)
 {
     scp_operand param1, param2, param3, param2_node, param4, param4_node, operand, modifier, arc1, arc2, operand_elem;
-    scp_operand **pair_elems2 = nullptr, **pair_values2 = nullptr, **pair_elems3 = nullptr, **pair_values3 = nullptr;
-    scp_operand_pair *params = nullptr, *results = nullptr;
+    scp_operand **pair_elems2 = null_ptr, **pair_values2 = null_ptr, **pair_elems3 = null_ptr, **pair_values3 = null_ptr;
+    scp_operand_pair *params = null_ptr, *results = null_ptr;
     scp_iterator3 *it0, *it, *it1;
     scp_uint32 rrel_number = 0, size2 = 0, size3 = 0, i = 0;
     scp_bool is4 = SCP_FALSE, isresult = SCP_FALSE;
@@ -3261,7 +3261,7 @@ sc_result sys_gen_agent_body(sc_memory_context *context, scp_operand *operator_n
         }
         else
         {
-            res = scp_sys_gen_for_variables(context, &param1, results, size2, params, size3, nullptr);
+            res = scp_sys_gen_for_variables(context, &param1, results, size2, params, size3, null_ptr);
             switch (res)
             {
                 case SCP_RESULT_TRUE:
@@ -3344,7 +3344,7 @@ sc_result sys_gen_agent_body(sc_memory_context *context, scp_operand *operator_n
         }
         else
         {
-            res = scp_sys_gen(context, &param1, &param2, params, size3, nullptr);
+            res = scp_sys_gen(context, &param1, &param2, params, size3, null_ptr);
             switch (res)
             {
                 case SCP_RESULT_TRUE:
@@ -3796,66 +3796,66 @@ scp_result init_all_scp_agents(sc_memory_context *context)
 scp_result scp_operator_interpreter_agents_init()
 {
     event_interpreting_finished_succesfully = sc_event_new(s_default_ctx, question_finished_successfully.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)interpreting_question_finished_successfully, 0);
-    if (event_interpreting_finished_succesfully == nullptr)
+    if (event_interpreting_finished_succesfully == null_ptr)
         return SCP_RESULT_ERROR;
 
     event_search_operators_interpreter = sc_event_new(s_default_ctx, active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)interpreter_agent_search_operators, 0);
-    if (event_search_operators_interpreter == nullptr)
+    if (event_search_operators_interpreter == null_ptr)
         return SCP_RESULT_ERROR;
     event_gen_operators_interpreter = sc_event_new(s_default_ctx, active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)interpreter_agent_gen_operators, 0);
-    if (event_gen_operators_interpreter == nullptr)
+    if (event_gen_operators_interpreter == null_ptr)
         return SCP_RESULT_ERROR;
     event_erase_operators_interpreter = sc_event_new(s_default_ctx, active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)interpreter_agent_erase_operators, 0);
-    if (event_erase_operators_interpreter == nullptr)
+    if (event_erase_operators_interpreter == null_ptr)
         return SCP_RESULT_ERROR;
 
 #ifdef SCP_MATH
     event_content_arithmetic_operators_interpreter = sc_event_new(s_default_ctx, active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)interpreter_agent_content_arithmetic_operators, 0);
-    if (event_content_arithmetic_operators_interpreter == nullptr)
+    if (event_content_arithmetic_operators_interpreter == null_ptr)
         return SCP_RESULT_ERROR;
     event_content_trig_operators_interpreter = sc_event_new(s_default_ctx, active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)interpreter_agent_content_trig_operators, 0);
-    if (event_content_trig_operators_interpreter == nullptr)
+    if (event_content_trig_operators_interpreter == null_ptr)
         return SCP_RESULT_ERROR;
 #endif
 
 #ifdef SCP_STRING
     event_content_string_operators_interpreter = sc_event_new(s_default_ctx, active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)interpreter_agent_content_string_operators, 0);
-    if (event_content_string_operators_interpreter == nullptr)
+    if (event_content_string_operators_interpreter == null_ptr)
         return SCP_RESULT_ERROR;
 #endif
 
     event_if_operators_interpreter = sc_event_new(s_default_ctx, active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)interpreter_agent_if_operators, 0);
-    if (event_if_operators_interpreter == nullptr)
+    if (event_if_operators_interpreter == null_ptr)
         return SCP_RESULT_ERROR;
     event_other_operators_interpreter = sc_event_new(s_default_ctx, active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)interpreter_agent_other_operators, 0);
-    if (event_other_operators_interpreter == nullptr)
+    if (event_other_operators_interpreter == null_ptr)
         return SCP_RESULT_ERROR;
     event_system_operators_interpreter = sc_event_new(s_default_ctx, active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)interpreter_agent_system_operators, 0);
-    if (event_system_operators_interpreter == nullptr)
+    if (event_system_operators_interpreter == null_ptr)
         return SCP_RESULT_ERROR;
     event_event_operators_interpreter = sc_event_new(s_default_ctx, active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)interpreter_agent_event_operators, 0);
-    if (event_event_operators_interpreter == nullptr)
+    if (event_event_operators_interpreter == null_ptr)
         return SCP_RESULT_ERROR;
     event_print_operators_interpreter = sc_event_new(s_default_ctx, active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)interpreter_agent_print_operators, 0);
-    if (event_print_operators_interpreter == nullptr)
+    if (event_print_operators_interpreter == null_ptr)
         return SCP_RESULT_ERROR;
     event_return_operator_interpreter = sc_event_new(s_default_ctx, active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)interpreter_agent_return_operator, 0);
-    if (event_return_operator_interpreter == nullptr)
+    if (event_return_operator_interpreter == null_ptr)
         return SCP_RESULT_ERROR;
     event_call_operator_interpreter = sc_event_new(s_default_ctx, active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)interpreter_agent_call_operator, 0);
-    if (event_call_operator_interpreter == nullptr)
+    if (event_call_operator_interpreter == null_ptr)
         return SCP_RESULT_ERROR;
     event_waitReturn_operators_interpreter = sc_event_new(s_default_ctx, active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)interpreter_agent_waitReturn_operators, 0);
-    if (event_waitReturn_operators_interpreter == nullptr)
+    if (event_waitReturn_operators_interpreter == null_ptr)
         return SCP_RESULT_ERROR;
     event_syncronize_operators_interpreter = sc_event_new(s_default_ctx, active_scp_operator.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)interpreter_agent_syncronize_operators, 0);
-    if (event_syncronize_operators_interpreter == nullptr)
+    if (event_syncronize_operators_interpreter == null_ptr)
         return SCP_RESULT_ERROR;
     event_register_sc_agent = sc_event_new(s_default_ctx, active_sc_agent.addr, SC_EVENT_ADD_OUTPUT_ARC, 0, (fEventCallback)sc_agent_activator, 0);
-    if (event_register_sc_agent == nullptr)
+    if (event_register_sc_agent == null_ptr)
         return SCP_RESULT_ERROR;
     event_unregister_sc_agent = sc_event_new(s_default_ctx, active_sc_agent.addr, SC_EVENT_REMOVE_OUTPUT_ARC, 0, (fEventCallback)sc_agent_deactivator, 0);
-    if (event_unregister_sc_agent == nullptr)
+    if (event_unregister_sc_agent == null_ptr)
         return SCP_RESULT_ERROR;
 
     scp_event_table = g_hash_table_new_full(NULL, NULL, NULL, destroy_sys_event_table_item);

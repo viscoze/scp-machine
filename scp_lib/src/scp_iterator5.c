@@ -34,19 +34,19 @@ scp_iterator5 *scp_iterator5_new(sc_memory_context *context, scp_operand *param1
     if (param2->param_type == SCP_FIXED)
     {
         print_error("SCP ITERATOR 5 NEW", "Parameter 2 must have ASSIGN modifier");
-        return nullptr;                ;
+        return null_ptr;                ;
     }
     if (param4->param_type == SCP_FIXED)
     {
         print_error("SCP ITERATOR 5 NEW", "Parameter 4 must have ASSIGN modifier");
-        return nullptr;                ;
+        return null_ptr;                ;
     }
     if (param1->param_type == SCP_FIXED)
     {
         if (SC_FALSE == sc_memory_is_element(context, param1->addr))
         {
             print_error("SCP ITERATOR 5 NEW", "Parameter 1 has modifier FIXED, but has not value");
-            return nullptr;
+            return null_ptr;
         }
         fixed1 = 0x1;
     }
@@ -55,7 +55,7 @@ scp_iterator5 *scp_iterator5_new(sc_memory_context *context, scp_operand *param1
         if (SC_FALSE == sc_memory_is_element(context, param3->addr))
         {
             print_error("SCP ITERATOR 5 NEW", "Parameter 3 has modifier FIXED, but has not value");
-            return nullptr;
+            return null_ptr;
         }
         fixed3 = 0x100;
     }
@@ -64,7 +64,7 @@ scp_iterator5 *scp_iterator5_new(sc_memory_context *context, scp_operand *param1
         if (SC_FALSE == sc_memory_is_element(context, param5->addr))
         {
             print_error("SCP ITERATOR 5 NEW", "Parameter 5 has modifier FIXED, but has not value");
-            return nullptr;
+            return null_ptr;
         }
         fixed5 = 0x10000;
     }
@@ -85,7 +85,7 @@ scp_iterator5 *scp_iterator5_new(sc_memory_context *context, scp_operand *param1
             return (scp_iterator5 *)sc_iterator5_f_a_f_a_f_new(context, param1->addr, param2->element_type, param3->addr, param4->element_type, param5->addr);
         default:
             print_error("SCP ITERATOR 5 NEW", "Unsupported parameter type combination");
-            return nullptr;
+            return null_ptr;
     }
 }
 

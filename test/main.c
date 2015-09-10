@@ -30,7 +30,7 @@ sc_result printElem(sc_memory_context *context, sc_addr element)
 {
     sc_addr addr2, addr3;
     sc_addr idtf;
-    sc_iterator3 *it = nullptr;
+    sc_iterator3 *it = null_ptr;
     sc_uint32 out_c = 0, in_c = 0;
     if (SC_FALSE == sc_memory_is_element(context, element))
     {
@@ -261,7 +261,7 @@ void test_pattern(sc_memory_context *context, const char* name)
 
     MAKE_DEFAULT_OPERAND_ASSIGN(result);
 
-    scp_sys_search(context, &p, &result, nullptr, 0, nullptr, SCP_TRUE);
+    scp_sys_search(context, &p, &result, null_ptr, 0, null_ptr, SCP_TRUE);
 }
 
 int main(void)

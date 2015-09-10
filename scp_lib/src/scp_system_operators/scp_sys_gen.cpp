@@ -50,7 +50,7 @@ extern "C" scp_result sys_gen(sc_memory_context *context, scp_operand *param1, s
         addr2 = (*it).second;
         arc = sc_memory_arc_new(context, sc_type_arc_common | sc_type_const, addr1, addr2);
         sc_memory_arc_new(context, sc_type_arc_pos_const_perm, param2->addr, arc);
-        if (param4 != nullptr)
+        if (param4 != null_ptr)
         {
             sc_memory_arc_new(context, sc_type_arc_pos_const_perm, param4->addr, addr2);
         }
@@ -83,7 +83,7 @@ extern "C" scp_result sys_gen_for_variables(sc_memory_context *context, scp_oper
         scp_operand *op1 = variables[i].operand1;
         scp_operand *op2 = variables[i].operand2;
         find_result_pair_for_var(&result, op1->addr, &(op2->addr));
-        if (param4 != nullptr)
+        if (param4 != null_ptr)
         {
             sc_memory_arc_new(context, sc_type_arc_pos_const_perm, param4->addr, op2->addr);
         }

@@ -819,7 +819,7 @@ scp_result printEl(sc_memory_context *context, scp_operand *param)
 {
     sc_addr element = param->addr;
     sc_addr addr2, addr3;
-    sc_iterator3 *it = nullptr;
+    sc_iterator3 *it = null_ptr;
     sc_uint32 out_c = 0, in_c = 0;
     if (SC_FALSE == sc_memory_is_element(context, param->addr))
     {
