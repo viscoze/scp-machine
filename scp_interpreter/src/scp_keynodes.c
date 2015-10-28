@@ -120,13 +120,22 @@ scp_operand sc_event_remove_output_arc;
 scp_operand sc_event_remove_input_arc;
 scp_operand sc_event_change_link_content;
 
+// Structural types
+scp_operand sc_node_not_binary_tuple;
+scp_operand sc_node_struct;
+scp_operand sc_node_role_relation;
+scp_operand sc_node_norole_relation;
+scp_operand sc_node_not_relation;
+scp_operand sc_node_abstract;
+scp_operand sc_node_material;
+
 // Ordinals
 scp_operand order_role_relation;
 scp_operand ordinal_set_rrel;
 scp_operand ordinal_rrels[ORDINAL_RRELS_COUNT + 1]; // 0 element reserved
 scp_operand ordinal_set_rrels[ORDINAL_RRELS_COUNT + 1]; // 0 element reserved
 
-sc_memory_context * s_default_ctx;
+sc_memory_context *s_default_ctx;
 
 #define resolve_keynode(keynode, keynode_str) \
     if (sc_helper_resolve_system_identifier(s_default_ctx, keynode_str, &(keynode)) == SC_FALSE) \
@@ -222,6 +231,14 @@ scp_result scp_keynodes_init()
     MAKE_DEFAULT_OPERAND_FIXED(rrel_abstract);
     MAKE_DEFAULT_OPERAND_FIXED(rrel_material);
 
+    MAKE_DEFAULT_OPERAND_FIXED(sc_node_not_binary_tuple);
+    MAKE_DEFAULT_OPERAND_FIXED(sc_node_struct);
+    MAKE_DEFAULT_OPERAND_FIXED(sc_node_role_relation);
+    MAKE_DEFAULT_OPERAND_FIXED(sc_node_norole_relation);
+    MAKE_DEFAULT_OPERAND_FIXED(sc_node_not_relation);
+    MAKE_DEFAULT_OPERAND_FIXED(sc_node_abstract);
+    MAKE_DEFAULT_OPERAND_FIXED(sc_node_material);
+
     MAKE_DEFAULT_OPERAND_FIXED(order_role_relation);
     MAKE_DEFAULT_OPERAND_FIXED(ordinal_set_rrel);
     for (i = 1; i <= ORDINAL_RRELS_COUNT; i++)
@@ -296,13 +313,21 @@ scp_result scp_keynodes_init()
     resolve_keynode(rrel_common.addr, "rrel_common");
     resolve_keynode(rrel_pos_const_perm.addr, "rrel_pos_const_perm");
 
-    resolve_keynode(rrel_not_binary_tuple.addr,"rrel_not_binary_tuple");
-    resolve_keynode(rrel_struct.addr,"rrel_struct");
-    resolve_keynode(rrel_role_relation.addr,"rrel_role_relation");
-    resolve_keynode(rrel_norole_relation.addr,"rrel_norole_relation");
-    resolve_keynode(rrel_not_relation.addr,"rrel_not_relation");
-    resolve_keynode(rrel_abstract.addr,"rrel_abstract");
-    resolve_keynode(rrel_material.addr,"rrel_material");
+    resolve_keynode(rrel_not_binary_tuple.addr, "rrel_not_binary_tuple");
+    resolve_keynode(rrel_struct.addr, "rrel_struct");
+    resolve_keynode(rrel_role_relation.addr, "rrel_role_relation");
+    resolve_keynode(rrel_norole_relation.addr, "rrel_norole_relation");
+    resolve_keynode(rrel_not_relation.addr, "rrel_not_relation");
+    resolve_keynode(rrel_abstract.addr, "rrel_abstract");
+    resolve_keynode(rrel_material.addr, "rrel_material");
+
+    resolve_keynode(sc_node_not_binary_tuple.addr, "sc_node_not_binary_tuple");
+    resolve_keynode(sc_node_struct.addr, "sc_node_struct");
+    resolve_keynode(sc_node_role_relation.addr, "sc_node_role_relation");
+    resolve_keynode(sc_node_norole_relation.addr, "sc_node_norole_relation");
+    resolve_keynode(sc_node_not_relation.addr, "sc_node_not_relation");
+    resolve_keynode(sc_node_abstract.addr, "sc_node_abstract");
+    resolve_keynode(sc_node_material.addr, "sc_node_material");
 
     resolve_keynode(sc_event_elem.addr, "sc_event");
     resolve_keynode(sc_event_add_input_arc.addr, "sc_event_add_input_arc");

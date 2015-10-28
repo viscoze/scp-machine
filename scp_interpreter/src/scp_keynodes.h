@@ -117,13 +117,21 @@ extern scp_operand rrel_abstract;
 extern scp_operand rrel_material;
 
 // Events
-
 extern scp_operand sc_event_elem;
 extern scp_operand sc_event_add_output_arc;
 extern scp_operand sc_event_add_input_arc;
 extern scp_operand sc_event_remove_output_arc;
 extern scp_operand sc_event_remove_input_arc;
 extern scp_operand sc_event_change_link_content;
+
+// Structural types
+extern scp_operand sc_node_not_binary_tuple;
+extern scp_operand sc_node_struct;
+extern scp_operand sc_node_role_relation;
+extern scp_operand sc_node_norole_relation;
+extern scp_operand sc_node_not_relation;
+extern scp_operand sc_node_abstract;
+extern scp_operand sc_node_material;
 
 // Ordinals
 extern scp_operand order_role_relation;
