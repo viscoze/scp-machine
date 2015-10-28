@@ -111,7 +111,7 @@ void append_all_relation_elements_to_hash_with_modifiers(sc_memory_context *cont
                 {
                     if (SCP_RESULT_TRUE == searchElStr5(context, parameter_set, &arc1, &operand_element, &arc2, &rrel_in))
                     {
-                        if (SCP_RESULT_TRUE == ifVarAssign(context, &modifier_arc))
+                        if (SCP_RESULT_TRUE == ifVarAssign(context, &operand_element_modifier_arc))
                         {
                             eraseEl(context, &operand_element_modifier_arc);
                         }
