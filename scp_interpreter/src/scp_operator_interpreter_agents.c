@@ -1580,7 +1580,8 @@ sc_result interpreter_agent_content_string_operators(const sc_event *event, sc_a
     }
 
     //stringToUpperCase case
-    if (SC_RESULT_OK == ifCoin(s_default_ctx, &operator_type, &op_stringToUpperCase)) {
+    if (SC_RESULT_OK == ifCoin(s_default_ctx, &operator_type, &op_stringToUpperCase))
+    {
         scp_operand operands[2], operand_values[2];
         input_arc.erase = SCP_TRUE;
         eraseEl(s_default_ctx, &input_arc);
@@ -1588,14 +1589,16 @@ sc_result interpreter_agent_content_string_operators(const sc_event *event, sc_a
 
         resolve_operands_modifiers(s_default_ctx, &operator_node, operands, 2);
 
-        if (SCP_RESULT_TRUE != get_operands_values(s_default_ctx, operands, operand_values, 2)) {
+        if (SCP_RESULT_TRUE != get_operands_values(s_default_ctx, operands, operand_values, 2))
+        {
             operator_interpreting_crash(s_default_ctx, &operator_node);
             return SC_RESULT_ERROR;
         }
 
         //Operator body
         res = stringToUpperCase(s_default_ctx, operand_values, operand_values + 1);
-        if (res == SCP_RESULT_TRUE) {
+        if (res == SCP_RESULT_TRUE)
+        {
             set_operands_values(s_default_ctx, operands, operand_values, 2);
             goto_unconditional(s_default_ctx, &operator_node);
         }
@@ -1604,7 +1607,8 @@ sc_result interpreter_agent_content_string_operators(const sc_event *event, sc_a
     }
 
     //stringToLowerCase case
-    if (SC_RESULT_OK == ifCoin(s_default_ctx, &operator_type, &op_stringToLowerCase)) {
+    if (SC_RESULT_OK == ifCoin(s_default_ctx, &operator_type, &op_stringToLowerCase))
+    {
         scp_operand operands[2], operand_values[2];
         input_arc.erase = SCP_TRUE;
         eraseEl(s_default_ctx, &input_arc);
@@ -1612,14 +1616,16 @@ sc_result interpreter_agent_content_string_operators(const sc_event *event, sc_a
 
         resolve_operands_modifiers(s_default_ctx, &operator_node, operands, 2);
 
-        if (SCP_RESULT_TRUE != get_operands_values(s_default_ctx, operands, operand_values, 2)) {
+        if (SCP_RESULT_TRUE != get_operands_values(s_default_ctx, operands, operand_values, 2))
+        {
             operator_interpreting_crash(s_default_ctx, &operator_node);
             return SC_RESULT_ERROR;
         }
 
         //Operator body
         res = stringToLowerCase(s_default_ctx, operand_values, operand_values + 1);
-        if (res == SCP_RESULT_TRUE) {
+        if (res == SCP_RESULT_TRUE)
+        {
             set_operands_values(s_default_ctx, operands, operand_values, 2);
             goto_unconditional(s_default_ctx, &operator_node);
         }
@@ -2850,7 +2856,7 @@ sc_result sys_search_agent_body(sc_memory_context *context, scp_operand *operato
                 {
                     for (i = 0; i < size2; i++)
                     {
-                        set_operands_values(context, pair_elems2[i], pair_values2[i], 2);
+                        set_operands_values(context, pair_elems2[i] + 1, pair_values2[i] + 1, 2);
                     }
                     set_operands_values(context, &param4_node, &param4, 1);
                     if (SCP_RESULT_TRUE != goto_conditional_success(context, operator_node))
@@ -2892,7 +2898,7 @@ sc_result sys_search_agent_body(sc_memory_context *context, scp_operand *operato
                 {
                     for (i = 0; i < size2; i++)
                     {
-                        set_operands_values(context, pair_elems2[i], pair_values2[i], 2);
+                        set_operands_values(context, pair_elems2[i] + 1, pair_values2[i] + 1, 2);
                     }
                     if (SCP_RESULT_TRUE != goto_conditional_success(context, operator_node))
                     {
@@ -3226,7 +3232,7 @@ sc_result sys_gen_agent_body(sc_memory_context *context, scp_operand *operator_n
                 {
                     for (i = 0; i < size2; i++)
                     {
-                        set_operands_values(context, pair_elems2[i], pair_values2[i], 2);
+                        set_operands_values(context, pair_elems2[i] + 1, pair_values2[i] + 1, 2);
                     }
                     set_operands_values(context, &param4_node, &param4, 1);
                     if (SCP_RESULT_TRUE != goto_conditional_success(context, operator_node))
@@ -3268,7 +3274,7 @@ sc_result sys_gen_agent_body(sc_memory_context *context, scp_operand *operator_n
                 {
                     for (i = 0; i < size2; i++)
                     {
-                        set_operands_values(context, pair_elems2[i], pair_values2[i], 2);
+                        set_operands_values(context, pair_elems2[i] + 1, pair_values2[i] + 1, 2);
                     }
                     if (SCP_RESULT_TRUE != goto_conditional_success(context, operator_node))
                     {
